@@ -1,88 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* ============================================================
+   KM0 LAB Design System — Color Tokens (HSL)
+   ============================================================ */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* ── KM0 Blue ──────────────────────────────────────────── */
+    --km0-blue-50:  214 69% 97%;   /* #F0F4FD */
+    --km0-blue-100: 228 60% 91%;   /* #DADEF8 */
+    --km0-blue-200: 222 64% 82%;   /* #B5C3F0 */
+    --km0-blue-300: 218 60% 73%;   /* #90A9E8 */
+    --km0-blue-400: 214 49% 62%;   /* #6B8FD0 */
+    --km0-blue-500: 215 43% 49%;   /* #4674B8 */
+    --km0-blue-600: 217 56% 40%;   /* #2B5AA0 */
+    --km0-blue-700: 220 73% 33%;   /* #174094 — Principal */
+    --km0-blue-800: 214 61% 19%;   /* #132A50 */
+    --km0-blue-900: 214 63% 15%;   /* #0F2040 */
+
+    /* ── KM0 Beige ─────────────────────────────────────────── */
+    --km0-beige-50:  36 100% 97%;  /* #FFF9F0 */
+    --km0-beige-100: 33 100% 90%;  /* #FFECD2 — Principal */
+    --km0-beige-200: 51 96%  83%;  /* #FDEEA9 */
+    --km0-beige-300: 47 93%  73%;  /* #FBDB7E */
+    --km0-beige-400: 44 90%  64%;  /* #F9C853 */
+    --km0-beige-500: 41 92%  56%;  /* #F7B528 */
+    --km0-beige-600: 39 73%  49%;  /* #DCA223 */
+    --km0-beige-700: 38 72%  43%;  /* #C18F1E */
+    --km0-beige-800: 37 72%  37%;  /* #A67C19 */
+    --km0-beige-900: 36 72%  31%;  /* #8B6914 */
+
+    /* ── KM0 Yellow ────────────────────────────────────────── */
+    --km0-yellow-50:  44 100% 97%;  /* #FEFAF0 */
+    --km0-yellow-100: 45 95%  93%;  /* #FDF5DA */
+    --km0-yellow-200: 44 91%  84%;  /* #FBE9B4 */
+    --km0-yellow-300: 44 91%  76%;  /* #F9DD8E */
+    --km0-yellow-400: 43 91%  69%;  /* #F7D168 */
+    --km0-yellow-500: 43 89%  61%;  /* #F5C542 — Principal */
+    --km0-yellow-600: 39 73%  49%;  /* #DCA223 */
+    --km0-yellow-700: 38 72%  43%;  /* #C18F1E */
+    --km0-yellow-800: 37 72%  37%;  /* #A67C19 */
+    --km0-yellow-900: 36 72%  31%;  /* #8B6914 */
+
+    /* ── KM0 Teal ──────────────────────────────────────────── */
+    --km0-teal-50:  178 100% 97%;  /* #F0FFFE */
+    --km0-teal-100: 178 100% 90%;  /* #CCFAF8 */
+    --km0-teal-200: 177 80%  73%;  /* #80EAE4 */
+    --km0-teal-300: 177 72%  57%;  /* #40D9D0 */
+    --km0-teal-400: 177 100% 42%;  /* #00C7BC — approx */
+    --km0-teal-500: 177 100% 36%;  /* #00B8A9 — Principal */
+    --km0-teal-600: 177 100% 30%;  /* #009A8E */
+    --km0-teal-700: 177 100% 24%;  /* #007C72 */
+    --km0-teal-800: 177 100% 18%;  /* #005E56 */
+    --km0-teal-900: 177 100% 13%;  /* #00403B */
+
+    /* ── KM0 Coral ─────────────────────────────────────────── */
+    --km0-coral-50:  5 100% 93%;  /* #FFE0DB */
+    --km0-coral-100: 5 100% 86%;  /* #FFC2B7 */
+    --km0-coral-200: 5 100% 79%;  /* #FFA394 */
+    --km0-coral-300: 5 100% 72%;  /* #FF8570 */
+    --km0-coral-400: 7 100% 65%;  /* #FF664D — Principal */
+    --km0-coral-500: 13 100% 48%; /* #F73200 */
+    --km0-coral-600: 13 100% 43%; /* #DC2C00 */
+    --km0-coral-700: 13 100% 38%; /* #C12600 */
+    --km0-coral-800: 13 100% 32%; /* #A62000 */
+    --km0-coral-900: 13 100% 27%; /* #8B1A00 */
+
+    /* ── Shadcn / Tailwind base tokens (mapped to KM0) ─────── */
+    --background: var(--km0-beige-50);
+    --foreground: var(--km0-blue-800);
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: var(--km0-blue-800);
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: var(--km0-blue-800);
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: var(--km0-blue-700);
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: var(--km0-beige-100);
+    --secondary-foreground: var(--km0-blue-700);
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: var(--km0-beige-50);
+    --muted-foreground: 220 9% 46%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: var(--km0-teal-500);
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: var(--km0-coral-400);
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: var(--km0-beige-200);
+    --input: var(--km0-beige-200);
+    --ring: var(--km0-blue-700);
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
+    /* Sidebar tokens */
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
+    --background: var(--km0-blue-900);
+    --foreground: var(--km0-beige-50);
+    --card: var(--km0-blue-800);
+    --card-foreground: var(--km0-beige-50);
+    --popover: var(--km0-blue-800);
+    --popover-foreground: var(--km0-beige-50);
+    --primary: var(--km0-beige-100);
+    --primary-foreground: var(--km0-blue-800);
+    --secondary: var(--km0-blue-700);
+    --secondary-foreground: var(--km0-beige-50);
+    --muted: var(--km0-blue-800);
     --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --accent: var(--km0-teal-500);
+    --accent-foreground: 0 0% 100%;
+    --destructive: var(--km0-coral-500);
+    --destructive-foreground: 0 0% 100%;
+    --border: var(--km0-blue-700);
+    --input: var(--km0-blue-700);
+    --ring: var(--km0-beige-100);
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -101,5 +150,31 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
   }
+}
+
+/* ── KM0 Animations ─────────────────────────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease-out both;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }
