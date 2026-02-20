@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Km0Logo from "@/components/Km0Logo";
@@ -19,57 +19,32 @@ const getDesc = (slide: typeof slides[0], lang: Lang) => {
   return slide.descEs;
 };
 
+// Slot width: each card occupies this space in the track
+const SLOT = 270;
+// Container visible width (matches max-w-[390px])
+const CONTAINER = 390;
+
 const Onboarding = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const lang: Lang = (location.state?.lang as Lang) ?? "es";
 
   const [current, setCurrent] = useState(0);
-  const [animating, setAnimating] = useState(false);
-  const [direction, setDirection] = useState<"left" | "right">("right");
-  const [visible, setVisible] = useState(true);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   const total = slides.length;
   const isFirst = current === 0;
   const isLast = current === total - 1;
 
-  const navigate_slide = (next: number, dir: "left" | "right") => {
-    if (animating) return;
-    setAnimating(true);
-    setDirection(dir);
-    setVisible(false);
-    timeoutRef.current = setTimeout(() => {
-      setCurrent(next);
-      setVisible(true);
-      setTimeout(() => setAnimating(false), 300);
-    }, 220);
-  };
-
-  useEffect(() => () => clearTimeout(timeoutRef.current), []);
-
-  const prev = () => { if (!isFirst) navigate_slide(current - 1, "left"); };
-  const next = () => { if (!isLast) navigate_slide(current + 1, "right"); };
-  const goTo = (i: number) => {
-    if (i === current) return;
-    navigate_slide(i, i > current ? "right" : "left");
-  };
+  const prev = () => { if (!isFirst) setCurrent((c) => c - 1); };
+  const next = () => { if (!isLast) setCurrent((c) => c + 1); };
+  const goTo = (i: number) => setCurrent(i);
 
   const skipLabel = isLast
     ? lang === "ca" ? "INICI" : lang === "en" ? "START" : "INICIO"
     : lang === "ca" ? "SALTAR" : lang === "en" ? "SKIP" : "SALTAR";
 
-  const slide = slides[current];
-
-  const slideStyle: React.CSSProperties = {
-    transition: "opacity 220ms ease, transform 220ms ease",
-    opacity: visible ? 1 : 0,
-    transform: visible
-      ? "translateX(0)"
-      : direction === "right"
-        ? "translateX(-40px)"
-        : "translateX(40px)",
-  };
+  // Track offset: centers the active slide
+  const trackX = CONTAINER / 2 - current * SLOT - SLOT / 2;
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 py-6">
@@ -85,44 +60,80 @@ const Onboarding = () => {
             <ChevronLeft size={22} strokeWidth={2.5} />
           </button>
           <Km0Logo className="h-9 w-auto" />
-          <div className="w-11" /> {/* spacer */}
+          <div className="w-11" />
         </div>
 
-        {/* ── Carousel area ──────────────────────────────────── */}
-        <div className="relative flex items-center justify-center h-[380px]">
+        {/* ── Carousel ───────────────────────────────────────── */}
+        <div className="relative h-[380px] overflow-hidden">
 
-          {/* Peek prev */}
-          {!isFirst && (
-            <div
-              className="absolute left-0 w-[72px] h-[320px] rounded-2xl overflow-hidden opacity-60 scale-90 origin-right cursor-pointer top-[30px]"
-              style={{ background: slides[current - 1].color }}
-              onClick={prev}
-            >
-              <div className="w-full h-full flex items-center justify-center text-4xl">
-                {slides[current - 1].emoji}
-              </div>
-            </div>
-          )}
+          {/* Sliding track */}
+          <div
+            className="absolute top-0 flex items-start"
+            style={{
+              transform: `translateX(${trackX}px)`,
+              transition: "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
+              width: `${total * SLOT}px`,
+            }}
+          >
+            {slides.map((s, i) => {
+              const dist = Math.abs(i - current);
+              const isActive = i === current;
+              const scale = isActive ? 1 : dist === 1 ? 0.82 : 0.68;
+              const opacity = isActive ? 1 : dist === 1 ? 0.65 : 0.35;
+              const topOffset = isActive ? 0 : dist === 1 ? 28 : 48;
 
-          {/* Peek next */}
-          {!isLast && (
-            <div
-              className="absolute right-0 w-[72px] h-[320px] rounded-2xl overflow-hidden opacity-60 scale-90 origin-left cursor-pointer top-[30px]"
-              style={{ background: slides[current + 1].color }}
-              onClick={next}
-            >
-              <div className="w-full h-full flex items-center justify-center text-4xl">
-                {slides[current + 1].emoji}
-              </div>
-            </div>
-          )}
+              return (
+                <div
+                  key={s.id}
+                  onClick={() => !isActive && goTo(i)}
+                  style={{
+                    width: `${SLOT}px`,
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    transform: `scale(${scale}) translateY(${topOffset}px)`,
+                    opacity,
+                    transition: "transform 420ms cubic-bezier(0.4,0,0.2,1), opacity 420ms ease",
+                    transformOrigin: "top center",
+                    cursor: isActive ? "default" : "pointer",
+                    zIndex: isActive ? 10 : 1,
+                  }}
+                >
+                  <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
 
-          {/* Arrow left — fixed at center of image area (12px top + 220px/2 = 122px, minus half button = 100px from top of container) */}
+                    {/* Image area */}
+                    <div
+                      className="relative mx-3 mt-3 h-[220px] rounded-2xl flex items-center justify-center overflow-hidden"
+                      style={{ background: s.color }}
+                    >
+                      <span className="text-[90px] select-none">{s.emoji}</span>
+                      {isActive && (
+                        <span className="absolute top-3 right-3 bg-km0-coral-400 text-white font-ui font-bold text-sm px-3 py-1 rounded-xl shadow-md">
+                          +{s.xp} XP
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Text — only rendered for active to avoid layout shifts */}
+                    <div className="px-5 pt-4 pb-6 text-center">
+                      <h2 className="font-brand font-bold text-xl text-primary leading-tight mb-2">
+                        {getTitle(s, lang)}
+                      </h2>
+                      <p className="font-body text-sm text-muted-foreground leading-relaxed">
+                        {getDesc(s, lang)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Arrow left */}
           <button
             onClick={prev}
             disabled={isFirst}
             className={cn(
-              "absolute left-[52px] top-[112px] w-11 h-11 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+              "absolute left-[14px] top-[112px] w-11 h-11 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
               isFirst
                 ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
                 : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
@@ -137,7 +148,7 @@ const Onboarding = () => {
             onClick={next}
             disabled={isLast}
             className={cn(
-              "absolute right-[52px] top-[112px] w-11 h-11 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+              "absolute right-[14px] top-[112px] w-11 h-11 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
               isLast
                 ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
                 : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
@@ -146,33 +157,6 @@ const Onboarding = () => {
           >
             <ChevronRight size={20} strokeWidth={2.5} />
           </button>
-
-          {/* Main card */}
-          <div className="relative w-[260px] bg-white rounded-3xl shadow-2xl overflow-visible z-10" style={slideStyle}>
-
-            {/* Image area */}
-            <div
-              className="relative rounded-2xl mx-3 mt-3 h-[220px] flex items-center justify-center overflow-hidden"
-              style={{ background: slide.color }}
-            >
-              <span className="text-[90px] select-none">{slide.emoji}</span>
-
-              {/* XP badge */}
-              <span className="absolute top-3 right-3 bg-km0-coral-400 text-white font-ui font-bold text-sm px-3 py-1 rounded-xl shadow-md">
-                +{slide.xp} XP
-              </span>
-            </div>
-
-            {/* Text */}
-            <div className="px-5 pt-4 pb-6 text-center">
-              <h2 className="font-brand font-bold text-xl text-primary leading-tight mb-2">
-                {getTitle(slide, lang)}
-              </h2>
-              <p className="font-body text-sm text-muted-foreground leading-relaxed">
-                {getDesc(slide, lang)}
-              </p>
-            </div>
-          </div>
         </div>
 
         {/* ── Thumbnails ─────────────────────────────────────── */}
@@ -198,12 +182,10 @@ const Onboarding = () => {
         {/* ── Footer ─────────────────────────────────────────── */}
         <div className="flex items-center justify-between px-1">
 
-          {/* Counter */}
           <span className="font-ui font-bold text-lg text-primary w-12">
             {current + 1}/{total}
           </span>
 
-          {/* Dots */}
           <div className="flex gap-2 items-center">
             {slides.map((_, i) => (
               <button
@@ -220,7 +202,6 @@ const Onboarding = () => {
             ))}
           </div>
 
-          {/* Skip / Start button */}
           <button
             onClick={() => {
               if (isLast) navigate("/");
