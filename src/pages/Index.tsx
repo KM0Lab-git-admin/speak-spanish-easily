@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import LanguageCard from "@/components/LanguageCard";
 import FloatingDots from "@/components/FloatingDots";
 import Km0Logo from "@/components/Km0Logo";
@@ -33,7 +34,13 @@ const languages: {id: string; flag: string; flagIsImage?: boolean; name: string;
 ];
 
 const Index = () => {
+  const navigate = useNavigate();
   const [selected, setSelected] = useState<string | null>(null);
+
+  const handleSelect = (id: string) => {
+    setSelected(id);
+    setTimeout(() => navigate("/onboarding", { state: { lang: id } }), 300);
+  };
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 py-10 shadow-lg border-solid">
@@ -65,7 +72,7 @@ const Index = () => {
               description={lang.description}
               selected={selected === lang.id}
               disabled={lang.disabled}
-              onClick={() => setSelected(lang.id)}
+              onClick={() => handleSelect(lang.id)}
               style={{ animationDelay: `${i * 0.1}s` }}
             />
           ))}
