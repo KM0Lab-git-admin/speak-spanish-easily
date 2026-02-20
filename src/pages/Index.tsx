@@ -7,7 +7,7 @@ import flagCa from "@/assets/flags/flag-ca.svg";
 import flagEs from "@/assets/flags/flag-es.svg";
 import flagEn from "@/assets/flags/flag-en.svg";
 
-const languages: {id: string; flag: string; flagIsImage?: boolean; name: string; description: string;}[] = [
+const languages: {id: string; flag: string; flagIsImage?: boolean; name: string; description: string; disabled?: boolean;}[] = [
   {
     id: "ca",
     flag: flagCa,
@@ -27,7 +27,8 @@ const languages: {id: string; flag: string; flagIsImage?: boolean; name: string;
     flag: flagEn,
     flagIsImage: true,
     name: "English",
-    description: "Start in English"
+    description: "Start in English",
+    disabled: true
   }
 ];
 
@@ -74,6 +75,7 @@ const Index = () => {
               name={lang.name}
               description={lang.description}
               selected={selected === lang.id}
+              disabled={lang.disabled}
               onClick={() => setSelected(lang.id)}
               style={{ animationDelay: `${i * 0.1}s` }}
             />
