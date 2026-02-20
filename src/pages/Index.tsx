@@ -43,9 +43,9 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 py-10 shadow-lg border-solid">
+    <div className="min-h-screen w-full flex justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 pt-10 pb-6">
       {/* Mobile shell */}
-      <div className="w-full max-w-[390px] flex flex-col gap-8">
+      <div className="w-full max-w-[390px] flex flex-col gap-8 h-fit">
 
         {/* ── Logo ──────────────────────────────────────────── */}
         <div className="flex items-center justify-between h-11">
