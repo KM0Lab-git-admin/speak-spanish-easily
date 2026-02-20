@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Km0Logo from "@/components/Km0Logo";
@@ -30,6 +30,7 @@ const Onboarding = () => {
   const lang: Lang = (location.state?.lang as Lang) ?? "es";
 
   const [current, setCurrent] = useState(0);
+  const touchStartX = useRef<number | null>(null);
 
   const total = slides.length;
   const isFirst = current === 0;
@@ -38,6 +39,20 @@ const Onboarding = () => {
   const prev = () => { if (!isFirst) setCurrent((c) => c - 1); };
   const next = () => { if (!isLast) setCurrent((c) => c + 1); };
   const goTo = (i: number) => setCurrent(i);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const delta = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(delta) > 40) {
+      if (delta > 0) next();
+      else prev();
+    }
+    touchStartX.current = null;
+  };
 
   const skipLabel = isLast
     ? lang === "ca" ? "INICI" : lang === "en" ? "START" : "INICIO"
@@ -64,7 +79,12 @@ const Onboarding = () => {
         </div>
 
         {/* ── Carousel ───────────────────────────────────────── */}
-        <div className="relative h-[410px] overflow-hidden" style={{ marginInline: "-16px", paddingInline: "16px" }}>
+        <div
+          className="relative h-[410px] overflow-hidden"
+          style={{ marginInline: "-16px", paddingInline: "16px" }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
 
           {/* Sliding track */}
           <div
