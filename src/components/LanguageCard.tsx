@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 
 interface LanguageCardProps {
   flag: string;
+  flagIsImage?: boolean;
   name: string;
   description: string;
   selected?: boolean;
@@ -11,6 +12,7 @@ interface LanguageCardProps {
 
 const LanguageCard = ({
   flag,
+  flagIsImage = false,
   name,
   description,
   selected = false,
@@ -34,14 +36,22 @@ const LanguageCard = ({
       {/* Flag */}
       <span
         className={cn(
-          "text-3xl flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full transition-colors duration-200",
+          "flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full overflow-hidden transition-colors duration-200",
           "bg-km0-beige-50 group-hover:bg-km0-yellow-100",
           selected ? "bg-km0-yellow-100" : ""
         )}
         role="img"
         aria-label={name}
       >
-        {flag}
+        {flagIsImage ? (
+          <img
+            src={flag}
+            alt={`${name} flag`}
+            className="w-9 h-9 object-cover rounded-full"
+          />
+        ) : (
+          <span className="text-3xl">{flag}</span>
+        )}
       </span>
 
       {/* Text */}
