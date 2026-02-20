@@ -158,11 +158,6 @@ const Onboarding = () => {
             <ChevronRight size={20} strokeWidth={2.5} />
           </button>
 
-          {/* Fade edges — masks side cards without clipping shadows */}
-          <div className="absolute inset-y-0 left-0 w-[60px] pointer-events-none z-30"
-            style={{ background: "linear-gradient(to right, hsl(var(--km0-beige-50)), transparent)" }} />
-          <div className="absolute inset-y-0 right-0 w-[60px] pointer-events-none z-30"
-            style={{ background: "linear-gradient(to left, hsl(var(--km0-beige-50)), transparent)" }} />
         </div>
 
         {/* ── Thumbnails ─────────────────────────────────────── */}
