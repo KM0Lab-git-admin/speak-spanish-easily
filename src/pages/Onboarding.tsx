@@ -39,33 +39,19 @@ const Onboarding = () => {
   const next = () => { if (!isLast) setCurrent((c) => c + 1); };
   const goTo = (i: number) => setCurrent(i);
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
+  const handlePointerDown = (e: React.PointerEvent) => {
+    touchStartX.current = e.clientX;
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   };
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
+  const handlePointerUp = (e: React.PointerEvent) => {
     if (touchStartX.current === null) return;
-    const delta = touchStartX.current - e.changedTouches[0].clientX;
+    const delta = touchStartX.current - e.clientX;
     if (Math.abs(delta) > 40) {
       if (delta > 0) next();
       else prev();
     }
     touchStartX.current = null;
-  };
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    touchStartX.current = e.clientX;
-    const onMouseUp = (ev: MouseEvent) => {
-      if (touchStartX.current === null) return;
-      const delta = touchStartX.current - ev.clientX;
-      if (Math.abs(delta) > 40) {
-        if (delta > 0) next();
-        else prev();
-      }
-      touchStartX.current = null;
-      window.removeEventListener("mouseup", onMouseUp);
-    };
-    window.addEventListener("mouseup", onMouseUp);
   };
 
   const skipLabel = isLast
@@ -105,9 +91,8 @@ const Onboarding = () => {
         <motion.div
           className="relative h-[410px] overflow-hidden select-none cursor-grab active:cursor-grabbing"
           style={{ marginInline: "-16px", paddingInline: "16px" }}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          onMouseDown={handleMouseDown}
+          onPointerDown={handlePointerDown}
+          onPointerUp={handlePointerUp}
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.45, delay: 0.2 }}
