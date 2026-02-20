@@ -17,22 +17,22 @@ const LanguageCard = ({
   description,
   selected = false,
   onClick,
-  style,
+  style
 }: LanguageCardProps) => {
   return (
     <button
       onClick={onClick}
       style={style}
-      className={cn(
-        "w-full flex items-center gap-4 px-4 py-4 rounded-2xl bg-card text-left group",
-        "border-[3px] transition-all duration-200 cursor-pointer",
-        "hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg hover:border-km0-yellow-500 hover:bg-white",
-        "animate-fade-in-up",
-        selected
-          ? "border-km0-yellow-500 bg-white shadow-md"
-          : "border-km0-blue-300"
-      )}
-    >
+      className={cn("w-full flex items-center gap-4 px-4 py-4 rounded-2xl bg-card text-left group border-[3px] transition-all duration-200 cursor-pointer hover:scale-[1.02] hover:-translate-y-1 hover:border-km0-yellow-500 hover:bg-white animate-fade-in-up border-solid shadow-xl",
+
+
+
+
+      selected ?
+      "border-km0-yellow-500 bg-white shadow-md" :
+      "border-km0-blue-300"
+      )}>
+
       {/* Flag */}
       <span
         className={cn(
@@ -41,17 +41,17 @@ const LanguageCard = ({
           selected ? "bg-km0-yellow-100" : ""
         )}
         role="img"
-        aria-label={name}
-      >
-        {flagIsImage ? (
-          <img
-            src={flag}
-            alt={`${name} flag`}
-            className="w-9 h-9 object-cover rounded-full"
-          />
-        ) : (
-          <span className="text-3xl">{flag}</span>
-        )}
+        aria-label={name}>
+
+        {flagIsImage ?
+        <img
+          src={flag}
+          alt={`${name} flag`}
+          className="w-9 h-9 object-cover rounded-full" /> :
+
+
+        <span className="text-3xl">{flag}</span>
+        }
       </span>
 
       {/* Text */}
@@ -70,12 +70,12 @@ const LanguageCard = ({
           "text-xl flex-shrink-0 transition-all duration-200",
           "group-hover:text-km0-yellow-500 group-hover:translate-x-1",
           selected ? "text-km0-yellow-500 translate-x-1" : "text-km0-blue-300"
-        )}
-      >
+        )}>
+
         →
       </span>
-    </button>
-  );
+    </button>);
+
 };
 
 export default LanguageCard;

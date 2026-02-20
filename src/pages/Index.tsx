@@ -5,33 +5,33 @@ import Km0Logo from "@/components/Km0Logo";
 import robotPlaceholder from "@/assets/km0_language_v1.jpg";
 import flagCa from "@/assets/flags/flag-ca.svg";
 
-const languages: { id: string; flag: string; flagIsImage?: boolean; name: string; description: string }[] = [
-  {
-    id: "ca",
-    flag: flagCa,
-    flagIsImage: true,
-    name: "Català",
-    description: "Comença en català",
-  },
-  {
-    id: "es",
-    flag: "🇪🇸",
-    name: "Español",
-    description: "Empieza en español",
-  },
-  {
-    id: "en",
-    flag: "🇬🇧",
-    name: "English",
-    description: "Start in English",
-  },
-];
+const languages: {id: string;flag: string;flagIsImage?: boolean;name: string;description: string;}[] = [
+{
+  id: "ca",
+  flag: flagCa,
+  flagIsImage: true,
+  name: "Català",
+  description: "Comença en català"
+},
+{
+  id: "es",
+  flag: "🇪🇸",
+  name: "Español",
+  description: "Empieza en español"
+},
+{
+  id: "en",
+  flag: "🇬🇧",
+  name: "English",
+  description: "Start in English"
+}];
+
 
 const Index = () => {
   const [selected, setSelected] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 py-10">
+    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 py-10 shadow-lg border-solid">
       {/* Mobile shell */}
       <div className="w-full max-w-[390px] flex flex-col gap-8">
 
@@ -46,8 +46,8 @@ const Index = () => {
           <img
             src={robotPlaceholder}
             alt="KM0 LAB mascot"
-            className="h-44 w-auto object-contain animate-float drop-shadow-lg rounded-2xl"
-          />
+            className="h-44 w-auto object-contain animate-float drop-shadow-lg rounded-2xl" />
+
         </div>
 
         {/* ── Textos ───────────────────────────────────────── */}
@@ -62,31 +62,31 @@ const Index = () => {
 
         {/* ── Language cards ────────────────────────────────── */}
         <div className="flex flex-col gap-3">
-          {languages.map((lang, i) => (
-            <LanguageCard
-              key={lang.id}
-              flag={lang.flag}
-              flagIsImage={lang.flagIsImage}
-              name={lang.name}
-              description={lang.description}
-              selected={selected === lang.id}
-              onClick={() => setSelected(lang.id)}
-              style={{ animationDelay: `${i * 0.1}s` }}
-            />
-          ))}
+          {languages.map((lang, i) =>
+          <LanguageCard
+            key={lang.id}
+            flag={lang.flag}
+            flagIsImage={lang.flagIsImage}
+            name={lang.name}
+            description={lang.description}
+            selected={selected === lang.id}
+            onClick={() => setSelected(lang.id)}
+            style={{ animationDelay: `${i * 0.1}s` }} />
+
+          )}
         </div>
 
         {/* ── CTA ──────────────────────────────────────────── */}
-        {selected && (
-          <button
-            className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-ui font-semibold text-base tracking-wide transition-all duration-200 hover:bg-km0-blue-600 active:scale-95 animate-fade-in-up"
-          >
+        {selected &&
+        <button
+          className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-ui font-semibold text-base tracking-wide transition-all duration-200 hover:bg-km0-blue-600 active:scale-95 animate-fade-in-up">
+
             Continue →
           </button>
-        )}
+        }
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;
