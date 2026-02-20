@@ -29,6 +29,7 @@ const Onboarding = () => {
   const lang: Lang = (location.state?.lang as Lang) ?? "es";
 
   const [current, setCurrent] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
   const touchStartX = useRef<number | null>(null);
 
   const total = slides.length;
@@ -41,16 +42,23 @@ const Onboarding = () => {
 
   const handlePointerDown = (e: React.PointerEvent) => {
     touchStartX.current = e.clientX;
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (touchStartX.current === null) return;
+    setDragOffset(e.clientX - touchStartX.current);
   };
 
   const handlePointerUp = (e: React.PointerEvent) => {
     if (touchStartX.current === null) return;
     const delta = touchStartX.current - e.clientX;
+    touchStartX.current = null;
+    setDragOffset(0);
     if (Math.abs(delta) > 40) {
       if (delta > 0) next();
       else prev();
     }
-    touchStartX.current = null;
   };
 
   const skipLabel = isLast
@@ -91,6 +99,7 @@ const Onboarding = () => {
           className="relative h-[410px] overflow-hidden select-none cursor-grab active:cursor-grabbing"
           style={{ marginInline: "-16px", paddingInline: "16px" }}
           onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -100,8 +109,8 @@ const Onboarding = () => {
           <div
             className="absolute top-0 flex items-start"
             style={{
-              transform: `translateX(${trackX}px)`,
-              transition: "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
+              transform: `translateX(${trackX + dragOffset}px)`,
+              transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
               width: `${total * SLOT}px`,
             }}
           >
