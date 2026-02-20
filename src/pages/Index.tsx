@@ -1,6 +1,7 @@
 import { useState } from "react";
 import LanguageCard from "@/components/LanguageCard";
 import FloatingDots from "@/components/FloatingDots";
+import Km0Logo from "@/components/Km0Logo";
 import robotPlaceholder from "@/assets/km0_language_v1.jpg";
 
 const languages = [
@@ -34,10 +35,7 @@ const Index = () => {
 
         {/* ── Logo ──────────────────────────────────────────── */}
         <div className="flex justify-center">
-          <div className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-full font-ui font-bold text-sm tracking-widest uppercase">
-            <span className="text-km0-yellow-500">●</span>
-            KM0 LAB
-          </div>
+          <Km0Logo className="h-10 w-auto" />
         </div>
 
         {/* ── Mascota + puntos decorativos ─────────────────── */}
