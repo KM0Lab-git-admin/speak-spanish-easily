@@ -41,7 +41,6 @@ const Onboarding = () => {
 
   const handlePointerDown = (e: React.PointerEvent) => {
     touchStartX.current = e.clientX;
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   };
 
   const handlePointerUp = (e: React.PointerEvent) => {
@@ -178,6 +177,7 @@ const Onboarding = () => {
           {/* Arrow left */}
           <button
             onClick={prev}
+            onPointerDown={(e) => e.stopPropagation()}
             disabled={isFirst}
             className={cn(
               "absolute left-[14px] top-[112px] w-11 h-11 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
@@ -193,6 +193,7 @@ const Onboarding = () => {
           {/* Arrow right */}
           <button
             onClick={next}
+            onPointerDown={(e) => e.stopPropagation()}
             disabled={isLast}
             className={cn(
               "absolute right-[14px] top-[112px] w-11 h-11 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
