@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
 import Km0Logo from "@/components/Km0Logo";
 import { slides } from "@/data/onboardingSlides";
 import { cn } from "@/lib/utils";
@@ -19,9 +20,7 @@ const getDesc = (slide: typeof slides[0], lang: Lang) => {
   return slide.descEs;
 };
 
-// Slot width: each card occupies this space in the track
 const SLOT = 270;
-// Container visible width (matches max-w-[390px])
 const CONTAINER = 390;
 
 const Onboarding = () => {
@@ -73,15 +72,24 @@ const Onboarding = () => {
     ? lang === "ca" ? "INICI" : lang === "en" ? "START" : "INICIO"
     : lang === "ca" ? "SALTAR" : lang === "en" ? "SKIP" : "SALTAR";
 
-  // Track offset: centers the active slide
   const trackX = CONTAINER / 2 - current * SLOT - SLOT / 2;
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 py-6">
+    <motion.div
+      className="min-h-screen w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 py-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.35 }}
+    >
       <div className="w-full max-w-[390px] flex flex-col gap-5 h-[620px]">
 
         {/* ── Header ─────────────────────────────────────────── */}
-        <div className="flex items-center justify-between">
+        <motion.div
+          className="flex items-center justify-between"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
           <button
             onClick={() => navigate("/")}
             className="w-11 h-11 flex items-center justify-center rounded-xl border-[2px] border-dashed border-km0-yellow-500 text-km0-yellow-600 hover:bg-km0-yellow-50 transition-all duration-200 hover:scale-105"
@@ -91,17 +99,19 @@ const Onboarding = () => {
           </button>
           <Km0Logo className="h-9 w-auto" />
           <div className="w-11" />
-        </div>
+        </motion.div>
 
         {/* ── Carousel ───────────────────────────────────────── */}
-        <div
+        <motion.div
           className="relative h-[410px] overflow-hidden select-none cursor-grab active:cursor-grabbing"
           style={{ marginInline: "-16px", paddingInline: "16px" }}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
           onMouseDown={handleMouseDown}
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.45, delay: 0.2 }}
         >
-
           {/* Sliding track */}
           <div
             className="absolute top-0 flex items-start"
@@ -165,7 +175,7 @@ const Onboarding = () => {
                       )}
                     </div>
 
-                    {/* Text — only rendered for active to avoid layout shifts */}
+                    {/* Text */}
                     <div className="px-5 pt-4 pb-6 text-center">
                       <h2 className="font-brand font-bold text-xl text-primary leading-tight mb-2">
                         {getTitle(s, lang)}
@@ -209,11 +219,15 @@ const Onboarding = () => {
           >
             <ChevronRight size={20} strokeWidth={2.5} />
           </button>
-
-        </div>
+        </motion.div>
 
         {/* ── Thumbnails ─────────────────────────────────────── */}
-        <div className="flex justify-center gap-2">
+        <motion.div
+          className="flex justify-center gap-2"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+        >
           {slides.map((s, i) => (
             <button
               key={s.id}
@@ -230,11 +244,15 @@ const Onboarding = () => {
               {s.emoji}
             </button>
           ))}
-        </div>
+        </motion.div>
 
         {/* ── Footer ─────────────────────────────────────────── */}
-        <div className="flex items-center justify-between px-1">
-
+        <motion.div
+          className="flex items-center justify-between px-1"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.4 }}
+        >
           <span className="font-ui font-bold text-lg text-primary w-12">
             {current + 1}/{total}
           </span>
@@ -264,10 +282,10 @@ const Onboarding = () => {
           >
             {skipLabel}
           </button>
-        </div>
+        </motion.div>
 
       </div>
-    </div>
+    </motion.div>
   );
 };
 
