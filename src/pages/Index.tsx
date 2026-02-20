@@ -54,17 +54,6 @@ const Index = () => {
             className="h-56 w-auto object-contain animate-float drop-shadow-lg"
           />
         </div>
-
-        {/* ── Textos ───────────────────────────────────────── */}
-        <div className="text-center space-y-2 px-2">
-          <h1 className="font-brand font-bold text-3xl text-primary leading-tight">
-            Select your language
-          </h1>
-          <p className="font-ui text-base text-muted-foreground">
-            Which language would you like to start with?
-          </p>
-        </div>
-
         {/* ── Language cards ────────────────────────────────── */}
         <div className="flex flex-col gap-3">
           {languages.map((lang, i) => (
