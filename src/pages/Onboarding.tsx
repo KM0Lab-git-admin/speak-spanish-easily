@@ -40,8 +40,8 @@ const Onboarding = () => {
   const slide = slides[current];
 
   return (
-    <div className="min-h-screen w-full flex justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 pt-10 pb-6">
-      <div className="w-full max-w-[390px] flex flex-col gap-5 h-fit">
+    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 py-6">
+      <div className="w-full max-w-[390px] flex flex-col gap-5 h-[620px]">
 
         {/* ── Header ─────────────────────────────────────────── */}
         <div className="flex items-center justify-between">
