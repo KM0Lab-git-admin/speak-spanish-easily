@@ -57,16 +57,16 @@ const Onboarding = () => {
         </div>
 
         {/* ── Carousel area ──────────────────────────────────── */}
-        <div className="relative flex items-center justify-center">
+        <div className="relative flex items-center justify-center h-[380px]">
 
           {/* Peek prev */}
           {!isFirst && (
             <div
-              className="absolute left-0 w-[80px] h-[340px] rounded-2xl overflow-hidden opacity-60 scale-90 origin-right cursor-pointer"
+              className="absolute left-0 w-[72px] h-[320px] rounded-2xl overflow-hidden opacity-60 scale-90 origin-right cursor-pointer top-[30px]"
               style={{ background: slides[current - 1].color }}
               onClick={prev}
             >
-              <div className="w-full h-full flex items-center justify-center text-5xl">
+              <div className="w-full h-full flex items-center justify-center text-4xl">
                 {slides[current - 1].emoji}
               </div>
             </div>
@@ -75,15 +75,45 @@ const Onboarding = () => {
           {/* Peek next */}
           {!isLast && (
             <div
-              className="absolute right-0 w-[80px] h-[340px] rounded-2xl overflow-hidden opacity-60 scale-90 origin-left cursor-pointer"
+              className="absolute right-0 w-[72px] h-[320px] rounded-2xl overflow-hidden opacity-60 scale-90 origin-left cursor-pointer top-[30px]"
               style={{ background: slides[current + 1].color }}
               onClick={next}
             >
-              <div className="w-full h-full flex items-center justify-center text-5xl">
+              <div className="w-full h-full flex items-center justify-center text-4xl">
                 {slides[current + 1].emoji}
               </div>
             </div>
           )}
+
+          {/* Arrow left — fixed at center of image area (12px top + 220px/2 = 122px, minus half button = 100px from top of container) */}
+          <button
+            onClick={prev}
+            disabled={isFirst}
+            className={cn(
+              "absolute left-[52px] top-[112px] w-11 h-11 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+              isFirst
+                ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
+                : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
+            )}
+            aria-label="Previous"
+          >
+            <ChevronLeft size={20} strokeWidth={2.5} />
+          </button>
+
+          {/* Arrow right */}
+          <button
+            onClick={next}
+            disabled={isLast}
+            className={cn(
+              "absolute right-[52px] top-[112px] w-11 h-11 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+              isLast
+                ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
+                : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
+            )}
+            aria-label="Next"
+          >
+            <ChevronRight size={20} strokeWidth={2.5} />
+          </button>
 
           {/* Main card */}
           <div className="relative w-[260px] bg-white rounded-3xl shadow-2xl overflow-visible z-10 transition-all duration-300">
@@ -110,36 +140,6 @@ const Onboarding = () => {
                 {getDesc(slide, lang)}
               </p>
             </div>
-
-            {/* Arrow left */}
-            <button
-              onClick={prev}
-              disabled={isFirst}
-              className={cn(
-                "absolute left-[-22px] top-[130px] w-11 h-11 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
-                isFirst
-                  ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
-                  : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
-              )}
-              aria-label="Previous"
-            >
-              <ChevronLeft size={20} strokeWidth={2.5} />
-            </button>
-
-            {/* Arrow right */}
-            <button
-              onClick={next}
-              disabled={isLast}
-              className={cn(
-                "absolute right-[-22px] top-[130px] w-11 h-11 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
-                isLast
-                  ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
-                  : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
-              )}
-              aria-label="Next"
-            >
-              <ChevronRight size={20} strokeWidth={2.5} />
-            </button>
           </div>
         </div>
 

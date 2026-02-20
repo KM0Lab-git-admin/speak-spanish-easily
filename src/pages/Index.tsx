@@ -48,8 +48,10 @@ const Index = () => {
       <div className="w-full max-w-[390px] flex flex-col gap-8">
 
         {/* ── Logo ──────────────────────────────────────────── */}
-        <div className="flex justify-center">
-          <Km0Logo className="h-10 w-auto" />
+        <div className="flex items-center justify-between h-11">
+          <div className="w-11" />
+          <Km0Logo className="h-9 w-auto" />
+          <div className="w-11" />
         </div>
 
         {/* ── Mascota + puntos decorativos ─────────────────── */}
