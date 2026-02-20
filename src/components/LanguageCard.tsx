@@ -22,19 +22,22 @@ const LanguageCard = ({
       onClick={onClick}
       style={style}
       className={cn(
-        "w-full flex items-center gap-4 px-4 py-4 rounded-2xl bg-card text-left",
-        "border-2 transition-all duration-200 cursor-pointer",
-        "hover:shadow-lg hover:-translate-y-0.5 hover:border-km0-blue-700 hover:bg-km0-blue-50",
-        "active:scale-95 active:shadow-sm",
+        "w-full flex items-center gap-4 px-4 py-4 rounded-2xl bg-card text-left group",
+        "border-[3px] transition-all duration-200 cursor-pointer",
+        "hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg hover:border-km0-yellow-500 hover:bg-white",
         "animate-fade-in-up",
         selected
-          ? "border-km0-blue-700 bg-km0-blue-50 shadow-md"
+          ? "border-km0-yellow-500 bg-white shadow-md"
           : "border-km0-blue-300"
       )}
     >
       {/* Flag */}
       <span
-        className="text-3xl flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-km0-beige-50"
+        className={cn(
+          "text-3xl flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full transition-colors duration-200",
+          "bg-km0-beige-50 group-hover:bg-km0-yellow-100",
+          selected ? "bg-km0-yellow-100" : ""
+        )}
         role="img"
         aria-label={name}
       >
@@ -43,7 +46,7 @@ const LanguageCard = ({
 
       {/* Text */}
       <div className="flex-1 min-w-0">
-        <p className="font-ui font-semibold text-base text-primary leading-tight">
+        <p className="font-ui font-semibold text-lg text-primary leading-tight">
           {name}
         </p>
         <p className="font-body text-sm text-muted-foreground mt-0.5">
@@ -55,7 +58,8 @@ const LanguageCard = ({
       <span
         className={cn(
           "text-xl flex-shrink-0 transition-all duration-200",
-          selected ? "text-km0-blue-700 translate-x-1" : "text-km0-blue-300"
+          "group-hover:text-km0-yellow-500 group-hover:translate-x-1",
+          selected ? "text-km0-yellow-500 translate-x-1" : "text-km0-blue-300"
         )}
       >
         →
