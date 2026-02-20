@@ -54,6 +54,20 @@ const Onboarding = () => {
     touchStartX.current = null;
   };
 
+  const handleMouseDown = (e: React.MouseEvent) => {
+    touchStartX.current = e.clientX;
+  };
+
+  const handleMouseUp = (e: React.MouseEvent) => {
+    if (touchStartX.current === null) return;
+    const delta = touchStartX.current - e.clientX;
+    if (Math.abs(delta) > 40) {
+      if (delta > 0) next();
+      else prev();
+    }
+    touchStartX.current = null;
+  };
+
   const skipLabel = isLast
     ? lang === "ca" ? "INICI" : lang === "en" ? "START" : "INICIO"
     : lang === "ca" ? "SALTAR" : lang === "en" ? "SKIP" : "SALTAR";
@@ -80,10 +94,13 @@ const Onboarding = () => {
 
         {/* ── Carousel ───────────────────────────────────────── */}
         <div
-          className="relative h-[410px] overflow-hidden"
+          className="relative h-[410px] overflow-hidden select-none cursor-grab active:cursor-grabbing"
           style={{ marginInline: "-16px", paddingInline: "16px" }}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={() => { touchStartX.current = null; }}
         >
 
           {/* Sliding track */}
