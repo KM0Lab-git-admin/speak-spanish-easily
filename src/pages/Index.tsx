@@ -51,7 +51,7 @@ const Index = () => {
           <img
             src={robotPlaceholder}
             alt="KM0 LAB mascot"
-            className="h-44 w-auto object-contain animate-float drop-shadow-lg rounded-2xl"
+            className="h-56 w-auto object-contain animate-float drop-shadow-lg"
           />
         </div>
 
