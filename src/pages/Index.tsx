@@ -83,16 +83,11 @@ const Index = () => {
         </div>
 
         {/* ── CTA ──────────────────────────────────────────── */}
-        <button
-          disabled={!selected}
-          className={`w-full py-4 rounded-2xl font-ui font-semibold text-base tracking-wide transition-all duration-300 animate-fade-in-up
-            ${selected
-              ? "bg-primary text-primary-foreground hover:bg-km0-blue-600 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-lg active:scale-95 cursor-pointer"
-              : "bg-km0-blue-200 text-km0-blue-400 cursor-not-allowed opacity-60"
-            }`}
-        >
-          {selected ? "Continue →" : "Select a language to continue"}
-        </button>
+        {selected && (
+          <button className="w-full py-4 rounded-2xl font-ui font-semibold text-base tracking-wide transition-all duration-300 animate-fade-in-up bg-primary text-primary-foreground hover:bg-km0-blue-600 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-lg active:scale-95 cursor-pointer">
+            Continue →
+          </button>
+        )}
       </div>
     </div>
   );
