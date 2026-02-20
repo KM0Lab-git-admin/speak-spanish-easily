@@ -33,9 +33,9 @@ const LanguageCard = ({
           ? "bg-km0-beige-50 border-km0-blue-200 opacity-50 cursor-not-allowed grayscale"
           : cn(
               "bg-card cursor-pointer",
-              "hover:scale-[1.06] hover:-translate-y-2 hover:shadow-[0_12px_32px_-6px_hsl(var(--km0-blue-700)/0.25)] hover:border-km0-yellow-500 hover:bg-km0-yellow-50",
+              "hover:scale-[1.09] hover:-translate-y-3 hover:shadow-[0_24px_56px_-8px_hsl(var(--km0-blue-700)/0.4)] hover:border-km0-yellow-500 hover:bg-km0-yellow-50",
               selected
-                ? "border-km0-yellow-500 bg-km0-yellow-50 scale-[1.03] -translate-y-1 shadow-[0_12px_32px_-6px_hsl(var(--km0-blue-700)/0.2)]"
+                ? "border-km0-yellow-500 bg-km0-yellow-50 scale-[1.04] -translate-y-1.5 shadow-[0_16px_40px_-8px_hsl(var(--km0-blue-700)/0.25)]"
                 : "border-km0-blue-700 shadow-xl"
             )
       )}>
@@ -73,11 +73,11 @@ const LanguageCard = ({
       {/* Arrow */}
       <span
         className={cn(
-          "text-xl flex-shrink-0 transition-all duration-200",
+          "text-xl flex-shrink-0 transition-all duration-300",
           disabled
             ? "text-km0-blue-200"
             : cn(
-                "group-hover:text-km0-yellow-500 group-hover:translate-x-1",
+                "group-hover:text-km0-yellow-500 group-hover:translate-x-2 group-hover:scale-125",
                 selected ? "text-km0-yellow-500 translate-x-1" : "text-km0-blue-300"
               )
         )}>
