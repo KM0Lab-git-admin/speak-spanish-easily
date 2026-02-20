@@ -4,28 +4,32 @@ import FloatingDots from "@/components/FloatingDots";
 import Km0Logo from "@/components/Km0Logo";
 import robotPlaceholder from "@/assets/km0_language_v1.jpg";
 import flagCa from "@/assets/flags/flag-ca.svg";
+import flagEs from "@/assets/flags/flag-es.svg";
+import flagEn from "@/assets/flags/flag-en.svg";
 
-const languages: {id: string;flag: string;flagIsImage?: boolean;name: string;description: string;}[] = [
-{
-  id: "ca",
-  flag: flagCa,
-  flagIsImage: true,
-  name: "Català",
-  description: "Comença en català"
-},
-{
-  id: "es",
-  flag: "🇪🇸",
-  name: "Español",
-  description: "Empieza en español"
-},
-{
-  id: "en",
-  flag: "🇬🇧",
-  name: "English",
-  description: "Start in English"
-}];
-
+const languages: {id: string; flag: string; flagIsImage?: boolean; name: string; description: string;}[] = [
+  {
+    id: "ca",
+    flag: flagCa,
+    flagIsImage: true,
+    name: "Català",
+    description: "Comença en català"
+  },
+  {
+    id: "es",
+    flag: flagEs,
+    flagIsImage: true,
+    name: "Español",
+    description: "Empieza en español"
+  },
+  {
+    id: "en",
+    flag: flagEn,
+    flagIsImage: true,
+    name: "English",
+    description: "Start in English"
+  }
+];
 
 const Index = () => {
   const [selected, setSelected] = useState<string | null>(null);
@@ -46,8 +50,8 @@ const Index = () => {
           <img
             src={robotPlaceholder}
             alt="KM0 LAB mascot"
-            className="h-44 w-auto object-contain animate-float drop-shadow-lg rounded-2xl" />
-
+            className="h-44 w-auto object-contain animate-float drop-shadow-lg rounded-2xl"
+          />
         </div>
 
         {/* ── Textos ───────────────────────────────────────── */}
@@ -62,31 +66,34 @@ const Index = () => {
 
         {/* ── Language cards ────────────────────────────────── */}
         <div className="flex flex-col gap-3">
-          {languages.map((lang, i) =>
-          <LanguageCard
-            key={lang.id}
-            flag={lang.flag}
-            flagIsImage={lang.flagIsImage}
-            name={lang.name}
-            description={lang.description}
-            selected={selected === lang.id}
-            onClick={() => setSelected(lang.id)}
-            style={{ animationDelay: `${i * 0.1}s` }} />
-
-          )}
+          {languages.map((lang, i) => (
+            <LanguageCard
+              key={lang.id}
+              flag={lang.flag}
+              flagIsImage={lang.flagIsImage}
+              name={lang.name}
+              description={lang.description}
+              selected={selected === lang.id}
+              onClick={() => setSelected(lang.id)}
+              style={{ animationDelay: `${i * 0.1}s` }}
+            />
+          ))}
         </div>
 
         {/* ── CTA ──────────────────────────────────────────── */}
-        {selected &&
         <button
-          className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-ui font-semibold text-base tracking-wide transition-all duration-200 hover:bg-km0-blue-600 active:scale-95 animate-fade-in-up">
-
-            Continue →
-          </button>
-        }
+          disabled={!selected}
+          className={`w-full py-4 rounded-2xl font-ui font-semibold text-base tracking-wide transition-all duration-300 animate-fade-in-up
+            ${selected
+              ? "bg-primary text-primary-foreground hover:bg-km0-blue-600 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-lg active:scale-95 cursor-pointer"
+              : "bg-km0-blue-200 text-km0-blue-400 cursor-not-allowed opacity-60"
+            }`}
+        >
+          {selected ? "Continue →" : "Select a language to continue"}
+        </button>
       </div>
-    </div>);
-
+    </div>
+  );
 };
 
 export default Index;

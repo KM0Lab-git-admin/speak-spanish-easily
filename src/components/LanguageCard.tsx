@@ -24,12 +24,12 @@ const LanguageCard = ({
       onClick={onClick}
       style={style}
       className={cn(
-        "w-full flex items-center gap-4 px-4 py-4 rounded-2xl bg-card text-left group border-[3px] border-solid",
-        "transition-all duration-300 ease-out cursor-pointer animate-fade-in-up shadow-xl",
+        "w-full flex items-center gap-4 px-4 py-4 rounded-2xl bg-card text-left group border-[2px] border-solid",
+        "transition-all duration-300 ease-out cursor-pointer animate-fade-in-up",
         "hover:scale-[1.06] hover:-translate-y-2 hover:shadow-[0_12px_32px_-6px_hsl(var(--km0-blue-700)/0.25)] hover:border-km0-yellow-500 hover:bg-km0-yellow-50",
         selected
           ? "border-km0-yellow-500 bg-km0-yellow-50 scale-[1.03] -translate-y-1 shadow-[0_12px_32px_-6px_hsl(var(--km0-blue-700)/0.2)]"
-          : "border-km0-blue-700"
+          : "border-km0-blue-700 shadow-xl"
       )}>
 
       {/* Flag */}
