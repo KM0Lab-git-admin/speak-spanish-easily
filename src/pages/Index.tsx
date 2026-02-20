@@ -3,11 +3,13 @@ import LanguageCard from "@/components/LanguageCard";
 import FloatingDots from "@/components/FloatingDots";
 import Km0Logo from "@/components/Km0Logo";
 import robotPlaceholder from "@/assets/km0_language_v1.jpg";
+import flagCa from "@/assets/flags/flag-ca.svg";
 
-const languages = [
+const languages: { id: string; flag: string; flagIsImage?: boolean; name: string; description: string }[] = [
   {
     id: "ca",
-    flag: "🏴󠁥󠁳󠁣󠁴󠁿",
+    flag: flagCa,
+    flagIsImage: true,
     name: "Català",
     description: "Comença en català",
   },
@@ -64,6 +66,7 @@ const Index = () => {
             <LanguageCard
               key={lang.id}
               flag={lang.flag}
+              flagIsImage={lang.flagIsImage}
               name={lang.name}
               description={lang.description}
               selected={selected === lang.id}
