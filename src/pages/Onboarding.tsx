@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Km0Logo from "@/components/Km0Logo";
@@ -25,19 +25,51 @@ const Onboarding = () => {
   const lang: Lang = (location.state?.lang as Lang) ?? "es";
 
   const [current, setCurrent] = useState(0);
+  const [animating, setAnimating] = useState(false);
+  const [direction, setDirection] = useState<"left" | "right">("right");
+  const [visible, setVisible] = useState(true);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+
   const total = slides.length;
   const isFirst = current === 0;
   const isLast = current === total - 1;
 
-  const prev = () => { if (!isFirst) setCurrent((c) => c - 1); };
-  const next = () => { if (!isLast) setCurrent((c) => c + 1); };
-  const goTo = (i: number) => setCurrent(i);
+  const navigate_slide = (next: number, dir: "left" | "right") => {
+    if (animating) return;
+    setAnimating(true);
+    setDirection(dir);
+    setVisible(false);
+    timeoutRef.current = setTimeout(() => {
+      setCurrent(next);
+      setVisible(true);
+      setTimeout(() => setAnimating(false), 300);
+    }, 220);
+  };
+
+  useEffect(() => () => clearTimeout(timeoutRef.current), []);
+
+  const prev = () => { if (!isFirst) navigate_slide(current - 1, "left"); };
+  const next = () => { if (!isLast) navigate_slide(current + 1, "right"); };
+  const goTo = (i: number) => {
+    if (i === current) return;
+    navigate_slide(i, i > current ? "right" : "left");
+  };
 
   const skipLabel = isLast
     ? lang === "ca" ? "INICI" : lang === "en" ? "START" : "INICIO"
     : lang === "ca" ? "SALTAR" : lang === "en" ? "SKIP" : "SALTAR";
 
   const slide = slides[current];
+
+  const slideStyle: React.CSSProperties = {
+    transition: "opacity 220ms ease, transform 220ms ease",
+    opacity: visible ? 1 : 0,
+    transform: visible
+      ? "translateX(0)"
+      : direction === "right"
+        ? "translateX(-40px)"
+        : "translateX(40px)",
+  };
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 py-6">
@@ -116,7 +148,7 @@ const Onboarding = () => {
           </button>
 
           {/* Main card */}
-          <div className="relative w-[260px] bg-white rounded-3xl shadow-2xl overflow-visible z-10 transition-all duration-300">
+          <div className="relative w-[260px] bg-white rounded-3xl shadow-2xl overflow-visible z-10" style={slideStyle}>
 
             {/* Image area */}
             <div
