@@ -56,16 +56,17 @@ const Onboarding = () => {
 
   const handleMouseDown = (e: React.MouseEvent) => {
     touchStartX.current = e.clientX;
-  };
-
-  const handleMouseUp = (e: React.MouseEvent) => {
-    if (touchStartX.current === null) return;
-    const delta = touchStartX.current - e.clientX;
-    if (Math.abs(delta) > 40) {
-      if (delta > 0) next();
-      else prev();
-    }
-    touchStartX.current = null;
+    const onMouseUp = (ev: MouseEvent) => {
+      if (touchStartX.current === null) return;
+      const delta = touchStartX.current - ev.clientX;
+      if (Math.abs(delta) > 40) {
+        if (delta > 0) next();
+        else prev();
+      }
+      touchStartX.current = null;
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+    window.addEventListener("mouseup", onMouseUp);
   };
 
   const skipLabel = isLast
@@ -99,8 +100,6 @@ const Onboarding = () => {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
           onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={() => { touchStartX.current = null; }}
         >
 
           {/* Sliding track */}
