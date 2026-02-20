@@ -114,7 +114,7 @@ const Onboarding = () => {
                       boxShadow: "0 8px 24px -4px rgba(0,0,0,0.06)",
                     }} />
                   </>)}
-                  <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+                  <div className={`bg-white rounded-3xl overflow-hidden ${isActive ? "shadow-2xl" : "shadow-none"}`}>
 
                     {/* Image area */}
                     <div
