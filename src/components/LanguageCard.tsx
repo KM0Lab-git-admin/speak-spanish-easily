@@ -23,14 +23,13 @@ const LanguageCard = ({
     <button
       onClick={onClick}
       style={style}
-      className={cn("w-full flex items-center gap-4 px-4 py-4 rounded-2xl bg-card text-left group border-[3px] transition-all duration-200 cursor-pointer hover:scale-[1.02] hover:-translate-y-1 hover:border-km0-yellow-500 hover:bg-white animate-fade-in-up border-solid shadow-xl",
-
-
-
-
-      selected ?
-      "border-km0-yellow-500 bg-white shadow-md" :
-      "border-km0-blue-300"
+      className={cn(
+        "w-full flex items-center gap-4 px-4 py-4 rounded-2xl bg-card text-left group border-[3px] border-solid",
+        "transition-all duration-300 ease-out cursor-pointer animate-fade-in-up shadow-xl",
+        "hover:scale-[1.03] hover:-translate-y-1.5 hover:shadow-2xl hover:border-km0-yellow-500 hover:bg-km0-yellow-50",
+        selected
+          ? "border-km0-yellow-500 bg-km0-yellow-50 shadow-md"
+          : "border-km0-blue-700"
       )}>
 
       {/* Flag */}
