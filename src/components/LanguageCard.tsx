@@ -23,12 +23,13 @@ const LanguageCard = ({
       style={style}
       className={cn(
         "w-full flex items-center gap-4 px-4 py-4 rounded-2xl bg-card text-left",
-        "border-2 border-dashed transition-all duration-200 cursor-pointer",
-        "hover:shadow-md hover:-translate-y-0.5",
+        "border-2 transition-all duration-200 cursor-pointer",
+        "hover:shadow-lg hover:-translate-y-0.5 hover:border-km0-blue-700 hover:bg-km0-blue-50",
+        "active:scale-95 active:shadow-sm",
         "animate-fade-in-up",
         selected
-          ? "border-km0-yellow-500 bg-km0-yellow-50 shadow-md"
-          : "border-km0-yellow-500"
+          ? "border-km0-blue-700 bg-km0-blue-50 shadow-md"
+          : "border-km0-blue-300"
       )}
     >
       {/* Flag */}
@@ -53,8 +54,8 @@ const LanguageCard = ({
       {/* Arrow */}
       <span
         className={cn(
-          "text-xl flex-shrink-0 transition-colors",
-          selected ? "text-km0-yellow-600" : "text-km0-blue-300"
+          "text-xl flex-shrink-0 transition-all duration-200",
+          selected ? "text-km0-blue-700 translate-x-1" : "text-km0-blue-300"
         )}
       >
         →
