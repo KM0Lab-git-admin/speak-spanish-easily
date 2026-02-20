@@ -64,7 +64,7 @@ const Onboarding = () => {
         </div>
 
         {/* ── Carousel ───────────────────────────────────────── */}
-        <div className="relative h-[380px] overflow-hidden" style={{ marginInline: "-16px", paddingInline: "16px" }}>
+        <div className="relative h-[410px] overflow-hidden" style={{ marginInline: "-16px", paddingInline: "16px" }}>
 
           {/* Sliding track */}
           <div
@@ -96,8 +96,24 @@ const Onboarding = () => {
                     transformOrigin: "top center",
                     cursor: isActive ? "default" : "pointer",
                     zIndex: isActive ? 10 : 1,
+                    position: "relative",
                   }}
                 >
+                  {/* Stack layers — only on active card */}
+                  {isActive && (<>
+                    <div style={{
+                      position: "absolute", bottom: -10, left: 22, right: 22,
+                      height: 28, background: "rgba(255,255,255,0.55)",
+                      borderRadius: 20, zIndex: -1,
+                      boxShadow: "0 8px 24px -4px rgba(0,0,0,0.10)",
+                    }} />
+                    <div style={{
+                      position: "absolute", bottom: -18, left: 38, right: 38,
+                      height: 28, background: "rgba(255,255,255,0.30)",
+                      borderRadius: 20, zIndex: -2,
+                      boxShadow: "0 8px 24px -4px rgba(0,0,0,0.06)",
+                    }} />
+                  </>)}
                   <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
 
                     {/* Image area */}
