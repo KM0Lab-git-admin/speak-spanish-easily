@@ -64,7 +64,7 @@ const Onboarding = () => {
         </div>
 
         {/* ── Carousel ───────────────────────────────────────── */}
-        <div className="relative h-[380px]" style={{ overflow: "visible" }}>
+        <div className="relative h-[380px] overflow-hidden" style={{ marginInline: "-16px", paddingInline: "16px" }}>
 
           {/* Sliding track */}
           <div
