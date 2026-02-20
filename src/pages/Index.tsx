@@ -2,7 +2,7 @@ import { useState } from "react";
 import LanguageCard from "@/components/LanguageCard";
 import FloatingDots from "@/components/FloatingDots";
 import Km0Logo from "@/components/Km0Logo";
-import robotPlaceholder from "@/assets/km0_language_v1.jpg";
+import robotPlaceholder from "@/assets/km0_robot_icon_v2.png";
 import flagCa from "@/assets/flags/flag-ca.svg";
 import flagEs from "@/assets/flags/flag-es.svg";
 import flagEn from "@/assets/flags/flag-en.svg";
