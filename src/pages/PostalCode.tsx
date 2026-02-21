@@ -31,6 +31,19 @@ const i18n = {
   },
 };
 
+const postalCodes: Record<string, string> = {
+  "08001": "Barcelona",
+  "08380": "Malgrat de Mar",
+  "08301": "Mataró",
+  "08400": "Granollers",
+  "08201": "Sabadell",
+  "08221": "Terrassa",
+  "08800": "Vilanova i la Geltrú",
+  "08850": "Gavà",
+  "08901": "L'Hospitalet de Llobregat",
+  "08940": "Cornellà de Llobregat",
+};
+
 const PostalCode = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,6 +55,7 @@ const PostalCode = () => {
 
   const isNumeric = /^\d*$/.test(value);
   const isComplete = value.length === 5 && isNumeric;
+  const cityName = isComplete ? postalCodes[value] ?? null : null;
   const showError = touched && !isNumeric;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,6 +153,18 @@ const PostalCode = () => {
               <AlertTriangle size={14} />
               <span>{t.error}</span>
             </div>
+          )}
+
+          {cityName && (
+            <motion.div
+              className="flex items-center gap-2 px-1"
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25 }}
+            >
+              <MapPin className="text-km0-teal-500 shrink-0" size={16} />
+              <span className="font-ui font-semibold text-sm text-km0-teal-600">{cityName}</span>
+            </motion.div>
           )}
         </motion.div>
 
