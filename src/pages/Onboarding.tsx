@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback, useLayoutEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
@@ -21,7 +21,6 @@ const getDesc = (slide: typeof slides[0], lang: Lang) => {
 };
 
 const SLOT = 270;
-const CONTAINER = 390;
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -30,7 +29,21 @@ const Onboarding = () => {
 
   const [current, setCurrent] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
+  const [containerWidth, setContainerWidth] = useState(390);
   const touchStartX = useRef<number | null>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  const measureCarousel = useCallback(() => {
+    if (carouselRef.current) {
+      setContainerWidth(carouselRef.current.offsetWidth);
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    measureCarousel();
+    window.addEventListener("resize", measureCarousel);
+    return () => window.removeEventListener("resize", measureCarousel);
+  }, [measureCarousel]);
 
   const total = slides.length;
   const isFirst = current === 0;
@@ -65,7 +78,7 @@ const Onboarding = () => {
     ? lang === "ca" ? "INICI" : lang === "en" ? "START" : "INICIO"
     : lang === "ca" ? "SALTAR" : lang === "en" ? "SKIP" : "SALTAR";
 
-  const trackX = CONTAINER / 2 - current * SLOT - SLOT / 2;
+  const trackX = containerWidth / 2 - current * SLOT - SLOT / 2;
 
   return (
     <motion.div
@@ -96,8 +109,9 @@ const Onboarding = () => {
 
         {/* ── Carousel ───────────────────────────────────────── */}
         <motion.div
-          className="relative h-[410px] overflow-hidden select-none cursor-grab active:cursor-grabbing"
-          style={{ marginInline: "-16px", paddingInline: "16px", touchAction: "none" }}
+          ref={carouselRef}
+          className="relative h-[410px] overflow-visible select-none cursor-grab active:cursor-grabbing"
+          style={{ touchAction: "none" }}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
