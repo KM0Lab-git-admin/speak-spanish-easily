@@ -112,19 +112,39 @@ const PostalCode = () => {
           />
         </motion.div>
 
-        {/* ── Title + subtitle ────────────────────────────── */}
+        {/* ── Title + subtitle / City name ────────────────── */}
         <motion.div
           className="text-center px-2"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.25 }}
         >
-          <h1 className="font-brand font-bold text-2xl text-primary leading-tight mb-1">
-            {t.title}
-          </h1>
-          <p className="font-body text-sm text-muted-foreground">
-            {t.subtitle}
-          </p>
+          {cityName ? (
+            <motion.div
+              key="city"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.35 }}
+            >
+              <h1 className="font-brand font-bold text-3xl text-km0-teal-600 leading-tight">
+                📍 {cityName}
+              </h1>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="default"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.25 }}
+            >
+              <h1 className="font-brand font-bold text-2xl text-primary leading-tight mb-1">
+                {t.title}
+              </h1>
+              <p className="font-body text-sm text-muted-foreground">
+                {t.subtitle}
+              </p>
+            </motion.div>
+          )}
         </motion.div>
 
         {/* ── Input ───────────────────────────────────────── */}
@@ -153,18 +173,6 @@ const PostalCode = () => {
               <AlertTriangle size={14} />
               <span>{t.error}</span>
             </div>
-          )}
-
-          {cityName && (
-            <motion.div
-              className="flex items-center gap-2 px-1"
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.25 }}
-            >
-              <MapPin className="text-km0-teal-500 shrink-0" size={16} />
-              <span className="font-ui font-semibold text-sm text-km0-teal-600">{cityName}</span>
-            </motion.div>
           )}
         </motion.div>
 
