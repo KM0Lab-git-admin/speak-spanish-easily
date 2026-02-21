@@ -43,7 +43,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 py-6">
+    <div className="min-h-screen w-full flex items-start justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 pt-3 pb-6">
       <div className="w-full max-w-[390px] flex flex-col gap-8 h-[620px]">
 
         {/* ── Logo ──────────────────────────────────────────── */}
