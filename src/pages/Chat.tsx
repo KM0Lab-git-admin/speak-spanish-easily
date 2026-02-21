@@ -86,7 +86,7 @@ const Chat = () => {
 
   return (
     <div className="min-h-screen w-full flex justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100">
-      <div className="w-full max-w-[390px] h-screen flex flex-col">
+      <div className="w-full max-w-[390px] max-h-[844px] h-screen flex flex-col">
       {/* ── Header ──────────────────────────────────────── */}
       <motion.header
         className="flex items-center gap-3 px-4 pt-3 pb-2"
