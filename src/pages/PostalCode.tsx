@@ -40,8 +40,9 @@ const PostalCode = () => {
   const [value, setValue] = useState("");
   const [touched, setTouched] = useState(false);
 
-  const isValid = /^\d*$/.test(value);
-  const showError = touched && !isValid;
+  const isNumeric = /^\d*$/.test(value);
+  const isComplete = value.length === 5 && isNumeric;
+  const showError = touched && !isNumeric;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -49,8 +50,7 @@ const PostalCode = () => {
   };
 
   const handleSubmit = () => {
-    if (!value || !isValid) {
-      setTouched(true);
+    if (!value || !isNumeric) {
       return;
     }
     // Navigate forward with postal code + lang
@@ -151,7 +151,8 @@ const PostalCode = () => {
         >
           <button
             onClick={handleSubmit}
-            className="w-full bg-primary text-primary-foreground font-ui font-semibold text-sm px-5 py-2.5 rounded-2xl hover:bg-km0-blue-600 hover:scale-[1.03] transition-all duration-200 active:scale-95"
+            disabled={!isComplete}
+            className="w-full bg-primary text-primary-foreground font-ui font-semibold text-sm px-5 py-2.5 rounded-2xl hover:bg-km0-blue-600 hover:scale-[1.03] transition-all duration-200 active:scale-95 disabled:opacity-40 disabled:pointer-events-none"
           >
             {t.cta}
           </button>
