@@ -126,7 +126,7 @@ const PostalCode = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.35 }}
             >
-              <h1 className="font-brand font-bold text-3xl text-km0-teal-600 leading-tight">
+              <h1 className="font-brand font-medium text-3xl text-km0-teal-600 leading-tight">
                 📍 {cityName}
               </h1>
             </motion.div>
