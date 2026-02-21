@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ChevronLeft, MapPin, AlertTriangle } from "lucide-react";
-import { motion } from "framer-motion";
+import { ChevronLeft, MapPin, AlertTriangle, Loader2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import Km0Logo from "@/components/Km0Logo";
 import cityMap from "@/assets/km0_city_map.png";
 
@@ -13,6 +13,7 @@ const i18n = {
     subtitle: "Descobreix comerços i serveis al teu barri",
     placeholder: "08001",
     error: "Només es permeten números",
+    notFound: "No es reconeix aquest codi postal",
     cta: "CONTINUAR",
   },
   es: {
@@ -20,6 +21,7 @@ const i18n = {
     subtitle: "Descubre comercios y servicios en tu barrio",
     placeholder: "08001",
     error: "Solo se permiten números",
+    notFound: "No se reconoce este código postal",
     cta: "CONTINUAR",
   },
   en: {
@@ -27,6 +29,7 @@ const i18n = {
     subtitle: "Discover shops and services in your neighborhood",
     placeholder: "08001",
     error: "Only numbers are allowed",
+    notFound: "This postal code is not recognized",
     cta: "CONTINUE",
   },
 };
@@ -52,11 +55,30 @@ const PostalCode = () => {
 
   const [value, setValue] = useState("");
   const [touched, setTouched] = useState(false);
+  const [isValidating, setIsValidating] = useState(false);
+  const [validationResult, setValidationResult] = useState<"idle" | "found" | "not_found">("idle");
 
   const isNumeric = /^\d*$/.test(value);
   const isComplete = value.length === 5 && isNumeric;
-  const cityName = isComplete ? postalCodes[value] ?? null : null;
+  const cityName = validationResult === "found" ? postalCodes[value] ?? null : null;
   const showError = touched && !isNumeric;
+  const showNotFound = validationResult === "not_found";
+
+  // Simulate validation when 5 digits are entered
+  useEffect(() => {
+    if (isComplete) {
+      setIsValidating(true);
+      setValidationResult("idle");
+      const timer = setTimeout(() => {
+        setIsValidating(false);
+        setValidationResult(postalCodes[value] ? "found" : "not_found");
+      }, 1200);
+      return () => clearTimeout(timer);
+    } else {
+      setIsValidating(false);
+      setValidationResult("idle");
+    }
+  }, [value, isComplete]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -64,10 +86,7 @@ const PostalCode = () => {
   };
 
   const handleSubmit = () => {
-    if (!value || !isNumeric) {
-      return;
-    }
-    // Navigate forward with postal code + lang
+    if (!isComplete || !cityName) return;
     navigate("/", { state: { lang, postalCode: value } });
   };
 
@@ -174,6 +193,20 @@ const PostalCode = () => {
               <span>{t.error}</span>
             </div>
           )}
+
+          <AnimatePresence>
+            {showNotFound && (
+              <motion.div
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                className="flex items-center gap-1.5 text-destructive font-ui text-sm px-1"
+              >
+                <AlertTriangle size={14} />
+                <span>{t.notFound}</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
 
         {/* ── CTA button ─────────────────────────────────── */}
@@ -185,10 +218,14 @@ const PostalCode = () => {
         >
           <button
             onClick={handleSubmit}
-            disabled={!isComplete}
-            className="w-full bg-primary text-primary-foreground font-ui font-semibold text-sm px-5 py-2.5 rounded-2xl hover:bg-km0-blue-600 hover:scale-[1.03] transition-all duration-200 active:scale-95 disabled:opacity-40 disabled:pointer-events-none"
+            disabled={!cityName || isValidating}
+            className="w-full bg-primary text-primary-foreground font-ui font-semibold text-sm px-5 py-2.5 rounded-2xl hover:bg-km0-blue-600 hover:scale-[1.03] transition-all duration-200 active:scale-95 disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2"
           >
-            {t.cta}
+            {isValidating ? (
+              <Loader2 size={18} className="animate-spin" />
+            ) : (
+              t.cta
+            )}
           </button>
         </motion.div>
       </div>
