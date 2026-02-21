@@ -87,7 +87,7 @@ const PostalCode = () => {
 
   const handleSubmit = () => {
     if (!isComplete || !cityName) return;
-    navigate("/", { state: { lang, postalCode: value } });
+    navigate("/chat", { state: { lang, cityName, postalCode: value } });
   };
 
   return (
