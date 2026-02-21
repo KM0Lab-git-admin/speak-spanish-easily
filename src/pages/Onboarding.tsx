@@ -74,7 +74,7 @@ const Onboarding = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.35 }}
     >
-      <div className="w-full max-w-[390px] flex flex-col gap-5 h-[620px]">
+      <div className="w-full max-w-[390px] flex flex-col gap-5 h-[620px] overflow-hidden">
 
         {/* ── Header ─────────────────────────────────────────── */}
         <motion.div
@@ -97,7 +97,7 @@ const Onboarding = () => {
         {/* ── Carousel ───────────────────────────────────────── */}
         <motion.div
           className="relative h-[410px] overflow-hidden select-none cursor-grab active:cursor-grabbing"
-          style={{ marginInline: "-16px", paddingInline: "16px" }}
+          style={{ marginInline: "-16px", paddingInline: "16px", touchAction: "none" }}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
