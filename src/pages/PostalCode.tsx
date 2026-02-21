@@ -114,7 +114,7 @@ const PostalCode = () => {
 
         {/* ── Title + subtitle / City name ────────────────── */}
         <motion.div
-          className="text-center px-2"
+          className="text-center px-2 h-[52px] flex items-center justify-center"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.25 }}
