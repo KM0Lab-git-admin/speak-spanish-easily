@@ -103,7 +103,7 @@ const Chat = () => {
         </button>
 
         <div className="flex-1">
-          <h1 className="font-brand text-3xl text-primary leading-none">
+          <h1 className="font-brand text-2xl text-primary leading-none">
             {cityName}
           </h1>
           <Km0Logo className="h-5 w-auto" />
