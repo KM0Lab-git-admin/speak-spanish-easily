@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ChevronLeft, Mic, Send } from "lucide-react";
+import { ChevronLeft, Mic, Send, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
 import VoiceRecorder from "@/components/VoiceRecorder";
+import EventCard from "@/components/EventCard";
 import robotIcon from "@/assets/km0_robot_icon_v2.png";
+import { queryEvents, type Evento } from "@/services/eventQueryApi";
 
 type Lang = "ca" | "es" | "en";
 
@@ -43,6 +45,7 @@ type Message = {
   id: number;
   role: "assistant" | "user";
   content: string;
+  eventos?: Evento[];
 };
 
 const Chat = () => {
@@ -50,40 +53,55 @@ const Chat = () => {
   const location = useLocation();
   const lang: Lang = (location.state?.lang as Lang) ?? "es";
   const cityName: string = location.state?.cityName ?? "Barcelona";
+  const postalCode: string = location.state?.postalCode ?? "08001";
 
   const t = i18n[lang];
 
   const [messages, setMessages] = useState<Message[]>([
     { id: 1, role: "assistant", content: t.greeting(cityName) },
-    { id: 2, role: "user", content: "¿Qué actividades hay para niños este fin de semana al aire libre?" },
   ]);
   const [input, setInput] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const text = input.trim();
-    if (!text) return;
-    setMessages((prev) => [
-      ...prev,
-      { id: Date.now(), role: "user", content: text },
-    ]);
+    if (!text || isLoading) return;
+
+    const userMsg: Message = { id: Date.now(), role: "user", content: text };
+    setMessages((prev) => [...prev, userMsg]);
     setInput("");
-    // Simulated bot reply
-    setTimeout(() => {
+    setIsLoading(true);
+
+    try {
+      const data = await queryEvents(text, postalCode);
       setMessages((prev) => [
         ...prev,
         {
           id: Date.now() + 1,
           role: "assistant",
-          content: "Gracias por tu pregunta. Estoy buscando información sobre esto en tu zona. 🔍",
+          content: data.respuesta_texto,
+          eventos: data.eventos,
         },
       ]);
-    }, 1200);
+    } catch (err) {
+      console.error("API error:", err);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          role: "assistant",
+          content: "Lo siento, ha ocurrido un error al consultar los eventos. Inténtalo de nuevo.",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -144,23 +162,53 @@ const Chat = () => {
               <img
                 src={robotIcon}
                 alt="Bot"
-                className="w-9 h-9 rounded-full border-2 border-km0-teal-400 object-contain shrink-0"
+                className="w-9 h-9 rounded-full border-2 border-km0-teal-400 object-contain shrink-0 self-start"
               />
             )}
 
-            <div
-              className={`max-w-[75%] px-4 py-3 rounded-2xl font-body text-sm leading-relaxed ${
-                msg.role === "user"
-                  ? "bg-primary text-primary-foreground rounded-br-md"
-                  : "bg-card text-card-foreground shadow-sm rounded-bl-md"
-              }`}
-            >
-              {msg.content}
+            <div className={`max-w-[75%] space-y-2 ${msg.role === "user" ? "items-end" : "items-start"}`}>
+              <div
+                className={`px-4 py-3 rounded-2xl font-body text-sm leading-relaxed ${
+                  msg.role === "user"
+                    ? "bg-primary text-primary-foreground rounded-br-md"
+                    : "bg-card text-card-foreground shadow-sm rounded-bl-md"
+                }`}
+              >
+                {msg.content}
+              </div>
+
+              {/* Event cards */}
+              {msg.eventos && msg.eventos.length > 0 && (
+                <div className="space-y-2 mt-2">
+                  {msg.eventos.map((evento, i) => (
+                    <EventCard key={evento.id_unico_evento} evento={evento} index={i} />
+                  ))}
+                </div>
+              )}
             </div>
           </motion.div>
         ))}
-          <div ref={messagesEndRef} />
-        </div>
+
+        {/* Loading indicator */}
+        {isLoading && (
+          <motion.div
+            className="flex items-end gap-2 justify-start"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <img
+              src={robotIcon}
+              alt="Bot"
+              className="w-9 h-9 rounded-full border-2 border-km0-teal-400 object-contain shrink-0"
+            />
+            <div className="bg-card text-card-foreground shadow-sm rounded-2xl rounded-bl-md px-4 py-3">
+              <Loader2 size={18} className="animate-spin text-accent" />
+            </div>
+          </motion.div>
+        )}
+
+        <div ref={messagesEndRef} />
+      </div>
 
       {/* ── Input bar ───────────────────────────────────── */}
       <motion.div
@@ -208,7 +256,7 @@ const Chat = () => {
 
               <button
                 onClick={handleSend}
-                disabled={!input.trim()}
+                disabled={!input.trim() || isLoading}
                 className="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-40"
                 aria-label="Send"
               >
