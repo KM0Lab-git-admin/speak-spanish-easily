@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { ChevronLeft, Plus, Mic, Send } from "lucide-react";
 import { motion } from "framer-motion";
 import Km0Logo from "@/components/Km0Logo";
+import NotificationBell from "@/components/NotificationBell";
 import robotIcon from "@/assets/km0_robot_icon_v2.png";
 
 type Lang = "ca" | "es" | "en";
@@ -111,11 +112,7 @@ const Chat = () => {
 
         <span className="font-brand text-lg text-accent-foreground bg-accent px-3 py-1 rounded-full">Agenda</span>
 
-        <img
-          src={robotIcon}
-          alt="KM0 Bot"
-          className="w-10 h-10 rounded-full object-contain"
-        />
+        <NotificationBell hasAlerts={true} />
       </motion.header>
 
       {/* ── Date banner ─────────────────────────────────── */}
