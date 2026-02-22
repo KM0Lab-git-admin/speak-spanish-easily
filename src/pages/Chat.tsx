@@ -102,11 +102,14 @@ const Chat = () => {
           <ChevronLeft size={20} strokeWidth={2.5} />
         </button>
 
-        <h1 className="font-brand text-2xl text-primary leading-none flex-1">
-          {cityName}
-        </h1>
+        <div className="flex-1">
+          <h1 className="font-brand text-3xl text-primary leading-none">
+            {cityName}
+          </h1>
+          <span className="font-ui text-xs text-muted-foreground">KM0 Lab</span>
+        </div>
 
-        <Km0Logo className="h-7 w-auto" />
+        <span className="font-brand text-lg text-accent-foreground bg-accent px-3 py-1 rounded-full">Agenda</span>
 
         <img
           src={robotIcon}
