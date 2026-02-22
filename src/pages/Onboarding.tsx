@@ -20,7 +20,7 @@ const getDesc = (slide: typeof slides[0], lang: Lang) => {
   return slide.descEs;
 };
 
-const SLOT = 240;
+const SLOT = 260;
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -133,9 +133,9 @@ const Onboarding = () => {
             {slides.map((s, i) => {
               const dist = Math.abs(i - current);
               const isActive = i === current;
-              const scale = isActive ? 1 : dist === 1 ? 0.82 : 0.68;
-              const opacity = isActive ? 1 : dist === 1 ? 0.65 : 0.35;
-              const topOffset = isActive ? 0 : dist === 1 ? 28 : 48;
+              const scale = isActive ? 1 : dist === 1 ? 0.88 : 0.72;
+              const opacity = isActive ? 1 : dist === 1 ? 0.75 : 0.4;
+              const topOffset = isActive ? 0 : dist === 1 ? 20 : 40;
 
               return (
                 <div
@@ -173,7 +173,7 @@ const Onboarding = () => {
 
                     {/* Image area */}
                     <div
-                      className="relative mx-3 mt-3 h-[160px] rounded-2xl flex items-center justify-center overflow-hidden"
+                      className="relative mx-3 mt-3 h-[180px] rounded-2xl flex items-center justify-center overflow-hidden"
                       style={{ background: s.color }}
                     >
                       <span className="text-[70px] select-none">{s.emoji}</span>
