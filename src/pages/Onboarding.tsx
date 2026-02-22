@@ -82,12 +82,12 @@ const Onboarding = () => {
 
   return (
     <motion.div
-      className="min-h-screen w-full flex items-start justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 pt-3 pb-6"
+      className="min-h-[100dvh] w-full flex items-stretch justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 pt-3 pb-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.35 }}
     >
-      <div className="w-full max-w-[390px] flex flex-col gap-3 min-h-0 flex-1 overflow-hidden">
+      <div className="w-full max-w-[390px] flex flex-col gap-3 overflow-hidden">
 
         {/* ── Header ─────────────────────────────────────────── */}
         <motion.div
@@ -112,7 +112,7 @@ const Onboarding = () => {
         {/* ── Carousel ───────────────────────────────────────── */}
         <motion.div
           ref={carouselRef}
-          className="relative h-[340px] overflow-visible select-none cursor-grab active:cursor-grabbing"
+          className="relative flex-1 min-h-[300px] overflow-visible select-none cursor-grab active:cursor-grabbing"
           style={{ touchAction: "none" }}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
