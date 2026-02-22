@@ -54,6 +54,7 @@ const Chat = () => {
 
   const [messages, setMessages] = useState<Message[]>([
     { id: 1, role: "assistant", content: t.greeting(cityName) },
+    { id: 2, role: "user", content: "¿Qué actividades hay para niños este fin de semana al aire libre?" },
   ]);
   const [input, setInput] = useState("");
 
