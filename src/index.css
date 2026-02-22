@@ -1,5 +1,71 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+/* ── Antique Olive @font-face ──────────────────────────── */
+@font-face {
+  font-family: 'Antique Olive';
+  src: url('/Antique-Olive-Std-Light_3866.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Antique Olive';
+  src: url('/Antique-Olive-Std-Roman_3869.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Antique Olive';
+  src: url('/Antique-Olive-Std-Italic_3865.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Antique Olive';
+  src: url('/Antique-Olive-Std-Compact_3864.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Antique Olive';
+  src: url('/Antique-Olive-Std-Bold_3863.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Antique Olive';
+  src: url('/Antique-Olive-Std-Bold-Condensed_3862.ttf') format('truetype');
+  font-family: 'Antique Olive Condensed';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Antique Olive';
+  src: url('/Antique-Olive-Std-Black_3861.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Antique Olive';
+  src: url('/Antique-Olive-Std-Nord_3868.ttf') format('truetype');
+  font-weight: 950;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Antique Olive';
+  src: url('/Antique-Olive-Std-Nord-Italic_3867.ttf') format('truetype');
+  font-weight: 950;
+  font-style: italic;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
