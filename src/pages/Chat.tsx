@@ -182,13 +182,6 @@ const Chat = () => {
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2 }}
             >
-              <button
-                className="w-9 h-9 flex items-center justify-center rounded-full text-muted-foreground hover:bg-muted transition-colors"
-                aria-label="Attach"
-              >
-                <Plus size={20} />
-              </button>
-
               <input
                 type="text"
                 value={input}
