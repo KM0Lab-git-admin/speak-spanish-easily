@@ -123,7 +123,7 @@ const Onboarding = () => {
         >
           {/* Sliding track */}
           <div
-            className="absolute top-0 flex items-start"
+            className="absolute top-1/2 -translate-y-1/2 flex items-start"
             style={{
               transform: `translateX(${trackX + dragOffset}px)`,
               transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
