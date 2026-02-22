@@ -106,7 +106,7 @@ const Chat = () => {
         </button>
 
         <div className="flex-1">
-          <h1 className="font-brand text-2xl text-primary leading-none">
+          <h1 className="truncate font-brand text-xl font-black leading-tight text-km0-blue-700">
             {cityName}
           </h1>
           <Km0Logo className="h-5 w-auto" />
