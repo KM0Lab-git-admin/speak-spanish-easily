@@ -96,15 +96,17 @@ const Onboarding = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          <button
-            onClick={() => navigate("/")}
-            className="w-11 h-11 flex items-center justify-center rounded-xl border-[2px] border-dashed border-km0-yellow-500 text-km0-yellow-600 hover:bg-km0-yellow-50 transition-all duration-200 hover:scale-105"
-            aria-label="Back"
-          >
-            <ChevronLeft size={22} strokeWidth={2.5} />
-          </button>
+          <div className="flex-1 flex justify-start">
+            <button
+              onClick={() => navigate("/")}
+              className="w-11 h-11 flex items-center justify-center rounded-xl border-[2px] border-dashed border-km0-yellow-500 text-km0-yellow-600 hover:bg-km0-yellow-50 transition-all duration-200 hover:scale-105"
+              aria-label="Back"
+            >
+              <ChevronLeft size={22} strokeWidth={2.5} />
+            </button>
+          </div>
           <Km0Logo className="h-9 w-auto" />
-          <div className="w-11" />
+          <div className="flex-1" />
         </motion.div>
 
         {/* ── Carousel ───────────────────────────────────────── */}
