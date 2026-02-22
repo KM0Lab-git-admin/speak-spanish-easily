@@ -20,7 +20,7 @@ const getDesc = (slide: typeof slides[0], lang: Lang) => {
   return slide.descEs;
 };
 
-const SLOT = 270;
+const SLOT = 240;
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -87,7 +87,7 @@ const Onboarding = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.35 }}
     >
-      <div className="w-full max-w-[390px] flex flex-col gap-5 h-[620px] overflow-hidden">
+      <div className="w-full max-w-[390px] flex flex-col gap-3 min-h-0 flex-1 overflow-hidden">
 
         {/* ── Header ─────────────────────────────────────────── */}
         <motion.div
@@ -112,7 +112,7 @@ const Onboarding = () => {
         {/* ── Carousel ───────────────────────────────────────── */}
         <motion.div
           ref={carouselRef}
-          className="relative h-[410px] overflow-visible select-none cursor-grab active:cursor-grabbing"
+          className="relative h-[340px] overflow-visible select-none cursor-grab active:cursor-grabbing"
           style={{ touchAction: "none" }}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
@@ -173,10 +173,10 @@ const Onboarding = () => {
 
                     {/* Image area */}
                     <div
-                      className="relative mx-3 mt-3 h-[220px] rounded-2xl flex items-center justify-center overflow-hidden"
+                      className="relative mx-3 mt-3 h-[160px] rounded-2xl flex items-center justify-center overflow-hidden"
                       style={{ background: s.color }}
                     >
-                      <span className="text-[90px] select-none">{s.emoji}</span>
+                      <span className="text-[70px] select-none">{s.emoji}</span>
                       {isActive && (
                         <span className="absolute top-3 right-3 bg-km0-coral-400 text-white font-ui font-bold text-sm px-3 py-1 rounded-xl shadow-md">
                           +{s.xp} XP
@@ -185,8 +185,8 @@ const Onboarding = () => {
                     </div>
 
                     {/* Text */}
-                    <div className="px-5 pt-4 pb-6 text-center">
-                      <h2 className="font-brand font-bold text-xl text-primary leading-tight mb-2">
+                    <div className="px-4 pt-3 pb-4 text-center">
+                      <h2 className="font-brand font-bold text-lg text-primary leading-tight mb-1">
                         {getTitle(s, lang)}
                       </h2>
                       <p className="font-body text-sm text-muted-foreground leading-relaxed">
@@ -205,7 +205,7 @@ const Onboarding = () => {
             onPointerDown={(e) => e.stopPropagation()}
             disabled={isFirst}
             className={cn(
-              "absolute left-[14px] top-[112px] w-11 h-11 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+              "absolute left-[6px] top-[90px] w-10 h-10 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
               isFirst
                 ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
                 : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
@@ -221,7 +221,7 @@ const Onboarding = () => {
             onPointerDown={(e) => e.stopPropagation()}
             disabled={isLast}
             className={cn(
-              "absolute right-[14px] top-[112px] w-11 h-11 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+              "absolute right-[6px] top-[90px] w-10 h-10 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
               isLast
                 ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
                 : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
@@ -244,7 +244,7 @@ const Onboarding = () => {
               key={s.id}
               onClick={() => goTo(i)}
               className={cn(
-                "w-14 h-14 rounded-2xl flex items-center justify-center text-2xl transition-all duration-200 border-[2px]",
+                "w-12 h-12 rounded-xl flex items-center justify-center text-xl transition-all duration-200 border-[2px]",
                 i === current
                   ? "border-km0-yellow-500 scale-110 shadow-md"
                   : "border-km0-beige-200 bg-white opacity-70 hover:opacity-100 hover:scale-105"
