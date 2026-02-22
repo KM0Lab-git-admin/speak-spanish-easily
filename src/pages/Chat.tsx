@@ -106,7 +106,7 @@ const Chat = () => {
           <h1 className="font-brand text-3xl text-primary leading-none">
             {cityName}
           </h1>
-          <span className="font-ui text-xs text-muted-foreground">KM0 Lab</span>
+          <Km0Logo className="h-5 w-auto" />
         </div>
 
         <span className="font-brand text-lg text-accent-foreground bg-accent px-3 py-1 rounded-full">Agenda</span>
