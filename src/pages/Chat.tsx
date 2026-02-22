@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ChevronLeft, Plus, Mic, Send } from "lucide-react";
+import { ChevronLeft, Mic, Send } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
@@ -59,6 +59,12 @@ const Chat = () => {
   ]);
   const [input, setInput] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   const handleSend = () => {
     const text = input.trim();
     if (!text) return;
@@ -153,7 +159,8 @@ const Chat = () => {
             </div>
           </motion.div>
         ))}
-      </div>
+          <div ref={messagesEndRef} />
+        </div>
 
       {/* ── Input bar ───────────────────────────────────── */}
       <motion.div
