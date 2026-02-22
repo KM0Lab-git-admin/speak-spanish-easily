@@ -133,9 +133,9 @@ const Onboarding = () => {
             {slides.map((s, i) => {
               const dist = Math.abs(i - current);
               const isActive = i === current;
-              const scale = isActive ? 1 : dist === 1 ? 0.88 : 0.72;
-              const opacity = isActive ? 1 : dist === 1 ? 0.75 : 0.4;
-              const topOffset = isActive ? 0 : dist === 1 ? 20 : 40;
+              const scale = isActive ? 1 : dist === 1 ? 0.92 : 0.76;
+              const opacity = isActive ? 1 : dist === 1 ? 0.85 : 0.45;
+              const topOffset = isActive ? 0 : dist === 1 ? 12 : 32;
 
               return (
                 <div
