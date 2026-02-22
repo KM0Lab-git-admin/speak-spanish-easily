@@ -15,7 +15,7 @@ const NotificationBell = ({ hasAlerts = false, className = "" }: NotificationBel
       className="text-km0-blue-800"
     >
       <path
-        d="M12 2C8.69 2 6 4.69 6 8V12L4 16H20L18 12V8C18 4.69 15.31 2 12 2Z"
+        d="M12 2V3M12 3C8.69 3 6 5.69 6 9V13L4 17H20L18 13V9C18 5.69 15.31 3 12 3Z"
         fill="none"
         stroke="currentColor"
         strokeWidth="2"
