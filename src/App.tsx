@@ -8,6 +8,7 @@ import Onboarding from "./pages/Onboarding";
 import PostalCode from "./pages/PostalCode";
 import Chat from "./pages/Chat";
 import NotFound from "./pages/NotFound";
+import TopLoadingBar from "./components/TopLoadingBar";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <TopLoadingBar />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/onboarding" element={<Onboarding />} />
