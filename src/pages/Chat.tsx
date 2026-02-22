@@ -109,7 +109,7 @@ const Chat = () => {
           <Km0Logo className="h-5 w-auto" />
         </div>
 
-        <span className="font-brand text-lg text-accent-foreground bg-accent px-3 py-1 rounded-full">Agenda</span>
+        <span className="font-brand text-lg text-white bg-km0-coral-400 px-3 py-1 rounded-full">Agenda</span>
 
         <img
           src={robotIcon}
