@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ChevronLeft, Plus, Mic, Send } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
+import VoiceRecorder from "@/components/VoiceRecorder";
 import robotIcon from "@/assets/km0_robot_icon_v2.png";
 
 type Lang = "ca" | "es" | "en";
@@ -57,7 +58,7 @@ const Chat = () => {
     { id: 2, role: "user", content: "¿Qué actividades hay para niños este fin de semana al aire libre?" },
   ]);
   const [input, setInput] = useState("");
-
+  const [isRecording, setIsRecording] = useState(false);
   const handleSend = () => {
     const text = input.trim();
     if (!text) return;
@@ -161,39 +162,61 @@ const Chat = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.15 }}
       >
-        <div className="flex items-center gap-2 bg-card rounded-full border border-border px-3 py-2 shadow-sm">
-          <button
-            className="w-9 h-9 flex items-center justify-center rounded-full text-muted-foreground hover:bg-muted transition-colors"
-            aria-label="Attach"
-          >
-            <Plus size={20} />
-          </button>
+        <AnimatePresence mode="wait">
+          {isRecording ? (
+            <VoiceRecorder
+              key="recorder"
+              lang={lang}
+              onTranscript={(text) => {
+                setInput(text);
+                setIsRecording(false);
+              }}
+              onCancel={() => setIsRecording(false)}
+            />
+          ) : (
+            <motion.div
+              key="input-bar"
+              className="flex items-center gap-2 bg-card rounded-full border border-border px-3 py-2 shadow-sm"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+            >
+              <button
+                className="w-9 h-9 flex items-center justify-center rounded-full text-muted-foreground hover:bg-muted transition-colors"
+                aria-label="Attach"
+              >
+                <Plus size={20} />
+              </button>
 
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder={t.placeholder}
-            className="flex-1 bg-transparent font-body text-sm text-foreground placeholder:text-muted-foreground/50 outline-none"
-          />
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder={t.placeholder}
+                className="flex-1 bg-transparent font-body text-sm text-foreground placeholder:text-muted-foreground/50 outline-none"
+              />
 
-          <button
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
-            aria-label="Voice"
-          >
-            <Mic size={18} />
-          </button>
+              <button
+                onClick={() => setIsRecording(true)}
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+                aria-label="Voice"
+              >
+                <Mic size={18} />
+              </button>
 
-          <button
-            onClick={handleSend}
-            disabled={!input.trim()}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-40"
-            aria-label="Send"
-          >
-            <Send size={18} />
-          </button>
-        </div>
+              <button
+                onClick={handleSend}
+                disabled={!input.trim()}
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-40"
+                aria-label="Send"
+              >
+                <Send size={18} />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
       </div>
     </div>
