@@ -93,7 +93,7 @@ const VoiceRecorder = ({ onTranscript, onCancel, lang = "es" }: VoiceRecorderPro
         transition={{ duration: 0.2 }}
       >
         {/* Listening label */}
-        <span className="font-body text-sm text-km0-coral-400 font-semibold ml-1 whitespace-nowrap">
+        <span className="font-body text-sm text-primary font-semibold ml-1 whitespace-nowrap">
           Escuchando…
         </span>
 
@@ -131,7 +131,7 @@ const VoiceRecorder = ({ onTranscript, onCancel, lang = "es" }: VoiceRecorderPro
         {/* Stop button */}
         <button
           onClick={stop}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-km0-coral-400 text-white hover:opacity-90 transition-opacity shrink-0"
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity shrink-0"
           aria-label="Stop recording"
         >
           <Square size={16} fill="currentColor" />
