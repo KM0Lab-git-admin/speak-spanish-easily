@@ -68,6 +68,10 @@ const Chat = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
@@ -114,8 +118,8 @@ const Chat = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100">
-      <div className="w-full max-w-[390px] max-h-[844px] h-[100dvh] flex flex-col">
+    <div className="fixed inset-0 w-full flex justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100">
+      <div className="w-full max-w-[390px] h-full flex flex-col overflow-hidden">
       {/* ── Header ──────────────────────────────────────── */}
       <motion.header
         className="flex items-center gap-3 px-4 pt-3 pb-2"
