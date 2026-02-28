@@ -131,7 +131,7 @@ const Chat = () => {
           <ChevronLeft size={20} strokeWidth={2.5} />
         </button>
 
-        <div className="flex-1 flex items-center gap-2">
+        <div className="flex-1 flex items-center gap-3">
           <h1 className="truncate font-brand text-xl font-black leading-tight text-km0-blue-700">
             {cityName}
           </h1>
