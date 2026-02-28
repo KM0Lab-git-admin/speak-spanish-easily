@@ -133,7 +133,6 @@ const Chat = () => {
           <h1 className="truncate font-brand text-xl font-black leading-tight text-km0-blue-700">
             {cityName}
           </h1>
-          <Km0Logo className="h-5 w-auto" />
         </div>
 
         
