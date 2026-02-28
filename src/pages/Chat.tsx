@@ -152,7 +152,7 @@ const Chat = () => {
       {/* ── Date banner ─────────────────────────────────── */}
       <div className="bg-km0-yellow-500 text-center py-1.5">
         <span className="font-ui text-sm font-semibold text-km0-blue-800">
-          {t.dateLabel()}
+          AGENDA · {t.dateLabel()}
         </span>
       </div>
 
