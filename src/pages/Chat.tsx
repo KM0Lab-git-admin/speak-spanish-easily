@@ -136,7 +136,7 @@ const Chat = () => {
           <Km0Logo className="h-5 w-auto" />
         </div>
 
-        <span className="font-brand text-lg text-accent-foreground bg-accent px-3 py-1 rounded-full">Agenda</span>
+        
 
         <NotificationBell hasAlerts={true} />
       </motion.header>
