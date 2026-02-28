@@ -131,15 +131,17 @@ const Chat = () => {
           <ChevronLeft size={20} strokeWidth={2.5} />
         </button>
 
-        <div className="flex-1 flex items-center gap-3">
-          <h1 className="truncate font-brand text-xl font-black leading-tight text-km0-blue-700">
-            {cityName}
-          </h1>
-          <img
-            src={lang === "ca" ? xatLogo : chatLogo}
-            alt={lang === "ca" ? "KM0 XAT" : "KM0 CHAT"}
-            className="h-5 w-auto shrink-0"
-          />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="flex items-center gap-2">
+            <h1 className="truncate font-brand text-xl font-black leading-tight text-km0-blue-700">
+              {cityName}
+            </h1>
+            <img
+              src={lang === "ca" ? xatLogo : chatLogo}
+              alt={lang === "ca" ? "KM0 XAT" : "KM0 CHAT"}
+              className="h-5 w-auto shrink-0"
+            />
+          </div>
         </div>
 
         
