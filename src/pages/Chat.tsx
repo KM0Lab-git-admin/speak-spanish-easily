@@ -137,7 +137,7 @@ const Chat = () => {
 
         <div className="flex-1 flex items-center justify-center">
           <div className="flex items-center gap-2">
-            <h1 className="truncate font-brand text-xl font-black leading-tight text-km0-blue-700">
+            <h1 className="font-brand text-xl font-black leading-tight text-km0-blue-700 text-center">
               {cityName}
             </h1>
             <img
