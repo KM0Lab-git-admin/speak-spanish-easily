@@ -7,6 +7,8 @@ import NotificationBell from "@/components/NotificationBell";
 import VoiceRecorder from "@/components/VoiceRecorder";
 import EventCard from "@/components/EventCard";
 import robotIcon from "@/assets/km0_robot_icon_v2.png";
+import chatLogo from "@/assets/km0_chat_orange.png";
+import xatLogo from "@/assets/km0_xat_orange.png";
 import { queryEvents, type Evento } from "@/services/eventQueryApi";
 
 type Lang = "ca" | "es" | "en";
@@ -133,6 +135,11 @@ const Chat = () => {
           <h1 className="truncate font-brand text-xl font-black leading-tight text-km0-blue-700">
             {cityName}
           </h1>
+          <img
+            src={lang === "ca" ? xatLogo : chatLogo}
+            alt={lang === "ca" ? "KM0 XAT" : "KM0 CHAT"}
+            className="h-6 w-auto"
+          />
         </div>
 
         
