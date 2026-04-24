@@ -21,7 +21,13 @@ const getDesc = (slide: typeof slides[0], lang: Lang) => {
 };
 
 const SLOT = 260;
-const SLOT_LS = 420;
+// Slot width for landscape — adapt to viewport so 1280×550 uses wider slots than 667×375
+const getSlotLs = () => {
+  if (typeof window === "undefined") return 420;
+  const w = window.innerWidth;
+  if (w >= 1000) return 560; // wide-landscape (1280×550)
+  return 360; // short-landscape (667×375)
+};
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -33,6 +39,7 @@ const Onboarding = () => {
   const [containerWidth, setContainerWidth] = useState(390);
   const [containerWidthLs, setContainerWidthLs] = useState(1200);
   const [portraitScale, setPortraitScale] = useState(1);
+  const [slotLs, setSlotLs] = useState(420);
   const touchStartX = useRef<number | null>(null);
   const touchStartXLs = useRef<number | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -50,6 +57,8 @@ const Onboarding = () => {
       const isPortrait = window.matchMedia("(orientation: portrait)").matches;
       const isSm = window.matchMedia("(min-width: 640px)").matches;
       setPortraitScale(isPortrait && isSm ? 1.35 : 1);
+      // Adapt landscape slot width: wide screens (1280×550) use bigger slots than 667×375
+      setSlotLs(getSlotLs());
     }
   }, []);
 
@@ -114,7 +123,7 @@ const Onboarding = () => {
     : lang === "ca" ? "SALTAR" : lang === "en" ? "SKIP" : "SALTAR";
 
   const trackX = containerWidth / 2 - current * SLOT - SLOT / 2;
-  const trackXLs = containerWidthLs / 2 - current * SLOT_LS - SLOT_LS / 2;
+  const trackXLs = containerWidthLs / 2 - current * slotLs - slotLs / 2;
 
   return (
     <motion.div
@@ -348,15 +357,15 @@ const Onboarding = () => {
       <div className="hidden landscape:flex w-full max-w-[1200px] h-full max-h-[min(95dvh,calc(100vw*9/16))] aspect-video bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col relative">
 
         {/* Header */}
-        <header className="relative flex items-center justify-center pt-5 pb-3 short-landscape:pt-2 short-landscape:pb-1 shrink-0 px-5">
+        <header className="relative flex items-center justify-center pt-3 pb-2 wide-landscape:pt-6 wide-landscape:pb-4 short-landscape:pt-2 short-landscape:pb-1 shrink-0 px-5">
           <button
             onClick={() => navigate("/")}
-            className="absolute left-5 short-landscape:left-3 top-1/2 -translate-y-1/2 w-10 h-10 short-landscape:w-8 short-landscape:h-8 flex items-center justify-center rounded-xl border-[2px] border-dashed border-km0-yellow-500 text-km0-yellow-600 hover:bg-km0-yellow-50 transition-all duration-200 hover:scale-105"
+            className="absolute left-3 wide-landscape:left-6 short-landscape:left-3 top-1/2 -translate-y-1/2 w-9 h-9 wide-landscape:w-11 wide-landscape:h-11 short-landscape:w-8 short-landscape:h-8 flex items-center justify-center rounded-xl border-[2px] border-dashed border-km0-yellow-500 text-km0-yellow-600 hover:bg-km0-yellow-50 transition-all duration-200 hover:scale-105"
             aria-label="Back"
           >
             <ChevronLeft size={20} strokeWidth={2.5} />
           </button>
-          <Km0Logo className="h-10 short-landscape:h-6 w-auto" />
+          <Km0Logo className="h-8 wide-landscape:h-12 short-landscape:h-6 w-auto" />
         </header>
 
         {/* Carousel area */}
@@ -377,7 +386,7 @@ const Onboarding = () => {
             style={{
               transform: `translateX(${trackXLs + dragOffset}px) translateY(-50%)`,
               transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
-              width: `${total * SLOT_LS}px`,
+              width: `${total * slotLs}px`,
             }}
           >
             {slides.map((s, i) => {
@@ -391,7 +400,7 @@ const Onboarding = () => {
                   key={s.id}
                   onClick={() => !isActive && goTo(i)}
                   style={{
-                    width: `${SLOT_LS}px`,
+                    width: `${slotLs}px`,
                     paddingLeft: "10px",
                     paddingRight: "10px",
                     transform: `scale(${scale})`,
@@ -422,23 +431,23 @@ const Onboarding = () => {
                   <div className={`bg-white rounded-3xl overflow-hidden ${isActive ? "shadow-2xl" : "shadow-none"}`}>
                     {/* Image area */}
                     <div
-                      className="relative mx-3 mt-3 short-landscape:mx-2 short-landscape:mt-2 h-[260px] short-landscape:h-[120px] rounded-2xl flex items-center justify-center overflow-hidden"
+                      className="relative mx-3 mt-3 wide-landscape:mx-4 wide-landscape:mt-4 short-landscape:mx-2 short-landscape:mt-2 h-[200px] wide-landscape:h-[300px] short-landscape:h-[120px] rounded-2xl flex items-center justify-center overflow-hidden"
                       style={{ background: s.color }}
                     >
-                      <span className="text-[96px] short-landscape:text-[52px] select-none">{s.emoji}</span>
+                      <span className="text-[80px] wide-landscape:text-[120px] short-landscape:text-[52px] select-none">{s.emoji}</span>
                       {isActive && (
-                        <span className="absolute top-3 right-3 short-landscape:top-1.5 short-landscape:right-1.5 bg-km0-coral-400 text-white font-ui font-bold text-sm short-landscape:text-[10px] px-3 py-1 short-landscape:px-2 short-landscape:py-0.5 rounded-xl shadow-md">
+                        <span className="absolute top-3 right-3 wide-landscape:top-4 wide-landscape:right-4 short-landscape:top-1.5 short-landscape:right-1.5 bg-km0-coral-400 text-white font-ui font-bold text-sm wide-landscape:text-base short-landscape:text-[10px] px-3 py-1 wide-landscape:px-4 wide-landscape:py-1.5 short-landscape:px-2 short-landscape:py-0.5 rounded-xl shadow-md">
                           +{s.xp} XP
                         </span>
                       )}
                     </div>
 
                     {/* Text */}
-                    <div className="px-4 pt-4 pb-5 short-landscape:px-3 short-landscape:pt-2 short-landscape:pb-3 text-center">
-                      <h2 className="font-brand font-bold text-xl short-landscape:text-sm text-primary leading-tight mb-1.5 short-landscape:mb-0.5">
+                    <div className="px-4 pt-3 pb-4 wide-landscape:px-6 wide-landscape:pt-5 wide-landscape:pb-6 short-landscape:px-3 short-landscape:pt-2 short-landscape:pb-3 text-center">
+                      <h2 className="font-brand font-bold text-lg wide-landscape:text-2xl short-landscape:text-sm text-primary leading-tight mb-1 wide-landscape:mb-2 short-landscape:mb-0.5">
                         {getTitle(s, lang)}
                       </h2>
-                      <p className="font-body text-sm short-landscape:text-[11px] text-muted-foreground leading-relaxed short-landscape:leading-snug">
+                      <p className="font-body text-sm wide-landscape:text-base short-landscape:text-[11px] text-muted-foreground leading-relaxed short-landscape:leading-snug">
                         {getDesc(s, lang)}
                       </p>
                     </div>
@@ -482,19 +491,19 @@ const Onboarding = () => {
         </motion.div>
 
         {/* Footer */}
-        <footer className="shrink-0 border-t border-km0-beige-200/70 bg-white/40 backdrop-blur-sm px-5 py-3 short-landscape:px-3 short-landscape:py-1.5 flex items-center justify-between gap-4 short-landscape:gap-2">
+        <footer className="shrink-0 border-t border-km0-beige-200/70 bg-white/40 backdrop-blur-sm px-4 py-2 wide-landscape:px-6 wide-landscape:py-4 short-landscape:px-3 short-landscape:py-1.5 flex items-center justify-between gap-3 wide-landscape:gap-5 short-landscape:gap-2">
           {/* Left: progress + thumbs */}
-          <div className="flex items-center gap-3 short-landscape:gap-2 shrink-0">
-            <span className="font-ui font-bold text-base short-landscape:text-xs text-primary">
+          <div className="flex items-center gap-2 wide-landscape:gap-4 short-landscape:gap-2 shrink-0">
+            <span className="font-ui font-bold text-sm wide-landscape:text-lg short-landscape:text-xs text-primary">
               {current + 1}/{total}
             </span>
-            <div className="flex gap-1.5 short-landscape:gap-1">
+            <div className="flex gap-1.5 wide-landscape:gap-2 short-landscape:gap-1">
               {slides.map((s, i) => (
                 <button
                   key={s.id}
                   onClick={() => goTo(i)}
                   className={cn(
-                    "w-9 h-9 short-landscape:w-6 short-landscape:h-6 rounded-lg flex items-center justify-center text-base short-landscape:text-xs transition-all duration-200 border-[2px]",
+                    "w-8 h-8 wide-landscape:w-11 wide-landscape:h-11 short-landscape:w-6 short-landscape:h-6 rounded-lg wide-landscape:rounded-xl flex items-center justify-center text-base wide-landscape:text-xl short-landscape:text-xs transition-all duration-200 border-[2px]",
                     i === current
                       ? "border-km0-yellow-500 shadow-md scale-105"
                       : "border-km0-beige-200 bg-white opacity-70 hover:opacity-100"
@@ -509,14 +518,16 @@ const Onboarding = () => {
           </div>
 
           {/* Center: dots */}
-          <div className="flex-1 flex justify-center gap-2 items-center">
+          <div className="flex-1 flex justify-center gap-2 wide-landscape:gap-3 items-center">
             {slides.map((_, i) => (
               <button
                 key={i}
                 onClick={() => goTo(i)}
                 className={cn(
                   "rounded-full transition-all duration-300",
-                  i === current ? "w-3.5 h-3.5 bg-km0-yellow-500" : "w-2.5 h-2.5 bg-km0-blue-200"
+                  i === current
+                    ? "w-3 h-3 wide-landscape:w-4 wide-landscape:h-4 bg-km0-yellow-500"
+                    : "w-2 h-2 wide-landscape:w-2.5 wide-landscape:h-2.5 bg-km0-blue-200"
                 )}
                 aria-label={`Go to slide ${i + 1}`}
               />
@@ -529,7 +540,7 @@ const Onboarding = () => {
               if (isLast) navigate("/postal-code", { state: { lang } });
               else setCurrent(total - 1);
             }}
-            className="shrink-0 bg-primary text-primary-foreground font-ui font-semibold text-sm short-landscape:text-xs px-5 short-landscape:px-4 py-2.5 short-landscape:py-2 rounded-2xl hover:bg-km0-blue-600 hover:scale-[1.03] transition-all duration-200 active:scale-95"
+            className="shrink-0 bg-primary text-primary-foreground font-ui font-semibold text-sm wide-landscape:text-base short-landscape:text-xs px-4 wide-landscape:px-7 short-landscape:px-4 py-2 wide-landscape:py-3 short-landscape:py-2 rounded-2xl hover:bg-km0-blue-600 hover:scale-[1.03] transition-all duration-200 active:scale-95"
           >
             {skipLabel}
           </button>
