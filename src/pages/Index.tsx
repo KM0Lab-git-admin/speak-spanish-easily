@@ -43,57 +43,58 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-[100dvh] w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 py-4 landscape:p-4 short-landscape:p-2">
+    <div className="min-h-[100dvh] w-full flex flex-col bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 landscape:items-center landscape:justify-center landscape:p-4 short-landscape:p-2">
       {/* ── Portrait wrapper (mobile + tablet vertical) ──────── */}
-      <div className="w-full max-w-[390px] sm:max-w-[560px] flex flex-col gap-5 sm:gap-8 landscape:hidden">
-        {/* Logo */}
-        <div className="flex items-center justify-between h-11 sm:h-14">
-          <div className="w-11" />
+      <div className="flex-1 w-full flex flex-col items-center px-4 pt-4 sm:pt-6 pb-6 landscape:hidden">
+        {/* Logo fijo arriba */}
+        <div className="w-full max-w-[560px] flex items-center justify-center shrink-0">
           <Km0Logo className="h-9 sm:h-12 w-auto" />
-          <div className="w-11" />
         </div>
 
-        {/* Ilustración (robot dentro del anillo turquesa) */}
-        <div className="flex justify-center">
-          <div className="relative w-[230px] h-[230px] sm:w-[320px] sm:h-[320px] flex items-center justify-center">
-            <FloatingDots />
-            <div className="relative w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] flex items-center justify-center">
-              <div className="absolute inset-0 rounded-full bg-km0-teal-400/25 border-2 border-km0-blue-700" />
-              <div className="absolute inset-[14%] rounded-full bg-km0-teal-500/90" />
-              <img
-                src={robotPlaceholder}
-                alt="KM0 LAB mascot"
-                className="relative z-10 h-[70%] w-auto object-contain animate-float drop-shadow-lg"
-              />
+        {/* Contenido distribuido en el espacio restante */}
+        <div className="flex-1 w-full max-w-[390px] sm:max-w-[560px] flex flex-col justify-around items-stretch py-4 sm:py-6 gap-4">
+          {/* Ilustración (robot dentro del anillo turquesa) */}
+          <div className="flex justify-center">
+            <div className="relative w-[230px] h-[230px] sm:w-[340px] sm:h-[340px] flex items-center justify-center">
+              <FloatingDots />
+              <div className="relative w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] flex items-center justify-center">
+                <div className="absolute inset-0 rounded-full bg-km0-teal-400/25 border-2 border-km0-blue-700" />
+                <div className="absolute inset-[14%] rounded-full bg-km0-teal-500/90" />
+                <img
+                  src={robotPlaceholder}
+                  alt="KM0 LAB mascot"
+                  className="relative z-10 h-[70%] w-auto object-contain animate-float drop-shadow-lg"
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Microtítulo */}
-        <h2 className="text-center font-ui font-semibold text-base sm:text-xl text-km0-blue-700 -mt-1">
-          Escoge tu idioma
-        </h2>
+          {/* Microtítulo */}
+          <h2 className="text-center font-ui font-semibold text-base sm:text-xl text-km0-blue-700">
+            Escoge tu idioma
+          </h2>
 
-        {/* Tarjetas */}
-        <div className="flex flex-col gap-3 sm:gap-4
-            sm:[&_button]:py-5 sm:[&_button]:px-5
-            sm:[&_button>span:first-child]:w-14 sm:[&_button>span:first-child]:h-14
-            sm:[&_button>span:first-child>img]:w-11 sm:[&_button>span:first-child>img]:h-11
-            sm:[&_button_p:first-child]:text-xl
-            sm:[&_button_p:last-child]:text-base">
-          {languages.map((lang, i) => (
-            <LanguageCard
-              key={lang.id}
-              flag={lang.flag}
-              flagIsImage={lang.flagIsImage}
-              name={lang.name}
-              description={lang.description}
-              selected={selected === lang.id}
-              disabled={lang.disabled}
-              onClick={() => handleSelect(lang.id)}
-              style={{ animationDelay: `${i * 0.1}s` }}
-            />
-          ))}
+          {/* Tarjetas */}
+          <div className="flex flex-col gap-3 sm:gap-4
+              sm:[&_button]:py-5 sm:[&_button]:px-5
+              sm:[&_button>span:first-child]:w-14 sm:[&_button>span:first-child]:h-14
+              sm:[&_button>span:first-child>img]:w-11 sm:[&_button>span:first-child>img]:h-11
+              sm:[&_button_p:first-child]:text-xl
+              sm:[&_button_p:last-child]:text-base">
+            {languages.map((lang, i) => (
+              <LanguageCard
+                key={lang.id}
+                flag={lang.flag}
+                flagIsImage={lang.flagIsImage}
+                name={lang.name}
+                description={lang.description}
+                selected={selected === lang.id}
+                disabled={lang.disabled}
+                onClick={() => handleSelect(lang.id)}
+                style={{ animationDelay: `${i * 0.1}s` }}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
