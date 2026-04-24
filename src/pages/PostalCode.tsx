@@ -200,7 +200,7 @@ const PostalCode = () => {
           >
             <ChevronLeft size={20} strokeWidth={2.5} />
           </button>
-          <Km0Logo className="h-8 wide-landscape:h-8 short-landscape:h-6 w-auto" />
+          <Km0Logo className="h-11 wide-landscape:h-12 short-landscape:h-8 w-auto" />
         </header>
 
         {/* Body: image left + form right */}
@@ -208,7 +208,7 @@ const PostalCode = () => {
 
           {/* Left: city image */}
           <motion.div
-            className="flex-1 min-w-0 rounded-2xl overflow-hidden shadow-lg flex items-center justify-center bg-km0-beige-100"
+            className="basis-[42%] shrink-0 min-w-0 rounded-2xl overflow-hidden shadow-lg flex items-center justify-center bg-km0-beige-100"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.45, delay: 0.15 }}
