@@ -381,6 +381,7 @@ const Onboarding = () => {
           onPointerDown={handlePointerDownLs}
           onPointerMove={handlePointerMoveLs}
           onPointerUp={handlePointerUpLs}
+          onPointerCancel={handlePointerUpLs}
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.45, delay: 0.2 }}
