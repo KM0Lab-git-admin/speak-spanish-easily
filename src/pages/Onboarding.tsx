@@ -117,7 +117,7 @@ const Onboarding = () => {
       transition={{ duration: 0.35 }}
     >
       {/* ── PORTRAIT (mobile original) ─────────────────────── */}
-      <div className="w-full max-w-[390px] flex flex-col gap-3 overflow-hidden landscape:hidden">
+      <div className="w-full max-w-[390px] sm:max-w-[460px] flex flex-col gap-3 sm:gap-5 overflow-hidden landscape:hidden py-2 sm:py-6">
 
         {/* ── Header ─────────────────────────────────────────── */}
         <motion.div
