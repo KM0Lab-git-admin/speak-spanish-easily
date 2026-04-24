@@ -21,7 +21,7 @@ const getDesc = (slide: typeof slides[0], lang: Lang) => {
 };
 
 const SLOT = 260;
-const SLOT_LS = 460;
+const SLOT_LS = 420;
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -32,6 +32,7 @@ const Onboarding = () => {
   const [dragOffset, setDragOffset] = useState(0);
   const [containerWidth, setContainerWidth] = useState(390);
   const [containerWidthLs, setContainerWidthLs] = useState(1200);
+  const [portraitScale, setPortraitScale] = useState(1);
   const touchStartX = useRef<number | null>(null);
   const touchStartXLs = useRef<number | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -43,6 +44,12 @@ const Onboarding = () => {
     }
     if (carouselRefLs.current) {
       setContainerWidthLs(carouselRefLs.current.offsetWidth);
+    }
+    // Scale up the portrait carousel on tablets (sm+) to better fill the viewport
+    if (typeof window !== "undefined") {
+      const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+      const isSm = window.matchMedia("(min-width: 640px)").matches;
+      setPortraitScale(isPortrait && isSm ? 1.35 : 1);
     }
   }, []);
 
@@ -117,7 +124,7 @@ const Onboarding = () => {
       transition={{ duration: 0.35 }}
     >
       {/* ── PORTRAIT (mobile original) ─────────────────────── */}
-      <div className="w-full max-w-[390px] flex flex-col gap-3 overflow-hidden landscape:hidden">
+      <div className="w-full max-w-[390px] sm:max-w-[460px] flex flex-col gap-3 sm:gap-5 overflow-hidden landscape:hidden py-2 sm:py-6">
 
         {/* ── Header ─────────────────────────────────────────── */}
         <motion.div
@@ -142,7 +149,7 @@ const Onboarding = () => {
         {/* ── Carousel ───────────────────────────────────────── */}
         <motion.div
           ref={carouselRef}
-          className="relative flex-1 min-h-[300px] overflow-visible select-none cursor-grab active:cursor-grabbing"
+          className="relative flex-1 min-h-[300px] sm:min-h-[440px] overflow-visible select-none cursor-grab active:cursor-grabbing"
           style={{ touchAction: "none" }}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
@@ -151,15 +158,23 @@ const Onboarding = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.45, delay: 0.2 }}
         >
-          {/* Sliding track */}
+          {/* Scale wrapper for tablet portrait */}
           <div
-            className="absolute top-1/2 flex items-start"
+            className="absolute inset-0"
             style={{
-              transform: `translateX(${trackX + dragOffset}px) translateY(-58%)`,
-              transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
-              width: `${total * SLOT}px`,
+              transform: `scale(${portraitScale})`,
+              transformOrigin: "center center",
             }}
           >
+            {/* Sliding track */}
+            <div
+              className="absolute top-1/2 flex items-start"
+              style={{
+                transform: `translateX(${trackX + dragOffset / portraitScale}px) translateY(-58%)`,
+                transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
+                width: `${total * SLOT}px`,
+              }}
+            >
             {slides.map((s, i) => {
               const dist = Math.abs(i - current);
               const isActive = i === current;
@@ -228,6 +243,8 @@ const Onboarding = () => {
               );
             })}
           </div>
+          </div>
+
 
           {/* Arrow left */}
           <button
@@ -328,7 +345,7 @@ const Onboarding = () => {
       </div>
 
       {/* ── LANDSCAPE 16:9 ─────────────────────────────────── */}
-      <div className="hidden landscape:flex w-full max-w-[1200px] h-full max-h-[min(95vh,calc(100vw*9/16))] aspect-video bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col">
+      <div className="hidden landscape:flex w-full max-w-[1200px] h-full max-h-[min(95dvh,calc(100vw*9/16))] aspect-video bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col relative">
 
         {/* Header */}
         <header className="relative flex items-center justify-center pt-5 pb-3 short-landscape:pt-3 short-landscape:pb-2 shrink-0 px-5">
@@ -405,10 +422,10 @@ const Onboarding = () => {
                   <div className={`bg-white rounded-3xl overflow-hidden ${isActive ? "shadow-2xl" : "shadow-none"}`}>
                     {/* Image area */}
                     <div
-                      className="relative mx-3 mt-3 h-[220px] short-landscape:h-[170px] rounded-2xl flex items-center justify-center overflow-hidden"
+                      className="relative mx-3 mt-3 h-[200px] short-landscape:h-[140px] rounded-2xl flex items-center justify-center overflow-hidden"
                       style={{ background: s.color }}
                     >
-                      <span className="text-[80px] short-landscape:text-[64px] select-none">{s.emoji}</span>
+                      <span className="text-[72px] short-landscape:text-[54px] select-none">{s.emoji}</span>
                       {isActive && (
                         <span className="absolute top-3 right-3 bg-km0-coral-400 text-white font-ui font-bold text-sm px-3 py-1 rounded-xl shadow-md">
                           +{s.xp} XP
@@ -437,7 +454,7 @@ const Onboarding = () => {
             onPointerDown={(e) => e.stopPropagation()}
             disabled={isFirst}
             className={cn(
-              "absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+              "absolute left-2 short-landscape:left-1 top-1/2 -translate-y-1/2 w-11 h-11 short-landscape:w-9 short-landscape:h-9 rounded-full bg-white border-[2px] flex items-center justify-center shadow-xl transition-all duration-200 z-30",
               isFirst
                 ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
                 : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
@@ -453,7 +470,7 @@ const Onboarding = () => {
             onPointerDown={(e) => e.stopPropagation()}
             disabled={isLast}
             className={cn(
-              "absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+              "absolute right-2 short-landscape:right-1 top-1/2 -translate-y-1/2 w-11 h-11 short-landscape:w-9 short-landscape:h-9 rounded-full bg-white border-[2px] flex items-center justify-center shadow-xl transition-all duration-200 z-30",
               isLast
                 ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
                 : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
