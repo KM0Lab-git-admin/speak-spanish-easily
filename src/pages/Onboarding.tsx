@@ -160,11 +160,12 @@ const Onboarding = () => {
         >
           {/* Sliding track */}
           <div
-            className="absolute top-1/2 flex items-start"
+            className="absolute top-1/2 left-1/2 flex items-start"
             style={{
-              transform: `translateX(${trackX + dragOffset}px) translateY(-58%)`,
+              transform: `translate(-50%, -50%) scale(${portraitScale}) translateX(${(trackX - containerWidth / 2 + dragOffset) / portraitScale}px)`,
               transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
               width: `${total * SLOT}px`,
+              transformOrigin: "center center",
             }}
           >
             {slides.map((s, i) => {
