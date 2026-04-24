@@ -45,6 +45,12 @@ const Onboarding = () => {
     if (carouselRefLs.current) {
       setContainerWidthLs(carouselRefLs.current.offsetWidth);
     }
+    // Scale up the portrait carousel on tablets (sm+) to better fill the viewport
+    if (typeof window !== "undefined") {
+      const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+      const isSm = window.matchMedia("(min-width: 640px)").matches;
+      setPortraitScale(isPortrait && isSm ? 1.35 : 1);
+    }
   }, []);
 
   useLayoutEffect(() => {
