@@ -43,7 +43,6 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-start landscape:items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 pt-3 pb-6 landscape:p-4 short-landscape:p-2">
     <div className="min-h-screen w-full flex items-start landscape:items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 pt-3 pb-4 landscape:p-4 short-landscape:p-2">
       {/* ── Portrait wrapper (mobile original) ──────────────── */}
       <div className="w-full max-w-[390px] flex flex-col gap-5 landscape:hidden">
