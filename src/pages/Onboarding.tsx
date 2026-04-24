@@ -422,10 +422,10 @@ const Onboarding = () => {
                   <div className={`bg-white rounded-3xl overflow-hidden ${isActive ? "shadow-2xl" : "shadow-none"}`}>
                     {/* Image area */}
                     <div
-                      className="relative mx-3 mt-3 h-[200px] short-landscape:h-[140px] rounded-2xl flex items-center justify-center overflow-hidden"
+                      className="relative mx-3 mt-3 h-[260px] short-landscape:h-[200px] rounded-2xl flex items-center justify-center overflow-hidden"
                       style={{ background: s.color }}
                     >
-                      <span className="text-[72px] short-landscape:text-[54px] select-none">{s.emoji}</span>
+                      <span className="text-[96px] short-landscape:text-[76px] select-none">{s.emoji}</span>
                       {isActive && (
                         <span className="absolute top-3 right-3 bg-km0-coral-400 text-white font-ui font-bold text-sm px-3 py-1 rounded-xl shadow-md">
                           +{s.xp} XP
@@ -434,11 +434,11 @@ const Onboarding = () => {
                     </div>
 
                     {/* Text */}
-                    <div className="px-4 pt-3 pb-4 short-landscape:pt-2 short-landscape:pb-3 text-center">
-                      <h2 className="font-brand font-bold text-xl short-landscape:text-base text-primary leading-tight mb-1">
+                    <div className="px-4 pt-4 pb-5 short-landscape:pt-3 short-landscape:pb-4 text-center">
+                      <h2 className="font-brand font-bold text-xl short-landscape:text-lg text-primary leading-tight mb-1.5">
                         {getTitle(s, lang)}
                       </h2>
-                      <p className="font-body text-sm short-landscape:text-xs text-muted-foreground leading-relaxed">
+                      <p className="font-body text-sm short-landscape:text-sm text-muted-foreground leading-relaxed">
                         {getDesc(s, lang)}
                       </p>
                     </div>
