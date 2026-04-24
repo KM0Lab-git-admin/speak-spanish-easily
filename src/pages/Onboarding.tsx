@@ -343,102 +343,128 @@ const Onboarding = () => {
         </header>
 
         {/* Carousel area */}
-        <div className="relative flex-1 min-h-0 flex items-center justify-center px-12 short-landscape:px-10">
+        <motion.div
+          ref={carouselRefLs}
+          className="relative flex-1 min-h-0 overflow-visible select-none cursor-grab active:cursor-grabbing px-12 short-landscape:px-10"
+          style={{ touchAction: "none" }}
+          onPointerDown={handlePointerDownLs}
+          onPointerMove={handlePointerMoveLs}
+          onPointerUp={handlePointerUpLs}
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.45, delay: 0.2 }}
+        >
+          {/* Sliding track */}
+          <div
+            className="absolute top-1/2 flex items-center"
+            style={{
+              transform: `translateX(${trackXLs + dragOffset}px) translateY(-50%)`,
+              transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
+              width: `${total * SLOT_LS}px`,
+            }}
+          >
+            {slides.map((s, i) => {
+              const dist = Math.abs(i - current);
+              const isActive = i === current;
+              const scale = isActive ? 1 : dist === 1 ? 0.88 : 0.72;
+              const opacity = isActive ? 1 : dist === 1 ? 0.85 : 0.4;
 
-          {/* Left arrow (tenue) */}
+              return (
+                <div
+                  key={s.id}
+                  onClick={() => !isActive && goTo(i)}
+                  style={{
+                    width: `${SLOT_LS}px`,
+                    paddingLeft: "12px",
+                    paddingRight: "12px",
+                    height: "92%",
+                    transform: `scale(${scale})`,
+                    opacity,
+                    transition: "transform 420ms cubic-bezier(0.4,0,0.2,1), opacity 420ms ease",
+                    transformOrigin: "center center",
+                    cursor: isActive ? "default" : "pointer",
+                    zIndex: isActive ? 10 : 1,
+                    position: "relative",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {/* Stack layers — only on active card */}
+                  {isActive && (<>
+                    <div style={{
+                      position: "absolute", bottom: "2%", left: 36, right: 36,
+                      height: 28, background: "rgba(255,255,255,0.55)",
+                      borderRadius: 20, zIndex: -1,
+                      boxShadow: "0 8px 24px -4px rgba(0,0,0,0.10)",
+                    }} />
+                    <div style={{
+                      position: "absolute", bottom: "0%", left: 56, right: 56,
+                      height: 28, background: "rgba(255,255,255,0.30)",
+                      borderRadius: 20, zIndex: -2,
+                      boxShadow: "0 8px 24px -4px rgba(0,0,0,0.06)",
+                    }} />
+                  </>)}
+                  <div className={`bg-white rounded-3xl overflow-hidden w-full h-full flex flex-col ${isActive ? "shadow-2xl" : "shadow-md"}`}>
+                    {/* Image area */}
+                    <div
+                      className="relative mx-4 mt-4 short-landscape:mx-3 short-landscape:mt-3 h-[48%] rounded-2xl flex items-center justify-center overflow-hidden shrink-0"
+                      style={{ background: s.color }}
+                    >
+                      <span className="text-[78px] short-landscape:text-[60px] select-none">{s.emoji}</span>
+                      {isActive && (
+                        <span className="absolute top-3 right-3 bg-km0-coral-400 text-white font-ui font-bold text-sm px-3 py-1 rounded-xl shadow-md">
+                          +{s.xp} XP
+                        </span>
+                      )}
+                    </div>
+                    {/* Text */}
+                    <div className="px-5 pt-4 pb-4 short-landscape:pt-2 short-landscape:pb-2 text-center flex-1 flex flex-col justify-start">
+                      <h2 className="font-brand font-bold text-xl short-landscape:text-base text-primary leading-tight mb-2 short-landscape:mb-1">
+                        {getTitle(s, lang)}
+                      </h2>
+                      <p className="font-body text-sm short-landscape:text-xs text-muted-foreground leading-relaxed">
+                        {getDesc(s, lang)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Arrow left */}
           <button
             onClick={prev}
+            onPointerDown={(e) => e.stopPropagation()}
             disabled={isFirst}
             className={cn(
-              "absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 short-landscape:w-9 short-landscape:h-9 rounded-full bg-white/80 border-[2px] flex items-center justify-center shadow-md transition-all duration-200 z-20",
+              "absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 short-landscape:w-9 short-landscape:h-9 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
               isFirst
                 ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
-                : "border-km0-yellow-300 text-km0-blue-700/70 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
+                : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
             )}
             aria-label="Previous"
           >
             <ChevronLeft size={20} strokeWidth={2.5} />
           </button>
 
-          {/* Cards row: principal + peek next */}
-          <div className="relative w-full h-full flex items-center justify-center gap-5 short-landscape:gap-3 overflow-hidden">
-            {/* Main card */}
-            {(() => {
-              const s = slides[current];
-              return (
-                <motion.div
-                  key={`main-${s.id}`}
-                  initial={{ opacity: 0, x: 30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.35 }}
-                  className="relative bg-white rounded-3xl overflow-hidden shadow-2xl shrink-0 w-[44%] short-landscape:w-[42%] max-w-[420px] h-[88%] short-landscape:h-[92%] flex flex-col z-10"
-                >
-                  <div
-                    className="relative mx-4 mt-4 short-landscape:mx-3 short-landscape:mt-3 h-[48%] rounded-2xl flex items-center justify-center overflow-hidden shrink-0"
-                    style={{ background: s.color }}
-                  >
-                    <span className="text-[78px] short-landscape:text-[60px] select-none">{s.emoji}</span>
-                    <span className="absolute top-3 right-3 bg-km0-coral-400 text-white font-ui font-bold text-sm px-3 py-1 rounded-xl shadow-md">
-                      +{s.xp} XP
-                    </span>
-                  </div>
-                  <div className="px-5 pt-4 pb-4 short-landscape:pt-2 short-landscape:pb-2 text-center flex-1 flex flex-col justify-start">
-                    <h2 className="font-brand font-bold text-xl short-landscape:text-base text-primary leading-tight mb-2 short-landscape:mb-1">
-                      {getTitle(s, lang)}
-                    </h2>
-                    <p className="font-body text-sm short-landscape:text-xs text-muted-foreground leading-relaxed">
-                      {getDesc(s, lang)}
-                    </p>
-                  </div>
-                </motion.div>
-              );
-            })()}
-
-            {/* Peek next card (or previous if at last) */}
-            {(() => {
-              const peekIdx = !isLast ? current + 1 : current - 1;
-              if (peekIdx < 0 || peekIdx >= total) return null;
-              const s = slides[peekIdx];
-              return (
-                <button
-                  key={`peek-${s.id}`}
-                  onClick={() => goTo(peekIdx)}
-                  className="relative bg-white rounded-3xl overflow-hidden shadow-lg shrink-0 w-[28%] max-w-[260px] h-[78%] short-landscape:h-[82%] flex flex-col text-left opacity-90 hover:opacity-100 hover:scale-[1.02] transition-all duration-300 cursor-pointer"
-                >
-                  <div
-                    className="relative mx-3 mt-3 h-[44%] rounded-2xl flex items-center justify-center overflow-hidden shrink-0"
-                    style={{ background: s.color }}
-                  >
-                    <span className="text-[54px] short-landscape:text-[42px] select-none">{s.emoji}</span>
-                  </div>
-                  <div className="px-4 pt-3 pb-3 text-center flex-1">
-                    <h3 className="font-brand font-bold text-base short-landscape:text-sm text-primary leading-tight mb-1 truncate">
-                      {getTitle(s, lang)}
-                    </h3>
-                    <p className="font-body text-xs text-muted-foreground leading-snug line-clamp-3">
-                      {getDesc(s, lang)}
-                    </p>
-                  </div>
-                </button>
-              );
-            })()}
-          </div>
-
-          {/* Right arrow (más marcada) */}
+          {/* Arrow right */}
           <button
             onClick={next}
+            onPointerDown={(e) => e.stopPropagation()}
             disabled={isLast}
             className={cn(
-              "absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 short-landscape:w-9 short-landscape:h-9 rounded-full border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+              "absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 short-landscape:w-9 short-landscape:h-9 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
               isLast
-                ? "bg-white border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
-                : "bg-km0-yellow-500 border-km0-yellow-600 text-km0-blue-700 hover:bg-km0-yellow-400 hover:scale-110 cursor-pointer"
+                ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
+                : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
             )}
             aria-label="Next"
           >
-            <ChevronRight size={22} strokeWidth={3} />
+            <ChevronRight size={20} strokeWidth={2.5} />
           </button>
-        </div>
+        </motion.div>
 
         {/* Footer */}
         <footer className="shrink-0 border-t border-km0-beige-200/70 bg-white/40 backdrop-blur-sm px-5 py-3 short-landscape:py-2 flex items-center justify-between gap-4">
