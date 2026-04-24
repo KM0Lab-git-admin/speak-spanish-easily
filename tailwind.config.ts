@@ -151,7 +151,12 @@ export default {
   plugins: [
     require("tailwindcss-animate"),
     function ({ addVariant }: { addVariant: (name: string, definition: string | string[]) => void }) {
-      addVariant("short-landscape", "@media (orientation: landscape) and (max-height: 600px)");
+      // Compact landscape (e.g. 667×375): low height AND narrow width
+      addVariant("short-landscape", "@media (orientation: landscape) and (max-height: 600px) and (max-width: 999px)");
+      // Wide landscape with limited height (e.g. 1280×550): wide enough to use larger sizing
+      addVariant("wide-landscape", "@media (orientation: landscape) and (min-width: 1000px)");
+      // Tablet portrait (e.g. 768×1024)
+      addVariant("tablet-portrait", "@media (orientation: portrait) and (min-width: 700px)");
     },
   ],
 } satisfies Config;
