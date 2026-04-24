@@ -53,15 +53,19 @@ const Index = () => {
           <div className="w-11" />
         </div>
 
-        {/* Ilustración (puntos concentrados alrededor) */}
+        {/* Ilustración (robot dentro del anillo turquesa) */}
         <div className="flex justify-center">
           <div className="relative w-[230px] h-[230px] flex items-center justify-center">
             <FloatingDots />
-            <img
-              src={robotPlaceholder}
-              alt="KM0 LAB mascot"
-              className="h-[210px] w-auto object-contain animate-float drop-shadow-lg relative z-10"
-            />
+            <div className="relative w-[200px] h-[200px] flex items-center justify-center">
+              <div className="absolute inset-0 rounded-full bg-km0-teal-400/25 border-2 border-km0-blue-700" />
+              <div className="absolute inset-[14%] rounded-full bg-km0-teal-500/90" />
+              <img
+                src={robotPlaceholder}
+                alt="KM0 LAB mascot"
+                className="relative z-10 h-[70%] w-auto object-contain animate-float drop-shadow-lg"
+              />
+            </div>
           </div>
         </div>
 
