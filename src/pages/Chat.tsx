@@ -131,7 +131,7 @@ const Chat = () => {
       </button>
 
       <div className="flex-1 flex items-center justify-center min-w-0">
-        <div className="flex flex-col landscape:flex-row items-center landscape:gap-3 wide-landscape:gap-4 gap-1 min-w-0">
+        <div className="flex-col landscape:flex-row landscape:gap-3 wide-landscape:gap-4 gap-1 min-w-0 flex items-start justify-start">
           <h1 className="font-brand text-lg tablet-portrait:text-2xl landscape:text-2xl short-landscape:text-base font-black leading-tight text-km0-blue-700 text-center truncate max-w-full">
             {cityName}
           </h1>
