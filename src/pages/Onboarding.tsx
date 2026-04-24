@@ -142,7 +142,7 @@ const Onboarding = () => {
         {/* ── Carousel ───────────────────────────────────────── */}
         <motion.div
           ref={carouselRef}
-          className="relative flex-1 min-h-[300px] overflow-visible select-none cursor-grab active:cursor-grabbing"
+          className="relative flex-1 min-h-[300px] sm:min-h-[440px] overflow-visible select-none cursor-grab active:cursor-grabbing"
           style={{ touchAction: "none" }}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
