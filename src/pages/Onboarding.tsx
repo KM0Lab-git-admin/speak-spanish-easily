@@ -491,19 +491,19 @@ const Onboarding = () => {
         </motion.div>
 
         {/* Footer */}
-        <footer className="shrink-0 border-t border-km0-beige-200/70 bg-white/40 backdrop-blur-sm px-4 py-2 wide-landscape:px-6 wide-landscape:py-4 short-landscape:px-3 short-landscape:py-1.5 flex items-center justify-between gap-3 wide-landscape:gap-5 short-landscape:gap-2">
+        <footer className="shrink-0 border-t border-km0-beige-200/70 bg-white/40 backdrop-blur-sm px-4 py-2 wide-landscape:px-5 wide-landscape:py-2.5 short-landscape:px-3 short-landscape:py-1.5 flex items-center justify-between gap-3 wide-landscape:gap-4 short-landscape:gap-2">
           {/* Left: progress + thumbs */}
-          <div className="flex items-center gap-2 wide-landscape:gap-4 short-landscape:gap-2 shrink-0">
-            <span className="font-ui font-bold text-sm wide-landscape:text-lg short-landscape:text-xs text-primary">
+          <div className="flex items-center gap-2 wide-landscape:gap-3 short-landscape:gap-2 shrink-0">
+            <span className="font-ui font-bold text-sm wide-landscape:text-sm short-landscape:text-xs text-primary">
               {current + 1}/{total}
             </span>
-            <div className="flex gap-1.5 wide-landscape:gap-2 short-landscape:gap-1">
+            <div className="flex gap-1.5 wide-landscape:gap-1.5 short-landscape:gap-1">
               {slides.map((s, i) => (
                 <button
                   key={s.id}
                   onClick={() => goTo(i)}
                   className={cn(
-                    "w-8 h-8 wide-landscape:w-11 wide-landscape:h-11 short-landscape:w-6 short-landscape:h-6 rounded-lg wide-landscape:rounded-xl flex items-center justify-center text-base wide-landscape:text-xl short-landscape:text-xs transition-all duration-200 border-[2px]",
+                    "w-8 h-8 wide-landscape:w-8 wide-landscape:h-8 short-landscape:w-6 short-landscape:h-6 rounded-lg flex items-center justify-center text-base wide-landscape:text-base short-landscape:text-xs transition-all duration-200 border-[2px]",
                     i === current
                       ? "border-km0-yellow-500 shadow-md scale-105"
                       : "border-km0-beige-200 bg-white opacity-70 hover:opacity-100"
@@ -518,7 +518,7 @@ const Onboarding = () => {
           </div>
 
           {/* Center: dots */}
-          <div className="flex-1 flex justify-center gap-2 wide-landscape:gap-3 items-center">
+          <div className="flex-1 flex justify-center gap-2 items-center">
             {slides.map((_, i) => (
               <button
                 key={i}
@@ -526,7 +526,7 @@ const Onboarding = () => {
                 className={cn(
                   "rounded-full transition-all duration-300",
                   i === current
-                    ? "w-3 h-3 wide-landscape:w-4 wide-landscape:h-4 bg-km0-yellow-500"
+                    ? "w-3 h-3 wide-landscape:w-3.5 wide-landscape:h-3.5 bg-km0-yellow-500"
                     : "w-2 h-2 wide-landscape:w-2.5 wide-landscape:h-2.5 bg-km0-blue-200"
                 )}
                 aria-label={`Go to slide ${i + 1}`}
@@ -540,7 +540,7 @@ const Onboarding = () => {
               if (isLast) navigate("/postal-code", { state: { lang } });
               else setCurrent(total - 1);
             }}
-            className="shrink-0 bg-primary text-primary-foreground font-ui font-semibold text-sm wide-landscape:text-base short-landscape:text-xs px-4 wide-landscape:px-7 short-landscape:px-4 py-2 wide-landscape:py-3 short-landscape:py-2 rounded-2xl hover:bg-km0-blue-600 hover:scale-[1.03] transition-all duration-200 active:scale-95"
+            className="shrink-0 bg-primary text-primary-foreground font-ui font-semibold text-sm wide-landscape:text-sm short-landscape:text-xs px-4 wide-landscape:px-5 short-landscape:px-4 py-2 short-landscape:py-2 rounded-2xl hover:bg-km0-blue-600 hover:scale-[1.03] transition-all duration-200 active:scale-95"
           >
             {skipLabel}
           </button>
