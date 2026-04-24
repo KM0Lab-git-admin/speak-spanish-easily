@@ -47,9 +47,9 @@ const Index = () => {
       <div className="w-full max-w-[390px] landscape:max-w-[760px] flex flex-col gap-8 landscape:gap-3 h-[620px] landscape:h-auto">
 
         {/* ── Logo ──────────────────────────────────────────── */}
-        <div className="flex items-center justify-between h-11 landscape:h-9">
+        <div className="flex items-center justify-between h-11 landscape:h-12">
           <div className="w-11" />
-          <Km0Logo className="h-9 landscape:h-7 w-auto" />
+          <Km0Logo className="h-9 landscape:h-11 w-auto" />
           <div className="w-11" />
         </div>
 
