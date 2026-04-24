@@ -422,23 +422,23 @@ const Onboarding = () => {
                   <div className={`bg-white rounded-3xl overflow-hidden ${isActive ? "shadow-2xl" : "shadow-none"}`}>
                     {/* Image area */}
                     <div
-                      className="relative mx-3 mt-3 h-[260px] short-landscape:h-[200px] rounded-2xl flex items-center justify-center overflow-hidden"
+                      className="relative mx-3 mt-3 short-landscape:mx-2 short-landscape:mt-2 h-[260px] short-landscape:h-[120px] rounded-2xl flex items-center justify-center overflow-hidden"
                       style={{ background: s.color }}
                     >
-                      <span className="text-[96px] short-landscape:text-[76px] select-none">{s.emoji}</span>
+                      <span className="text-[96px] short-landscape:text-[52px] select-none">{s.emoji}</span>
                       {isActive && (
-                        <span className="absolute top-3 right-3 bg-km0-coral-400 text-white font-ui font-bold text-sm px-3 py-1 rounded-xl shadow-md">
+                        <span className="absolute top-3 right-3 short-landscape:top-1.5 short-landscape:right-1.5 bg-km0-coral-400 text-white font-ui font-bold text-sm short-landscape:text-[10px] px-3 py-1 short-landscape:px-2 short-landscape:py-0.5 rounded-xl shadow-md">
                           +{s.xp} XP
                         </span>
                       )}
                     </div>
 
                     {/* Text */}
-                    <div className="px-4 pt-4 pb-5 short-landscape:pt-3 short-landscape:pb-4 text-center">
-                      <h2 className="font-brand font-bold text-xl short-landscape:text-lg text-primary leading-tight mb-1.5">
+                    <div className="px-4 pt-4 pb-5 short-landscape:px-3 short-landscape:pt-2 short-landscape:pb-3 text-center">
+                      <h2 className="font-brand font-bold text-xl short-landscape:text-sm text-primary leading-tight mb-1.5 short-landscape:mb-0.5">
                         {getTitle(s, lang)}
                       </h2>
-                      <p className="font-body text-sm short-landscape:text-sm text-muted-foreground leading-relaxed">
+                      <p className="font-body text-sm short-landscape:text-[11px] text-muted-foreground leading-relaxed short-landscape:leading-snug">
                         {getDesc(s, lang)}
                       </p>
                     </div>
