@@ -151,7 +151,7 @@ export default {
   plugins: [
     require("tailwindcss-animate"),
     function ({ addVariant }: { addVariant: (name: string, definition: string | string[]) => void }) {
-      addVariant("short-landscape", "@media (orientation: landscape) and (max-height: 500px)");
+      addVariant("short-landscape", "@media (orientation: landscape) and (max-height: 600px)");
     },
   ],
 } satisfies Config;
