@@ -57,6 +57,8 @@ const Onboarding = () => {
       const isPortrait = window.matchMedia("(orientation: portrait)").matches;
       const isSm = window.matchMedia("(min-width: 640px)").matches;
       setPortraitScale(isPortrait && isSm ? 1.35 : 1);
+      // Adapt landscape slot width: wide screens (1280×550) use bigger slots than 667×375
+      setSlotLs(getSlotLs());
     }
   }, []);
 
