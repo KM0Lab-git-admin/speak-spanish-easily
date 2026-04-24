@@ -482,19 +482,19 @@ const Onboarding = () => {
         </motion.div>
 
         {/* Footer */}
-        <footer className="shrink-0 border-t border-km0-beige-200/70 bg-white/40 backdrop-blur-sm px-5 py-3 short-landscape:py-2 flex items-center justify-between gap-4">
+        <footer className="shrink-0 border-t border-km0-beige-200/70 bg-white/40 backdrop-blur-sm px-5 py-3 short-landscape:px-3 short-landscape:py-1.5 flex items-center justify-between gap-4 short-landscape:gap-2">
           {/* Left: progress + thumbs */}
-          <div className="flex items-center gap-3 shrink-0">
-            <span className="font-ui font-bold text-base short-landscape:text-sm text-primary">
+          <div className="flex items-center gap-3 short-landscape:gap-2 shrink-0">
+            <span className="font-ui font-bold text-base short-landscape:text-xs text-primary">
               {current + 1}/{total}
             </span>
-            <div className="flex gap-1.5">
+            <div className="flex gap-1.5 short-landscape:gap-1">
               {slides.map((s, i) => (
                 <button
                   key={s.id}
                   onClick={() => goTo(i)}
                   className={cn(
-                    "w-9 h-9 short-landscape:w-7 short-landscape:h-7 rounded-lg flex items-center justify-center text-base short-landscape:text-sm transition-all duration-200 border-[2px]",
+                    "w-9 h-9 short-landscape:w-6 short-landscape:h-6 rounded-lg flex items-center justify-center text-base short-landscape:text-xs transition-all duration-200 border-[2px]",
                     i === current
                       ? "border-km0-yellow-500 shadow-md scale-105"
                       : "border-km0-beige-200 bg-white opacity-70 hover:opacity-100"
