@@ -131,14 +131,14 @@ const Chat = () => {
       </button>
 
       <div className="flex-1 flex items-center justify-center min-w-0">
-        <div className="flex items-center gap-3 wide-landscape:gap-4 min-w-0">
-          <h1 className="font-brand text-2xl short-landscape:text-base font-black leading-tight text-km0-blue-700 truncate">
+        <div className="flex items-center gap-2 landscape:gap-3 wide-landscape:gap-4 min-w-0">
+          <h1 className="font-brand text-lg tablet-portrait:text-2xl landscape:text-2xl short-landscape:text-base font-black leading-tight text-km0-blue-700 truncate">
             {cityName}
           </h1>
           <img
             src={lang === "ca" ? xatLogo : chatLogo}
             alt={lang === "ca" ? "KM0 XAT" : "KM0 CHAT"}
-            className="h-9 short-landscape:h-5 w-auto shrink-0"
+            className="h-6 tablet-portrait:h-9 landscape:h-9 short-landscape:h-5 w-auto shrink-0"
           />
         </div>
       </div>
