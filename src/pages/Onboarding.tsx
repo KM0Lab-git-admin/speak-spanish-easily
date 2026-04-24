@@ -32,6 +32,7 @@ const Onboarding = () => {
   const [dragOffset, setDragOffset] = useState(0);
   const [containerWidth, setContainerWidth] = useState(390);
   const [containerWidthLs, setContainerWidthLs] = useState(1200);
+  const [portraitScale, setPortraitScale] = useState(1);
   const touchStartX = useRef<number | null>(null);
   const touchStartXLs = useRef<number | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
