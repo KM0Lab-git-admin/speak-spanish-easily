@@ -87,6 +87,8 @@ const Onboarding = () => {
   };
 
   const handlePointerUp = (e: React.PointerEvent) => {
+    const el = e.currentTarget as HTMLElement;
+    if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId);
     if (touchStartX.current === null) return;
     const delta = touchStartX.current - e.clientX;
     touchStartX.current = null;
@@ -108,6 +110,8 @@ const Onboarding = () => {
   };
 
   const handlePointerUpLs = (e: React.PointerEvent) => {
+    const el = e.currentTarget as HTMLElement;
+    if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId);
     if (touchStartXLs.current === null) return;
     const delta = touchStartXLs.current - e.clientX;
     touchStartXLs.current = null;
