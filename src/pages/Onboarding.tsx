@@ -81,11 +81,33 @@ const Onboarding = () => {
     }
   };
 
+  const handlePointerDownLs = (e: React.PointerEvent) => {
+    touchStartXLs.current = e.clientX;
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  };
+
+  const handlePointerMoveLs = (e: React.PointerEvent) => {
+    if (touchStartXLs.current === null) return;
+    setDragOffset(e.clientX - touchStartXLs.current);
+  };
+
+  const handlePointerUpLs = (e: React.PointerEvent) => {
+    if (touchStartXLs.current === null) return;
+    const delta = touchStartXLs.current - e.clientX;
+    touchStartXLs.current = null;
+    setDragOffset(0);
+    if (Math.abs(delta) > 40) {
+      if (delta > 0) next();
+      else prev();
+    }
+  };
+
   const skipLabel = isLast
     ? lang === "ca" ? "INICI" : lang === "en" ? "START" : "INICIO"
     : lang === "ca" ? "SALTAR" : lang === "en" ? "SKIP" : "SALTAR";
 
   const trackX = containerWidth / 2 - current * SLOT - SLOT / 2;
+  const trackXLs = containerWidthLs / 2 - current * SLOT_LS - SLOT_LS / 2;
 
   return (
     <motion.div
