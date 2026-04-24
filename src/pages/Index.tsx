@@ -44,23 +44,34 @@ const Index = () => {
 
   return (
     <div className="min-h-screen w-full flex items-start landscape:items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 pt-3 pb-6 landscape:p-4 short-landscape:p-2">
+    <div className="min-h-screen w-full flex items-start landscape:items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 pt-3 pb-4 landscape:p-4 short-landscape:p-2">
       {/* ── Portrait wrapper (mobile original) ──────────────── */}
-      <div className="w-full max-w-[390px] flex flex-col gap-8 h-[620px] landscape:hidden">
+      <div className="w-full max-w-[390px] flex flex-col gap-5 landscape:hidden">
+        {/* Logo */}
         <div className="flex items-center justify-between h-11">
           <div className="w-11" />
           <Km0Logo className="h-9 w-auto" />
           <div className="w-11" />
         </div>
 
-        <div className="relative flex justify-center items-center h-52">
-          <FloatingDots />
-          <img
-            src={robotPlaceholder}
-            alt="KM0 LAB mascot"
-            className="h-56 w-auto object-contain animate-float drop-shadow-lg"
-          />
+        {/* Ilustración (puntos concentrados alrededor) */}
+        <div className="flex justify-center">
+          <div className="relative w-[230px] h-[230px] flex items-center justify-center">
+            <FloatingDots />
+            <img
+              src={robotPlaceholder}
+              alt="KM0 LAB mascot"
+              className="h-[210px] w-auto object-contain animate-float drop-shadow-lg relative z-10"
+            />
+          </div>
         </div>
 
+        {/* Microtítulo */}
+        <h2 className="text-center font-ui font-semibold text-base text-km0-blue-700 -mt-1">
+          Escoge tu idioma
+        </h2>
+
+        {/* Tarjetas */}
         <div className="flex flex-col gap-3">
           {languages.map((lang, i) => (
             <LanguageCard
