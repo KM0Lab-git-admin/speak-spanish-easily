@@ -297,6 +297,174 @@ const Onboarding = () => {
         </motion.div>
 
       </div>
+
+      {/* ── LANDSCAPE 16:9 ─────────────────────────────────── */}
+      <div className="hidden landscape:flex w-full max-w-[1200px] h-full max-h-[min(95vh,calc(100vw*9/16))] aspect-video bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col">
+
+        {/* Header */}
+        <header className="relative flex items-center justify-center pt-5 pb-3 short-landscape:pt-3 short-landscape:pb-2 shrink-0 px-5">
+          <button
+            onClick={() => navigate("/")}
+            className="absolute left-5 top-1/2 -translate-y-1/2 w-10 h-10 short-landscape:w-9 short-landscape:h-9 flex items-center justify-center rounded-xl border-[2px] border-dashed border-km0-yellow-500 text-km0-yellow-600 hover:bg-km0-yellow-50 transition-all duration-200 hover:scale-105"
+            aria-label="Back"
+          >
+            <ChevronLeft size={20} strokeWidth={2.5} />
+          </button>
+          <Km0Logo className="h-10 short-landscape:h-8 w-auto" />
+        </header>
+
+        {/* Carousel area */}
+        <div className="relative flex-1 min-h-0 flex items-center justify-center px-12 short-landscape:px-10">
+
+          {/* Left arrow (tenue) */}
+          <button
+            onClick={prev}
+            disabled={isFirst}
+            className={cn(
+              "absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 short-landscape:w-9 short-landscape:h-9 rounded-full bg-white/80 border-[2px] flex items-center justify-center shadow-md transition-all duration-200 z-20",
+              isFirst
+                ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
+                : "border-km0-yellow-300 text-km0-blue-700/70 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
+            )}
+            aria-label="Previous"
+          >
+            <ChevronLeft size={20} strokeWidth={2.5} />
+          </button>
+
+          {/* Cards row: principal + peek next */}
+          <div className="relative w-full h-full flex items-center justify-center gap-5 short-landscape:gap-3 overflow-hidden">
+            {/* Main card */}
+            {(() => {
+              const s = slides[current];
+              return (
+                <motion.div
+                  key={`main-${s.id}`}
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.35 }}
+                  className="relative bg-white rounded-3xl overflow-hidden shadow-2xl shrink-0 w-[44%] short-landscape:w-[42%] max-w-[420px] h-[88%] short-landscape:h-[92%] flex flex-col z-10"
+                >
+                  <div
+                    className="relative mx-4 mt-4 short-landscape:mx-3 short-landscape:mt-3 h-[48%] rounded-2xl flex items-center justify-center overflow-hidden shrink-0"
+                    style={{ background: s.color }}
+                  >
+                    <span className="text-[78px] short-landscape:text-[60px] select-none">{s.emoji}</span>
+                    <span className="absolute top-3 right-3 bg-km0-coral-400 text-white font-ui font-bold text-sm px-3 py-1 rounded-xl shadow-md">
+                      +{s.xp} XP
+                    </span>
+                  </div>
+                  <div className="px-5 pt-4 pb-4 short-landscape:pt-2 short-landscape:pb-2 text-center flex-1 flex flex-col justify-start">
+                    <h2 className="font-brand font-bold text-xl short-landscape:text-base text-primary leading-tight mb-2 short-landscape:mb-1">
+                      {getTitle(s, lang)}
+                    </h2>
+                    <p className="font-body text-sm short-landscape:text-xs text-muted-foreground leading-relaxed">
+                      {getDesc(s, lang)}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })()}
+
+            {/* Peek next card (or previous if at last) */}
+            {(() => {
+              const peekIdx = !isLast ? current + 1 : current - 1;
+              if (peekIdx < 0 || peekIdx >= total) return null;
+              const s = slides[peekIdx];
+              return (
+                <button
+                  key={`peek-${s.id}`}
+                  onClick={() => goTo(peekIdx)}
+                  className="relative bg-white rounded-3xl overflow-hidden shadow-lg shrink-0 w-[28%] max-w-[260px] h-[78%] short-landscape:h-[82%] flex flex-col text-left opacity-90 hover:opacity-100 hover:scale-[1.02] transition-all duration-300 cursor-pointer"
+                >
+                  <div
+                    className="relative mx-3 mt-3 h-[44%] rounded-2xl flex items-center justify-center overflow-hidden shrink-0"
+                    style={{ background: s.color }}
+                  >
+                    <span className="text-[54px] short-landscape:text-[42px] select-none">{s.emoji}</span>
+                  </div>
+                  <div className="px-4 pt-3 pb-3 text-center flex-1">
+                    <h3 className="font-brand font-bold text-base short-landscape:text-sm text-primary leading-tight mb-1 truncate">
+                      {getTitle(s, lang)}
+                    </h3>
+                    <p className="font-body text-xs text-muted-foreground leading-snug line-clamp-3">
+                      {getDesc(s, lang)}
+                    </p>
+                  </div>
+                </button>
+              );
+            })()}
+          </div>
+
+          {/* Right arrow (más marcada) */}
+          <button
+            onClick={next}
+            disabled={isLast}
+            className={cn(
+              "absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 short-landscape:w-9 short-landscape:h-9 rounded-full border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+              isLast
+                ? "bg-white border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
+                : "bg-km0-yellow-500 border-km0-yellow-600 text-km0-blue-700 hover:bg-km0-yellow-400 hover:scale-110 cursor-pointer"
+            )}
+            aria-label="Next"
+          >
+            <ChevronRight size={22} strokeWidth={3} />
+          </button>
+        </div>
+
+        {/* Footer */}
+        <footer className="shrink-0 border-t border-km0-beige-200/70 bg-white/40 backdrop-blur-sm px-5 py-3 short-landscape:py-2 flex items-center justify-between gap-4">
+          {/* Left: progress + thumbs */}
+          <div className="flex items-center gap-3 shrink-0">
+            <span className="font-ui font-bold text-base short-landscape:text-sm text-primary">
+              {current + 1}/{total}
+            </span>
+            <div className="flex gap-1.5">
+              {slides.map((s, i) => (
+                <button
+                  key={s.id}
+                  onClick={() => goTo(i)}
+                  className={cn(
+                    "w-9 h-9 short-landscape:w-7 short-landscape:h-7 rounded-lg flex items-center justify-center text-base short-landscape:text-sm transition-all duration-200 border-[2px]",
+                    i === current
+                      ? "border-km0-yellow-500 shadow-md scale-105"
+                      : "border-km0-beige-200 bg-white opacity-70 hover:opacity-100"
+                  )}
+                  style={{ background: i === current ? s.color : "white" }}
+                  aria-label={`Slide ${i + 1}`}
+                >
+                  {s.emoji}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Center: dots */}
+          <div className="flex-1 flex justify-center gap-2 items-center">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                className={cn(
+                  "rounded-full transition-all duration-300",
+                  i === current ? "w-3.5 h-3.5 bg-km0-yellow-500" : "w-2.5 h-2.5 bg-km0-blue-200"
+                )}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Right: skip */}
+          <button
+            onClick={() => {
+              if (isLast) navigate("/postal-code", { state: { lang } });
+              else setCurrent(total - 1);
+            }}
+            className="shrink-0 bg-primary text-primary-foreground font-ui font-semibold text-sm short-landscape:text-xs px-5 short-landscape:px-4 py-2.5 short-landscape:py-2 rounded-2xl hover:bg-km0-blue-600 hover:scale-[1.03] transition-all duration-200 active:scale-95"
+          >
+            {skipLabel}
+          </button>
+        </footer>
+      </div>
     </motion.div>
   );
 };
