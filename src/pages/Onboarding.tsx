@@ -437,7 +437,7 @@ const Onboarding = () => {
             onPointerDown={(e) => e.stopPropagation()}
             disabled={isFirst}
             className={cn(
-              "absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+              "absolute left-2 short-landscape:left-1 top-1/2 -translate-y-1/2 w-11 h-11 short-landscape:w-9 short-landscape:h-9 rounded-full bg-white border-[2px] flex items-center justify-center shadow-xl transition-all duration-200 z-30",
               isFirst
                 ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
                 : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
@@ -453,7 +453,7 @@ const Onboarding = () => {
             onPointerDown={(e) => e.stopPropagation()}
             disabled={isLast}
             className={cn(
-              "absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+              "absolute right-2 short-landscape:right-1 top-1/2 -translate-y-1/2 w-11 h-11 short-landscape:w-9 short-landscape:h-9 rounded-full bg-white border-[2px] flex items-center justify-center shadow-xl transition-all duration-200 z-30",
               isLast
                 ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
                 : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
