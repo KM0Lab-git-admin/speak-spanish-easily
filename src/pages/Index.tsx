@@ -43,21 +43,21 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-start landscape:items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 pt-3 pb-4 landscape:p-4 short-landscape:p-2">
-      {/* ── Portrait wrapper (mobile original) ──────────────── */}
-      <div className="w-full max-w-[390px] flex flex-col gap-5 landscape:hidden">
+    <div className="min-h-[100dvh] w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 py-4 landscape:p-4 short-landscape:p-2">
+      {/* ── Portrait wrapper (mobile + tablet vertical) ──────── */}
+      <div className="w-full max-w-[390px] sm:max-w-[560px] flex flex-col gap-5 sm:gap-8 landscape:hidden">
         {/* Logo */}
-        <div className="flex items-center justify-between h-11">
+        <div className="flex items-center justify-between h-11 sm:h-14">
           <div className="w-11" />
-          <Km0Logo className="h-9 w-auto" />
+          <Km0Logo className="h-9 sm:h-12 w-auto" />
           <div className="w-11" />
         </div>
 
         {/* Ilustración (robot dentro del anillo turquesa) */}
         <div className="flex justify-center">
-          <div className="relative w-[230px] h-[230px] flex items-center justify-center">
+          <div className="relative w-[230px] h-[230px] sm:w-[320px] sm:h-[320px] flex items-center justify-center">
             <FloatingDots />
-            <div className="relative w-[200px] h-[200px] flex items-center justify-center">
+            <div className="relative w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] flex items-center justify-center">
               <div className="absolute inset-0 rounded-full bg-km0-teal-400/25 border-2 border-km0-blue-700" />
               <div className="absolute inset-[14%] rounded-full bg-km0-teal-500/90" />
               <img
@@ -70,12 +70,17 @@ const Index = () => {
         </div>
 
         {/* Microtítulo */}
-        <h2 className="text-center font-ui font-semibold text-base text-km0-blue-700 -mt-1">
+        <h2 className="text-center font-ui font-semibold text-base sm:text-xl text-km0-blue-700 -mt-1">
           Escoge tu idioma
         </h2>
 
         {/* Tarjetas */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 sm:gap-4
+            sm:[&_button]:py-5 sm:[&_button]:px-5
+            sm:[&_button>span:first-child]:w-14 sm:[&_button>span:first-child]:h-14
+            sm:[&_button>span:first-child>img]:w-11 sm:[&_button>span:first-child>img]:h-11
+            sm:[&_button_p:first-child]:text-xl
+            sm:[&_button_p:last-child]:text-base">
           {languages.map((lang, i) => (
             <LanguageCard
               key={lang.id}
