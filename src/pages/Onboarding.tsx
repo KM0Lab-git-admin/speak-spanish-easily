@@ -243,6 +243,8 @@ const Onboarding = () => {
               );
             })}
           </div>
+          </div>
+
 
           {/* Arrow left */}
           <button
