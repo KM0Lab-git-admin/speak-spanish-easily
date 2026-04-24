@@ -357,15 +357,15 @@ const Onboarding = () => {
       <div className="hidden landscape:flex w-full max-w-[1200px] h-full max-h-[min(95dvh,calc(100vw*9/16))] aspect-video bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col relative">
 
         {/* Header */}
-        <header className="relative flex items-center justify-center pt-5 pb-3 short-landscape:pt-2 short-landscape:pb-1 shrink-0 px-5">
+        <header className="relative flex items-center justify-center pt-3 pb-2 wide-landscape:pt-6 wide-landscape:pb-4 short-landscape:pt-2 short-landscape:pb-1 shrink-0 px-5">
           <button
             onClick={() => navigate("/")}
-            className="absolute left-5 short-landscape:left-3 top-1/2 -translate-y-1/2 w-10 h-10 short-landscape:w-8 short-landscape:h-8 flex items-center justify-center rounded-xl border-[2px] border-dashed border-km0-yellow-500 text-km0-yellow-600 hover:bg-km0-yellow-50 transition-all duration-200 hover:scale-105"
+            className="absolute left-3 wide-landscape:left-6 short-landscape:left-3 top-1/2 -translate-y-1/2 w-9 h-9 wide-landscape:w-11 wide-landscape:h-11 short-landscape:w-8 short-landscape:h-8 flex items-center justify-center rounded-xl border-[2px] border-dashed border-km0-yellow-500 text-km0-yellow-600 hover:bg-km0-yellow-50 transition-all duration-200 hover:scale-105"
             aria-label="Back"
           >
             <ChevronLeft size={20} strokeWidth={2.5} />
           </button>
-          <Km0Logo className="h-10 short-landscape:h-6 w-auto" />
+          <Km0Logo className="h-8 wide-landscape:h-12 short-landscape:h-6 w-auto" />
         </header>
 
         {/* Carousel area */}
