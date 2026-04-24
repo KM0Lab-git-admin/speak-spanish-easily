@@ -43,40 +43,45 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-start justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 pt-3 pb-6">
-      <div className="w-full max-w-[390px] flex flex-col gap-8 h-[620px]">
+    <div className="min-h-screen w-full flex items-start landscape:items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 pt-3 pb-6 landscape:py-2">
+      <div className="w-full max-w-[390px] landscape:max-w-[760px] flex flex-col gap-8 landscape:gap-3 h-[620px] landscape:h-auto">
 
         {/* ── Logo ──────────────────────────────────────────── */}
-        <div className="flex items-center justify-between h-11">
+        <div className="flex items-center justify-between h-11 landscape:h-9">
           <div className="w-11" />
-          <Km0Logo className="h-9 w-auto" />
+          <Km0Logo className="h-9 landscape:h-7 w-auto" />
           <div className="w-11" />
         </div>
 
-        {/* ── Mascota + puntos decorativos ─────────────────── */}
-        <div className="relative flex justify-center items-center h-52">
-          <FloatingDots />
-          <img
-            src={robotPlaceholder}
-            alt="KM0 LAB mascot"
-            className="h-56 w-auto object-contain animate-float drop-shadow-lg"
-          />
-        </div>
-        {/* ── Language cards ────────────────────────────────── */}
-        <div className="flex flex-col gap-3">
-          {languages.map((lang, i) => (
-            <LanguageCard
-              key={lang.id}
-              flag={lang.flag}
-              flagIsImage={lang.flagIsImage}
-              name={lang.name}
-              description={lang.description}
-              selected={selected === lang.id}
-              disabled={lang.disabled}
-              onClick={() => handleSelect(lang.id)}
-              style={{ animationDelay: `${i * 0.1}s` }}
+        {/* ── Two-column wrapper (mascot + cards) ──────────── */}
+        <div className="flex flex-col gap-8 landscape:flex-row landscape:gap-6 landscape:items-center landscape:flex-1">
+
+          {/* ── Mascota + puntos decorativos ─────────────── */}
+          <div className="relative flex justify-center items-center h-52 landscape:flex-1 landscape:h-full landscape:max-h-[280px]">
+            <FloatingDots />
+            <img
+              src={robotPlaceholder}
+              alt="KM0 LAB mascot"
+              className="h-56 landscape:h-44 w-auto object-contain animate-float drop-shadow-lg"
             />
-          ))}
+          </div>
+
+          {/* ── Language cards ───────────────────────────── */}
+          <div className="flex flex-col gap-3 landscape:gap-2 landscape:flex-1 landscape:justify-center">
+            {languages.map((lang, i) => (
+              <LanguageCard
+                key={lang.id}
+                flag={lang.flag}
+                flagIsImage={lang.flagIsImage}
+                name={lang.name}
+                description={lang.description}
+                selected={selected === lang.id}
+                disabled={lang.disabled}
+                onClick={() => handleSelect(lang.id)}
+                style={{ animationDelay: `${i * 0.1}s` }}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
