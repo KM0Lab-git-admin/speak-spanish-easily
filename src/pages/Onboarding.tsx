@@ -121,7 +121,7 @@ const Onboarding = () => {
     : lang === "ca" ? "SALTAR" : lang === "en" ? "SKIP" : "SALTAR";
 
   const trackX = containerWidth / 2 - current * SLOT - SLOT / 2;
-  const trackXLs = containerWidthLs / 2 - current * SLOT_LS - SLOT_LS / 2;
+  const trackXLs = containerWidthLs / 2 - current * slotLs - slotLs / 2;
 
   return (
     <motion.div
@@ -384,7 +384,7 @@ const Onboarding = () => {
             style={{
               transform: `translateX(${trackXLs + dragOffset}px) translateY(-50%)`,
               transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
-              width: `${total * SLOT_LS}px`,
+              width: `${total * slotLs}px`,
             }}
           >
             {slides.map((s, i) => {
@@ -398,7 +398,7 @@ const Onboarding = () => {
                   key={s.id}
                   onClick={() => !isActive && goTo(i)}
                   style={{
-                    width: `${SLOT_LS}px`,
+                    width: `${slotLs}px`,
                     paddingLeft: "10px",
                     paddingRight: "10px",
                     transform: `scale(${scale})`,
