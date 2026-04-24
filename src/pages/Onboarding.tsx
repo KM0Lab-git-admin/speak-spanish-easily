@@ -158,16 +158,23 @@ const Onboarding = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.45, delay: 0.2 }}
         >
-          {/* Sliding track */}
+          {/* Scale wrapper for tablet portrait */}
           <div
-            className="absolute top-1/2 left-1/2 flex items-start"
+            className="absolute inset-0"
             style={{
-              transform: `translate(-50%, -50%) scale(${portraitScale}) translateX(${(trackX - containerWidth / 2 + dragOffset) / portraitScale}px)`,
-              transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
-              width: `${total * SLOT}px`,
+              transform: `scale(${portraitScale})`,
               transformOrigin: "center center",
             }}
           >
+            {/* Sliding track */}
+            <div
+              className="absolute top-1/2 flex items-start"
+              style={{
+                transform: `translateX(${trackX + dragOffset / portraitScale}px) translateY(-58%)`,
+                transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
+                width: `${total * SLOT}px`,
+              }}
+            >
             {slides.map((s, i) => {
               const dist = Math.abs(i - current);
               const isActive = i === current;
