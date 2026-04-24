@@ -21,7 +21,13 @@ const getDesc = (slide: typeof slides[0], lang: Lang) => {
 };
 
 const SLOT = 260;
-const SLOT_LS = 420;
+// Slot width for landscape — adapt to viewport so 1280×550 uses wider slots than 667×375
+const getSlotLs = () => {
+  if (typeof window === "undefined") return 420;
+  const w = window.innerWidth;
+  if (w >= 1000) return 560; // wide-landscape (1280×550)
+  return 360; // short-landscape (667×375)
+};
 
 const Onboarding = () => {
   const navigate = useNavigate();
