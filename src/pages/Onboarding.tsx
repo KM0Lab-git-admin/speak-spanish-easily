@@ -107,10 +107,7 @@ const Onboarding = () => {
     : lang === "ca" ? "SALTAR" : lang === "en" ? "SKIP" : "SALTAR";
 
   const trackX = containerWidth / 2 - current * SLOT - SLOT / 2;
-  // In landscape, main card is centered and laterals peek with reduced slot
-  const SLOT_MAIN_LS = 520;
-  const SLOT_SIDE_LS = 220;
-  const trackXLs = containerWidthLs / 2 - current * (SLOT_MAIN_LS) - SLOT_MAIN_LS / 2;
+  const trackXLs = containerWidthLs / 2 - current * SLOT_LS - SLOT_LS / 2;
 
   return (
     <motion.div
