@@ -366,8 +366,8 @@ const Onboarding = () => {
             {slides.map((s, i) => {
               const dist = Math.abs(i - current);
               const isActive = i === current;
-              const scale = isActive ? 1 : dist === 1 ? 0.88 : 0.72;
-              const opacity = isActive ? 1 : dist === 1 ? 0.85 : 0.4;
+              const scale = isActive ? 1 : dist === 1 ? 0.82 : 0.7;
+              const opacity = isActive ? 1 : dist === 1 ? 0.95 : 0.35;
 
               return (
                 <div
@@ -390,44 +390,57 @@ const Onboarding = () => {
                     justifyContent: "center",
                   }}
                 >
-                  {/* Stack layers — only on active card */}
-                  {isActive && (<>
-                    <div style={{
-                      position: "absolute", bottom: "2%", left: 36, right: 36,
-                      height: 28, background: "rgba(255,255,255,0.55)",
-                      borderRadius: 20, zIndex: -1,
-                      boxShadow: "0 8px 24px -4px rgba(0,0,0,0.10)",
-                    }} />
-                    <div style={{
-                      position: "absolute", bottom: "0%", left: 56, right: 56,
-                      height: 28, background: "rgba(255,255,255,0.30)",
-                      borderRadius: 20, zIndex: -2,
-                      boxShadow: "0 8px 24px -4px rgba(0,0,0,0.06)",
-                    }} />
-                  </>)}
-                  <div className={`bg-white rounded-3xl overflow-hidden w-full h-full flex flex-col ${isActive ? "shadow-2xl" : "shadow-md"}`}>
-                    {/* Image area */}
-                    <div
-                      className="relative mx-4 mt-4 short-landscape:mx-3 short-landscape:mt-3 h-[48%] rounded-2xl flex items-center justify-center overflow-hidden shrink-0"
-                      style={{ background: s.color }}
-                    >
-                      <span className="text-[78px] short-landscape:text-[60px] select-none">{s.emoji}</span>
-                      {isActive && (
-                        <span className="absolute top-3 right-3 bg-km0-coral-400 text-white font-ui font-bold text-sm px-3 py-1 rounded-xl shadow-md">
-                          +{s.xp} XP
-                        </span>
-                      )}
-                    </div>
-                    {/* Text */}
-                    <div className="px-5 pt-4 pb-4 short-landscape:pt-2 short-landscape:pb-2 text-center flex-1 flex flex-col justify-start">
-                      <h2 className="font-brand font-bold text-xl short-landscape:text-base text-primary leading-tight mb-2 short-landscape:mb-1">
+                  {isActive ? (
+                    <>
+                      {/* Stack layers behind main card */}
+                      <div style={{
+                        position: "absolute", bottom: "2%", left: 36, right: 36,
+                        height: 28, background: "rgba(255,255,255,0.55)",
+                        borderRadius: 20, zIndex: -1,
+                        boxShadow: "0 8px 24px -4px rgba(0,0,0,0.10)",
+                      }} />
+                      <div style={{
+                        position: "absolute", bottom: "0%", left: 56, right: 56,
+                        height: 28, background: "rgba(255,255,255,0.30)",
+                        borderRadius: 20, zIndex: -2,
+                        boxShadow: "0 8px 24px -4px rgba(0,0,0,0.06)",
+                      }} />
+                      <div className="bg-white rounded-3xl overflow-hidden w-full h-full flex flex-col shadow-2xl">
+                        {/* Image area */}
+                        <div
+                          className="relative mx-4 mt-4 short-landscape:mx-3 short-landscape:mt-3 h-[55%] rounded-2xl flex items-center justify-center overflow-hidden shrink-0"
+                          style={{ background: s.color }}
+                        >
+                          <span className="text-[78px] short-landscape:text-[60px] select-none">{s.emoji}</span>
+                          <span className="absolute top-3 right-3 bg-km0-coral-400 text-white font-ui font-bold text-sm px-3 py-1 rounded-xl shadow-md">
+                            +{s.xp} XP
+                          </span>
+                        </div>
+                        {/* Text */}
+                        <div className="px-5 pt-3 pb-4 short-landscape:pt-2 short-landscape:pb-2 text-center flex-1 flex flex-col justify-center">
+                          <h2 className="font-brand font-bold text-xl short-landscape:text-base text-primary leading-tight mb-2 short-landscape:mb-1">
+                            {getTitle(s, lang)}
+                          </h2>
+                          <p className="font-body text-sm short-landscape:text-xs text-muted-foreground leading-relaxed">
+                            {getDesc(s, lang)}
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    /* Side preview — simplified */
+                    <div className="flex flex-col items-center justify-center w-[180px] short-landscape:w-[150px]">
+                      <div
+                        className="w-[160px] h-[140px] short-landscape:w-[130px] short-landscape:h-[110px] rounded-2xl flex items-center justify-center shadow-md"
+                        style={{ background: s.color }}
+                      >
+                        <span className="text-[54px] short-landscape:text-[42px] select-none opacity-90">{s.emoji}</span>
+                      </div>
+                      <p className="font-brand font-bold text-xs short-landscape:text-[10px] text-primary/80 leading-tight mt-3 text-center px-2 uppercase tracking-wide">
                         {getTitle(s, lang)}
-                      </h2>
-                      <p className="font-body text-sm short-landscape:text-xs text-muted-foreground leading-relaxed">
-                        {getDesc(s, lang)}
                       </p>
                     </div>
-                  </div>
+                  )}
                 </div>
               );
             })}
