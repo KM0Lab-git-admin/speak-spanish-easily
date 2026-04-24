@@ -67,7 +67,7 @@ const Index = () => {
           </div>
 
           {/* ── Language cards ───────────────────────────── */}
-          <div className="flex flex-col gap-3 landscape:gap-2 landscape:flex-1 landscape:justify-center">
+          <div className="flex flex-col gap-3 landscape:gap-2 landscape:flex-1 landscape:justify-center landscape:[&_button]:py-2.5 landscape:[&_button]:px-3 landscape:[&_button>span:first-child]:w-9 landscape:[&_button>span:first-child]:h-9 landscape:[&_button>span:first-child>img]:w-7 landscape:[&_button>span:first-child>img]:h-7 landscape:[&_button_p:first-child]:text-base landscape:[&_button_p:last-child]:text-xs">
             {languages.map((lang, i) => (
               <LanguageCard
                 key={lang.id}
