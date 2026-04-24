@@ -328,7 +328,7 @@ const Onboarding = () => {
       </div>
 
       {/* ── LANDSCAPE 16:9 ─────────────────────────────────── */}
-      <div className="hidden landscape:flex w-full max-w-[1200px] h-full max-h-[min(95vh,calc(100vw*9/16))] aspect-video bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col">
+      <div className="hidden landscape:flex w-full max-w-[1200px] h-full max-h-[min(95dvh,calc(100vw*9/16))] aspect-video bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col relative">
 
         {/* Header */}
         <header className="relative flex items-center justify-center pt-5 pb-3 short-landscape:pt-3 short-landscape:pb-2 shrink-0 px-5">
