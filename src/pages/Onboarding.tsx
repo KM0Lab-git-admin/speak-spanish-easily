@@ -366,8 +366,8 @@ const Onboarding = () => {
             {slides.map((s, i) => {
               const dist = Math.abs(i - current);
               const isActive = i === current;
-              const scale = isActive ? 1 : dist === 1 ? 0.82 : 0.7;
-              const opacity = isActive ? 1 : dist === 1 ? 0.95 : 0.35;
+              const scale = isActive ? 1 : dist === 1 ? 0.88 : 0.74;
+              const opacity = isActive ? 1 : dist === 1 ? 0.85 : 0.45;
 
               return (
                 <div
@@ -375,9 +375,8 @@ const Onboarding = () => {
                   onClick={() => !isActive && goTo(i)}
                   style={{
                     width: `${SLOT_LS}px`,
-                    paddingLeft: "12px",
-                    paddingRight: "12px",
-                    height: "92%",
+                    paddingLeft: "10px",
+                    paddingRight: "10px",
                     transform: `scale(${scale})`,
                     opacity,
                     transition: "transform 420ms cubic-bezier(0.4,0,0.2,1), opacity 420ms ease",
@@ -385,96 +384,80 @@ const Onboarding = () => {
                     cursor: isActive ? "default" : "pointer",
                     zIndex: isActive ? 10 : 1,
                     position: "relative",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
                   }}
                 >
-                  {isActive ? (
-                    <>
-                      {/* Stack layers behind main card */}
-                      <div style={{
-                        position: "absolute", bottom: "2%", left: 36, right: 36,
-                        height: 28, background: "rgba(255,255,255,0.55)",
-                        borderRadius: 20, zIndex: -1,
-                        boxShadow: "0 8px 24px -4px rgba(0,0,0,0.10)",
-                      }} />
-                      <div style={{
-                        position: "absolute", bottom: "0%", left: 56, right: 56,
-                        height: 28, background: "rgba(255,255,255,0.30)",
-                        borderRadius: 20, zIndex: -2,
-                        boxShadow: "0 8px 24px -4px rgba(0,0,0,0.06)",
-                      }} />
-                      <div className="bg-white rounded-3xl overflow-hidden w-full h-full flex flex-col shadow-2xl">
-                        {/* Image area */}
-                        <div
-                          className="relative mx-4 mt-4 short-landscape:mx-3 short-landscape:mt-3 h-[55%] rounded-2xl flex items-center justify-center overflow-hidden shrink-0"
-                          style={{ background: s.color }}
-                        >
-                          <span className="text-[78px] short-landscape:text-[60px] select-none">{s.emoji}</span>
-                          <span className="absolute top-3 right-3 bg-km0-coral-400 text-white font-ui font-bold text-sm px-3 py-1 rounded-xl shadow-md">
-                            +{s.xp} XP
-                          </span>
-                        </div>
-                        {/* Text */}
-                        <div className="px-5 pt-3 pb-4 short-landscape:pt-2 short-landscape:pb-2 text-center flex-1 flex flex-col justify-center">
-                          <h2 className="font-brand font-bold text-xl short-landscape:text-base text-primary leading-tight mb-2 short-landscape:mb-1">
-                            {getTitle(s, lang)}
-                          </h2>
-                          <p className="font-body text-sm short-landscape:text-xs text-muted-foreground leading-relaxed">
-                            {getDesc(s, lang)}
-                          </p>
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    /* Side preview — simplified */
-                    <div className="flex flex-col items-center justify-center w-[180px] short-landscape:w-[150px]">
-                      <div
-                        className="w-[160px] h-[140px] short-landscape:w-[130px] short-landscape:h-[110px] rounded-2xl flex items-center justify-center shadow-md"
-                        style={{ background: s.color }}
-                      >
-                        <span className="text-[54px] short-landscape:text-[42px] select-none opacity-90">{s.emoji}</span>
-                      </div>
-                      <p className="font-brand font-bold text-xs short-landscape:text-[10px] text-primary/80 leading-tight mt-3 text-center px-2 uppercase tracking-wide">
+                  {/* Stack layers — only on active card (same as vertical) */}
+                  {isActive && (<>
+                    <div style={{
+                      position: "absolute", bottom: -10, left: 32, right: 32,
+                      height: 28, background: "rgba(255,255,255,0.55)",
+                      borderRadius: 20, zIndex: -1,
+                      boxShadow: "0 8px 24px -4px rgba(0,0,0,0.10)",
+                    }} />
+                    <div style={{
+                      position: "absolute", bottom: -18, left: 52, right: 52,
+                      height: 28, background: "rgba(255,255,255,0.30)",
+                      borderRadius: 20, zIndex: -2,
+                      boxShadow: "0 8px 24px -4px rgba(0,0,0,0.06)",
+                    }} />
+                  </>)}
+                  {/* Same card structure as vertical, sized for landscape */}
+                  <div className={`bg-white rounded-3xl overflow-hidden ${isActive ? "shadow-2xl" : "shadow-none"}`}>
+                    {/* Image area */}
+                    <div
+                      className="relative mx-3 mt-3 h-[220px] short-landscape:h-[170px] rounded-2xl flex items-center justify-center overflow-hidden"
+                      style={{ background: s.color }}
+                    >
+                      <span className="text-[80px] short-landscape:text-[64px] select-none">{s.emoji}</span>
+                      {isActive && (
+                        <span className="absolute top-3 right-3 bg-km0-coral-400 text-white font-ui font-bold text-sm px-3 py-1 rounded-xl shadow-md">
+                          +{s.xp} XP
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Text */}
+                    <div className="px-4 pt-3 pb-4 short-landscape:pt-2 short-landscape:pb-3 text-center">
+                      <h2 className="font-brand font-bold text-xl short-landscape:text-base text-primary leading-tight mb-1">
                         {getTitle(s, lang)}
+                      </h2>
+                      <p className="font-body text-sm short-landscape:text-xs text-muted-foreground leading-relaxed">
+                        {getDesc(s, lang)}
                       </p>
                     </div>
-                  )}
+                  </div>
                 </div>
               );
             })}
           </div>
 
-          {/* Arrow left — aligned with main card edge */}
+          {/* Arrow left — same style as vertical */}
           <button
             onClick={prev}
             onPointerDown={(e) => e.stopPropagation()}
             disabled={isFirst}
             className={cn(
-              "absolute top-1/2 -translate-y-1/2 w-11 h-11 short-landscape:w-9 short-landscape:h-9 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+              "absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
               isFirst
                 ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
-                : "border-km0-blue-700 text-km0-blue-700 hover:bg-km0-blue-50 hover:scale-110 cursor-pointer"
+                : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
             )}
-            style={{ left: `calc(50% - ${SLOT_LS / 2}px - 22px)` }}
             aria-label="Previous"
           >
             <ChevronLeft size={20} strokeWidth={2.5} />
           </button>
 
-          {/* Arrow right — aligned with main card edge */}
+          {/* Arrow right — same style as vertical */}
           <button
             onClick={next}
             onPointerDown={(e) => e.stopPropagation()}
             disabled={isLast}
             className={cn(
-              "absolute top-1/2 -translate-y-1/2 w-11 h-11 short-landscape:w-9 short-landscape:h-9 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+              "absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
               isLast
                 ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
-                : "border-km0-blue-700 text-km0-blue-700 hover:bg-km0-blue-50 hover:scale-110 cursor-pointer"
+                : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
             )}
-            style={{ right: `calc(50% - ${SLOT_LS / 2}px - 22px)` }}
             aria-label="Next"
           >
             <ChevronRight size={20} strokeWidth={2.5} />
