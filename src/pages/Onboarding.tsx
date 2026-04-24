@@ -21,7 +21,7 @@ const getDesc = (slide: typeof slides[0], lang: Lang) => {
 };
 
 const SLOT = 260;
-const SLOT_LS = 460;
+const SLOT_LS = 420;
 
 const Onboarding = () => {
   const navigate = useNavigate();
