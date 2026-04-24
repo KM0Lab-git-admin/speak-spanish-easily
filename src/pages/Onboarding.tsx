@@ -21,6 +21,7 @@ const getDesc = (slide: typeof slides[0], lang: Lang) => {
 };
 
 const SLOT = 260;
+const SLOT_LS = 460;
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -30,12 +31,18 @@ const Onboarding = () => {
   const [current, setCurrent] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [containerWidth, setContainerWidth] = useState(390);
+  const [containerWidthLs, setContainerWidthLs] = useState(1200);
   const touchStartX = useRef<number | null>(null);
+  const touchStartXLs = useRef<number | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const carouselRefLs = useRef<HTMLDivElement>(null);
 
   const measureCarousel = useCallback(() => {
     if (carouselRef.current) {
       setContainerWidth(carouselRef.current.offsetWidth);
+    }
+    if (carouselRefLs.current) {
+      setContainerWidthLs(carouselRefLs.current.offsetWidth);
     }
   }, []);
 
