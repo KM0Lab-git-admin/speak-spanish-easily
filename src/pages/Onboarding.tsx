@@ -82,12 +82,13 @@ const Onboarding = () => {
 
   return (
     <motion.div
-      className="min-h-[100dvh] w-full flex items-stretch justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 pt-3 pb-6"
+      className="min-h-[100dvh] w-full flex items-stretch landscape:items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 pt-3 pb-6 landscape:p-4 short-landscape:p-2"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.35 }}
     >
-      <div className="w-full max-w-[390px] flex flex-col gap-3 overflow-hidden">
+      {/* ── PORTRAIT (mobile original) ─────────────────────── */}
+      <div className="w-full max-w-[390px] flex flex-col gap-3 overflow-hidden landscape:hidden">
 
         {/* ── Header ─────────────────────────────────────────── */}
         <motion.div
