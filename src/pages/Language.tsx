@@ -26,12 +26,12 @@ const Language = () => {
   return (
     <BrandedFrame>
       {/* ── PORTRAIT body ───────────────────────────────── */}
-      <div className="landscape:hidden flex-1 min-h-0 w-full max-w-[390px] sm:max-w-[560px] mx-auto flex flex-col justify-between items-stretch sm:py-4 gap-2 sm:gap-4">
+      <div className="landscape:hidden flex-1 min-h-0 w-full max-w-[390px] sm:max-w-[560px] mx-auto flex flex-col justify-around items-stretch py-2 sm:py-4 gap-3 sm:gap-4">
         {/* Robot */}
         <div className="flex justify-center shrink-0">
-          <div className="relative w-[170px] h-[170px] sm:w-[340px] sm:h-[340px] flex items-center justify-center">
+          <div className="relative w-[230px] h-[230px] sm:w-[340px] sm:h-[340px] flex items-center justify-center">
             <FloatingDots />
-            <div className="relative w-[150px] h-[150px] sm:w-[300px] sm:h-[300px] flex items-center justify-center">
+            <div className="relative w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] flex items-center justify-center">
               <div className="absolute inset-0 rounded-full bg-km0-teal-400/25 border-2 border-km0-blue-700" />
               <div className="absolute inset-[14%] rounded-full bg-km0-teal-500/90" />
               <img
@@ -43,17 +43,24 @@ const Language = () => {
           </div>
         </div>
 
-        <h2 className="text-center font-ui font-semibold text-sm sm:text-xl text-km0-blue-700 shrink-0">
+        <h2 className="text-center font-ui font-semibold text-base sm:text-xl text-km0-blue-700 shrink-0">
           Escoge tu idioma
         </h2>
 
+        {/* En vertical-mobile (375×667) reducimos altura de cards
+            (py-2 + flag más pequeña) para que las 3 quepan SIN scroll.
+            En sm+ recuperamos los tamaños originales. */}
         <div className="flex flex-col gap-2 sm:gap-4 shrink-0
-            [&_button]:py-2.5 [&_button]:px-3
-            sm:[&_button]:py-5 sm:[&_button]:px-5
-            sm:[&_button>span:first-child]:w-14 sm:[&_button>span:first-child]:h-14
-            sm:[&_button>span:first-child>img]:w-11 sm:[&_button>span:first-child>img]:h-11
-            sm:[&_button_p:first-child]:text-xl
-            sm:[&_button_p:last-child]:text-base">
+            [&_button]:!py-2 [&_button]:!gap-3
+            [&_button>span:first-child]:!w-10 [&_button>span:first-child]:!h-10
+            [&_button>span:first-child>img]:!w-7 [&_button>span:first-child>img]:!h-7
+            [&_button_p:first-child]:!text-base
+            [&_button_p:last-child]:!text-xs
+            sm:[&_button]:!py-5 sm:[&_button]:!gap-4
+            sm:[&_button>span:first-child]:!w-14 sm:[&_button>span:first-child]:!h-14
+            sm:[&_button>span:first-child>img]:!w-11 sm:[&_button>span:first-child>img]:!h-11
+            sm:[&_button_p:first-child]:!text-xl
+            sm:[&_button_p:last-child]:!text-base">
           {languages.map((lang, i) => (
             <LanguageCard
               key={lang.id}
