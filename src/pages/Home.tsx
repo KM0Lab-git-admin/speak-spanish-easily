@@ -119,25 +119,17 @@ const HomeContent = ({
           {/* Fondo del header: gradiente beige cálido. */}
           <div className="relative h-44 vertical-tablet:h-56 horizontal-desktop:h-48 bg-gradient-to-b from-km0-beige-50 to-km0-beige-100" />
 
-          {/* Skyline full-width, anclado al BORDE INFERIOR del header.
-              Sobresale por debajo y queda detrás de la banda azul de módulos
-              (la banda tiene z-10, este skyline va a z-0 dentro del frame).
-              Usamos `mask-size: 100% auto` para que ocupe todo el ancho
-              y la silueta mantenga su proporción. */}
-          <div
+          {/* Skyline full-width, posicionado en la mitad inferior del header.
+              Su base sobresale ligeramente por debajo para quedar tapada por
+              la banda azul de los módulos (que tiene z-10). */}
+          <img
+            src={skylineMalgrat}
+            alt=""
             aria-hidden
-            className="pointer-events-none absolute left-0 right-0 z-0 bg-km0-blue-700/30"
+            className="pointer-events-none absolute left-0 right-0 bottom-0 w-full h-auto z-0 opacity-50"
             style={{
-              bottom: "-2.5rem",
-              height: "8rem",
-              WebkitMaskImage: `url(${skylineMalgrat})`,
-              maskImage: `url(${skylineMalgrat})`,
-              WebkitMaskRepeat: "no-repeat",
-              maskRepeat: "no-repeat",
-              WebkitMaskPosition: "bottom center",
-              maskPosition: "bottom center",
-              WebkitMaskSize: "100% auto",
-              maskSize: "100% auto",
+              filter:
+                "brightness(0) saturate(100%) invert(18%) sepia(63%) saturate(2150%) hue-rotate(213deg) brightness(92%) contrast(95%)",
             }}
           />
 
