@@ -2,7 +2,30 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
+import HomeModules, { type HomeModule } from "@/components/HomeModules";
 import coatMalgrat from "@/assets/coat-malgrat.png";
+
+/* Demo data — mezcla activo/inactivo para validar ambos estados */
+const MODULES_3: HomeModule[] = [
+  { id: "chat", label: "KM0 CHAT", active: true },
+  { id: "punts", label: "Punts", active: true },
+  { id: "cupons", label: "Cupons", active: false },
+];
+
+const MODULES_4: HomeModule[] = [
+  { id: "chat", label: "KM0 CHAT", active: true },
+  { id: "agenda", label: "Agenda", active: true },
+  { id: "punts", label: "Punts", active: false },
+  { id: "cupons", label: "Cupons", active: true },
+];
+
+const MODULES_5: HomeModule[] = [
+  { id: "chat", label: "KM0 CHAT", active: true },
+  { id: "agenda", label: "Agenda", active: true },
+  { id: "punts", label: "Punts", active: true },
+  { id: "cupons", label: "Cupons", active: false },
+  { id: "comerc", label: "Comerç", active: true },
+];
 
 /**
  * Home — pantalla principal post-onboarding (sin registro).
@@ -43,11 +66,9 @@ const Home = () => {
           />
         </motion.header>
 
-        {/* Body — placeholder hasta que vayamos añadiendo módulos */}
-        <div className="flex-1 min-h-0 overflow-y-auto px-4 py-6">
-          <p className="font-body text-sm text-muted-foreground text-center">
-            (Aquí irán los módulos de la Home)
-          </p>
+        {/* Body — propuesta de los 3 layouts (3 / 4 / 5 módulos) */}
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-5">
+          <ModulesShowcase />
         </div>
       </div>
 
@@ -74,10 +95,8 @@ const Home = () => {
           />
         </motion.header>
 
-        <div className="flex-1 min-h-0 overflow-y-auto px-4 horizontal-desktop:px-8 py-4">
-          <p className="font-body text-sm text-muted-foreground text-center">
-            (Aquí irán los módulos de la Home)
-          </p>
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 horizontal-desktop:px-8 py-4 space-y-4">
+          <ModulesShowcase compact />
         </div>
       </div>
     </div>
@@ -136,4 +155,50 @@ const HeaderContent = ({ cityName, hasAlerts, onToggleAlerts, compact = false }:
   );
 };
 
+
+/* ─── Showcase temporal: muestra los 3 layouts a la vez ─────────
+   Permite validar visualmente las variantes 3 / 4 / 5 módulos
+   y los estados activo/inactivo. Se eliminará cuando se decida la
+   variante final y se conecte a datos reales. */
+const ModulesShowcase = ({ compact = false }: { compact?: boolean }) => (
+  <>
+    <ShowcaseGroup title="3 mòduls" subtitle="Estat ideal · fila única">
+      <HomeModules modules={MODULES_3} />
+    </ShowcaseGroup>
+    <ShowcaseGroup title="4 mòduls" subtitle="Fila única · escaneig ràpid">
+      <HomeModules modules={MODULES_4} />
+    </ShowcaseGroup>
+    <ShowcaseGroup
+      title="5 mòduls"
+      subtitle="Solució jeràrquica · primaris a dalt"
+    >
+      <HomeModules modules={MODULES_5} />
+    </ShowcaseGroup>
+    {compact ? null : null}
+  </>
+);
+
+const ShowcaseGroup = ({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle: string;
+  children: React.ReactNode;
+}) => (
+  <section className="space-y-2">
+    <header className="px-1">
+      <h2 className="font-brand text-lg font-black text-km0-blue-700 leading-none">
+        {title}
+      </h2>
+      <p className="font-body text-xs text-muted-foreground mt-0.5">
+        {subtitle}
+      </p>
+    </header>
+    {children}
+  </section>
+);
+
 export default Home;
+
