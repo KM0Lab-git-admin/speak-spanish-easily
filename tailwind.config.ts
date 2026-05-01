@@ -151,12 +151,26 @@ export default {
   plugins: [
     require("tailwindcss-animate"),
     function ({ addVariant }: { addVariant: (name: string, definition: string | string[]) => void }) {
-      // Compact landscape (e.g. 667×375): low height AND narrow width
-      addVariant("short-landscape", "@media (orientation: landscape) and (max-height: 600px) and (max-width: 999px)");
-      // Wide landscape with limited height (e.g. 1280×550): wide enough to use larger sizing
-      addVariant("wide-landscape", "@media (orientation: landscape) and (min-width: 1000px)");
-      // Tablet portrait (e.g. 768×1024)
-      addVariant("tablet-portrait", "@media (orientation: portrait) and (min-width: 700px)");
+      // ─────────────────────────────────────────────────────────────
+      // BREAKPOINTS OFICIALES — alineados 1:1 con Playwright
+      // Úsalos SIEMPRE para layout de pantallas.
+      // ─────────────────────────────────────────────────────────────
+      // vertical-mobile     → 375 × 667   (también es la base sin prefijo)
+      // vertical-tablet     → 768 × 1024
+      // horizontal-mobile   → 667 × 375
+      // horizontal-desktop  → 1280 × 550
+      addVariant("vertical-mobile",    "@media (orientation: portrait)  and (max-width: 767px)");
+      addVariant("vertical-tablet",    "@media (orientation: portrait)  and (min-width: 768px)");
+      addVariant("horizontal-mobile",  "@media (orientation: landscape) and (max-width: 999px)");
+      addVariant("horizontal-desktop", "@media (orientation: landscape) and (min-width: 1000px)");
+
+      // ─────────────────────────────────────────────────────────────
+      // ALIASES DEPRECADOS (mantener hasta migrar todas las pantallas)
+      // No usar en código nuevo. Equivalen a los oficiales de arriba.
+      // ─────────────────────────────────────────────────────────────
+      addVariant("short-landscape", "@media (orientation: landscape) and (max-width: 999px)");        // = horizontal-mobile
+      addVariant("wide-landscape",  "@media (orientation: landscape) and (min-width: 1000px)");       // = horizontal-desktop
+      addVariant("tablet-portrait", "@media (orientation: portrait)  and (min-width: 768px)");        // = vertical-tablet
     },
   ],
 } satisfies Config;
