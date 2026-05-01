@@ -4,7 +4,7 @@ import { UserRound, UserRoundPlus, ChevronRight, ArrowRight, Home as HomeIcon, I
 import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
 import HomeModules, { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
-import heroMalgrat from "@/assets/hero-malgrat.jpg";
+import skylineMalgrat from "@/assets/skyline-malgrat.png";
 import coatMalgrat from "@/assets/coat-malgrat.png";
 import { cn } from "@/lib/utils";
 
@@ -116,22 +116,27 @@ const HomeContent = ({
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
         >
-          {/* Imagen de fondo — discreta, sólo evoca el lugar sin robar protagonismo.
-              Capa beige por encima + opacity baja para que el texto y la card de
-              módulos respiren. */}
-          <div className="relative h-44 vertical-tablet:h-56 horizontal-desktop:h-48 overflow-hidden bg-km0-beige-50">
-            <img
-              src={heroMalgrat}
-              alt=""
+          {/* Skyline de Malgrat de Mar — silueta como atmósfera del lugar.
+              La PNG es negra; usamos `mask-image` para teñirla con el azul
+              institucional KM0 (no protagonismo, solo identidad). */}
+          <div className="relative h-44 vertical-tablet:h-56 horizontal-desktop:h-48 overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100">
+            {/* Silueta teñida en azul, anclada al borde inferior */}
+            <div
               aria-hidden
-              className="w-full h-full object-cover object-bottom opacity-40"
-              width={1536}
-              height={896}
+              className="absolute inset-x-0 bottom-0 h-28 vertical-tablet:h-36 horizontal-desktop:h-32 bg-km0-blue-700/30"
+              style={{
+                WebkitMaskImage: `url(${skylineMalgrat})`,
+                maskImage: `url(${skylineMalgrat})`,
+                WebkitMaskRepeat: "no-repeat",
+                maskRepeat: "no-repeat",
+                WebkitMaskPosition: "bottom center",
+                maskPosition: "bottom center",
+                WebkitMaskSize: "contain",
+                maskSize: "contain",
+              }}
             />
-            {/* Velo beige cálido para integrar con el resto del fondo */}
-            <div className="absolute inset-0 bg-km0-beige-50/40 pointer-events-none" />
             {/* Degradado inferior — funde con el fondo donde monta la card de módulos */}
-            <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-km0-beige-50 pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-km0-beige-50 pointer-events-none" />
           </div>
 
           {/* Overlay: escudo + nombre + logo arriba-izquierda, campana arriba-derecha */}
