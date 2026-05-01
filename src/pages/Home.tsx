@@ -63,9 +63,9 @@ const Home = () => {
           />
         </motion.header>
 
-        {/* Body — propuesta de los 3 layouts (3 / 4 / 5 módulos) */}
-        <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-5">
-          <ModulesShowcase />
+        {/* Body — 3 módulos clicables (toggle activo/inactivo) */}
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4">
+          <HomeModules modules={modulesWithHandlers} />
         </div>
       </div>
 
@@ -92,8 +92,8 @@ const Home = () => {
           />
         </motion.header>
 
-        <div className="flex-1 min-h-0 overflow-y-auto px-4 horizontal-desktop:px-8 py-4 space-y-4">
-          <ModulesShowcase compact />
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 horizontal-desktop:px-8 py-4">
+          <HomeModules modules={modulesWithHandlers} />
         </div>
       </div>
     </div>
@@ -153,49 +153,7 @@ const HeaderContent = ({ cityName, hasAlerts, onToggleAlerts, compact = false }:
 };
 
 
-/* ─── Showcase temporal: muestra los 3 layouts a la vez ─────────
-   Permite validar visualmente las variantes 3 / 4 / 5 módulos
-   y los estados activo/inactivo. Se eliminará cuando se decida la
-   variante final y se conecte a datos reales. */
-const ModulesShowcase = ({ compact = false }: { compact?: boolean }) => (
-  <>
-    <ShowcaseGroup title="3 mòduls" subtitle="Estat ideal · fila única">
-      <HomeModules modules={MODULES_3} />
-    </ShowcaseGroup>
-    <ShowcaseGroup title="4 mòduls" subtitle="Fila única · escaneig ràpid">
-      <HomeModules modules={MODULES_4} />
-    </ShowcaseGroup>
-    <ShowcaseGroup
-      title="5 mòduls"
-      subtitle="Solució jeràrquica · primaris a dalt"
-    >
-      <HomeModules modules={MODULES_5} />
-    </ShowcaseGroup>
-    {compact ? null : null}
-  </>
-);
 
-const ShowcaseGroup = ({
-  title,
-  subtitle,
-  children,
-}: {
-  title: string;
-  subtitle: string;
-  children: React.ReactNode;
-}) => (
-  <section className="space-y-2">
-    <header className="px-1">
-      <h2 className="font-brand text-lg font-black text-km0-blue-700 leading-none">
-        {title}
-      </h2>
-      <p className="font-body text-xs text-muted-foreground mt-0.5">
-        {subtitle}
-      </p>
-    </header>
-    {children}
-  </section>
-);
 
 export default Home;
 
