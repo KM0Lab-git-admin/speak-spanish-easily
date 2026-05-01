@@ -116,29 +116,30 @@ const HomeContent = ({
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
         >
-          {/* Skyline de Malgrat de Mar — silueta como atmósfera del lugar.
-              La PNG es negra; usamos `mask-image` para teñirla con el azul
-              institucional KM0 (no protagonismo, solo identidad). */}
-          <div className="relative h-44 vertical-tablet:h-56 horizontal-desktop:h-48 overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100">
-            {/* Silueta teñida en azul, anclada al borde SUPERIOR.
-                Queda detrás del título "Malgrat de Mar" (z-index implícito menor). */}
-            <div
-              aria-hidden
-              className="absolute inset-x-0 top-0 h-28 vertical-tablet:h-36 horizontal-desktop:h-32 bg-km0-blue-700/30"
-              style={{
-                WebkitMaskImage: `url(${skylineMalgrat})`,
-                maskImage: `url(${skylineMalgrat})`,
-                WebkitMaskRepeat: "no-repeat",
-                maskRepeat: "no-repeat",
-                WebkitMaskPosition: "top center",
-                maskPosition: "top center",
-                WebkitMaskSize: "contain",
-                maskSize: "contain",
-              }}
-            />
-            {/* Degradado inferior — funde con el fondo donde monta la card de módulos */}
-            <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-km0-beige-50 pointer-events-none" />
-          </div>
+          {/* Fondo del header: gradiente beige cálido. */}
+          <div className="relative h-44 vertical-tablet:h-56 horizontal-desktop:h-48 bg-gradient-to-b from-km0-beige-50 to-km0-beige-100" />
+
+          {/* Skyline full-width, anclado al BORDE INFERIOR del header.
+              Sobresale por debajo y queda detrás de la banda azul de módulos
+              (la banda tiene z-10, este skyline va a z-0 dentro del frame).
+              Usamos `mask-size: 100% auto` para que ocupe todo el ancho
+              y la silueta mantenga su proporción. */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-0 right-0 z-0 bg-km0-blue-700/30"
+            style={{
+              bottom: "-2.5rem",
+              height: "8rem",
+              WebkitMaskImage: `url(${skylineMalgrat})`,
+              maskImage: `url(${skylineMalgrat})`,
+              WebkitMaskRepeat: "no-repeat",
+              maskRepeat: "no-repeat",
+              WebkitMaskPosition: "bottom center",
+              maskPosition: "bottom center",
+              WebkitMaskSize: "100% auto",
+              maskSize: "100% auto",
+            }}
+          />
 
           {/* Overlay: escudo + nombre + logo arriba-izquierda, campana arriba-derecha */}
           <div className="absolute inset-x-0 top-0 flex items-start justify-between px-4 pt-4 gap-3">
