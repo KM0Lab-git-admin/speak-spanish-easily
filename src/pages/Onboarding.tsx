@@ -407,7 +407,7 @@ const Onboarding = () => {
                       className="relative mx-3 mt-3 wide-landscape:mx-3 wide-landscape:mt-3 short-landscape:mx-2 short-landscape:mt-2 h-[200px] wide-landscape:h-[300px] short-landscape:h-[120px] rounded-2xl flex items-center justify-center overflow-hidden"
                       style={{ background: s.color }}
                     >
-                      <span className="text-[80px] wide-landscape:text-[88px] horizontal-desktop:text-[120px] short-landscape:text-[52px] select-none">{s.emoji}</span>
+                      <span className="text-[80px] wide-landscape:text-[120px] short-landscape:text-[52px] select-none">{s.emoji}</span>
                       {isActive && (
                         <span className="absolute top-3 right-3 wide-landscape:top-3 wide-landscape:right-3 short-landscape:top-1.5 short-landscape:right-1.5 bg-km0-coral-400 text-white font-ui font-bold text-sm wide-landscape:text-sm short-landscape:text-[10px] px-3 py-1 wide-landscape:px-3 wide-landscape:py-1 short-landscape:px-2 short-landscape:py-0.5 rounded-xl shadow-md">
                           +{s.xp} XP
