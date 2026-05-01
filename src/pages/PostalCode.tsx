@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { MapPin, AlertTriangle, Loader2 } from "lucide-react";
+import { MapPin, MapPinOff, AlertTriangle, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BrandedFrame from "@/components/BrandedFrame";
 import cityMap from "@/assets/km0_city_map.png";
