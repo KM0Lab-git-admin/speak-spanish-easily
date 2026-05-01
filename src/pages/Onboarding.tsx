@@ -404,10 +404,10 @@ const Onboarding = () => {
                   <div className={`bg-white rounded-3xl overflow-hidden ${isActive ? "shadow-2xl" : "shadow-none"}`}>
                     {/* Image area */}
                     <div
-                      className="relative mx-3 mt-3 wide-landscape:mx-3 wide-landscape:mt-3 short-landscape:mx-2 short-landscape:mt-2 h-[200px] wide-landscape:h-[210px] short-landscape:h-[120px] rounded-2xl flex items-center justify-center overflow-hidden"
+                      className="relative mx-3 mt-3 wide-landscape:mx-3 wide-landscape:mt-3 short-landscape:mx-2 short-landscape:mt-2 h-[200px] wide-landscape:h-[300px] short-landscape:h-[120px] rounded-2xl flex items-center justify-center overflow-hidden"
                       style={{ background: s.color }}
                     >
-                      <span className="text-[80px] wide-landscape:text-[88px] short-landscape:text-[52px] select-none">{s.emoji}</span>
+                      <span className="text-[80px] wide-landscape:text-[120px] short-landscape:text-[52px] select-none">{s.emoji}</span>
                       {isActive && (
                         <span className="absolute top-3 right-3 wide-landscape:top-3 wide-landscape:right-3 short-landscape:top-1.5 short-landscape:right-1.5 bg-km0-coral-400 text-white font-ui font-bold text-sm wide-landscape:text-sm short-landscape:text-[10px] px-3 py-1 wide-landscape:px-3 wide-landscape:py-1 short-landscape:px-2 short-landscape:py-0.5 rounded-xl shadow-md">
                           +{s.xp} XP
@@ -416,11 +416,11 @@ const Onboarding = () => {
                     </div>
 
                     {/* Text */}
-                    <div className="px-4 pt-3 pb-4 wide-landscape:px-5 wide-landscape:pt-3 wide-landscape:pb-4 short-landscape:px-3 short-landscape:pt-2 short-landscape:pb-3 text-center">
-                      <h2 className="font-brand font-bold text-lg wide-landscape:text-lg short-landscape:text-sm text-primary leading-tight mb-1 wide-landscape:mb-1 short-landscape:mb-0.5">
+                    <div className="px-4 pt-3 pb-4 wide-landscape:px-6 wide-landscape:pt-5 wide-landscape:pb-6 short-landscape:px-3 short-landscape:pt-2 short-landscape:pb-3 text-center">
+                      <h2 className="font-brand font-bold text-lg wide-landscape:text-2xl short-landscape:text-sm text-primary leading-tight mb-1 wide-landscape:mb-2 short-landscape:mb-0.5">
                         {getTitle(s, lang)}
                       </h2>
-                      <p className="font-body text-sm wide-landscape:text-sm short-landscape:text-[11px] text-muted-foreground leading-relaxed wide-landscape:leading-snug short-landscape:leading-snug">
+                      <p className="font-body text-sm wide-landscape:text-base short-landscape:text-[11px] text-muted-foreground leading-relaxed wide-landscape:leading-snug short-landscape:leading-snug">
                         {getDesc(s, lang)}
                       </p>
                     </div>
