@@ -404,23 +404,23 @@ const Onboarding = () => {
                   <div className={`bg-white rounded-3xl overflow-hidden ${isActive ? "shadow-2xl" : "shadow-none"}`}>
                     {/* Image area */}
                     <div
-                      className="relative mx-3 mt-3 wide-landscape:mx-3 wide-landscape:mt-3 short-landscape:mx-2 short-landscape:mt-2 h-[200px] wide-landscape:h-[300px] short-landscape:h-[120px] rounded-2xl flex items-center justify-center overflow-hidden"
+                      className="relative mx-3 mt-3 wide-landscape:mx-3 wide-landscape:mt-3 h-[200px] wide-landscape:h-[300px] short-landscape:mx-[clamp(0.5rem,1.2vw,0.75rem)] short-landscape:mt-[clamp(0.5rem,1.2vw,0.75rem)] short-landscape:h-[clamp(120px,32vh,260px)] rounded-2xl flex items-center justify-center overflow-hidden"
                       style={{ background: s.color }}
                     >
-                      <span className="text-[80px] wide-landscape:text-[120px] short-landscape:text-[52px] select-none">{s.emoji}</span>
+                      <span className="text-[80px] wide-landscape:text-[120px] short-landscape:text-[clamp(52px,10vh,96px)] select-none">{s.emoji}</span>
                       {isActive && (
-                        <span className="absolute top-3 right-3 wide-landscape:top-3 wide-landscape:right-3 short-landscape:top-1.5 short-landscape:right-1.5 bg-km0-coral-400 text-white font-ui font-bold text-sm wide-landscape:text-sm short-landscape:text-[10px] px-3 py-1 wide-landscape:px-3 wide-landscape:py-1 short-landscape:px-2 short-landscape:py-0.5 rounded-xl shadow-md">
+                        <span className="absolute top-3 right-3 wide-landscape:top-3 wide-landscape:right-3 short-landscape:top-1.5 short-landscape:right-1.5 bg-km0-coral-400 text-white font-ui font-bold text-sm wide-landscape:text-sm short-landscape:text-[clamp(10px,1.4vh,14px)] px-3 py-1 wide-landscape:px-3 wide-landscape:py-1 short-landscape:px-2 short-landscape:py-0.5 rounded-xl shadow-md">
                           +{s.xp} XP
                         </span>
                       )}
                     </div>
 
                     {/* Text */}
-                    <div className="px-4 pt-3 pb-4 wide-landscape:px-6 wide-landscape:pt-5 wide-landscape:pb-6 short-landscape:px-3 short-landscape:pt-2 short-landscape:pb-3 text-center">
-                      <h2 className="font-brand font-bold text-lg wide-landscape:text-2xl short-landscape:text-sm text-primary leading-tight mb-1 wide-landscape:mb-2 short-landscape:mb-0.5">
+                    <div className="px-4 pt-3 pb-4 wide-landscape:px-6 wide-landscape:pt-5 wide-landscape:pb-6 short-landscape:px-[clamp(0.75rem,1.6vw,1.25rem)] short-landscape:pt-[clamp(0.5rem,1.2vh,1rem)] short-landscape:pb-[clamp(0.75rem,1.6vh,1.25rem)] text-center">
+                      <h2 className="font-brand font-bold text-lg wide-landscape:text-2xl short-landscape:text-[clamp(0.875rem,2.2vh,1.25rem)] text-primary leading-tight mb-1 wide-landscape:mb-2 short-landscape:mb-[clamp(0.125rem,0.6vh,0.5rem)]">
                         {getTitle(s, lang)}
                       </h2>
-                      <p className="font-body text-sm wide-landscape:text-base short-landscape:text-[11px] text-muted-foreground leading-relaxed wide-landscape:leading-snug short-landscape:leading-snug">
+                      <p className="font-body text-sm wide-landscape:text-base short-landscape:text-[clamp(0.6875rem,1.6vh,0.9375rem)] text-muted-foreground leading-relaxed wide-landscape:leading-snug short-landscape:leading-snug">
                         {getDesc(s, lang)}
                       </p>
                     </div>
