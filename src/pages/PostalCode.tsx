@@ -132,8 +132,14 @@ const PostalCode = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.3 }}
         >
-          <div className="flex items-center gap-3 bg-white rounded-2xl border border-km0-beige-200 px-4 py-3.5 shadow-sm focus-within:border-km0-teal-400 transition-colors">
-            <MapPin className="text-km0-teal-500 shrink-0" size={22} />
+          <div className={`flex items-center gap-3 rounded-2xl border px-4 py-3.5 shadow-sm transition-colors ${
+            showNotFound || showError
+              ? "bg-destructive/5 border-destructive/50 focus-within:border-destructive"
+              : "bg-white border-km0-beige-200 focus-within:border-km0-teal-400"
+          }`}>
+            {showNotFound || showError
+              ? <MapPinOff className="text-destructive shrink-0" size={22} />
+              : <MapPin className="text-km0-teal-500 shrink-0" size={22} />}
             <input
               type="text" inputMode="numeric" pattern="[0-9]*" maxLength={5}
               placeholder={t.placeholder} value={value} onChange={handleChange}
