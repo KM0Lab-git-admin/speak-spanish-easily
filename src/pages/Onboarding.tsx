@@ -416,11 +416,11 @@ const Onboarding = () => {
                     </div>
 
                     {/* Text */}
-                    <div className="px-4 pt-3 pb-4 wide-landscape:px-5 wide-landscape:pt-3 wide-landscape:pb-4 short-landscape:px-3 short-landscape:pt-2 short-landscape:pb-3 text-center">
-                      <h2 className="font-brand font-bold text-lg wide-landscape:text-lg short-landscape:text-sm text-primary leading-tight mb-1 wide-landscape:mb-1 short-landscape:mb-0.5">
+                    <div className="px-4 pt-3 pb-4 wide-landscape:px-5 wide-landscape:pt-3 wide-landscape:pb-4 horizontal-desktop:px-6 horizontal-desktop:pt-5 horizontal-desktop:pb-6 short-landscape:px-3 short-landscape:pt-2 short-landscape:pb-3 text-center">
+                      <h2 className="font-brand font-bold text-lg wide-landscape:text-lg horizontal-desktop:text-2xl short-landscape:text-sm text-primary leading-tight mb-1 wide-landscape:mb-1 horizontal-desktop:mb-2 short-landscape:mb-0.5">
                         {getTitle(s, lang)}
                       </h2>
-                      <p className="font-body text-sm wide-landscape:text-sm short-landscape:text-[11px] text-muted-foreground leading-relaxed wide-landscape:leading-snug short-landscape:leading-snug">
+                      <p className="font-body text-sm wide-landscape:text-sm horizontal-desktop:text-base short-landscape:text-[11px] text-muted-foreground leading-relaxed wide-landscape:leading-snug short-landscape:leading-snug">
                         {getDesc(s, lang)}
                       </p>
                     </div>
