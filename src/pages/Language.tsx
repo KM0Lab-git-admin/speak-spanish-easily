@@ -29,9 +29,9 @@ const Language = () => {
       <div className="landscape:hidden flex-1 min-h-0 w-full max-w-[390px] sm:max-w-[560px] mx-auto flex flex-col justify-around items-stretch py-2 sm:py-4 gap-3 sm:gap-4">
         {/* Robot */}
         <div className="flex justify-center shrink-0">
-          <div className="relative w-[170px] h-[170px] sm:w-[340px] sm:h-[340px] flex items-center justify-center">
+          <div className="relative w-[230px] h-[230px] sm:w-[340px] sm:h-[340px] flex items-center justify-center">
             <FloatingDots />
-            <div className="relative w-[150px] h-[150px] sm:w-[300px] sm:h-[300px] flex items-center justify-center">
+            <div className="relative w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] flex items-center justify-center">
               <div className="absolute inset-0 rounded-full bg-km0-teal-400/25 border-2 border-km0-blue-700" />
               <div className="absolute inset-[14%] rounded-full bg-km0-teal-500/90" />
               <img
