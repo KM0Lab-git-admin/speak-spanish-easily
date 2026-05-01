@@ -404,7 +404,7 @@ const Onboarding = () => {
                   <div className={`bg-white rounded-3xl overflow-hidden ${isActive ? "shadow-2xl" : "shadow-none"}`}>
                     {/* Image area */}
                     <div
-                      className="relative mx-3 mt-3 wide-landscape:mx-3 wide-landscape:mt-3 short-landscape:mx-2 short-landscape:mt-2 h-[200px] wide-landscape:h-[210px] horizontal-desktop:h-[300px] short-landscape:h-[120px] rounded-2xl flex items-center justify-center overflow-hidden"
+                      className="relative mx-3 mt-3 wide-landscape:mx-3 wide-landscape:mt-3 short-landscape:mx-2 short-landscape:mt-2 h-[200px] wide-landscape:h-[300px] short-landscape:h-[120px] rounded-2xl flex items-center justify-center overflow-hidden"
                       style={{ background: s.color }}
                     >
                       <span className="text-[80px] wide-landscape:text-[88px] horizontal-desktop:text-[120px] short-landscape:text-[52px] select-none">{s.emoji}</span>
