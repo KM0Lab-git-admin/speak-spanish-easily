@@ -92,7 +92,7 @@ const PostalCode = () => {
   return (
     <BrandedFrame onBack={() => navigate(-1)} backAriaLabel="Back">
       {/* ── PORTRAIT ─────────────────────────────────────── */}
-      <div className="w-full max-w-[390px] sm:max-w-[460px] mx-auto flex flex-col gap-6 landscape:hidden flex-1 min-h-0 py-2">
+      <div className="w-full max-w-[390px] sm:max-w-[460px] mx-auto flex flex-col gap-6 vertical-mobile:gap-7 landscape:hidden flex-1 min-h-0 py-2">
 
         {/* City illustration */}
         <motion.div
@@ -106,7 +106,7 @@ const PostalCode = () => {
 
         {/* Title / City name */}
         <motion.div
-          className="text-center px-2 h-[52px] flex items-center justify-center"
+          className="text-center px-2 min-h-[52px] flex items-center justify-center"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.25 }}
@@ -117,8 +117,8 @@ const PostalCode = () => {
             </motion.div>
           ) : (
             <motion.div key="default" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.25 }}>
-              <h1 className="font-brand font-bold text-2xl text-primary leading-tight mb-1">{t.title}</h1>
-              <p className="font-body text-sm text-muted-foreground">{t.subtitle}</p>
+              <h1 className="font-brand font-bold text-2xl text-primary leading-tight mb-2 vertical-mobile:mb-3">{t.title}</h1>
+              <p className="font-body text-sm text-muted-foreground leading-relaxed">{t.subtitle}</p>
             </motion.div>
           )}
         </motion.div>
