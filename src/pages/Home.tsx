@@ -118,7 +118,7 @@ const HomeContent = ({
         >
           {/* Fondo del header: gradiente beige cálido. Su altura se adapta a la
               proporción real del skyline (≈1920x720 → aspect-[8/3]). */}
-          <div className="relative w-full aspect-[8/3] bg-km0-yellow-400 my-[10px]" />
+          <div className="relative w-full aspect-[8/3] bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 my-[10px]" />
 
           {/* Skyline full-width de Malgrat, anclado al borde inferior del header.
               Su base sobresale ligeramente para quedar tapada por la banda azul
