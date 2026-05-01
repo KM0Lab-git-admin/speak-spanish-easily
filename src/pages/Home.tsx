@@ -5,6 +5,7 @@ import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
 import HomeModules, { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
 import heroMalgrat from "@/assets/hero-malgrat.jpg";
+import coatMalgrat from "@/assets/coat-malgrat.png";
 import { cn } from "@/lib/utils";
 
 /* Módulos demo — cada uno togglea su estado activo/inactivo al click. */
@@ -115,27 +116,39 @@ const HomeContent = ({
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
         >
-          {/* Imagen + degradado inferior para integrar con la card que monta encima */}
-          <div className="relative h-44 vertical-tablet:h-56 horizontal-desktop:h-48 overflow-hidden">
+          {/* Imagen de fondo — discreta, sólo evoca el lugar sin robar protagonismo.
+              Capa beige por encima + opacity baja para que el texto y la card de
+              módulos respiren. */}
+          <div className="relative h-44 vertical-tablet:h-56 horizontal-desktop:h-48 overflow-hidden bg-km0-beige-50">
             <img
               src={heroMalgrat}
-              alt={`Vista panorámica de ${cityName}`}
-              className="w-full h-full object-cover object-bottom"
+              alt=""
+              aria-hidden
+              className="w-full h-full object-cover object-bottom opacity-40"
               width={1536}
               height={896}
             />
-            {/* Degradado sutil hacia el fondo beige inferior */}
-            <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-km0-beige-50 pointer-events-none" />
+            {/* Velo beige cálido para integrar con el resto del fondo */}
+            <div className="absolute inset-0 bg-km0-beige-50/40 pointer-events-none" />
+            {/* Degradado inferior — funde con el fondo donde monta la card de módulos */}
+            <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-km0-beige-50 pointer-events-none" />
           </div>
 
-          {/* Overlay: Nombre + logo arriba-izquierda, campana arriba-derecha */}
-          <div className="absolute inset-x-0 top-0 flex items-start justify-between px-4 pt-4">
-            <div className="flex flex-col leading-none">
-              <h1 className="font-brand text-2xl vertical-tablet:text-3xl font-black text-km0-blue-700 drop-shadow-[0_1px_2px_hsl(0_0%_100%/0.6)]">
-                {cityName}
-              </h1>
-              <div className="flex items-center mt-1.5">
-                <Km0Logo className="h-4 vertical-tablet:h-5 w-auto drop-shadow-[0_1px_2px_hsl(0_0%_100%/0.6)]" />
+          {/* Overlay: escudo + nombre + logo arriba-izquierda, campana arriba-derecha */}
+          <div className="absolute inset-x-0 top-0 flex items-start justify-between px-4 pt-4 gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+              <img
+                src={coatMalgrat}
+                alt={`Escudo de ${cityName}`}
+                className="w-12 h-12 vertical-tablet:w-14 vertical-tablet:h-14 object-contain shrink-0 drop-shadow-[0_2px_4px_hsl(0_0%_100%/0.5)]"
+              />
+              <div className="flex flex-col leading-none min-w-0">
+                <h1 className="font-brand text-2xl vertical-tablet:text-3xl font-black text-km0-blue-700 truncate">
+                  {cityName}
+                </h1>
+                <div className="flex items-center mt-1.5">
+                  <Km0Logo className="h-4 vertical-tablet:h-5 w-auto" />
+                </div>
               </div>
             </div>
 
@@ -143,7 +156,7 @@ const HomeContent = ({
               hasAlerts={hasAlerts}
               onClick={onToggleAlerts}
               ariaLabel={hasAlerts ? "Tienes notificaciones nuevas" : "Sin notificaciones"}
-              className="bg-white/80 backdrop-blur-sm shadow-sm"
+              className="shrink-0"
             />
           </div>
         </motion.section>
