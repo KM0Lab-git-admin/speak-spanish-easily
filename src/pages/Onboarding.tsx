@@ -130,34 +130,9 @@ const Onboarding = () => {
   const trackXLs = containerWidthLs / 2 - current * slotLs - slotLs / 2;
 
   return (
-    <motion.div
-      className="min-h-[100dvh] w-full flex items-stretch landscape:items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 px-4 pt-3 pb-6 landscape:p-4 short-landscape:p-2"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.35 }}
-    >
+    <BrandedFrame onBack={() => navigate("/")} backAriaLabel="Back">
       {/* ── PORTRAIT (mobile original) ─────────────────────── */}
-      <div className="w-full max-w-[390px] sm:max-w-[460px] flex flex-col gap-3 sm:gap-5 overflow-hidden landscape:hidden py-2 sm:py-6">
-
-        {/* ── Header ─────────────────────────────────────────── */}
-        <motion.div
-          className="flex items-center justify-between"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-        >
-          <div className="flex-1 flex justify-start">
-            <button
-              onClick={() => navigate("/")}
-              className="w-11 h-11 flex items-center justify-center rounded-xl border-[2px] border-dashed border-km0-yellow-500 text-km0-yellow-600 hover:bg-km0-yellow-50 transition-all duration-200 hover:scale-105"
-              aria-label="Back"
-            >
-              <ChevronLeft size={22} strokeWidth={2.5} />
-            </button>
-          </div>
-          <Km0Logo className="h-9 w-auto" />
-          <div className="flex-1" />
-        </motion.div>
+      <div className="w-full max-w-[390px] sm:max-w-[460px] mx-auto flex flex-col gap-3 sm:gap-5 overflow-hidden landscape:hidden flex-1 min-h-0 py-2 sm:py-4">
 
         {/* ── Carousel ───────────────────────────────────────── */}
         <motion.div
