@@ -334,24 +334,12 @@ const Onboarding = () => {
       </div>
 
       {/* ── LANDSCAPE 16:9 ─────────────────────────────────── */}
-      <div className="hidden landscape:flex w-full max-w-[1200px] h-full max-h-[min(95dvh,calc(100vw*9/16))] aspect-video bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col relative">
-
-        {/* Header */}
-        <header className="relative flex items-center justify-center pt-3 pb-2 wide-landscape:pt-3 wide-landscape:pb-2 short-landscape:pt-2 short-landscape:pb-1 shrink-0 px-5">
-          <button
-            onClick={() => navigate("/")}
-            className="absolute left-3 wide-landscape:left-4 short-landscape:left-3 top-1/2 -translate-y-1/2 w-9 h-9 wide-landscape:w-9 wide-landscape:h-9 short-landscape:w-8 short-landscape:h-8 flex items-center justify-center rounded-xl border-[2px] border-dashed border-km0-yellow-500 text-km0-yellow-600 hover:bg-km0-yellow-50 transition-all duration-200 hover:scale-105"
-            aria-label="Back"
-          >
-            <ChevronLeft size={20} strokeWidth={2.5} />
-          </button>
-          <Km0Logo className="h-8 wide-landscape:h-8 short-landscape:h-6 w-auto" />
-        </header>
+      <div className="hidden landscape:flex w-full flex-1 min-h-0 flex-col relative">
 
         {/* Carousel area */}
         <motion.div
           ref={carouselRefLs}
-          className="relative flex-1 min-h-0 overflow-visible select-none cursor-grab active:cursor-grabbing px-12 short-landscape:px-10"
+          className="relative flex-1 min-h-0 overflow-visible select-none cursor-grab active:cursor-grabbing px-12 horizontal-mobile:px-10"
           style={{ touchAction: "none" }}
           onPointerDown={handlePointerDownLs}
           onPointerMove={handlePointerMoveLs}
