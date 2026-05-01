@@ -353,9 +353,9 @@ const Onboarding = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.45, delay: 0.2 }}
         >
-          {/* Sliding track */}
+          {/* Sliding track — left:50% + translateX centra geométricamente */}
           <div
-            className="absolute top-1/2 flex items-center"
+            className="absolute top-1/2 left-1/2 flex items-center"
             style={{
               transform: `translateX(${trackXLs + dragOffset}px) translateY(-50%)`,
               transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
