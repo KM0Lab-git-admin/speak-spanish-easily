@@ -112,8 +112,10 @@ const PostalCode = () => {
           transition={{ duration: 0.4, delay: 0.25 }}
         >
           {cityName ? (
-            <motion.div key="city" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.35 }}>
-              <h1 className="font-brand font-medium text-3xl text-km0-teal-600 leading-tight">📍 {cityName}</h1>
+            <motion.div key="city" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.35 }} className="w-full px-2">
+              <h1 className="font-brand font-medium text-xl vertical-mobile:text-2xl text-km0-teal-600 leading-tight text-center break-words">
+                <span className="mr-1">📍</span>{cityName}
+              </h1>
             </motion.div>
           ) : (
             <motion.div key="default" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.25 }}>
