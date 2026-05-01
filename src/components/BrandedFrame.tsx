@@ -65,23 +65,43 @@ const BrandedFrame = ({
   return (
     <div className="min-h-[100dvh] w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 p-3 sm:p-4">
       {/* ── PORTRAIT (vertical-mobile + vertical-tablet) ─────── */}
-      <div className="landscape:hidden w-full max-w-[560px] h-full max-h-[calc(100dvh-1.5rem)] sm:max-h-[calc(100dvh-2rem)] flex flex-col bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden">
+      {/*
+        Card de tamaño FIJO simulando un móvil (ratio 9:19.5 ≈ iPhone).
+        El alto se calcula SOLO en función del viewport (min entre alto
+        disponible y ancho * ratio), nunca del contenido. Así el marco
+        y el logo quedan siempre en la misma posición exacta entre
+        pantallas. Si el contenido no cabe, hace scroll INTERNO en el
+        body — pero el frame no se deforma.
+      */}
+      <div className="landscape:hidden flex flex-col bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden"
+        style={{
+          width: "min(calc(100vw - 1.5rem), calc((100dvh - 1.5rem) * 9 / 19.5), 420px)",
+          height: "min(calc(100dvh - 1.5rem), calc((100vw - 1.5rem) * 19.5 / 9), calc(420px * 19.5 / 9))",
+        }}
+      >
         {/* Header — logo centrado a altura fija. Back absolute para no descentrar. */}
-        <header className="relative shrink-0 flex items-center justify-center pt-4 sm:pt-6 pb-3 sm:pb-4 px-4">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2">
-            {renderBackButton("left-0 w-11 h-11", 22)}
-          </div>
-          <Km0Logo className="h-9 sm:h-12 w-auto" />
+        <header className="relative shrink-0 flex items-center justify-center pt-5 pb-4 px-4">
+          {renderBackButton("left-4 w-10 h-10", 20)}
+          <Km0Logo className="h-9 w-auto" />
         </header>
 
-        {/* Body */}
-        <div className={`flex-1 min-h-0 flex flex-col w-full px-4 pb-6 ${portraitContentClassName}`}>
+        {/* Body — scroll interno si desborda, frame nunca se mueve */}
+        <div className={`flex-1 min-h-0 flex flex-col w-full px-4 pb-6 overflow-y-auto ${portraitContentClassName}`}>
           {children}
         </div>
       </div>
 
       {/* ── LANDSCAPE (horizontal-mobile + horizontal-desktop) ─ */}
-      <div className="hidden landscape:flex w-full max-w-[1200px] h-full max-h-[min(95dvh,calc(100vw*9/16))] aspect-video bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col">
+      {/*
+        Card de tamaño FIJO ratio 16:9. Mismas reglas: tamaño calculado
+        solo desde el viewport, nunca desde el contenido.
+      */}
+      <div className="hidden landscape:flex bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col"
+        style={{
+          width: "min(calc(100vw - 2rem), calc((100dvh - 2rem) * 16 / 9), 1200px)",
+          height: "min(calc(100dvh - 2rem), calc((100vw - 2rem) * 9 / 16), calc(1200px * 9 / 16))",
+        }}
+      >
         {/* Header */}
         <header className="relative shrink-0 flex items-center justify-center pt-3 horizontal-desktop:pt-5 pb-2 horizontal-desktop:pb-4 px-5">
           {renderBackButton("left-3 horizontal-desktop:left-4 w-9 h-9", 20)}
@@ -89,7 +109,7 @@ const BrandedFrame = ({
         </header>
 
         {/* Body */}
-        <div className={`flex-1 min-h-0 flex w-full px-4 horizontal-desktop:px-6 pb-3 horizontal-desktop:pb-6 ${landscapeContentClassName}`}>
+        <div className={`flex-1 min-h-0 flex w-full px-4 horizontal-desktop:px-6 pb-3 horizontal-desktop:pb-6 overflow-hidden ${landscapeContentClassName}`}>
           {children}
         </div>
       </div>
