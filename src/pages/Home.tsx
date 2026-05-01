@@ -19,12 +19,19 @@ const Home = () => {
   const [hasAlerts, setHasAlerts] = useState(true);
 
   return (
-    <div className="fixed inset-0 w-full flex justify-center items-stretch landscape:items-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 landscape:p-4 horizontal-mobile:p-2">
+    <div className="min-h-[100dvh] w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 p-3 sm:p-4">
       {/* ── PORTRAIT (vertical-mobile / vertical-tablet) ─────── */}
-      <div className="w-full max-w-[420px] h-full flex flex-col overflow-hidden landscape:hidden">
+      {/* Mismo marco "móvil" que BrandedFrame: ratio 9:19.5, halo azul */}
+      <div
+        className="landscape:hidden flex flex-col bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden"
+        style={{
+          width: "min(calc(100vw - 1.5rem), calc((100dvh - 1.5rem) * 9 / 19.5), 420px)",
+          height: "min(calc(100dvh - 1.5rem), calc((100vw - 1.5rem) * 19.5 / 9), calc(420px * 19.5 / 9))",
+        }}
+      >
         {/* Header */}
         <motion.header
-          className="flex items-center gap-3 px-4 pt-3 pb-2"
+          className="flex items-center gap-3 px-4 pt-4 pb-3 shrink-0"
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
@@ -37,7 +44,7 @@ const Home = () => {
         </motion.header>
 
         {/* Body — placeholder hasta que vayamos añadiendo módulos */}
-        <div className="flex-1 overflow-y-auto px-4 py-6">
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 py-6">
           <p className="font-body text-sm text-muted-foreground text-center">
             (Aquí irán los módulos de la Home)
           </p>
@@ -45,9 +52,16 @@ const Home = () => {
       </div>
 
       {/* ── LANDSCAPE (horizontal-mobile / horizontal-desktop) ─ */}
-      <div className="hidden landscape:flex w-full max-w-[1200px] h-full max-h-[min(95dvh,calc(100vw*9/16))] aspect-video bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col relative">
+      {/* Mismo marco 16:9 que BrandedFrame */}
+      <div
+        className="hidden landscape:flex bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col"
+        style={{
+          width: "min(calc(100vw - 2rem), calc((100dvh - 2rem) * 16 / 9), 1200px)",
+          height: "min(calc(100dvh - 2rem), calc((100vw - 2rem) * 9 / 16), calc(1200px * 9 / 16))",
+        }}
+      >
         <motion.header
-          className="flex items-center gap-3 px-4 horizontal-desktop:px-6 horizontal-mobile:px-3 pt-3 pb-2 horizontal-desktop:pt-4 horizontal-desktop:pb-3 horizontal-mobile:pt-2 horizontal-mobile:pb-1.5 shrink-0 border-b border-km0-beige-200"
+          className="flex items-center gap-3 px-4 horizontal-desktop:px-6 pt-3 pb-2 horizontal-desktop:pt-4 horizontal-desktop:pb-3 shrink-0 border-b border-km0-beige-200"
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
@@ -60,7 +74,7 @@ const Home = () => {
           />
         </motion.header>
 
-        <div className="flex-1 min-h-0 overflow-y-auto px-4 horizontal-desktop:px-8 horizontal-mobile:px-3 py-4">
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 horizontal-desktop:px-8 py-4">
           <p className="font-body text-sm text-muted-foreground text-center">
             (Aquí irán los módulos de la Home)
           </p>
