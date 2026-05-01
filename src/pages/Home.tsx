@@ -1,36 +1,36 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { UserRound, UserRoundPlus, ChevronRight, ArrowRight, Home as HomeIcon, Info, Tag, User } from "lucide-react";
 import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
 import HomeModules, { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
-import coatMalgrat from "@/assets/coat-malgrat.png";
+import heroMalgrat from "@/assets/hero-malgrat.jpg";
+import { cn } from "@/lib/utils";
 
-/* Demo data — 3 módulos. Cada uno clicable para alternar activo/inactivo. */
+/* Módulos demo — cada uno togglea su estado activo/inactivo al click. */
 const INITIAL_MODULES_3: HomeModule[] = [
   { id: "chat", label: "KM0 CHAT", active: true },
   { id: "punts", label: "Punts", active: true },
   { id: "cupons", label: "Cupons", active: false },
 ];
 
-/**
- * Home — pantalla principal post-onboarding (sin registro).
- *
- * Construcción incremental: por ahora solo la cabecera.
- *  - Halo azul + fondo beige (mismo tratamiento que el resto de pantallas).
- *  - Header reutiliza la estructura del Chat:
- *      [escudo del pueblo]  [Nombre del pueblo + logo KM0 LAB]  [campana]
- *  - La campana hace toggle entre estado activo (con alerta coral) e inactivo
- *    para poder validar ambos estados en vivo.
- */
+/* Comerciantes mock — placeholders circulares con iniciales. */
+const COMERCIOS = [
+  { id: "sanait", name: "Sanait", color: "bg-km0-teal-100", text: "text-km0-teal-700" },
+  { id: "vidal",  name: "Vidal m...", color: "bg-km0-beige-200", text: "text-km0-blue-800" },
+  { id: "manit",  name: "Manitas", color: "bg-km0-yellow-300", text: "text-km0-blue-800" },
+  { id: "champ",  name: "Champa...", color: "bg-km0-blue-100", text: "text-km0-blue-800" },
+  { id: "anna",   name: "Anna",    color: "bg-km0-coral-400/80", text: "text-white" },
+];
+
 const Home = () => {
   const cityName = "Malgrat de Mar";
   const [hasAlerts, setHasAlerts] = useState(true);
   const [modules, setModules] = useState<HomeModule[]>(INITIAL_MODULES_3);
+  const [activeTab, setActiveTab] = useState<"home" | "info" | "ofertes" | "perfil">("home");
 
   const toggleModule = (id: HomeModuleId) => {
-    setModules((prev) =>
-      prev.map((m) => (m.id === id ? { ...m, active: !m.active } : m)),
-    );
+    setModules((prev) => prev.map((m) => (m.id === id ? { ...m, active: !m.active } : m)));
   };
 
   const modulesWithHandlers: HomeModule[] = modules.map((m) => ({
@@ -40,120 +40,339 @@ const Home = () => {
 
   return (
     <div className="min-h-[100dvh] w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 p-3 sm:p-4">
-      {/* ── PORTRAIT (vertical-mobile / vertical-tablet) ─────── */}
-      {/* Mismo marco "móvil" que BrandedFrame: ratio 9:19.5, halo azul */}
+      {/* ── PORTRAIT ─────────────────────────────────────────── */}
       <div
-        className="landscape:hidden flex flex-col bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden"
+        className="landscape:hidden flex flex-col bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden relative"
         style={{
           width: "min(calc(100vw - 1.5rem), calc((100dvh - 1.5rem) * 9 / 19.5), 420px)",
           height: "min(calc(100dvh - 1.5rem), calc((100vw - 1.5rem) * 19.5 / 9), calc(420px * 19.5 / 9))",
         }}
       >
-        {/* Header */}
-        <motion.header
-          className="flex items-center gap-3 px-4 pt-4 pb-3 shrink-0"
-          initial={{ opacity: 0, y: -16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <HeaderContent
-            cityName={cityName}
-            hasAlerts={hasAlerts}
-            onToggleAlerts={() => setHasAlerts((v) => !v)}
-          />
-        </motion.header>
-
-        {/* Body — 3 módulos clicables (toggle activo/inactivo) */}
-        <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4">
-          <HomeModules modules={modulesWithHandlers} />
-        </div>
+        <HomeContent
+          cityName={cityName}
+          hasAlerts={hasAlerts}
+          onToggleAlerts={() => setHasAlerts((v) => !v)}
+          modules={modulesWithHandlers}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+        />
       </div>
 
-      {/* ── LANDSCAPE (horizontal-mobile / horizontal-desktop) ─ */}
-      {/* Mismo marco 16:9 que BrandedFrame */}
+      {/* ── LANDSCAPE ────────────────────────────────────────── */}
       <div
-        className="hidden landscape:flex bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col"
+        className="hidden landscape:flex bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col relative"
         style={{
           width: "min(calc(100vw - 2rem), calc((100dvh - 2rem) * 16 / 9), 1200px)",
           height: "min(calc(100dvh - 2rem), calc((100vw - 2rem) * 9 / 16), calc(1200px * 9 / 16))",
         }}
       >
-        <motion.header
-          className="flex items-center gap-3 px-4 horizontal-desktop:px-6 pt-3 pb-2 horizontal-desktop:pt-4 horizontal-desktop:pb-3 shrink-0 border-b border-km0-beige-200"
-          initial={{ opacity: 0, y: -16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <HeaderContent
-            cityName={cityName}
-            hasAlerts={hasAlerts}
-            onToggleAlerts={() => setHasAlerts((v) => !v)}
-            compact
-          />
-        </motion.header>
-
-        <div className="flex-1 min-h-0 overflow-y-auto px-4 horizontal-desktop:px-8 py-4">
-          <HomeModules modules={modulesWithHandlers} />
-        </div>
+        <HomeContent
+          cityName={cityName}
+          hasAlerts={hasAlerts}
+          onToggleAlerts={() => setHasAlerts((v) => !v)}
+          modules={modulesWithHandlers}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          landscape
+        />
       </div>
     </div>
   );
 };
 
-interface HeaderContentProps {
+/* ─────────────────────────────────────────────────────────────
+   HomeContent — toda la pantalla en un único componente para
+   reutilizar entre portrait y landscape. La estructura no cambia
+   entre breakpoints, solo el padding del contenedor exterior.
+   ───────────────────────────────────────────────────────────── */
+interface HomeContentProps {
   cityName: string;
   hasAlerts: boolean;
   onToggleAlerts: () => void;
-  compact?: boolean;
+  modules: HomeModule[];
+  activeTab: "home" | "info" | "ofertes" | "perfil";
+  onTabChange: (t: "home" | "info" | "ofertes" | "perfil") => void;
+  landscape?: boolean;
 }
 
-/**
- * Cabecera de la Home — calcada en estructura a la del Chat para
- * mantener consistencia visual:
- *   [izquierda] escudo del pueblo (en lugar del back button)
- *   [centro]    nombre del pueblo + logo KM0 LAB
- *   [derecha]   campana con toggle de alertas
- */
-const HeaderContent = ({ cityName, hasAlerts, onToggleAlerts, compact = false }: HeaderContentProps) => {
-  const shieldSize = compact ? "w-14 h-14" : "w-16 h-16";
-
+const HomeContent = ({
+  cityName,
+  hasAlerts,
+  onToggleAlerts,
+  modules,
+  activeTab,
+  onTabChange,
+  landscape = false,
+}: HomeContentProps) => {
   return (
     <>
-      {/* Bloque marca: escudo + (nombre pueblo / KM0 LAB) pegados a la izquierda */}
-      <div className="flex-1 flex items-center gap-3 min-w-0">
-        <div
-          className={`${shieldSize} flex items-center justify-center shrink-0`}
-          aria-label={`Escudo de ${cityName}`}
+      {/* Scroll body — incluye hero, módulos overlap, CTAs, promos, comercios */}
+      <div className="flex-1 min-h-0 overflow-y-auto pb-2">
+        {/* ── HERO con ilustración del pueblo ── */}
+        <motion.section
+          className="relative"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
         >
-          <img
-            src={coatMalgrat}
-            alt={`Escudo de ${cityName}`}
-            className="w-full h-full object-contain"
-          />
-        </div>
-
-        <div className="flex flex-col min-w-0 leading-none">
-          <h1 className="font-brand text-2xl vertical-tablet:text-3xl horizontal-mobile:text-xl font-black text-km0-blue-700 truncate">
-            {cityName}
-          </h1>
-          <div className="flex items-center mt-1">
-            <Km0Logo className="h-4 vertical-tablet:h-5 horizontal-mobile:h-3.5 w-auto" />
+          {/* Imagen + degradado inferior para integrar con la card que monta encima */}
+          <div className="relative h-44 vertical-tablet:h-56 horizontal-desktop:h-48 overflow-hidden">
+            <img
+              src={heroMalgrat}
+              alt={`Vista panorámica de ${cityName}`}
+              className="w-full h-full object-cover object-bottom"
+              width={1536}
+              height={896}
+            />
+            {/* Degradado sutil hacia el fondo beige inferior */}
+            <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-km0-beige-50 pointer-events-none" />
           </div>
-        </div>
+
+          {/* Overlay: Nombre + logo arriba-izquierda, campana arriba-derecha */}
+          <div className="absolute inset-x-0 top-0 flex items-start justify-between px-4 pt-4">
+            <div className="flex flex-col leading-none">
+              <h1 className="font-brand text-2xl vertical-tablet:text-3xl font-black text-km0-blue-700 drop-shadow-[0_1px_2px_hsl(0_0%_100%/0.6)]">
+                {cityName}
+              </h1>
+              <div className="flex items-center mt-1.5">
+                <Km0Logo className="h-4 vertical-tablet:h-5 w-auto drop-shadow-[0_1px_2px_hsl(0_0%_100%/0.6)]" />
+              </div>
+            </div>
+
+            <NotificationBell
+              hasAlerts={hasAlerts}
+              onClick={onToggleAlerts}
+              ariaLabel={hasAlerts ? "Tienes notificaciones nuevas" : "Sin notificaciones"}
+              className="bg-white/80 backdrop-blur-sm shadow-sm"
+            />
+          </div>
+        </motion.section>
+
+        {/* ── MÓDULOS: card que monta sobre el hero (overlap) ── */}
+        <motion.section
+          className="px-4 -mt-10 relative z-10"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
+          <HomeModules modules={modules} />
+        </motion.section>
+
+        {/* ── CTAs Auth ── */}
+        <motion.section
+          className="px-4 mt-5 grid grid-cols-2 gap-3"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.18 }}
+        >
+          <AuthButton variant="primary" icon={<UserRound size={18} strokeWidth={2.2} />}>
+            Iniciar sesión
+          </AuthButton>
+          <AuthButton variant="secondary" icon={<UserRoundPlus size={18} strokeWidth={2.2} />}>
+            Registro
+          </AuthButton>
+        </motion.section>
+
+        {/* ── Promos i events destacats ── */}
+        <motion.section
+          className="px-4 mt-6"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.26 }}
+        >
+          <h2 className="font-brand text-base font-black text-km0-blue-700 mb-2">
+            Promos y eventos destacados
+          </h2>
+
+          {/* Hero card placeholder — gradient con título tipo cartel */}
+          <div className="relative rounded-2xl overflow-hidden shadow-[0_10px_24px_-12px_hsl(var(--km0-blue-700)/0.35)] aspect-[16/9] bg-gradient-to-br from-km0-blue-700 via-km0-blue-600 to-km0-blue-800">
+            {/* Decoración: círculos de "fuegos artificiales" */}
+            <div className="absolute top-3 left-4 w-2 h-2 rounded-full bg-km0-yellow-400 shadow-[0_0_12px_hsl(var(--km0-yellow-400))]" />
+            <div className="absolute top-6 left-12 w-1.5 h-1.5 rounded-full bg-km0-coral-400" />
+            <div className="absolute top-4 right-16 w-2 h-2 rounded-full bg-km0-yellow-400 shadow-[0_0_12px_hsl(var(--km0-yellow-400))]" />
+            <div className="absolute top-10 right-6 w-1.5 h-1.5 rounded-full bg-white" />
+
+            {/* Texto principal */}
+            <div className="absolute inset-0 flex flex-col justify-center px-5">
+              <span className="font-brand text-2xl vertical-tablet:text-3xl font-black text-km0-yellow-400 leading-none">
+                FESTA
+              </span>
+              <span className="font-brand text-3xl vertical-tablet:text-4xl font-black text-white leading-none mt-1">
+                MAJOR
+              </span>
+              <span className="font-brand text-2xl vertical-tablet:text-3xl font-black text-km0-coral-400 leading-none mt-1">
+                ROMANA
+              </span>
+              <span className="font-ui text-xs text-white/90 mt-2 tracking-wider">
+                {"MALGRAT DE MAR · 2026"}
+              </span>
+            </div>
+
+            {/* Botón siguiente */}
+            <button
+              type="button"
+              aria-label="Siguiente promo"
+              className="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center active:scale-95 transition-transform"
+            >
+              <ChevronRight size={18} className="text-km0-blue-700" strokeWidth={2.4} />
+            </button>
+          </div>
+
+          {/* Dots de paginación */}
+          <div className="flex items-center justify-center gap-1.5 mt-3">
+            {[0, 1, 2, 3].map((i) => (
+              <span
+                key={i}
+                className={cn(
+                  "rounded-full transition-all",
+                  i === 0
+                    ? "w-5 h-1.5 bg-km0-blue-700"
+                    : "w-1.5 h-1.5 bg-km0-blue-700/25",
+                )}
+              />
+            ))}
+          </div>
+        </motion.section>
+
+        {/* ── Comerciantes populares ── */}
+        <motion.section
+          className="px-4 mt-6"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.34 }}
+        >
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-brand text-base font-black text-km0-blue-700">
+              Comercios populares
+            </h2>
+            <button
+              type="button"
+              className="font-ui text-xs font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform"
+            >
+              Ver todos
+              <ArrowRight size={14} strokeWidth={2.4} />
+            </button>
+          </div>
+
+          {/* Scroll horizontal de avatares */}
+          <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+            {COMERCIOS.map((c) => (
+              <div key={c.id} className="flex flex-col items-center shrink-0 w-16">
+                <div
+                  className={cn(
+                    "w-14 h-14 rounded-full shadow-sm border-2 border-white flex items-center justify-center font-brand font-black text-base",
+                    c.color,
+                    c.text,
+                  )}
+                  aria-hidden
+                >
+                  {c.name.charAt(0)}
+                </div>
+                <span className="font-body text-[10px] text-km0-blue-800 mt-1.5 truncate w-full text-center">
+                  {c.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* Spacer para que el último contenido no quede pegado a la tab bar */}
+        <div className="h-4" />
       </div>
 
-      {/* Campana — clickable, alterna estado activo / inactivo */}
-      <NotificationBell
-        hasAlerts={hasAlerts}
-        onClick={onToggleAlerts}
-        ariaLabel={hasAlerts ? "Tienes notificaciones nuevas" : "Sin notificaciones"}
-      />
+      {/* ── Tab bar inferior (fixed dentro del frame) ── */}
+      <nav
+        className="shrink-0 bg-white border-t border-km0-beige-200 px-2 pt-2 pb-3 grid grid-cols-4"
+        aria-label="Navegación principal"
+      >
+        <TabItem
+          icon={<HomeIcon size={20} strokeWidth={2.2} />}
+          label="Inicio"
+          active={activeTab === "home"}
+          onClick={() => onTabChange("home")}
+        />
+        <TabItem
+          icon={<Info size={20} strokeWidth={2.2} />}
+          label="Información"
+          active={activeTab === "info"}
+          onClick={() => onTabChange("info")}
+        />
+        <TabItem
+          icon={<Tag size={20} strokeWidth={2.2} />}
+          label="Ofertas"
+          active={activeTab === "ofertes"}
+          onClick={() => onTabChange("ofertes")}
+        />
+        <TabItem
+          icon={<User size={20} strokeWidth={2.2} />}
+          label="Perfil"
+          active={activeTab === "perfil"}
+          onClick={() => onTabChange("perfil")}
+        />
+      </nav>
     </>
   );
 };
 
+/* ─── AuthButton ─────────────────────────────────────────────── */
+interface AuthButtonProps {
+  variant: "primary" | "secondary";
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}
+const AuthButton = ({ variant, icon, children }: AuthButtonProps) => (
+  <button
+    type="button"
+    className={cn(
+      "flex items-center gap-2 px-3 py-3 rounded-2xl font-ui font-bold text-sm transition-transform active:scale-[0.97] shadow-[0_6px_16px_-8px_hsl(var(--km0-blue-700)/0.35)]",
+      variant === "primary"
+        ? "bg-km0-blue-700 text-white"
+        : "bg-km0-yellow-500 text-km0-blue-800",
+    )}
+  >
+    <span
+      className={cn(
+        "w-7 h-7 rounded-full flex items-center justify-center shrink-0",
+        variant === "primary" ? "bg-white/15" : "bg-km0-blue-700/10",
+      )}
+    >
+      {icon}
+    </span>
+    <span className="truncate">{children}</span>
+  </button>
+);
 
-
+/* ─── TabItem ────────────────────────────────────────────────── */
+interface TabItemProps {
+  icon: React.ReactNode;
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}
+const TabItem = ({ icon, label, active, onClick }: TabItemProps) => (
+  <button
+    type="button"
+    onClick={onClick}
+    aria-pressed={active}
+    className="flex flex-col items-center gap-0.5 py-1 active:scale-95 transition-transform"
+  >
+    <span
+      className={cn(
+        "transition-colors",
+        active ? "text-km0-blue-700" : "text-km0-blue-800/40",
+      )}
+    >
+      {icon}
+    </span>
+    <span
+      className={cn(
+        "font-ui text-[10px] leading-none",
+        active ? "font-bold text-km0-blue-700" : "text-km0-blue-800/55",
+      )}
+    >
+      {label}
+    </span>
+  </button>
+);
 
 export default Home;
-
