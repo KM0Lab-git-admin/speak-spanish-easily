@@ -515,7 +515,7 @@ const Onboarding = () => {
           </button>
         </footer>
       </div>
-    </motion.div>
+    </BrandedFrame>
   );
 };
 
