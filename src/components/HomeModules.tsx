@@ -4,17 +4,18 @@ import { cn } from "@/lib/utils";
 /**
  * HomeModules — bloque de accesos rápidos de la Home.
  *
- * Layouts según número de módulos (alineado con la captura de referencia):
- *  - 3 módulos → fila única, distribución equitativa
- *  - 4 módulos → fila única, distribución equitativa
- *  - 5 módulos → jerárquico: 3 primarios arriba (full width)
- *                + 2 secundarios abajo en card interna más clara
+ * Cada módulo tiene:
+ *  - icono lucide sobre círculo de color (azul / amarillo / azul) para dar
+ *    personalidad sin salirnos del design system.
+ *  - label en font-ui, mayúsculas, alineado por baseline gracias a min-h
+ *    fija en el contenedor del label (esto evita el bug de iconos
+ *    desalineados cuando un label ocupa 2 líneas, ej "KM0 CHAT").
  *
- *  1 ó 2 módulos no se contemplan (ver brief).
+ * Estado:
+ *  - active   → color sólido + label km0-blue-800
+ *  - inactive → opacity reducida (mantiene el grid estable)
  *
- * Estado por módulo:
- *  - active   → fondo amarillo principal, icono blanco con icono azul (alta prominencia)
- *  - inactive → fondo amarillo desaturado (km0-yellow-200) + opacity, no clickable
+ * Layout: 3 módulos en fila única, separadores verticales suaves.
  */
 
 export type HomeModuleId = "chat" | "agenda" | "punts" | "cupons" | "comerc";
@@ -34,89 +35,59 @@ const ICONS: Record<HomeModuleId, LucideIcon> = {
   comerc: Store,
 };
 
+/** Tratamiento cromático del círculo del icono por módulo. */
+const ICON_TREATMENT: Record<
+  HomeModuleId,
+  { bg: string; icon: string }
+> = {
+  chat:   { bg: "bg-km0-blue-700",   icon: "text-white" },
+  agenda: { bg: "bg-km0-teal-500",   icon: "text-white" },
+  punts:  { bg: "bg-km0-yellow-500", icon: "text-km0-blue-800" },
+  cupons: { bg: "bg-km0-blue-700",   icon: "text-white" },
+  comerc: { bg: "bg-km0-coral-400",  icon: "text-white" },
+};
+
 interface HomeModulesProps {
   modules: HomeModule[];
   className?: string;
 }
 
 const HomeModules = ({ modules, className }: HomeModulesProps) => {
-  const count = modules.length;
+  if (modules.length !== 3) return null;
 
-  if (count < 3 || count > 5) {
-    // Defensivo: el diseño solo cubre 3, 4 y 5
-    return null;
-  }
-
-  // 5 módulos → layout jerárquico 3 + 2
-  if (count === 5) {
-    const primary = modules.slice(0, 3);
-    const secondary = modules.slice(3);
-
-    return (
-      <div
-        className={cn(
-          "rounded-3xl bg-km0-yellow-500 p-3 shadow-[0_4px_14px_-4px_hsl(var(--km0-yellow-700)/0.4)]",
-          className,
-        )}
-      >
-        <ModuleRow modules={primary} />
-
-        {/* Sub-card secundarios */}
-        <div className="mt-3 rounded-2xl bg-km0-yellow-300/80 p-2 mx-2">
-          <ModuleRow modules={secondary} compact />
-        </div>
-      </div>
-    );
-  }
-
-  // 3 ó 4 → fila única
   return (
     <div
       className={cn(
-        "rounded-3xl bg-km0-yellow-500 p-3 shadow-[0_4px_14px_-4px_hsl(var(--km0-yellow-700)/0.4)]",
+        "rounded-3xl bg-white p-3 shadow-[0_12px_30px_-12px_hsl(var(--km0-blue-700)/0.25)]",
         className,
       )}
     >
-      <ModuleRow modules={modules} />
+      <div className="flex items-stretch">
+        {modules.map((mod, idx) => (
+          <div key={mod.id} className="flex-1 flex items-stretch">
+            <ModuleItem module={mod} />
+            {idx < modules.length - 1 && (
+              <div
+                aria-hidden
+                className="w-px my-2 bg-km0-blue-700/15 shrink-0"
+              />
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-/* ─── Row con divisores verticales entre módulos ─────────────── */
-interface ModuleRowProps {
-  modules: HomeModule[];
-  compact?: boolean;
-}
-
-const ModuleRow = ({ modules, compact = false }: ModuleRowProps) => (
-  <div className="flex items-stretch">
-    {modules.map((mod, idx) => (
-      <div key={mod.id} className="flex-1 flex items-stretch">
-        <ModuleItem module={mod} compact={compact} />
-        {idx < modules.length - 1 && (
-          <div
-            aria-hidden
-            className="w-px my-2 bg-km0-blue-700/15 shrink-0"
-          />
-        )}
-      </div>
-    ))}
-  </div>
-);
-
 /* ─── Item individual ────────────────────────────────────────── */
 interface ModuleItemProps {
   module: HomeModule;
-  compact?: boolean;
 }
 
-const ModuleItem = ({ module, compact }: ModuleItemProps) => {
+const ModuleItem = ({ module }: ModuleItemProps) => {
   const Icon = ICONS[module.id];
+  const { bg, icon } = ICON_TREATMENT[module.id];
   const { active, label, onClick } = module;
-
-  const iconWrap = compact ? "w-10 h-10" : "w-12 h-12";
-  const iconSize = compact ? 20 : 24;
-  const labelSize = compact ? "text-xs" : "text-sm";
 
   return (
     <button
@@ -126,34 +97,25 @@ const ModuleItem = ({ module, compact }: ModuleItemProps) => {
       aria-label={label}
       className={cn(
         "group flex-1 flex flex-col items-center px-1 py-2 rounded-xl transition-transform cursor-pointer active:scale-95",
-        !active && "opacity-55",
+        !active && "opacity-45 grayscale-[0.3]",
       )}
     >
-      {/* Fila icono — altura fija para que SIEMPRE quede al mismo nivel,
+      {/* Icono — altura fija para que SIEMPRE quede al mismo nivel,
           independientemente de cuántas líneas ocupe el label debajo. */}
       <span
         className={cn(
-          "flex items-center justify-center rounded-full bg-white shadow-sm shrink-0",
-          iconWrap,
+          "flex items-center justify-center rounded-full shadow-[0_4px_10px_-2px_hsl(var(--km0-blue-700)/0.25)] shrink-0 w-12 h-12",
+          bg,
         )}
       >
-        <Icon
-          size={iconSize}
-          strokeWidth={2.4}
-          className={cn(
-            "text-km0-blue-700",
-            !active && "text-km0-blue-700/60",
-          )}
-        />
+        <Icon size={24} strokeWidth={2.4} className={icon} />
       </span>
 
       {/* Label con altura reservada para 2 líneas → así los iconos
           de módulos con 1 línea quedan alineados con los de 2 líneas. */}
       <span
         className={cn(
-          "mt-1.5 font-ui font-bold uppercase tracking-tight text-km0-blue-800 text-center leading-tight line-clamp-2 flex items-start justify-center",
-          labelSize,
-          compact ? "min-h-[2rem]" : "min-h-[2.25rem]",
+          "mt-2 font-ui font-bold uppercase tracking-tight text-km0-blue-800 text-center leading-tight line-clamp-2 flex items-start justify-center text-xs min-h-[2rem]",
           !active && "text-km0-blue-800/70",
         )}
       >
