@@ -43,9 +43,10 @@ const Language = () => {
   };
 
   return (
-    <div className="min-h-[100dvh] w-full flex flex-col bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 landscape:items-center landscape:justify-center landscape:p-4 short-landscape:p-2">
+    <div className="min-h-[100dvh] w-full flex flex-col bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 items-center justify-center p-3 sm:p-4 short-landscape:p-2">
       {/* ── Portrait wrapper (mobile + tablet vertical) ──────── */}
-      <div className="flex-1 w-full flex flex-col items-center px-4 pt-4 sm:pt-6 pb-6 landscape:hidden">
+      <div className="landscape:hidden w-full max-w-[560px] h-full max-h-[calc(100dvh-1.5rem)] sm:max-h-[calc(100dvh-2rem)] flex flex-col items-center px-4 pt-4 sm:pt-6 pb-6 bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden">
+
         {/* Logo fijo arriba */}
         <div className="w-full max-w-[560px] flex items-center justify-center shrink-0">
           <Km0Logo className="h-9 sm:h-12 w-auto" />
