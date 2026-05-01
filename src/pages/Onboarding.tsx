@@ -25,8 +25,8 @@ const SLOT = 260;
 const getSlotLs = () => {
   if (typeof window === "undefined") return 420;
   const w = window.innerWidth;
-  if (w >= 1000) return 560; // wide-landscape (1280×550)
-  return 360; // short-landscape (667×375)
+  if (w >= 1280) return 560; // horizontal-desktop (1280×550)
+  return 360; // horizontal-mobile (667×375)
 };
 
 const Onboarding = () => {
