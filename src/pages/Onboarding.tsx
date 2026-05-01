@@ -126,8 +126,12 @@ const Onboarding = () => {
     ? lang === "ca" ? "INICI" : lang === "en" ? "START" : "INICIO"
     : lang === "ca" ? "SALTAR" : lang === "en" ? "SKIP" : "SALTAR";
 
-  const trackX = containerWidth / 2 - current * SLOT - SLOT / 2;
-  const trackXLs = containerWidthLs / 2 - current * slotLs - slotLs / 2;
+  // Offset relativo al centro: posiciona el centro de la slide activa
+  // sobre el centro del contenedor SIN depender de medir su ancho.
+  // Combinado con `left: 50%` en el track, el centrado es geométrico
+  // y correcto desde el primer paint (no parpadea ni queda descuadrado).
+  const trackX = -(current * SLOT + SLOT / 2);
+  const trackXLs = -(current * slotLs + slotLs / 2);
 
   return (
     <BrandedFrame onBack={() => navigate("/")} backAriaLabel="Back">
@@ -155,9 +159,9 @@ const Onboarding = () => {
               transformOrigin: "center center",
             }}
           >
-            {/* Sliding track */}
+            {/* Sliding track — left:50% + translateX centra geométricamente */}
             <div
-              className="absolute top-1/2 flex items-start"
+              className="absolute top-1/2 left-1/2 flex items-start"
               style={{
                 transform: `translateX(${trackX + dragOffset / portraitScale}px) translateY(-58%)`,
                 transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
@@ -349,9 +353,9 @@ const Onboarding = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.45, delay: 0.2 }}
         >
-          {/* Sliding track */}
+          {/* Sliding track — left:50% + translateX centra geométricamente */}
           <div
-            className="absolute top-1/2 flex items-center"
+            className="absolute top-1/2 left-1/2 flex items-center"
             style={{
               transform: `translateX(${trackXLs + dragOffset}px) translateY(-50%)`,
               transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
