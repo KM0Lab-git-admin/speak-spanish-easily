@@ -255,7 +255,10 @@ const HomeContent = ({
           </div>
 
           {/* Scroll horizontal de avatares */}
-          <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+          <div
+            className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4"
+            style={{ scrollbarWidth: "none" }}
+          >
             {COMERCIOS.map((c) => (
               <div key={c.id} className="flex flex-col items-center shrink-0 w-16">
                 <div
