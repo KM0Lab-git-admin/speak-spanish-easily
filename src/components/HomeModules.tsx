@@ -2,20 +2,27 @@ import { MessageSquarePlus, Trophy, Ticket, Calendar, Store, type LucideIcon } f
 import { cn } from "@/lib/utils";
 
 /**
- * HomeModules — bloque de accesos rápidos de la Home.
+ * HomeModules — accesos rápidos estilo Glovo, recoloreado a marca KM0.
  *
- * Cada módulo tiene:
- *  - icono lucide sobre círculo de color (azul / amarillo / azul) para dar
- *    personalidad sin salirnos del design system.
- *  - label en font-ui, mayúsculas, alineado por baseline gracias a min-h
- *    fija en el contenedor del label (esto evita el bug de iconos
- *    desalineados cuando un label ocupa 2 líneas, ej "KM0 CHAT").
+ * Lectura de Glovo aplicada a nuestra paleta:
+ *  - Banda monocromática vibrante (Glovo: naranja → KM0: azul institucional)
+ *    como FONDO de la sección, no como card. Identidad de marca clara.
+ *  - Curva orgánica inferior — la banda se "derrama" suavemente sobre el
+ *    fondo beige de la pantalla, no es un rectángulo cerrado.
+ *  - Círculos BLANCOS PUROS (no de color) → los iconos coloridos resaltan
+ *    máximo sobre la banda azul saturada.
+ *  - Borde fino del círculo en el mismo azul de la banda → el círculo
+ *    "respira" con la banda.
+ *  - Sombra suave PROYECTADA BAJO el círculo (no glow alrededor) → da
+ *    elevación física como si los círculos flotaran sobre la banda.
+ *  - Cada icono usa un color distinto del DS (azul, amarillo, coral) para
+ *    crear ritmo cromático sin perder coherencia.
+ *  - Label en pill blanco flotando sobre el borde inferior del círculo,
+ *    altura reservada para 2 líneas → iconos siempre alineados.
+ *  - Círculo central ligeramente más grande → rompe la monotonía y crea
+ *    jerarquía focal en el módulo principal (KM0 CHAT cuando está en medio).
  *
- * Estado:
- *  - active   → color sólido + label km0-blue-800
- *  - inactive → opacity reducida (mantiene el grid estable)
- *
- * Layout: 3 módulos en fila única, separadores verticales suaves.
+ *  Solo soporta exactamente 3 módulos (3 al centro).
  */
 
 export type HomeModuleId = "chat" | "agenda" | "punts" | "cupons" | "comerc";
@@ -35,14 +42,14 @@ const ICONS: Record<HomeModuleId, LucideIcon> = {
   comerc: Store,
 };
 
-/** Color del icono dentro del círculo blanco (estilo Glovo: círculo blanco
- *  grande con borde de color, icono colorido dentro). */
+/** Color del icono dentro del círculo blanco. Pensado como ritmo cromático
+ *  — cada módulo "vibra" con un acento distinto del DS sobre fondo blanco. */
 const ICON_COLOR: Record<HomeModuleId, string> = {
   chat:   "text-km0-blue-700",
   agenda: "text-km0-teal-600",
   punts:  "text-km0-yellow-600",
-  cupons: "text-km0-blue-700",
-  comerc: "text-km0-coral-400",
+  cupons: "text-km0-coral-400",
+  comerc: "text-km0-blue-700",
 };
 
 interface HomeModulesProps {
@@ -54,33 +61,59 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
   if (modules.length !== 3) return null;
 
   return (
-    <div
-      className={cn(
-        // Banda cálida tipo Glovo (su naranja → nuestro amarillo suave),
-        // bordes redondeados, sin sombra de card para que parezca un
-        // "área temática" más que un widget.
-        "rounded-3xl bg-km0-yellow-300/70 px-3 pt-5 pb-7",
-        className,
-      )}
-    >
-      <div className="flex items-start justify-around gap-2">
-        {modules.map((mod) => (
-          <ModuleItem key={mod.id} module={mod} />
-        ))}
+    <div className={cn("relative", className)}>
+      {/* Banda azul institucional con curva orgánica inferior.
+          La curva se consigue con un mask radial + border-radius asimétrico
+          para que el borde inferior sea más "ondulado" que el superior. */}
+      <div
+        className={cn(
+          "relative bg-km0-blue-700 px-3 pt-7 pb-12",
+          "rounded-t-3xl",
+          // Borde inferior con doble curva (cápsula): radio horizontal
+          // grande + radio vertical menor → efecto orgánico tipo "ola".
+          "rounded-bl-[40%_24px] rounded-br-[40%_24px]",
+        )}
+      >
+        {/* Patrón decorativo sutil arriba — círculos translúcidos
+            que dan textura sin distraer (Glovo lo usa con su ilustración).
+            Aquí lo mantenemos minimalista. */}
+        <div
+          aria-hidden
+          className="absolute top-3 right-4 w-12 h-12 rounded-full bg-white/5"
+        />
+        <div
+          aria-hidden
+          className="absolute -top-1 left-8 w-6 h-6 rounded-full bg-white/5"
+        />
+
+        {/* Iconos: el del medio crece un punto para crear jerarquía focal */}
+        <div className="relative flex items-end justify-around gap-2">
+          {modules.map((mod, idx) => (
+            <ModuleItem key={mod.id} module={mod} emphasized={idx === 1} />
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
-/* ─── Item individual estilo Glovo ───────────────────────────── */
+/* ─── Item individual ────────────────────────────────────────── */
 interface ModuleItemProps {
   module: HomeModule;
+  emphasized?: boolean;
 }
 
-const ModuleItem = ({ module }: ModuleItemProps) => {
+const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
   const Icon = ICONS[module.id];
   const iconColor = ICON_COLOR[module.id];
   const { active, label, onClick } = module;
+
+  // El módulo central (emphasized) crece un poco para crear jerarquía
+  const sizeClasses = emphasized
+    ? "w-[78px] h-[78px] vertical-tablet:w-[88px] vertical-tablet:h-[88px]"
+    : "w-[68px] h-[68px] vertical-tablet:w-[78px] vertical-tablet:h-[78px]";
+
+  const iconSize = emphasized ? 34 : 30;
 
   return (
     <button
@@ -89,38 +122,48 @@ const ModuleItem = ({ module }: ModuleItemProps) => {
       aria-pressed={active}
       aria-label={label}
       className={cn(
-        "group flex flex-col items-center w-[28%] transition-transform cursor-pointer active:scale-95",
-        !active && "opacity-45 grayscale-[0.3]",
+        "group relative flex flex-col items-center transition-transform cursor-pointer active:scale-95",
+        !active && "opacity-50 grayscale-[0.4]",
       )}
     >
-      {/* Wrapper relativo: el label flota sobre el borde inferior del círculo */}
-      <div className="relative flex flex-col items-center w-full">
-        {/* Círculo blanco con borde — contenedor del icono */}
+      {/* Wrapper con la sombra proyectada DEBAJO del círculo (no alrededor).
+          Esto se consigue con una sombra muy desplazada hacia abajo y muy
+          difuminada — el círculo parece flotar sobre la banda. */}
+      <div className="relative flex flex-col items-center">
+        {/* Sombra elíptica bajo el círculo (suelo del icono) */}
+        <span
+          aria-hidden
+          className={cn(
+            "absolute left-1/2 -translate-x-1/2 rounded-[50%] bg-km0-blue-900/30 blur-md",
+            emphasized ? "w-14 h-2 -bottom-1" : "w-12 h-1.5 -bottom-0.5",
+          )}
+        />
+
+        {/* Círculo blanco con borde fino azul */}
         <span
           className={cn(
-            "flex items-center justify-center rounded-full bg-white shrink-0",
-            "w-[72px] h-[72px] vertical-tablet:w-20 vertical-tablet:h-20",
-            "border-2 border-km0-yellow-500",
-            "shadow-[0_6px_14px_-6px_hsl(var(--km0-yellow-700)/0.45)]",
+            "relative flex items-center justify-center rounded-full bg-white shrink-0",
+            "border-2 border-km0-blue-300/60",
+            sizeClasses,
           )}
         >
           <Icon
-            size={32}
+            size={iconSize}
             strokeWidth={2.2}
             className={cn(iconColor, !active && "opacity-70")}
           />
         </span>
 
-        {/* Pill del label — flota sobre el borde inferior, altura fija
-            para 2 líneas → mantiene los círculos siempre alineados aunque
-            "KM0 CHAT" o "Farmacia y Belleza" ocupen 2 líneas. */}
+        {/* Pill del label — flota sobre el borde inferior del círculo,
+            blanco con borde azul para que destaque sobre la banda azul. */}
         <span
           className={cn(
-            "absolute -bottom-3.5 left-1/2 -translate-x-1/2",
-            "px-2 py-0.5 rounded-full bg-white",
-            "border border-km0-yellow-500",
+            "relative -mt-2.5 z-10",
+            "px-2.5 py-0.5 rounded-full bg-white",
+            "border border-km0-blue-300/60",
+            "shadow-[0_2px_6px_-2px_hsl(var(--km0-blue-900)/0.25)]",
             "font-ui font-bold text-[10px] leading-tight text-km0-blue-800",
-            "text-center whitespace-nowrap max-w-[110%]",
+            "text-center whitespace-nowrap max-w-[120%]",
           )}
         >
           {label}
@@ -131,4 +174,3 @@ const ModuleItem = ({ module }: ModuleItemProps) => {
 };
 
 export default HomeModules;
-
