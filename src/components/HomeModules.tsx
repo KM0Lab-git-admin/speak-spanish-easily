@@ -35,16 +35,14 @@ const ICONS: Record<HomeModuleId, LucideIcon> = {
   comerc: Store,
 };
 
-/** Tratamiento cromático del círculo del icono por módulo. */
-const ICON_TREATMENT: Record<
-  HomeModuleId,
-  { bg: string; icon: string }
-> = {
-  chat:   { bg: "bg-km0-blue-700",   icon: "text-white" },
-  agenda: { bg: "bg-km0-teal-500",   icon: "text-white" },
-  punts:  { bg: "bg-km0-yellow-500", icon: "text-km0-blue-800" },
-  cupons: { bg: "bg-km0-blue-700",   icon: "text-white" },
-  comerc: { bg: "bg-km0-coral-400",  icon: "text-white" },
+/** Color del icono dentro del círculo blanco (estilo Glovo: círculo blanco
+ *  grande con borde de color, icono colorido dentro). */
+const ICON_COLOR: Record<HomeModuleId, string> = {
+  chat:   "text-km0-blue-700",
+  agenda: "text-km0-teal-600",
+  punts:  "text-km0-yellow-600",
+  cupons: "text-km0-blue-700",
+  comerc: "text-km0-coral-400",
 };
 
 interface HomeModulesProps {
@@ -58,35 +56,30 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
   return (
     <div
       className={cn(
-        "rounded-3xl bg-white p-3 shadow-[0_12px_30px_-12px_hsl(var(--km0-blue-700)/0.25)]",
+        // Banda cálida tipo Glovo (su naranja → nuestro amarillo suave),
+        // bordes redondeados, sin sombra de card para que parezca un
+        // "área temática" más que un widget.
+        "rounded-3xl bg-km0-yellow-300/70 px-3 pt-5 pb-7",
         className,
       )}
     >
-      <div className="flex items-stretch">
-        {modules.map((mod, idx) => (
-          <div key={mod.id} className="flex-1 flex items-stretch">
-            <ModuleItem module={mod} />
-            {idx < modules.length - 1 && (
-              <div
-                aria-hidden
-                className="w-px my-2 bg-km0-blue-700/15 shrink-0"
-              />
-            )}
-          </div>
+      <div className="flex items-start justify-around gap-2">
+        {modules.map((mod) => (
+          <ModuleItem key={mod.id} module={mod} />
         ))}
       </div>
     </div>
   );
 };
 
-/* ─── Item individual ────────────────────────────────────────── */
+/* ─── Item individual estilo Glovo ───────────────────────────── */
 interface ModuleItemProps {
   module: HomeModule;
 }
 
 const ModuleItem = ({ module }: ModuleItemProps) => {
   const Icon = ICONS[module.id];
-  const { bg, icon } = ICON_TREATMENT[module.id];
+  const iconColor = ICON_COLOR[module.id];
   const { active, label, onClick } = module;
 
   return (
@@ -96,33 +89,46 @@ const ModuleItem = ({ module }: ModuleItemProps) => {
       aria-pressed={active}
       aria-label={label}
       className={cn(
-        "group flex-1 flex flex-col items-center px-1 py-2 rounded-xl transition-transform cursor-pointer active:scale-95",
+        "group flex flex-col items-center w-[28%] transition-transform cursor-pointer active:scale-95",
         !active && "opacity-45 grayscale-[0.3]",
       )}
     >
-      {/* Icono — altura fija para que SIEMPRE quede al mismo nivel,
-          independientemente de cuántas líneas ocupe el label debajo. */}
-      <span
-        className={cn(
-          "flex items-center justify-center rounded-full shadow-[0_4px_10px_-2px_hsl(var(--km0-blue-700)/0.25)] shrink-0 w-12 h-12",
-          bg,
-        )}
-      >
-        <Icon size={24} strokeWidth={2.4} className={icon} />
-      </span>
+      {/* Wrapper relativo: el label flota sobre el borde inferior del círculo */}
+      <div className="relative flex flex-col items-center w-full">
+        {/* Círculo blanco con borde — contenedor del icono */}
+        <span
+          className={cn(
+            "flex items-center justify-center rounded-full bg-white shrink-0",
+            "w-[72px] h-[72px] vertical-tablet:w-20 vertical-tablet:h-20",
+            "border-2 border-km0-yellow-500",
+            "shadow-[0_6px_14px_-6px_hsl(var(--km0-yellow-700)/0.45)]",
+          )}
+        >
+          <Icon
+            size={32}
+            strokeWidth={2.2}
+            className={cn(iconColor, !active && "opacity-70")}
+          />
+        </span>
 
-      {/* Label con altura reservada para 2 líneas → así los iconos
-          de módulos con 1 línea quedan alineados con los de 2 líneas. */}
-      <span
-        className={cn(
-          "mt-2 font-ui font-bold uppercase tracking-tight text-km0-blue-800 text-center leading-tight line-clamp-2 flex items-start justify-center text-xs min-h-[2rem]",
-          !active && "text-km0-blue-800/70",
-        )}
-      >
-        {label}
-      </span>
+        {/* Pill del label — flota sobre el borde inferior, altura fija
+            para 2 líneas → mantiene los círculos siempre alineados aunque
+            "KM0 CHAT" o "Farmacia y Belleza" ocupen 2 líneas. */}
+        <span
+          className={cn(
+            "absolute -bottom-3.5 left-1/2 -translate-x-1/2",
+            "px-2 py-0.5 rounded-full bg-white",
+            "border border-km0-yellow-500",
+            "font-ui font-bold text-[10px] leading-tight text-km0-blue-800",
+            "text-center whitespace-nowrap max-w-[110%]",
+          )}
+        >
+          {label}
+        </span>
+      </div>
     </button>
   );
 };
 
 export default HomeModules;
+
