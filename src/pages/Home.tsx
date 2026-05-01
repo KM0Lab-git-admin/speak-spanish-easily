@@ -159,7 +159,7 @@ const HomeContent = ({
 
         {/* ── MÓDULOS: card que monta sobre el hero (overlap) ── */}
         <motion.section
-          className="px-4 -mt-10 relative z-10"
+          className="-mt-10 relative z-10"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
