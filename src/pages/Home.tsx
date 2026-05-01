@@ -116,8 +116,9 @@ const HomeContent = ({
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
         >
-          {/* Fondo del header: gradiente beige cálido. */}
-          <div className="relative h-44 vertical-tablet:h-56 horizontal-desktop:h-48 bg-gradient-to-b from-km0-beige-50 to-km0-beige-100" />
+          {/* Fondo del header: gradiente beige cálido. Su altura se adapta a la
+              proporción real del skyline (≈1920x720 → aspect-[8/3]). */}
+          <div className="relative w-full aspect-[8/3] bg-gradient-to-b from-km0-beige-50 to-km0-beige-100" />
 
           {/* Skyline full-width de Malgrat, anclado al borde inferior del header.
               Su base sobresale ligeramente para quedar tapada por la banda azul
