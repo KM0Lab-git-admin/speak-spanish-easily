@@ -138,8 +138,8 @@ const HomeContent = ({
                 className="w-12 h-12 vertical-tablet:w-14 vertical-tablet:h-14 object-contain shrink-0 drop-shadow-[0_2px_4px_hsl(0_0%_100%/0.5)]"
               />
               <div className="flex flex-col leading-[0.95] min-w-0">
-                <h1 className="font-brand text-2xl vertical-tablet:text-3xl font-black text-km0-blue-700 whitespace-pre-line">
-                  {"Malgrat\nde Mar"}
+                <h1 className="font-brand font-black text-km0-blue-700 whitespace-pre-line text-left border-0 text-lg">
+                  {"Malgrat de Mar"}
                 </h1>
                 <div className="flex items-center mt-2">
                   <Km0Logo className="h-4 vertical-tablet:h-5 w-auto" />
