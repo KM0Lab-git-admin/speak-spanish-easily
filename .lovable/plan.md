@@ -1,90 +1,80 @@
-
-# Layout horizontal — Pantalla de selección de idioma
-
 ## Objetivo
 
-Adaptar `src/pages/Index.tsx` para que, cuando el dispositivo esté en **orientación horizontal** (o pantallas anchas y bajas), los mismos componentes (logo KM0, mascota con FloatingDots y las 3 LanguageCards) se reorganicen en **dos columnas** en lugar de apilarse verticalmente. La versión vertical (móvil portrait) se mantiene exactamente igual.
+Generar **2 mockups PNG estáticos** de la pantalla Home sin registro, a 375×667 (vertical-mobile), fullbleed (sin BrandedFrame), copy en español, aplicando el design system KM0 LAB. Sin tocar el código de la app — solo imágenes para iterar visualmente.
 
-## Estrategia de detección
+## Estructura propuesta (común a las 2 variantes)
 
-Usaremos un hook propio `useOrientation` (o un media query Tailwind con la variante `landscape:`) para diferenciar:
-
-- **Portrait / vertical**: layout actual sin cambios.
-- **Landscape / horizontal**: layout en dos columnas.
-
-Tailwind ya soporta `landscape:` y `portrait:` de forma nativa, así que lo más limpio es usar esas variantes directamente en las clases. No hace falta JS adicional.
-
-## Diseño propuesto (landscape)
+Basada en tu captura de referencia, reordenada y reinterpretada con el lenguaje KM0:
 
 ```text
-┌──────────────────────────────────────────────────────────┐
-│  [Km0Logo centrado arriba, compacto]                     │
-├──────────────────────────────┬───────────────────────────┤
-│                              │                           │
-│   ·  · FloatingDots ·        │   ┌─────────────────────┐ │
-│      ┌──────────┐            │   │ 🇪🇸  Català        →│ │
-│      │  ROBOT   │            │   └─────────────────────┘ │
-│      │ flotando │            │   ┌─────────────────────┐ │
-│      └──────────┘            │   │ 🇪🇸  Español       →│ │
-│   ·         ·  ·             │   └─────────────────────┘ │
-│                              │   ┌─────────────────────┐ │
-│                              │   │ 🇬🇧  English (off) →│ │
-│                              │   └─────────────────────┘ │
-└──────────────────────────────┴───────────────────────────┘
+┌──────────────────────────────────┐
+│ Status bar mock (9:41)           │
+├──────────────────────────────────┤
+│ HEADER                           │
+│  "Canet de Mar"  (font-brand)   │
+│  KM0 LAB® logo    🔔 notif      │
+├──────────────────────────────────┤
+│ ACCESOS RÁPIDOS (3 chips)        │
+│  [💬]      [🏆]      [🎁]       │
+│  KM0 CHAT  Puntos    Cupones    │
+├──────────────────────────────────┤
+│ CTA AUTH (2 botones primarios)   │
+│  [ Iniciar sesión ][ Registro ] │
+├──────────────────────────────────┤
+│ SECCIÓN: "Promos y eventos       │
+│           destacados"            │
+│  ┌──────────────────────────┐   │
+│  │  Hero card carrusel       │   │
+│  │  (placeholder ilustrado)  │   │
+│  └──────────────────────────┘   │
+│  • • ● • • • • •  (dots)        │
+├──────────────────────────────────┤
+│ SECCIÓN: "Comercios populares"   │
+│           [ Ver todos → ]        │
+│  (○) (○) (○) (○) (○)  scroll H  │
+│  Sanaït Vidal Manitas Champ ...  │
+├──────────────────────────────────┤
+│ TAB BAR inferior                 │
+│  🏠 Home   ℹ️ Info   👤 Perfil  │
+└──────────────────────────────────┘
 ```
 
-- **Columna izquierda (≈45%)**: mascota + FloatingDots, centrada vertical y horizontalmente.
-- **Columna derecha (≈55%)**: las 3 LanguageCards apiladas y centradas verticalmente.
-- **Logo KM0**: en una franja superior reducida (altura menor que en vertical para ahorrar espacio), centrado.
-- Ancho máximo del contenedor ampliado a `max-w-[760px]` solo en landscape (en vertical sigue siendo `max-w-[390px]`).
+## Las 2 variantes
 
-## Cambios técnicos
+Ambas tienen la **misma jerarquía y bloques**. Solo cambia la "temperatura" cromática para decidir el tono visual:
 
-Único archivo modificado: **`src/pages/Index.tsx`**
+- **Variante A — Cálida**: dominante `km0-yellow` en banda de accesos rápidos (como tu referencia), `km0-blue-700` en CTAs, fondo `km0-beige-50`. Más vibrante, festiva.
+- **Variante B — Fresca**: dominante `km0-teal` en banda de accesos rápidos, mismos `km0-blue-700` en CTAs, fondo `km0-beige-50`. Más sereno, "marca KM0 pura".
 
-1. **Contenedor raíz**
-   - Reemplazar `pt-3 pb-6` por padding adaptativo: `landscape:py-2 portrait:pt-3 portrait:pb-6`.
-   - Cambiar `items-start` por `items-start landscape:items-center` para que en landscape el bloque quede centrado verticalmente.
+## Tokens del design system aplicados
 
-2. **Wrapper interno**
-   - Ancho: `max-w-[390px] landscape:max-w-[760px]`.
-   - Altura: quitar el `h-[620px]` fijo en landscape (`landscape:h-auto`) para que se adapte al alto disponible.
-   - Cambiar `gap-8` por `gap-4 landscape:gap-3`.
+- **Colores**: solo paleta `km0-blue / beige / yellow / teal` y semánticos. Sin hex crudos.
+- **Tipografías**:
+  - `font-brand` (Antique Olive Black) → "Canet de Mar", títulos de sección.
+  - `font-ui` (Inter / Antique Olive Bold) → labels de chips, botones, "Ver todos".
+  - `font-body` → nombres de comercios, copy secundario.
+- **Radius**: `rounded-2xl` para cards y botones, `rounded-full` para chips circulares y avatares de comercio.
+- **Sombras**: suaves estilo `shadow-[0_8px_24px_-12px_hsl(var(--km0-blue-700)/0.2)]`.
+- **Espaciado**: ritmo vertical generoso (gap 5–7), márgenes laterales 4.
 
-3. **Logo**
-   - Mantener centrado, pero reducir altura en landscape: `h-9 landscape:h-7`.
-   - Reducir altura del wrapper: `h-11 landscape:h-9`.
+## Cómo lo voy a generar
 
-4. **Bloque de dos columnas (mascota + cards)**
-   - Envolver mascota y cards en un nuevo `<div>` con clases:
-     `flex flex-col gap-8 landscape:flex-row landscape:gap-6 landscape:items-center landscape:flex-1`.
-   - Mascota: añadir `landscape:flex-1 landscape:h-full landscape:max-h-[280px]` y reducir tamaño del robot en landscape (`h-56 landscape:h-44`).
-   - Bloque de cards: añadir `landscape:flex-1 landscape:justify-center landscape:flex landscape:flex-col`.
+1. **Skill `canvas-design`** — escribir un script Python que renderiza cada variante a 375×667 usando PIL, dibujando los bloques con los HSL exactos del design system (los leo de `src/design-system/tokens.ts`).
+2. Para los iconos uso glifos simples (lucide-style) dibujados en código o SVG inline.
+3. Para el hero "Promos y eventos" uso un bloque ilustrado generado con IA (`google/gemini-2.5-flash-image`) en estilo coherente con KM0 (colores beige/azul/amarillo, tipografía gestual tipo "Festa Sant Roma 2024").
+4. Salida: `/mnt/documents/home-v1-calida.png` y `/mnt/documents/home-v1-fresca.png`.
+5. **QA visual obligatoria**: abro cada PNG, reviso clipping, contrastes, alineación, tipografías. Itero hasta dejarlo limpio antes de entregártelo.
 
-5. **LanguageCards**
-   - No requieren cambios internos; los paddings actuales (`px-4 py-4`) ya funcionan bien al estrecharse la columna.
-   - Reducir `gap-3` entre cards a `landscape:gap-2` para que entren las 3 sin scroll.
+## Lo que NO hago en este paso
 
-## Comportamiento en otros dispositivos
+- No toco `src/pages/`, `src/components/` ni rutas.
+- No creo la pantalla en código.
+- No toco el design system ni los tokens.
+- No genero las otras 3 resoluciones (las dejamos para cuando aprobemos estructura).
 
-- **Móvil portrait** (390×844, etc.): sin cambios visuales, sigue idéntico al actual.
-- **Móvil landscape** (≈844×390): aplica el nuevo layout en dos columnas.
-- **Tablet portrait/landscape**: hereda el layout según orientación, con el ancho limitado a 760px máx.
-- **Desktop**: se ve siempre como landscape al ser pantalla ancha y baja en proporción → layout dos columnas centrado.
+## Siguiente iteración
 
-## Lo que NO se toca
-
-- `LanguageCard.tsx`: sin cambios.
-- `FloatingDots.tsx`: sin cambios (ya es `absolute inset-0`, se adapta solo).
-- `Km0Logo.tsx`: sin cambios.
-- Lógica de navegación, estado `selected`, animaciones de entrada: idénticos.
-- Resto de pantallas (Onboarding, PostalCode, Chat): se abordarán en pasos siguientes una a una.
-
-## Próximos pasos (después de esta)
-
-Una vez aprobado y aplicado este, seguimos con:
-1. Onboarding horizontal
-2. PostalCode horizontal
-3. Chat horizontal (el más complejo: sidebar + área conversación)
-
-¿Apruebas este plan para empezar por la selección de idioma?
+Una vez veas las 2 variantes me dices:
+1. Cuál es la base (A, B, mezcla, o pivote).
+2. Qué bloques cambiar (orden, tamaño, contenido).
+3. Cuándo te convenza, entramos **módulo por módulo** como propones (header → chips → CTA auth → carrusel → comercios → tab bar) y ahí ya sí maquetamos en código real.
