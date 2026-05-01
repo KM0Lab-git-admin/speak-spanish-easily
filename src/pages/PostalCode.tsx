@@ -92,7 +92,7 @@ const PostalCode = () => {
   return (
     <BrandedFrame onBack={() => navigate(-1)} backAriaLabel="Back">
       {/* ── PORTRAIT ─────────────────────────────────────── */}
-      <div className="w-full max-w-[390px] sm:max-w-[460px] mx-auto flex flex-col gap-6 landscape:hidden flex-1 min-h-0 py-2">
+      <div className="w-full max-w-[390px] sm:max-w-[460px] mx-auto flex flex-col gap-6 vertical-mobile:gap-7 landscape:hidden flex-1 min-h-0 py-2">
 
         {/* City illustration */}
         <motion.div
