@@ -66,11 +66,9 @@ const Home = () => {
           />
         </motion.header>
 
-        {/* Body — placeholder hasta que vayamos añadiendo módulos */}
-        <div className="flex-1 min-h-0 overflow-y-auto px-4 py-6">
-          <p className="font-body text-sm text-muted-foreground text-center">
-            (Aquí irán los módulos de la Home)
-          </p>
+        {/* Body — propuesta de los 3 layouts (3 / 4 / 5 módulos) */}
+        <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-5">
+          <ModulesShowcase />
         </div>
       </div>
 
