@@ -33,7 +33,7 @@ const languages: {id: string; flag: string; flagIsImage?: boolean; name: string;
   }
 ];
 
-const Index = () => {
+const Language = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState<string | null>(null);
 
@@ -159,4 +159,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Language;
