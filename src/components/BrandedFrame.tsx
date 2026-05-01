@@ -79,10 +79,11 @@ const BrandedFrame = ({
           height: "min(calc(100dvh - 1.5rem), calc((100vw - 1.5rem) * 19.5 / 9), calc(420px * 19.5 / 9))",
         }}
       >
-        {/* Header — logo centrado a altura fija. Back absolute para no descentrar. */}
-        <header className="relative shrink-0 flex items-center justify-center pt-5 pb-4 px-4">
+        {/* Header — logo centrado con espacio reservado a los lados
+            para que NUNCA se solape con el back button (incluso a 375px). */}
+        <header className="relative shrink-0 flex items-center justify-center pt-5 pb-4 px-16">
           {renderBackButton("left-4 w-10 h-10", 20)}
-          <Km0Logo className="h-9 w-auto" />
+          <Km0Logo className="h-9 w-auto max-w-full" />
         </header>
 
         {/* Body — scroll interno si desborda, frame nunca se mueve */}
