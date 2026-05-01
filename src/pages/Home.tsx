@@ -120,17 +120,18 @@ const HomeContent = ({
               La PNG es negra; usamos `mask-image` para teñirla con el azul
               institucional KM0 (no protagonismo, solo identidad). */}
           <div className="relative h-44 vertical-tablet:h-56 horizontal-desktop:h-48 overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100">
-            {/* Silueta teñida en azul, anclada al borde inferior */}
+            {/* Silueta teñida en azul, anclada al borde SUPERIOR.
+                Queda detrás del título "Malgrat de Mar" (z-index implícito menor). */}
             <div
               aria-hidden
-              className="absolute inset-x-0 bottom-0 h-28 vertical-tablet:h-36 horizontal-desktop:h-32 bg-km0-blue-700/30"
+              className="absolute inset-x-0 top-0 h-28 vertical-tablet:h-36 horizontal-desktop:h-32 bg-km0-blue-700/30"
               style={{
                 WebkitMaskImage: `url(${skylineMalgrat})`,
                 maskImage: `url(${skylineMalgrat})`,
                 WebkitMaskRepeat: "no-repeat",
                 maskRepeat: "no-repeat",
-                WebkitMaskPosition: "bottom center",
-                maskPosition: "bottom center",
+                WebkitMaskPosition: "top center",
+                maskPosition: "top center",
                 WebkitMaskSize: "contain",
                 maskSize: "contain",
               }}
