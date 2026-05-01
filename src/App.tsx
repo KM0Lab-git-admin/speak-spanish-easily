@@ -8,6 +8,7 @@ import Onboarding from "./pages/Onboarding";
 import PostalCode from "./pages/PostalCode";
 import Chat from "./pages/Chat";
 import NotFound from "./pages/NotFound";
+import DesignSystem from "./pages/DesignSystem";
 import TopLoadingBar from "./components/TopLoadingBar";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/postal-code" element={<PostalCode />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/design-system" element={<DesignSystem />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
