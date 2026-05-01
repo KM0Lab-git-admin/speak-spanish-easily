@@ -2,7 +2,30 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
+import HomeModules, { type HomeModule } from "@/components/HomeModules";
 import coatMalgrat from "@/assets/coat-malgrat.png";
+
+/* Demo data — mezcla activo/inactivo para validar ambos estados */
+const MODULES_3: HomeModule[] = [
+  { id: "chat", label: "KM0 CHAT", active: true },
+  { id: "punts", label: "Punts", active: true },
+  { id: "cupons", label: "Cupons", active: false },
+];
+
+const MODULES_4: HomeModule[] = [
+  { id: "chat", label: "KM0 CHAT", active: true },
+  { id: "agenda", label: "Agenda", active: true },
+  { id: "punts", label: "Punts", active: false },
+  { id: "cupons", label: "Cupons", active: true },
+];
+
+const MODULES_5: HomeModule[] = [
+  { id: "chat", label: "KM0 CHAT", active: true },
+  { id: "agenda", label: "Agenda", active: true },
+  { id: "punts", label: "Punts", active: true },
+  { id: "cupons", label: "Cupons", active: false },
+  { id: "comerc", label: "Comerç", active: true },
+];
 
 /**
  * Home — pantalla principal post-onboarding (sin registro).
