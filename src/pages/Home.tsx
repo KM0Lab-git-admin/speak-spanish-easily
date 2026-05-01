@@ -85,29 +85,30 @@ interface HeaderContentProps {
  *   [derecha]   campana con toggle de alertas
  */
 const HeaderContent = ({ cityName, hasAlerts, onToggleAlerts, compact = false }: HeaderContentProps) => {
-  const shieldSize = compact ? "w-9 h-9" : "w-10 h-10";
+  const shieldSize = compact ? "w-11 h-11" : "w-12 h-12";
 
   return (
     <>
-      {/* Escudo del pueblo — mismo footprint que el back button del chat */}
-      <div
-        className={`${shieldSize} flex items-center justify-center rounded-xl border-2 border-km0-blue-700/30 bg-white/60 shrink-0 overflow-hidden`}
-        aria-label={`Escudo de ${cityName}`}
-      >
-        <img
-          src={coatMalgrat}
-          alt={`Escudo de ${cityName}`}
-          className="w-full h-full object-contain p-0.5"
-        />
-      </div>
+      {/* Bloque marca: escudo + (nombre pueblo / KM0 LAB) pegados a la izquierda */}
+      <div className="flex-1 flex items-center gap-2.5 min-w-0">
+        <div
+          className={`${shieldSize} flex items-center justify-center shrink-0`}
+          aria-label={`Escudo de ${cityName}`}
+        >
+          <img
+            src={coatMalgrat}
+            alt={`Escudo de ${cityName}`}
+            className="w-full h-full object-contain"
+          />
+        </div>
 
-      {/* Centro — nombre del pueblo + logo KM0 LAB */}
-      <div className="flex-1 flex items-center justify-center min-w-0">
-        <div className="flex flex-col landscape:flex-row landscape:gap-3 horizontal-desktop:gap-4 gap-1 min-w-0 items-start landscape:items-center justify-start">
-          <h1 className="font-brand text-lg vertical-tablet:text-2xl landscape:text-2xl horizontal-mobile:text-base font-black leading-tight text-km0-blue-700 truncate max-w-full">
+        <div className="flex flex-col min-w-0 leading-none">
+          <h1 className="font-brand text-xl vertical-tablet:text-2xl horizontal-mobile:text-lg font-black text-km0-blue-700 truncate">
             {cityName}
           </h1>
-          <Km0Logo className="h-5 vertical-tablet:h-7 landscape:h-7 horizontal-mobile:h-4 w-auto shrink-0" />
+          <div className="flex items-center mt-0.5">
+            <Km0Logo className="h-3 vertical-tablet:h-4 horizontal-mobile:h-3 w-auto" />
+          </div>
         </div>
       </div>
 
