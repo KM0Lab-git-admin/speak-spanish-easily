@@ -121,19 +121,19 @@ const ModuleItem = ({ module, compact }: ModuleItemProps) => {
   return (
     <button
       type="button"
-      onClick={active ? onClick : undefined}
-      disabled={!active}
-      aria-disabled={!active}
+      onClick={onClick}
+      aria-pressed={active}
       aria-label={label}
       className={cn(
-        "group flex-1 flex flex-col items-center justify-center gap-1.5 px-1 py-2 rounded-xl transition-transform",
-        active && "active:scale-95 cursor-pointer",
-        !active && "opacity-55 cursor-not-allowed",
+        "group flex-1 flex flex-col items-center px-1 py-2 rounded-xl transition-transform cursor-pointer active:scale-95",
+        !active && "opacity-55",
       )}
     >
+      {/* Fila icono — altura fija para que SIEMPRE quede al mismo nivel,
+          independientemente de cuántas líneas ocupe el label debajo. */}
       <span
         className={cn(
-          "flex items-center justify-center rounded-full bg-white shadow-sm",
+          "flex items-center justify-center rounded-full bg-white shadow-sm shrink-0",
           iconWrap,
         )}
       >
@@ -146,10 +146,14 @@ const ModuleItem = ({ module, compact }: ModuleItemProps) => {
           )}
         />
       </span>
+
+      {/* Label con altura reservada para 2 líneas → así los iconos
+          de módulos con 1 línea quedan alineados con los de 2 líneas. */}
       <span
         className={cn(
-          "font-ui font-bold uppercase tracking-tight text-km0-blue-800 leading-none text-center",
+          "mt-1.5 font-ui font-bold uppercase tracking-tight text-km0-blue-800 text-center leading-tight line-clamp-2 flex items-start justify-center",
           labelSize,
+          compact ? "min-h-[2rem]" : "min-h-[2.25rem]",
           !active && "text-km0-blue-800/70",
         )}
       >

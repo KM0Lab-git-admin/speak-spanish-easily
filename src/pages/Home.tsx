@@ -2,29 +2,14 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
-import HomeModules, { type HomeModule } from "@/components/HomeModules";
+import HomeModules, { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
 import coatMalgrat from "@/assets/coat-malgrat.png";
 
-/* Demo data — mezcla activo/inactivo para validar ambos estados */
-const MODULES_3: HomeModule[] = [
+/* Demo data — 3 módulos. Cada uno clicable para alternar activo/inactivo. */
+const INITIAL_MODULES_3: HomeModule[] = [
   { id: "chat", label: "KM0 CHAT", active: true },
   { id: "punts", label: "Punts", active: true },
   { id: "cupons", label: "Cupons", active: false },
-];
-
-const MODULES_4: HomeModule[] = [
-  { id: "chat", label: "KM0 CHAT", active: true },
-  { id: "agenda", label: "Agenda", active: true },
-  { id: "punts", label: "Punts", active: false },
-  { id: "cupons", label: "Cupons", active: true },
-];
-
-const MODULES_5: HomeModule[] = [
-  { id: "chat", label: "KM0 CHAT", active: true },
-  { id: "agenda", label: "Agenda", active: true },
-  { id: "punts", label: "Punts", active: true },
-  { id: "cupons", label: "Cupons", active: false },
-  { id: "comerc", label: "Comerç", active: true },
 ];
 
 /**
@@ -40,6 +25,18 @@ const MODULES_5: HomeModule[] = [
 const Home = () => {
   const cityName = "Malgrat de Mar";
   const [hasAlerts, setHasAlerts] = useState(true);
+  const [modules, setModules] = useState<HomeModule[]>(INITIAL_MODULES_3);
+
+  const toggleModule = (id: HomeModuleId) => {
+    setModules((prev) =>
+      prev.map((m) => (m.id === id ? { ...m, active: !m.active } : m)),
+    );
+  };
+
+  const modulesWithHandlers: HomeModule[] = modules.map((m) => ({
+    ...m,
+    onClick: () => toggleModule(m.id),
+  }));
 
   return (
     <div className="min-h-[100dvh] w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 p-3 sm:p-4">
