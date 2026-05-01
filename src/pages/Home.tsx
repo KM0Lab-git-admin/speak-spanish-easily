@@ -85,12 +85,12 @@ interface HeaderContentProps {
  *   [derecha]   campana con toggle de alertas
  */
 const HeaderContent = ({ cityName, hasAlerts, onToggleAlerts, compact = false }: HeaderContentProps) => {
-  const shieldSize = compact ? "w-11 h-11" : "w-12 h-12";
+  const shieldSize = compact ? "w-14 h-14" : "w-16 h-16";
 
   return (
     <>
       {/* Bloque marca: escudo + (nombre pueblo / KM0 LAB) pegados a la izquierda */}
-      <div className="flex-1 flex items-center gap-2.5 min-w-0">
+      <div className="flex-1 flex items-center gap-3 min-w-0">
         <div
           className={`${shieldSize} flex items-center justify-center shrink-0`}
           aria-label={`Escudo de ${cityName}`}
@@ -103,11 +103,11 @@ const HeaderContent = ({ cityName, hasAlerts, onToggleAlerts, compact = false }:
         </div>
 
         <div className="flex flex-col min-w-0 leading-none">
-          <h1 className="font-brand text-xl vertical-tablet:text-2xl horizontal-mobile:text-lg font-black text-km0-blue-700 truncate">
+          <h1 className="font-brand text-2xl vertical-tablet:text-3xl horizontal-mobile:text-xl font-black text-km0-blue-700 truncate">
             {cityName}
           </h1>
-          <div className="flex items-center mt-0.5">
-            <Km0Logo className="h-3 vertical-tablet:h-4 horizontal-mobile:h-3 w-auto" />
+          <div className="flex items-center mt-1">
+            <Km0Logo className="h-4 vertical-tablet:h-5 horizontal-mobile:h-3.5 w-auto" />
           </div>
         </div>
       </div>
