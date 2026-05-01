@@ -26,7 +26,7 @@ const Language = () => {
   return (
     <BrandedFrame>
       {/* ── PORTRAIT body ───────────────────────────────── */}
-      <div className="landscape:hidden flex-1 min-h-0 w-full max-w-[390px] sm:max-w-[560px] mx-auto flex flex-col justify-around items-stretch py-2 sm:py-4 gap-3 sm:gap-4">
+      <div className="landscape:hidden flex-1 min-h-0 w-full max-w-[390px] sm:max-w-[560px] mx-auto flex flex-col justify-start items-stretch pt-2 pb-4 sm:py-4 gap-4 sm:gap-6">
         {/* Robot */}
         <div className="flex justify-center shrink-0">
           <div className="relative w-[230px] h-[230px] sm:w-[340px] sm:h-[340px] flex items-center justify-center">
