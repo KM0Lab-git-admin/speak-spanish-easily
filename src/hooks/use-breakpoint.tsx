@@ -1,15 +1,15 @@
 import * as React from "react";
 
 /**
- * Breakpoints oficiales del proyecto, alineados 1:1 con Playwright.
+ * Breakpoints oficiales del proyecto, alineados 1:1 con producción y Playwright.
  *
- *  vertical-mobile     → 375 × 667   (portrait, width < 768)
- *  vertical-tablet     → 768 × 1024  (portrait, width ≥ 768)
- *  horizontal-mobile   → 667 × 375   (landscape, width < 1000)
- *  horizontal-desktop  → 1280 × 550  (landscape, width ≥ 1000)
+ *  vertical-mobile     → portrait + width ≤ 767   (canónica 375 × 667)
+ *  vertical-tablet     → portrait + width ≥ 768   (canónica 768 × 1024)
+ *  horizontal-mobile   → landscape + width ≤ 1279 (canónica 667 × 375)
+ *  horizontal-desktop  → landscape + width ≥ 1280 (canónica 1280 × 550)
  *
- * Estos nombres deben coincidir con las variantes definidas en
- * `tailwind.config.ts` (plugins → addVariant).
+ * Estos nombres y umbrales deben coincidir con las variantes definidas en
+ * `tailwind.config.ts` (plugins → addVariant). NO modificar de forma aislada.
  */
 export type Breakpoint =
   | "vertical-mobile"
@@ -20,8 +20,8 @@ export type Breakpoint =
 const QUERIES: Record<Breakpoint, string> = {
   "vertical-mobile":    "(orientation: portrait)  and (max-width: 767px)",
   "vertical-tablet":    "(orientation: portrait)  and (min-width: 768px)",
-  "horizontal-mobile":  "(orientation: landscape) and (max-width: 999px)",
-  "horizontal-desktop": "(orientation: landscape) and (min-width: 1000px)",
+  "horizontal-mobile":  "(orientation: landscape) and (max-width: 1279px)",
+  "horizontal-desktop": "(orientation: landscape) and (min-width: 1280px)",
 };
 
 function detect(): Breakpoint {

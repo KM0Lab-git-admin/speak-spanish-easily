@@ -152,24 +152,32 @@ export default {
     require("tailwindcss-animate"),
     function ({ addVariant }: { addVariant: (name: string, definition: string | string[]) => void }) {
       // ─────────────────────────────────────────────────────────────
-      // BREAKPOINTS OFICIALES — alineados 1:1 con Playwright
+      // BREAKPOINTS OFICIALES — alineados 1:1 con producción y Playwright
       // Úsalos SIEMPRE para layout de pantallas.
+      //
+      // Cubren rangos amplios: cualquier resolución cae siempre en
+      // exactamente un breakpoint. Las cuatro resoluciones canónicas
+      // de validación visual quedan dentro de su rango respectivo:
+      //
+      //   vertical-mobile     → portrait + ≤767px   (canónica 375×667)
+      //   vertical-tablet     → portrait + ≥768px   (canónica 768×1024)
+      //   horizontal-mobile   → landscape + ≤1279px (canónica 667×375)
+      //   horizontal-desktop  → landscape + ≥1280px (canónica 1280×550)
+      //
+      // NO MODIFICAR sin sincronizar también apps/km0lab/tailwind.config.js
+      // del repo de producción (km0lab) y AGENTS.md / docs/CONVENTIONS.md.
       // ─────────────────────────────────────────────────────────────
-      // vertical-mobile     → 375 × 667   (también es la base sin prefijo)
-      // vertical-tablet     → 768 × 1024
-      // horizontal-mobile   → 667 × 375
-      // horizontal-desktop  → 1280 × 550
       addVariant("vertical-mobile",    "@media (orientation: portrait)  and (max-width: 767px)");
       addVariant("vertical-tablet",    "@media (orientation: portrait)  and (min-width: 768px)");
-      addVariant("horizontal-mobile",  "@media (orientation: landscape) and (max-width: 999px)");
-      addVariant("horizontal-desktop", "@media (orientation: landscape) and (min-width: 1000px)");
+      addVariant("horizontal-mobile",  "@media (orientation: landscape) and (max-width: 1279px)");
+      addVariant("horizontal-desktop", "@media (orientation: landscape) and (min-width: 1280px)");
 
       // ─────────────────────────────────────────────────────────────
       // ALIASES DEPRECADOS (mantener hasta migrar todas las pantallas)
       // No usar en código nuevo. Equivalen a los oficiales de arriba.
       // ─────────────────────────────────────────────────────────────
-      addVariant("short-landscape", "@media (orientation: landscape) and (max-width: 999px)");        // = horizontal-mobile
-      addVariant("wide-landscape",  "@media (orientation: landscape) and (min-width: 1000px)");       // = horizontal-desktop
+      addVariant("short-landscape", "@media (orientation: landscape) and (max-width: 1279px)");       // = horizontal-mobile
+      addVariant("wide-landscape",  "@media (orientation: landscape) and (min-width: 1280px)");       // = horizontal-desktop
       addVariant("tablet-portrait", "@media (orientation: portrait)  and (min-width: 768px)");        // = vertical-tablet
     },
   ],
