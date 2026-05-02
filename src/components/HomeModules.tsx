@@ -109,10 +109,17 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
   const isChat = module.id.startsWith("chat");
   const isAgenda = module.id === "agenda";
   const isAjuntament = module.id === "ajuntament";
-  const isImage = isChat || isAgenda || isAjuntament;
-  const Icon = isImage ? null : ICONS[module.id as Exclude<HomeModuleId, "chat" | "agenda" | "ajuntament">];
+  const isComerc = module.id === "comerc";
+  const isImage = isChat || isAgenda || isAjuntament || isComerc;
+  const Icon = isImage ? null : ICONS[module.id as Exclude<HomeModuleId, "chat" | "agenda" | "ajuntament" | "comerc">];
   const iconColor = ICON_COLOR[module.id];
-  const imageSrc = isChat ? chatMascot : isAgenda ? agendaIcon : cityHallIcon;
+  const imageSrc = isChat
+    ? chatMascot
+    : isAgenda
+      ? agendaIcon
+      : isAjuntament
+        ? cityHallIcon
+        : shopIcon;
   const { active, label, onClick } = module;
 
   // El módulo central (emphasized) crece un poco para crear jerarquía
