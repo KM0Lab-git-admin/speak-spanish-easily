@@ -10,9 +10,10 @@ import { cn } from "@/lib/utils";
 
 /* Módulos demo — cada uno togglea su estado activo/inactivo al click. */
 const INITIAL_MODULES_3: HomeModule[] = [
-  { id: "chat", label: "KM0 CHAT", active: true },
   { id: "punts", label: "Punts", active: true },
-  { id: "cupons", label: "Cupons", active: false },
+  { id: "cupons", label: "Cupons", active: true },
+  { id: "agenda", label: "Agenda", active: true },
+  { id: "comerc", label: "Comerç", active: true },
 ];
 
 /* Comerciantes mock — placeholders circulares con iniciales. */

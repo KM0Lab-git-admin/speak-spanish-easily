@@ -58,25 +58,17 @@ interface HomeModulesProps {
 }
 
 const HomeModules = ({ modules, className }: HomeModulesProps) => {
-  if (modules.length !== 3) return null;
+  if (modules.length !== 4) return null;
 
   return (
     <div className={cn("relative", className)}>
-      {/* Banda azul institucional con curva orgánica inferior.
-          La curva se consigue con un mask radial + border-radius asimétrico
-          para que el borde inferior sea más "ondulado" que el superior. */}
       <div
         className={cn(
           "relative bg-km0-beige-100 px-3 pt-7 pb-12",
           "rounded-t-3xl",
-          // Borde inferior con doble curva (cápsula): radio horizontal
-          // grande + radio vertical menor → efecto orgánico tipo "ola".
           "rounded-bl-[40%_24px] rounded-br-[40%_24px]",
         )}
       >
-        {/* Patrón decorativo sutil arriba — círculos translúcidos
-            que dan textura sin distraer (Glovo lo usa con su ilustración).
-            Aquí lo mantenemos minimalista. */}
         <div
           aria-hidden
           className="absolute top-3 right-4 w-12 h-12 rounded-full bg-white/5"
@@ -86,10 +78,10 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
           className="absolute -top-1 left-8 w-6 h-6 rounded-full bg-white/5"
         />
 
-        {/* Iconos: el del medio crece un punto para crear jerarquía focal */}
+        {/* 4 módulos del mismo tamaño (formato Punts/Cupons) */}
         <div className="relative flex items-end justify-around gap-2">
-          {modules.map((mod, idx) => (
-            <ModuleItem key={mod.id} module={mod} emphasized={idx === 1} />
+          {modules.map((mod) => (
+            <ModuleItem key={mod.id} module={mod} />
           ))}
         </div>
       </div>
@@ -100,21 +92,17 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
 /* ─── Item individual ────────────────────────────────────────── */
 interface ModuleItemProps {
   module: HomeModule;
-  emphasized?: boolean;
 }
 
-const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
+const ModuleItem = ({ module }: ModuleItemProps) => {
   const isChat = module.id === "chat";
   const Icon = isChat ? null : ICONS[module.id as Exclude<HomeModuleId, "chat">];
   const iconColor = ICON_COLOR[module.id];
   const { active, label, onClick } = module;
 
-  // El módulo central (emphasized) crece un poco para crear jerarquía
-  const sizeClasses = emphasized
-    ? "w-[78px] h-[78px] vertical-tablet:w-[88px] vertical-tablet:h-[88px]"
-    : "w-[68px] h-[68px] vertical-tablet:w-[78px] vertical-tablet:h-[78px]";
-
-  const iconSize = emphasized ? 34 : 30;
+  // Todos los módulos comparten tamaño (formato "Punts/Cupons")
+  const sizeClasses = "w-[68px] h-[68px] vertical-tablet:w-[78px] vertical-tablet:h-[78px]";
+  const iconSize = 30;
 
   return (
     <button
@@ -134,10 +122,7 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
         {/* Sombra elíptica bajo el círculo (suelo del icono) */}
         <span
           aria-hidden
-          className={cn(
-            "absolute left-1/2 -translate-x-1/2 rounded-[50%] bg-km0-blue-900/30 blur-md",
-            emphasized ? "w-14 h-2 -bottom-1" : "w-12 h-1.5 -bottom-0.5",
-          )}
+          className="absolute left-1/2 -translate-x-1/2 rounded-[50%] bg-km0-blue-900/30 blur-md w-12 h-1.5 -bottom-0.5"
         />
 
         {/* Círculo blanco con borde fino azul */}
