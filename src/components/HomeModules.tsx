@@ -151,7 +151,7 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
           className={cn(
             "relative flex items-center justify-center rounded-full bg-white shrink-0",
             "border-2",
-            isChat || isAgenda ? "border-km0-blue-400" : "border-km0-blue-300/60",
+            isImage ? "border-km0-blue-400" : "border-km0-blue-300/60",
             sizeClasses,
           )}
         >
