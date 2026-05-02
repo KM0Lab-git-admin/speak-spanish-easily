@@ -104,7 +104,7 @@ interface ModuleItemProps {
 }
 
 const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
-  const isChat = module.id === "chat";
+  const isChat = module.id.startsWith("chat");
   const Icon = isChat ? null : ICONS[module.id as Exclude<HomeModuleId, "chat">];
   const iconColor = ICON_COLOR[module.id];
   const { active, label, onClick } = module;
