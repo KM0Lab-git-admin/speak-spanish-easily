@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 /* Módulos demo — cada uno togglea su estado activo/inactivo al click. */
 const INITIAL_MODULES_3: HomeModule[] = [
   { id: "chat", label: "KM0 CHAT", active: true },
-  { id: "chat2" as HomeModuleId, label: "KM0 CHAT", active: true },
+  { id: "agenda", label: "Agenda", active: true },
   { id: "chat3" as HomeModuleId, label: "KM0 CHAT", active: true },
   { id: "chat4" as HomeModuleId, label: "KM0 CHAT", active: true },
 ];
