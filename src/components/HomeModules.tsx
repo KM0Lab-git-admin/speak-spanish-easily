@@ -108,10 +108,11 @@ interface ModuleItemProps {
 const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
   const isChat = module.id.startsWith("chat");
   const isAgenda = module.id === "agenda";
-  const isImage = isChat || isAgenda;
-  const Icon = isImage ? null : ICONS[module.id as Exclude<HomeModuleId, "chat" | "agenda">];
+  const isAjuntament = module.id === "ajuntament";
+  const isImage = isChat || isAgenda || isAjuntament;
+  const Icon = isImage ? null : ICONS[module.id as Exclude<HomeModuleId, "chat" | "agenda" | "ajuntament">];
   const iconColor = ICON_COLOR[module.id];
-  const imageSrc = isChat ? chatMascot : agendaIcon;
+  const imageSrc = isChat ? chatMascot : isAgenda ? agendaIcon : cityHallIcon;
   const { active, label, onClick } = module;
 
   // El módulo central (emphasized) crece un poco para crear jerarquía
