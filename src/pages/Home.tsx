@@ -337,10 +337,10 @@ const AuthButton = ({ variant, icon, children }: AuthButtonProps) => (
   <button
     type="button"
     className={cn(
-      "flex items-center gap-2 px-3 py-3 rounded-2xl font-ui font-bold text-sm transition-transform active:scale-[0.97] shadow-[0_6px_16px_-8px_hsl(var(--km0-blue-700)/0.35)]",
+      "flex items-center gap-2 px-3 py-3 rounded-2xl font-ui font-bold text-sm transition-all duration-200 hover:scale-[1.03] active:scale-95 shadow-[0_6px_16px_-8px_hsl(var(--km0-blue-700)/0.35)]",
       variant === "primary"
-        ? "bg-km0-blue-700 text-white"
-        : "bg-km0-yellow-500 text-km0-blue-800",
+        ? "bg-km0-blue-700 text-white hover:bg-km0-blue-600"
+        : "bg-km0-yellow-500 text-km0-blue-800 hover:bg-km0-yellow-400",
     )}
   >
     <span
