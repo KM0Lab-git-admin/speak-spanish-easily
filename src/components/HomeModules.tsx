@@ -58,7 +58,7 @@ interface HomeModulesProps {
 }
 
 const HomeModules = ({ modules, className }: HomeModulesProps) => {
-  if (modules.length !== 3) return null;
+  if (modules.length === 0) return null;
 
   return (
     <div className={cn("relative", className)}>
