@@ -6,6 +6,14 @@ import NotificationBell from "@/components/NotificationBell";
 import HomeModules, { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
 import skylineMalgrat from "@/assets/skyline-malgrat.png";
 import coatMalgrat from "@/assets/coat-malgrat.png";
+import couponIcon from "@/assets/coupon-icon.png";
+import shopBakery from "@/assets/shop-logos/shop-bakery.png";
+import shopFlorist from "@/assets/shop-logos/shop-florist.png";
+import shopHardware from "@/assets/shop-logos/shop-hardware.png";
+import shopWine from "@/assets/shop-logos/shop-wine.png";
+import shopFashion from "@/assets/shop-logos/shop-fashion.png";
+import shopCafe from "@/assets/shop-logos/shop-cafe.png";
+import shopPharmacy from "@/assets/shop-logos/shop-pharmacy.png";
 import { cn } from "@/lib/utils";
 
 /* Módulos demo — cada uno togglea su estado activo/inactivo al click. */
@@ -16,13 +24,21 @@ const INITIAL_MODULES_3: HomeModule[] = [
   { id: "comerc", label: "Comercios", active: true },
 ];
 
-/* Comerciantes mock — placeholders circulares con iniciales. */
-const COMERCIOS = [
-  { id: "sanait", name: "Sanait", color: "bg-km0-teal-100", text: "text-km0-teal-700" },
-  { id: "vidal",  name: "Vidal m...", color: "bg-km0-beige-200", text: "text-km0-blue-800" },
-  { id: "manit",  name: "Manitas", color: "bg-km0-yellow-300", text: "text-km0-blue-800" },
-  { id: "champ",  name: "Champa...", color: "bg-km0-blue-100", text: "text-km0-blue-800" },
-  { id: "anna",   name: "Anna",    color: "bg-km0-coral-400/80", text: "text-white" },
+/* Comerciantes mock — logos generados para sensación de tiendas reales. */
+interface Comercio {
+  id: string;
+  name: string;
+  logo: string;
+  bg: string;
+}
+const COMERCIOS: Comercio[] = [
+  { id: "sanait",  name: "Sanait",    logo: shopBakery,   bg: "bg-km0-teal-50" },
+  { id: "vidal",   name: "Vidal",     logo: shopFlorist,  bg: "bg-km0-beige-100" },
+  { id: "manit",   name: "Manitas",   logo: shopHardware, bg: "bg-km0-yellow-100" },
+  { id: "champ",   name: "Champa",    logo: shopWine,     bg: "bg-km0-blue-50" },
+  { id: "anna",    name: "Anna",      logo: shopFashion,  bg: "bg-km0-coral-100" },
+  { id: "cafemar", name: "Cafè Mar",  logo: shopCafe,     bg: "bg-km0-beige-100" },
+  { id: "farma",   name: "Farma+",    logo: shopPharmacy, bg: "bg-km0-teal-50" },
 ];
 
 /* Promos mock — placeholders demo con distintos colores y títulos. */
@@ -248,41 +264,30 @@ const HomeContent = ({
           transition={{ duration: 0.4, delay: 0.34 }}
         >
           <div className="flex items-center justify-between mb-3">
-            <h2 className="font-brand text-base font-black text-km0-blue-700">
-              Comercios populares
-            </h2>
+            <div className="flex items-center gap-2 min-w-0">
+              <img
+                src={couponIcon}
+                alt=""
+                aria-hidden
+                width={28}
+                height={28}
+                loading="lazy"
+                className="w-7 h-7 object-contain shrink-0"
+              />
+              <h2 className="font-brand text-base font-black text-km0-blue-700">
+                Esto es para ti
+              </h2>
+            </div>
             <button
               type="button"
-              className="font-ui text-xs font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform"
+              className="font-ui text-xs font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform shrink-0"
             >
               Ver todos
               <ArrowRight size={14} strokeWidth={2.4} />
             </button>
           </div>
 
-          {/* Scroll horizontal de avatares */}
-          <div
-            className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4"
-            style={{ scrollbarWidth: "none" }}
-          >
-            {COMERCIOS.map((c) => (
-              <div key={c.id} className="flex flex-col items-center shrink-0 w-16">
-                <div
-                  className={cn(
-                    "w-14 h-14 rounded-full shadow-sm border-2 border-white flex items-center justify-center font-brand font-black text-base",
-                    c.color,
-                    c.text,
-                  )}
-                  aria-hidden
-                >
-                  {c.name.charAt(0)}
-                </div>
-                <span className="font-body text-[10px] text-km0-blue-800 mt-1.5 truncate w-full text-center">
-                  {c.name}
-                </span>
-              </div>
-            ))}
-          </div>
+          <ComercioCarousel comercios={COMERCIOS} />
         </motion.section>
 
         {/* Spacer para que el último contenido no quede pegado a la tab bar */}
