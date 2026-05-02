@@ -237,55 +237,7 @@ const HomeContent = ({
           <h2 className="font-brand text-base font-black text-km0-blue-700 mb-2">
             Promos y eventos destacados
           </h2>
-
-          {/* Hero card placeholder — gradient con título tipo cartel */}
-          <div className="relative rounded-2xl overflow-hidden shadow-[0_10px_24px_-12px_hsl(var(--km0-blue-700)/0.35)] aspect-[16/9] bg-gradient-to-br from-km0-blue-700 via-km0-blue-600 to-km0-blue-800">
-            {/* Decoración: círculos de "fuegos artificiales" */}
-            <div className="absolute top-3 left-4 w-2 h-2 rounded-full bg-km0-yellow-400 shadow-[0_0_12px_hsl(var(--km0-yellow-400))]" />
-            <div className="absolute top-6 left-12 w-1.5 h-1.5 rounded-full bg-km0-coral-400" />
-            <div className="absolute top-4 right-16 w-2 h-2 rounded-full bg-km0-yellow-400 shadow-[0_0_12px_hsl(var(--km0-yellow-400))]" />
-            <div className="absolute top-10 right-6 w-1.5 h-1.5 rounded-full bg-white" />
-
-            {/* Texto principal */}
-            <div className="absolute inset-0 flex flex-col justify-center px-5">
-              <span className="font-brand text-2xl vertical-tablet:text-3xl font-black text-km0-yellow-400 leading-none">
-                FESTA
-              </span>
-              <span className="font-brand text-3xl vertical-tablet:text-4xl font-black text-white leading-none mt-1">
-                MAJOR
-              </span>
-              <span className="font-brand text-2xl vertical-tablet:text-3xl font-black text-km0-coral-400 leading-none mt-1">
-                ROMANA
-              </span>
-              <span className="font-ui text-xs text-white/90 mt-2 tracking-wider">
-                {"MALGRAT DE MAR · 2026"}
-              </span>
-            </div>
-
-            {/* Botón siguiente */}
-            <button
-              type="button"
-              aria-label="Siguiente promo"
-              className="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center active:scale-95 transition-transform"
-            >
-              <ChevronRight size={18} className="text-km0-blue-700" strokeWidth={2.4} />
-            </button>
-          </div>
-
-          {/* Dots de paginación */}
-          <div className="flex items-center justify-center gap-1.5 mt-3">
-            {[0, 1, 2, 3].map((i) => (
-              <span
-                key={i}
-                className={cn(
-                  "rounded-full transition-all",
-                  i === 0
-                    ? "w-5 h-1.5 bg-km0-blue-700"
-                    : "w-1.5 h-1.5 bg-km0-blue-700/25",
-                )}
-              />
-            ))}
-          </div>
+          <PromoCarousel promos={PROMOS} />
         </motion.section>
 
         {/* ── Comerciantes populares ── */}
