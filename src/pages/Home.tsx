@@ -11,6 +11,9 @@ import { cn } from "@/lib/utils";
 /* Módulos demo — cada uno togglea su estado activo/inactivo al click. */
 const INITIAL_MODULES_3: HomeModule[] = [
   { id: "chat", label: "KM0 CHAT", active: true },
+  { id: "chat-2" as HomeModuleId, label: "KM0 CHAT", active: true },
+  { id: "chat-3" as HomeModuleId, label: "KM0 CHAT", active: true },
+  { id: "chat-4" as HomeModuleId, label: "KM0 CHAT", active: true },
 ];
 
 /* Comerciantes mock — placeholders circulares con iniciales. */
