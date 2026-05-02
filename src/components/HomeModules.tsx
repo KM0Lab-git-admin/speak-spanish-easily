@@ -154,10 +154,6 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
               src={chatMascot}
               alt=""
               aria-hidden
-              style={{
-                filter:
-                  "drop-shadow(0 0 4px hsl(var(--km0-blue-500) / 0.85)) drop-shadow(0 0 8px hsl(var(--km0-blue-500) / 0.6))",
-              }}
               className={cn(
                 "w-full h-full object-contain",
                 !active && "opacity-70",
