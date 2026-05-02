@@ -162,6 +162,7 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
               aria-hidden
               className={cn(
                 "w-full h-full object-contain",
+                isAjuntament && "p-2.5",
                 !active && "opacity-70",
               )}
             />
