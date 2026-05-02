@@ -507,4 +507,105 @@ const PromoCarousel = ({ promos }: PromoCarouselProps) => {
   );
 };
 
+/* ─── ComercioCarousel ───────────────────────────────────────
+   Carrusel paginado de logos de comercios con swipe táctil y
+   dots clicables. Muestra 4 comercios por "página" en una grid.
+   ─────────────────────────────────────────────────────────── */
+interface ComercioCarouselProps {
+  comercios: Comercio[];
+}
+const PER_PAGE = 4;
+const ComercioCarousel = ({ comercios }: ComercioCarouselProps) => {
+  const pages: Comercio[][] = [];
+  for (let i = 0; i < comercios.length; i += PER_PAGE) {
+    pages.push(comercios.slice(i, i + PER_PAGE));
+  }
+  const total = pages.length;
+  const [page, setPage] = useState(0);
+  const [direction, setDirection] = useState<1 | -1>(1);
+
+  const goTo = (next: number) => {
+    const safe = Math.max(0, Math.min(total - 1, next));
+    setDirection(safe >= page ? 1 : -1);
+    setPage(safe);
+  };
+
+  return (
+    <div>
+      <div className="relative overflow-hidden">
+        <AnimatePresence mode="wait" custom={direction}>
+          <motion.div
+            key={page}
+            custom={direction}
+            initial={{ opacity: 0, x: direction * 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: direction * -40 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={(_, info) => {
+              if (info.offset.x < -50 && page < total - 1) goTo(page + 1);
+              else if (info.offset.x > 50 && page > 0) goTo(page - 1);
+            }}
+            className="grid grid-cols-4 gap-2 cursor-grab active:cursor-grabbing"
+          >
+            {pages[page].map((c) => (
+              <button
+                type="button"
+                key={c.id}
+                className="flex flex-col items-center active:scale-95 transition-transform"
+              >
+                <div
+                  className={cn(
+                    "w-14 h-14 rounded-full shadow-sm border-2 border-white flex items-center justify-center overflow-hidden",
+                    c.bg,
+                  )}
+                >
+                  <img
+                    src={c.logo}
+                    alt={c.name}
+                    width={56}
+                    height={56}
+                    loading="lazy"
+                    className="w-full h-full object-contain p-1.5 pointer-events-none select-none"
+                    draggable={false}
+                  />
+                </div>
+                <span className="font-body text-[10px] text-km0-blue-800 mt-1.5 truncate w-full text-center">
+                  {c.name}
+                </span>
+              </button>
+            ))}
+            {/* Rellena huecos vacíos para mantener la grid alineada */}
+            {pages[page].length < PER_PAGE &&
+              Array.from({ length: PER_PAGE - pages[page].length }).map((_, i) => (
+                <div key={`empty-${i}`} aria-hidden />
+              ))}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {total > 1 && (
+        <div className="flex items-center justify-center gap-1.5 mt-3">
+          {pages.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => goTo(i)}
+              aria-label={`Ir a la página ${i + 1}`}
+              className={cn(
+                "rounded-full transition-all",
+                i === page
+                  ? "w-5 h-1.5 bg-km0-blue-700"
+                  : "w-1.5 h-1.5 bg-km0-blue-700/25 hover:bg-km0-blue-700/50",
+              )}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default Home;
