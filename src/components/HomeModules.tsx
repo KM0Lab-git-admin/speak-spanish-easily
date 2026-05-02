@@ -2,6 +2,7 @@ import { Trophy, Ticket, Store, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import chatMascot from "@/assets/chat-mascot.png";
 import agendaIcon from "@/assets/agenda-icon.png";
+import cityHallIcon from "@/assets/cityhall-icon.png";
 
 /**
  * HomeModules — accesos rápidos estilo Glovo, recoloreado a marca KM0.
@@ -27,7 +28,7 @@ import agendaIcon from "@/assets/agenda-icon.png";
  *  Solo soporta exactamente 3 módulos (3 al centro).
  */
 
-export type HomeModuleId = "chat" | "agenda" | "punts" | "cupons" | "comerc";
+export type HomeModuleId = "chat" | "agenda" | "ajuntament" | "punts" | "cupons" | "comerc";
 
 export interface HomeModule {
   id: HomeModuleId;
@@ -36,7 +37,7 @@ export interface HomeModule {
   onClick?: () => void;
 }
 
-const ICONS: Record<Exclude<HomeModuleId, "chat" | "agenda">, LucideIcon> = {
+const ICONS: Record<Exclude<HomeModuleId, "chat" | "agenda" | "ajuntament">, LucideIcon> = {
   punts: Trophy,
   cupons: Ticket,
   comerc: Store,
@@ -45,11 +46,12 @@ const ICONS: Record<Exclude<HomeModuleId, "chat" | "agenda">, LucideIcon> = {
 /** Color del icono dentro del círculo blanco. Pensado como ritmo cromático
  *  — cada módulo "vibra" con un acento distinto del DS sobre fondo blanco. */
 const ICON_COLOR: Record<HomeModuleId, string> = {
-  chat:   "text-km0-blue-700",
-  agenda: "text-km0-teal-600",
-  punts:  "text-km0-yellow-600",
-  cupons: "text-km0-coral-400",
-  comerc: "text-km0-blue-700",
+  chat:        "text-km0-blue-700",
+  agenda:      "text-km0-teal-600",
+  ajuntament:  "text-km0-blue-700",
+  punts:       "text-km0-yellow-600",
+  cupons:      "text-km0-coral-400",
+  comerc:      "text-km0-blue-700",
 };
 
 interface HomeModulesProps {
@@ -106,10 +108,11 @@ interface ModuleItemProps {
 const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
   const isChat = module.id.startsWith("chat");
   const isAgenda = module.id === "agenda";
-  const isImage = isChat || isAgenda;
-  const Icon = isImage ? null : ICONS[module.id as Exclude<HomeModuleId, "chat" | "agenda">];
+  const isAjuntament = module.id === "ajuntament";
+  const isImage = isChat || isAgenda || isAjuntament;
+  const Icon = isImage ? null : ICONS[module.id as Exclude<HomeModuleId, "chat" | "agenda" | "ajuntament">];
   const iconColor = ICON_COLOR[module.id];
-  const imageSrc = isChat ? chatMascot : agendaIcon;
+  const imageSrc = isChat ? chatMascot : isAgenda ? agendaIcon : cityHallIcon;
   const { active, label, onClick } = module;
 
   // El módulo central (emphasized) crece un poco para crear jerarquía
@@ -148,7 +151,7 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
           className={cn(
             "relative flex items-center justify-center rounded-full bg-white shrink-0",
             "border-2",
-            isChat || isAgenda ? "border-km0-blue-400" : "border-km0-blue-300/60",
+            isImage ? "border-km0-blue-400" : "border-km0-blue-300/60",
             sizeClasses,
           )}
         >
