@@ -179,16 +179,16 @@ const HomeContent = ({
         >
           {/* Fondo del header: gradiente beige cálido. Su altura se adapta a la
               proporción real del skyline (≈1920x720 → aspect-[8/3]). */}
-          <div className="relative w-full aspect-[10/3] bg-gradient-to-b from-km0-beige-50 to-km0-beige-100" />
+          <div className="relative w-full aspect-[1920/716] bg-gradient-to-b from-km0-beige-50 to-km0-beige-100" />
 
-          {/* Skyline full-width de Malgrat, anclado al borde inferior del header.
-              Su base sobresale ligeramente para quedar tapada por la banda azul
-              de los módulos (que tiene z-10). */}
+          {/* Skyline full-width de Malgrat. Su contenedor padre tiene exactamente
+              el mismo aspect-ratio que la imagen original (1920x716), de modo
+              que se ve ENTERO sin cortes. */}
           <img
             src={skylineMalgrat}
             alt=""
             aria-hidden
-            className="pointer-events-none absolute left-0 right-0 bottom-0 w-full h-auto z-0 select-none opacity-25"
+            className="pointer-events-none absolute inset-0 w-full h-full object-contain object-bottom z-0 select-none opacity-25"
           />
 
           {/* Overlay: escudo + nombre + logo arriba-izquierda, campana arriba-derecha */}
