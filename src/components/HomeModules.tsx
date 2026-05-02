@@ -105,8 +105,11 @@ interface ModuleItemProps {
 
 const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
   const isChat = module.id.startsWith("chat");
-  const Icon = isChat ? null : ICONS[module.id as Exclude<HomeModuleId, "chat">];
+  const isAgenda = module.id === "agenda";
+  const isImage = isChat || isAgenda;
+  const Icon = isImage ? null : ICONS[module.id as Exclude<HomeModuleId, "chat" | "agenda">];
   const iconColor = ICON_COLOR[module.id];
+  const imageSrc = isChat ? chatMascot : agendaIcon;
   const { active, label, onClick } = module;
 
   // El módulo central (emphasized) crece un poco para crear jerarquía
@@ -145,13 +148,13 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
           className={cn(
             "relative flex items-center justify-center rounded-full bg-white shrink-0",
             "border-2",
-            isChat ? "border-km0-blue-400" : "border-km0-blue-300/60",
+            isChat || isAgenda ? "border-km0-blue-400" : "border-km0-blue-300/60",
             sizeClasses,
           )}
         >
-          {isChat ? (
+          {isImage ? (
             <img
-              src={chatMascot}
+              src={imageSrc}
               alt=""
               aria-hidden
               className={cn(
