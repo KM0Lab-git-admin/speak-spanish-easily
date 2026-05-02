@@ -144,8 +144,7 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
         <span
           className={cn(
             "relative flex items-center justify-center rounded-full bg-white shrink-0",
-            "border-2",
-            isChat ? "border-km0-blue-500" : "border-km0-blue-300/60",
+            isChat ? "border-0" : "border-2 border-km0-blue-300/60",
             sizeClasses,
           )}
         >
