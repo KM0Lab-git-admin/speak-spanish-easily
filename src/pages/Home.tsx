@@ -269,10 +269,10 @@ const HomeContent = ({
                 src={couponIcon}
                 alt=""
                 aria-hidden
-                width={88}
-                height={88}
+                width={80}
+                height={80}
                 loading="lazy"
-                className="w-[88px] h-[88px] object-contain shrink-0"
+                className="w-20 h-20 object-contain shrink-0"
               />
               <h2 className="font-brand text-base font-black text-km0-blue-700">
                 Esto es para ti
