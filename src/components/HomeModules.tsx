@@ -36,8 +36,7 @@ export interface HomeModule {
   onClick?: () => void;
 }
 
-const ICONS: Record<Exclude<HomeModuleId, "chat">, LucideIcon> = {
-  agenda: Calendar,
+const ICONS: Record<Exclude<HomeModuleId, "chat" | "agenda">, LucideIcon> = {
   punts: Trophy,
   cupons: Ticket,
   comerc: Store,
