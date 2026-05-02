@@ -58,7 +58,7 @@ interface HomeModulesProps {
 }
 
 const HomeModules = ({ modules, className }: HomeModulesProps) => {
-  if (![1, 3, 4].includes(modules.length)) return null;
+  if (modules.length !== 1 && modules.length !== 3) return null;
   const single = modules.length === 1;
   return (
     <div className={cn("relative", className)}>
@@ -89,7 +89,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
         {/* Iconos: el del medio crece un punto para crear jerarquía focal */}
         <div className="relative flex items-end justify-around gap-2">
           {modules.map((mod, idx) => (
-            <ModuleItem key={mod.id} module={mod} emphasized={single || (modules.length === 3 && idx === 1)} />
+            <ModuleItem key={mod.id} module={mod} emphasized={single || idx === 1} />
           ))}
         </div>
       </div>
