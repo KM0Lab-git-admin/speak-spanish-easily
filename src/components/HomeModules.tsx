@@ -58,7 +58,7 @@ interface HomeModulesProps {
 }
 
 const HomeModules = ({ modules, className }: HomeModulesProps) => {
-  if (modules.length !== 1 && modules.length !== 3) return null;
+  if (![1, 3, 4].includes(modules.length)) return null;
   const single = modules.length === 1;
   return (
     <div className={cn("relative", className)}>
