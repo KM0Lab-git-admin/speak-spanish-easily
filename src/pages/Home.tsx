@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { UserRound, UserRoundPlus, ChevronRight, ArrowRight, Home as HomeIcon, Info, Tag, User } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { UserRound, UserRoundPlus, ChevronLeft, ChevronRight, ArrowRight, Home as HomeIcon, Info, Tag, User } from "lucide-react";
 import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
 import HomeModules, { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
