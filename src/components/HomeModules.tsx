@@ -1,6 +1,7 @@
-import { Trophy, Ticket, Calendar, Store, type LucideIcon } from "lucide-react";
+import { Trophy, Ticket, Store, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import chatMascot from "@/assets/chat-mascot.png";
+import agendaIcon from "@/assets/agenda-icon.png";
 
 /**
  * HomeModules — accesos rápidos estilo Glovo, recoloreado a marca KM0.
