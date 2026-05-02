@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import chatMascot from "@/assets/chat-mascot.png";
 import agendaIcon from "@/assets/agenda-icon.png";
 import cityHallIcon from "@/assets/cityhall-icon.png";
+import shopIcon from "@/assets/shop-icon.png";
 
 /**
  * HomeModules — accesos rápidos estilo Glovo, recoloreado a marca KM0.
