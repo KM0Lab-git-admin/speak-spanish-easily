@@ -13,7 +13,7 @@ const INITIAL_MODULES_3: HomeModule[] = [
   { id: "chat", label: "KM0 CHAT", active: true },
   { id: "agenda", label: "Agenda", active: true },
   { id: "ajuntament", label: "Ayuntamiento", active: true },
-  { id: "chat4" as HomeModuleId, label: "KM0 CHAT", active: true },
+  { id: "comerc", label: "Comercios", active: true },
 ];
 
 /* Comerciantes mock — placeholders circulares con iniciales. */

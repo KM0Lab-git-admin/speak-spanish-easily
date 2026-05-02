@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import chatMascot from "@/assets/chat-mascot.png";
 import agendaIcon from "@/assets/agenda-icon.png";
 import cityHallIcon from "@/assets/cityhall-icon.png";
+import shopIcon from "@/assets/shop-icon.png";
 
 /**
  * HomeModules — accesos rápidos estilo Glovo, recoloreado a marca KM0.
@@ -37,10 +38,9 @@ export interface HomeModule {
   onClick?: () => void;
 }
 
-const ICONS: Record<Exclude<HomeModuleId, "chat" | "agenda" | "ajuntament">, LucideIcon> = {
+const ICONS: Record<Exclude<HomeModuleId, "chat" | "agenda" | "ajuntament" | "comerc">, LucideIcon> = {
   punts: Trophy,
   cupons: Ticket,
-  comerc: Store,
 };
 
 /** Color del icono dentro del círculo blanco. Pensado como ritmo cromático
@@ -109,10 +109,17 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
   const isChat = module.id.startsWith("chat");
   const isAgenda = module.id === "agenda";
   const isAjuntament = module.id === "ajuntament";
-  const isImage = isChat || isAgenda || isAjuntament;
-  const Icon = isImage ? null : ICONS[module.id as Exclude<HomeModuleId, "chat" | "agenda" | "ajuntament">];
+  const isComerc = module.id === "comerc";
+  const isImage = isChat || isAgenda || isAjuntament || isComerc;
+  const Icon = isImage ? null : ICONS[module.id as Exclude<HomeModuleId, "chat" | "agenda" | "ajuntament" | "comerc">];
   const iconColor = ICON_COLOR[module.id];
-  const imageSrc = isChat ? chatMascot : isAgenda ? agendaIcon : cityHallIcon;
+  const imageSrc = isChat
+    ? chatMascot
+    : isAgenda
+      ? agendaIcon
+      : isAjuntament
+        ? cityHallIcon
+        : shopIcon;
   const { active, label, onClick } = module;
 
   // El módulo central (emphasized) crece un poco para crear jerarquía
@@ -162,7 +169,7 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
               aria-hidden
               className={cn(
                 "w-full h-full object-contain",
-                isAjuntament && "p-2.5",
+                (isAjuntament || isComerc) && "p-2.5",
                 !active && "opacity-70",
               )}
             />
