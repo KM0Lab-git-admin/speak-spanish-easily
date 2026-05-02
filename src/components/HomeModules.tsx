@@ -38,10 +38,9 @@ export interface HomeModule {
   onClick?: () => void;
 }
 
-const ICONS: Record<Exclude<HomeModuleId, "chat" | "agenda" | "ajuntament">, LucideIcon> = {
+const ICONS: Record<Exclude<HomeModuleId, "chat" | "agenda" | "ajuntament" | "comerc">, LucideIcon> = {
   punts: Trophy,
   cupons: Ticket,
-  comerc: Store,
 };
 
 /** Color del icono dentro del círculo blanco. Pensado como ritmo cromático
