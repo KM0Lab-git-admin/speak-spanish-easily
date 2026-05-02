@@ -28,7 +28,7 @@ import cityHallIcon from "@/assets/cityhall-icon.png";
  *  Solo soporta exactamente 3 módulos (3 al centro).
  */
 
-export type HomeModuleId = "chat" | "agenda" | "punts" | "cupons" | "comerc";
+export type HomeModuleId = "chat" | "agenda" | "ajuntament" | "punts" | "cupons" | "comerc";
 
 export interface HomeModule {
   id: HomeModuleId;
@@ -37,7 +37,7 @@ export interface HomeModule {
   onClick?: () => void;
 }
 
-const ICONS: Record<Exclude<HomeModuleId, "chat" | "agenda">, LucideIcon> = {
+const ICONS: Record<Exclude<HomeModuleId, "chat" | "agenda" | "ajuntament">, LucideIcon> = {
   punts: Trophy,
   cupons: Ticket,
   comerc: Store,
@@ -46,11 +46,12 @@ const ICONS: Record<Exclude<HomeModuleId, "chat" | "agenda">, LucideIcon> = {
 /** Color del icono dentro del círculo blanco. Pensado como ritmo cromático
  *  — cada módulo "vibra" con un acento distinto del DS sobre fondo blanco. */
 const ICON_COLOR: Record<HomeModuleId, string> = {
-  chat:   "text-km0-blue-700",
-  agenda: "text-km0-teal-600",
-  punts:  "text-km0-yellow-600",
-  cupons: "text-km0-coral-400",
-  comerc: "text-km0-blue-700",
+  chat:        "text-km0-blue-700",
+  agenda:      "text-km0-teal-600",
+  ajuntament:  "text-km0-blue-700",
+  punts:       "text-km0-yellow-600",
+  cupons:      "text-km0-coral-400",
+  comerc:      "text-km0-blue-700",
 };
 
 interface HomeModulesProps {
