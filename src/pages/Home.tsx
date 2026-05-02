@@ -179,7 +179,7 @@ const HomeContent = ({
         >
           {/* Fondo del header: gradiente beige cálido. Su altura se adapta a la
               proporción real del skyline (≈1920x720 → aspect-[8/3]). */}
-          <div className="relative w-full aspect-[8/3] bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 my-[10px]" />
+          <div className="relative w-full aspect-[10/3] bg-gradient-to-b from-km0-beige-50 to-km0-beige-100" />
 
           {/* Skyline full-width de Malgrat, anclado al borde inferior del header.
               Su base sobresale ligeramente para quedar tapada por la banda azul
@@ -220,7 +220,7 @@ const HomeContent = ({
 
         {/* ── MÓDULOS: card que monta sobre el hero (overlap) ── */}
         <motion.section
-          className="-mt-10 relative z-10"
+          className="-mt-8 relative z-10"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
@@ -230,7 +230,7 @@ const HomeContent = ({
 
         {/* ── CTAs Auth ── */}
         <motion.section
-          className="px-4 mt-5 grid grid-cols-2 gap-3"
+          className="px-4 mt-3 grid grid-cols-2 gap-3"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.18 }}
@@ -245,7 +245,7 @@ const HomeContent = ({
 
         {/* ── Promos i events destacats ── */}
         <motion.section
-          className="px-4 mt-6"
+          className="px-4 mt-4"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.26 }}
@@ -258,21 +258,21 @@ const HomeContent = ({
 
         {/* ── Comerciantes populares ── */}
         <motion.section
-          className="px-4 mt-6"
+          className="px-4 mt-4"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.34 }}
         >
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2 min-w-0">
               <img
                 src={couponIcon}
                 alt=""
                 aria-hidden
-                width={56}
-                height={56}
+                width={40}
+                height={40}
                 loading="lazy"
-                className="w-14 h-14 object-contain shrink-0"
+                className="w-10 h-10 object-contain shrink-0"
               />
               <h2 className="font-brand text-base font-black text-km0-blue-700">
                 Esto es para ti
@@ -291,7 +291,7 @@ const HomeContent = ({
         </motion.section>
 
         {/* Spacer para que el último contenido no quede pegado a la tab bar */}
-        <div className="h-4" />
+        <div className="h-2" />
       </div>
 
       {/* ── Tab bar inferior (fixed dentro del frame) ── */}
