@@ -1,5 +1,6 @@
-import { MessageSquarePlus, Trophy, Ticket, Calendar, Store, type LucideIcon } from "lucide-react";
+import { Trophy, Ticket, Calendar, Store, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import chatMascot from "@/assets/chat-mascot.png";
 
 /**
  * HomeModules — accesos rápidos estilo Glovo, recoloreado a marca KM0.
@@ -34,8 +35,7 @@ export interface HomeModule {
   onClick?: () => void;
 }
 
-const ICONS: Record<HomeModuleId, LucideIcon> = {
-  chat: MessageSquarePlus,
+const ICONS: Record<Exclude<HomeModuleId, "chat">, LucideIcon> = {
   agenda: Calendar,
   punts: Trophy,
   cupons: Ticket,
@@ -104,7 +104,8 @@ interface ModuleItemProps {
 }
 
 const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
-  const Icon = ICONS[module.id];
+  const isChat = module.id === "chat";
+  const Icon = isChat ? null : ICONS[module.id as Exclude<HomeModuleId, "chat">];
   const iconColor = ICON_COLOR[module.id];
   const { active, label, onClick } = module;
 
@@ -147,11 +148,25 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
             sizeClasses,
           )}
         >
-          <Icon
-            size={iconSize}
-            strokeWidth={2.2}
-            className={cn(iconColor, !active && "opacity-70")}
-          />
+          {isChat ? (
+            <img
+              src={chatMascot}
+              alt=""
+              aria-hidden
+              className={cn(
+                "w-full h-full object-contain",
+                !active && "opacity-70",
+              )}
+            />
+          ) : (
+            Icon && (
+              <Icon
+                size={iconSize}
+                strokeWidth={2.2}
+                className={cn(iconColor, !active && "opacity-70")}
+              />
+            )
+          )}
         </span>
 
         {/* Pill del label — flota sobre el borde inferior del círculo,
