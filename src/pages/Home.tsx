@@ -120,20 +120,12 @@ const Home = () => {
         />
       </div>
 
-      {/* ── LANDSCAPE ──────────────────────────────────────────
-          Decisión: en landscape NO reorganizamos el contenido en columnas.
-          El usuario prefiere mantener la MISMA distribución vertical que en
-          portrait (una sola columna). Para conseguirlo sin scroll y de forma
-          fluida entre horizontal-mobile (alto 375) y horizontal-desktop
-          (alto 550), renderizamos un frame "tipo móvil" (proporción 9:19.5)
-          CENTRADO horizontalmente, cuya altura = altura del viewport menos
-          margen. El ancho se deriva del aspect-ratio, así el contenido cabe
-          siempre completo y se ve idéntico al portrait. */}
+      {/* ── LANDSCAPE ────────────────────────────────────────── */}
       <div
         className="hidden landscape:flex bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col relative"
         style={{
-          height: "min(calc(100dvh - 1.5rem), calc((100vw - 1.5rem) * 19.5 / 9), calc(420px * 19.5 / 9))",
-          width: "min(calc(100vw - 1.5rem), calc((100dvh - 1.5rem) * 9 / 19.5), 420px)",
+          width: "min(calc(100vw - 2rem), calc((100dvh - 2rem) * 16 / 9), 1200px)",
+          height: "min(calc(100dvh - 2rem), calc((100vw - 2rem) * 9 / 16), calc(1200px * 9 / 16))",
         }}
       >
         <HomeContent
