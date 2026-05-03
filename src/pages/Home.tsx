@@ -178,8 +178,11 @@ const HomeContent = ({
           transition={{ duration: 0.4 }}
         >
           {/* Fondo del header: gradiente beige cálido. Su altura se adapta a la
-              proporción real del skyline (≈1920x720 → aspect-[8/3]). */}
-          <div className="relative w-full aspect-[1920/716] bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 my-[5px]" />
+              proporción real del skyline (≈1920x720 → aspect-[8/3]).
+              En landscape limitamos la altura para que la cabecera no empuje
+              los módulos y CTAs hacia abajo (el skyline sigue visible
+              alineado al borde inferior con object-bottom). */}
+          <div className="relative w-full aspect-[1920/716] bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 my-[5px] horizontal-mobile:max-h-[38%] horizontal-desktop:max-h-[42%]" />
 
           {/* Skyline full-width de Malgrat. Su contenedor padre tiene exactamente
               el mismo aspect-ratio que la imagen original (1920x716), de modo
