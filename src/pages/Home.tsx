@@ -291,7 +291,7 @@ const HomeContent = ({
         </motion.section>
 
         {/* Spacer para que el último contenido no quede pegado a la tab bar */}
-        <div className="h-2" />
+        <div className="h-[clamp(0.5rem,3vw,1.5rem)]" />
       </div>
 
       {/* ── Tab bar inferior (fixed dentro del frame) ── */}
