@@ -1,66 +1,34 @@
 ## Objetivo
 
-En **landscape** (`horizontal-mobile` y `horizontal-desktop`), reorganizar el modo Home para que:
+A 667×375 (horizontal-mobile), las secciones **Promos y eventos destacados** y **Esto es para ti** quedan tapadas por la tab bar. Hay que liberar altura comprimiendo el bloque superior, **sin tocar** los otros 3 breakpoints (`vertical-mobile`, `vertical-tablet`, `horizontal-desktop`).
 
-- El **skyline** quede como **fondo absoluto** del scroll body (no ocupa flujo, no empuja contenido).
-- Los **HomeModules** suban hasta justo debajo de la cabecera (~22% desde arriba), sobreimpresos sobre el skyline.
-- Cabecera (escudo + Malgrat de Mar + KM0 LAB + campana) y resto del flujo (CTAs, Promos, Comercios, tab bar) se mantienen tal cual.
+## Cambios (todos con prefijo `horizontal-mobile:`)
 
-El **modo vertical (vertical-mobile + vertical-tablet) NO se toca**. Toda regla nueva irá prefijada con `horizontal-mobile:` / `horizontal-desktop:`.
+### `src/pages/Home.tsx`
 
-## Cambios en `src/pages/Home.tsx`
+1. **Padding superior del scroll body**: `pt-[clamp(48px,10dvh,64px)]` → `pt-7` (~28 px). Libera ~25 px.
+2. **Header (escudo + título "Malgrat de Mar" + KM0 LAB)**: reducir escudo a `w-9 h-9`, título a `text-sm`, logo KM0 a `h-3`, padding-top del overlay a `pt-2`. Libera ~15 px.
+3. **Módulos (HomeModules)**: en `horizontal-mobile` reducir círculos a ~50 px y label más pequeño. Libera ~15 px.
+4. **CTAs Iniciar sesión / Registro**: reducir padding vertical y `text-xs`. Libera ~10 px.
+5. **Gap del grid 2 columnas y `mt-3`**: bajar a `gap-2` y `mt-2`. Libera ~6 px.
+6. **Tab bar inferior**: `pt-1 pb-1.5` y label `text-[9px]` solo en este breakpoint. Libera ~10 px.
+7. **Aspect-ratio promos / "Esto es para ti"**: si después de los puntos 1-6 sigue justo, bajar `aspect-[16/7]` → `aspect-[16/6]` en `horizontal-mobile`.
 
-### 1. Hero `<motion.section>` (la sección que envuelve skyline + cabecera)
+### `src/components/HomeModules.tsx`
 
-- Mantener todo igual en vertical.
-- En landscape: añadir `horizontal-mobile:absolute horizontal-mobile:inset-0 horizontal-mobile:pointer-events-none` (mismo para `horizontal-desktop:`) para sacarlo del flujo y que cubra todo el scroll body como fondo. La cabecera (overlay) se reactivará con `pointer-events-auto` solo donde es interactiva (la campana).
+- Añadir variantes `horizontal-mobile` para `sizeClasses` (círculo ~50 px) y label (text-[9px], padding más fino).
 
-### 2. Div del fondo skyline (línea 185)
+## Verificación
 
-- Vertical: queda con su `aspect-[1920/716]` actual.
-- Landscape: anular el aspect y darle altura completa: `horizontal-mobile:!aspect-auto horizontal-mobile:h-full horizontal-desktop:!aspect-auto horizontal-desktop:h-full`. Quitar el `h-[35dvh]/h-[42dvh]` previo.
+Tras los cambios verifico visualmente las **4 resoluciones**:
+- vertical-mobile 375×667
+- vertical-tablet 768×1024
+- horizontal-mobile 667×375 ← objetivo
+- horizontal-desktop 1280×550
 
-### 3. Padding-top del scroll body en landscape
+Los puntos 2-6 son aditivos: si el primer pase libera suficiente altura, no aplico el punto 7 para mantener proporción.
 
-- Reservar espacio para la cabecera absoluta arriba: `horizontal-mobile:pt-[clamp(56px,12dvh,72px)] horizontal-desktop:pt-[clamp(64px,14dvh,88px)]`.
-- Esto asegura que los módulos arrancan justo por debajo de la cabecera (la línea roja del usuario).
+## Riesgos
 
-### 4. Sección HomeModules (línea 222-229)
-
-- Vertical: mantener `-mt-8` (overlap actual con el hero).
-- Landscape: anular ese margin negativo (`horizontal-mobile:mt-0 horizontal-desktop:mt-0`) ya que el skyline ya no está en el flujo.
-
-### 5. Sin cambios en CTAs, Promos, Comercios, tab bar
-
-- Su composición vertical actual sigue intacta. Al desaparecer el hueco que ocupaba el hero en flujo, todo el bloque sube de manera natural y queda mejor repartido.
-
-## Resultado esperado en landscape
-
-```text
-┌──────────────────────────────────────────────┐
-│ escudo Malgrat KM0LAB              campana   │  ← cabecera (overlay)
-│ ─────────── línea roja del usuario ──────── │
-│ [chat] [agenda] [ayunt.] [comercios]         │  ← HomeModules (sobre skyline)
-│                                              │
-│ [Iniciar sesión]    [Registro]               │
-│                                              │
-│ Promos y eventos destacados                  │
-│ [─── banner ───]                             │
-│                                              │
-│ Esto es para ti                              │
-│ [card] [card] [card]                         │
-│                                              │
-│ [Inicio] [Info] [Ofertas] [Perfil]           │  ← tab bar
-└──────────────────────────────────────────────┘
-       (skyline beige al fondo, opacity-25)
-```
-
-## Garantías de no-regresión vertical
-
-- Todas las reglas nuevas usan exclusivamente prefijos `horizontal-mobile:` / `horizontal-desktop:`.
-- Se mantiene el `aspect-[1920/716]`, el `-mt-8` de los módulos, y los spacers `vertical-mobile:flex-1` tal cual.
-- Verificación con screenshot en las 4 resoluciones canónicas: 375×667, 768×1024, 667×375, 1280×550. Vertical debe quedar pixel-idéntico.
-
-## Archivos a tocar
-
-- `src/pages/Home.tsx` (3 ediciones puntuales en líneas 174-185, 195-218 y 222-228 aproximadamente).
+- Densidad visual alta en horizontal-mobile (es esperable: 375 px de alto es muy poco).
+- Cambios aislados con `horizontal-mobile:` → no hay regresión en los otros 3 breakpoints.
