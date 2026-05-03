@@ -259,6 +259,7 @@ const HomeContent = ({
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.26 }}
+            style={{ opacity: 1 }}
           >
             <h2 className="font-brand font-black text-km0-blue-700 mb-[clamp(0.25rem,1.5vw,0.875rem)] text-base vertical-tablet:mb-3 horizontal-mobile:!text-[13px] horizontal-mobile:!mb-1 horizontal-desktop:!text-base horizontal-desktop:!mb-2">
               Promos y eventos destacados
