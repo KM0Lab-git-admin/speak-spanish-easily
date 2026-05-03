@@ -115,8 +115,8 @@ const Home = () => {
       >
         <HomeContent
           cityName={cityName}
-          hasAlerts={hasAlerts}
-          onToggleAlerts={() => setHasAlerts((v) => !v)}
+          hasAlerts={hasUnread}
+          onToggleAlerts={() => setNotifOpen(true)}
           modules={modulesWithHandlers}
           activeTab={activeTab}
           onTabChange={setActiveTab}
@@ -133,14 +133,21 @@ const Home = () => {
       >
         <HomeContent
           cityName={cityName}
-          hasAlerts={hasAlerts}
-          onToggleAlerts={() => setHasAlerts((v) => !v)}
+          hasAlerts={hasUnread}
+          onToggleAlerts={() => setNotifOpen(true)}
           modules={modulesWithHandlers}
           activeTab={activeTab}
           onTabChange={setActiveTab}
           landscape
         />
       </div>
+
+      <NotificationsOverlay
+        open={notifOpen}
+        notifications={notifications}
+        onClose={() => setNotifOpen(false)}
+        onMarkRead={markRead}
+      />
     </div>
   );
 };
