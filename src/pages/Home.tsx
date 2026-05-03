@@ -228,9 +228,12 @@ const HomeContent = ({
           <HomeModules modules={modules} />
         </motion.section>
 
+        {/* Spacer flex 1 — solo en vertical-mobile, reparte aire */}
+        <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
+
         {/* ── CTAs Auth ── */}
         <motion.section
-          className="px-4 mt-[clamp(0.5rem,5vw,2rem)] grid grid-cols-2 gap-[clamp(0.5rem,3vw,1rem)] vertical-tablet:mt-8 vertical-tablet:gap-4"
+          className="px-4 mt-4 grid grid-cols-2 gap-[clamp(0.5rem,3vw,1rem)] vertical-mobile:mt-0 vertical-tablet:mt-8 vertical-tablet:gap-4"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.18 }}
@@ -243,9 +246,12 @@ const HomeContent = ({
           </AuthButton>
         </motion.section>
 
+        {/* Spacer flex 2 */}
+        <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
+
         {/* ── Promos i events destacats ── */}
         <motion.section
-          className="px-4 mt-[clamp(0.5rem,3vw,2rem)] vertical-tablet:mt-8"
+          className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.26 }}
@@ -256,9 +262,12 @@ const HomeContent = ({
           <PromoCarousel promos={PROMOS} />
         </motion.section>
 
+        {/* Spacer flex 3 */}
+        <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
+
         {/* ── Comerciantes populares ── */}
         <motion.section
-          className="px-4 mt-[clamp(0.375rem,2.5vw,2rem)] vertical-tablet:mt-8"
+          className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.34 }}
@@ -290,8 +299,8 @@ const HomeContent = ({
           <ComercioCarousel comercios={COMERCIOS} />
         </motion.section>
 
-        {/* Spacer para que el último contenido no quede pegado a la tab bar */}
-        <div className="h-[clamp(0.25rem,2vw,1.5rem)] vertical-mobile:h-1" />
+        {/* Spacer final (flex 4 en vertical-mobile, fijo en otros breakpoints) */}
+        <div className="h-[clamp(0.25rem,2vw,1.5rem)] vertical-mobile:h-0 vertical-mobile:flex-1" aria-hidden />
       </div>
 
       {/* ── Tab bar inferior (fixed dentro del frame) ── */}
