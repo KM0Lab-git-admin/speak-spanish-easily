@@ -169,20 +169,19 @@ const HomeContent = ({
   return (
     <>
       {/* Scroll body — incluye hero, módulos overlap, CTAs, promos, comercios */}
-      <div className="flex-1 min-h-0 overflow-y-auto pb-[clamp(0rem,2.5vw,0.75rem)] vertical-mobile:overflow-hidden vertical-mobile:flex vertical-mobile:flex-col">
+      <div className="flex-1 min-h-0 overflow-y-auto pb-[clamp(0rem,2.5vw,0.75rem)] vertical-mobile:overflow-hidden vertical-mobile:flex vertical-mobile:flex-col horizontal-mobile:relative horizontal-desktop:relative horizontal-mobile:pt-[clamp(56px,12dvh,72px)] horizontal-desktop:pt-[clamp(64px,14dvh,88px)]">
         {/* ── HERO con ilustración del pueblo ── */}
         <motion.section
-          className="relative"
+          className="relative horizontal-mobile:absolute horizontal-mobile:inset-0 horizontal-mobile:pointer-events-none horizontal-desktop:absolute horizontal-desktop:inset-0 horizontal-desktop:pointer-events-none"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
         >
           {/* Fondo del header: gradiente beige cálido. Su altura se adapta a la
               proporción real del skyline (≈1920x720 → aspect-[8/3]).
-              En landscape limitamos la altura para que la cabecera no empuje
-              los módulos y CTAs hacia abajo (el skyline sigue visible
-              alineado al borde inferior con object-bottom). */}
-          <div className="relative w-full aspect-[1920/716] bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 my-[5px] horizontal-mobile:!aspect-auto horizontal-mobile:h-[35dvh] horizontal-desktop:!aspect-auto horizontal-desktop:h-[42dvh]" />
+              En landscape el hero pasa a ser fondo absoluto del scroll body
+              y el div ocupa toda la altura disponible. */}
+          <div className="relative w-full aspect-[1920/716] bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 my-[5px] horizontal-mobile:!aspect-auto horizontal-mobile:h-full horizontal-mobile:my-0 horizontal-desktop:!aspect-auto horizontal-desktop:h-full horizontal-desktop:my-0" />
 
           {/* Skyline full-width de Malgrat. Su contenedor padre tiene exactamente
               el mismo aspect-ratio que la imagen original (1920x716), de modo
@@ -195,7 +194,7 @@ const HomeContent = ({
           />
 
           {/* Overlay: escudo + nombre + logo arriba-izquierda, campana arriba-derecha */}
-          <div className="absolute inset-x-0 top-0 flex items-start justify-between pl-2 pr-4 pt-4 gap-3">
+          <div className="absolute inset-x-0 top-0 flex items-start justify-between pl-2 pr-4 pt-4 gap-3 horizontal-mobile:pointer-events-auto horizontal-desktop:pointer-events-auto">
             <div className="flex items-center gap-2 min-w-0">
               <img
                 src={coatMalgrat}
@@ -223,7 +222,7 @@ const HomeContent = ({
 
         {/* ── MÓDULOS: card que monta sobre el hero (overlap) ── */}
         <motion.section
-          className="-mt-8 relative z-10"
+          className="-mt-8 relative z-10 horizontal-mobile:mt-0 horizontal-desktop:mt-0"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
