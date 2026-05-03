@@ -245,12 +245,12 @@ const HomeContent = ({
 
         {/* ── Promos i events destacats ── */}
         <motion.section
-          className="px-4 mt-4"
+          className="px-4 mt-4 vertical-mobile:mt-3"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.26 }}
         >
-          <h2 className="font-brand text-base font-black text-km0-blue-700 mb-2">
+          <h2 className="font-brand text-base font-black text-km0-blue-700 mb-2 vertical-mobile:mb-1.5">
             Promos y eventos destacados
           </h2>
           <PromoCarousel promos={PROMOS} />
