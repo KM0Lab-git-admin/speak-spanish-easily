@@ -298,7 +298,7 @@ const HomeContent = ({
               </button>
             </div>
 
-            <div className="horizontal-desktop:bg-white/30 horizontal-desktop:rounded-2xl horizontal-desktop:p-3 horizontal-desktop:aspect-[16/7] horizontal-desktop:w-full horizontal-desktop:flex horizontal-desktop:items-center horizontal-mobile:bg-white/30 horizontal-mobile:rounded-2xl horizontal-mobile:p-2 horizontal-mobile:aspect-[16/7] horizontal-mobile:w-full horizontal-mobile:flex horizontal-mobile:items-center">
+            <div className="horizontal-desktop:bg-white/30 horizontal-desktop:rounded-2xl horizontal-desktop:p-3 horizontal-desktop:aspect-[16/7] horizontal-desktop:w-full horizontal-desktop:flex horizontal-desktop:items-center horizontal-mobile:bg-white/30 horizontal-mobile:rounded-2xl horizontal-mobile:p-2 horizontal-mobile:aspect-[16/5] horizontal-mobile:w-full horizontal-mobile:flex horizontal-mobile:items-center">
               <div className="w-full">
                 <ComercioCarousel comercios={COMERCIOS} />
               </div>
