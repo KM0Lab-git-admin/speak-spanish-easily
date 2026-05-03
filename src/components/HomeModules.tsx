@@ -191,11 +191,11 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
             blanco con borde azul para que destaque sobre la banda azul. */}
         <span
           className={cn(
-            "relative -mt-2.5 z-10",
-            "px-2.5 vertical-mobile:px-[clamp(0.375rem,1.7vw,0.625rem)] py-0.5 rounded-full bg-white",
+            "relative -mt-2.5 z-10 horizontal-mobile:-mt-2",
+            "px-2.5 vertical-mobile:px-[clamp(0.375rem,1.7vw,0.625rem)] py-0.5 rounded-full bg-white horizontal-mobile:px-1.5 horizontal-mobile:py-0",
             "border border-km0-blue-300/60",
             "shadow-[0_2px_6px_-2px_hsl(var(--km0-blue-900)/0.25)]",
-            "font-ui font-bold text-[10px] vertical-mobile:text-[clamp(8px,2.45vw,10px)] leading-tight text-km0-blue-800",
+            "font-ui font-bold text-[10px] vertical-mobile:text-[clamp(8px,2.45vw,10px)] leading-tight text-km0-blue-800 horizontal-mobile:!text-[8px]",
             "text-center whitespace-nowrap max-w-[120%]",
           )}
         >
