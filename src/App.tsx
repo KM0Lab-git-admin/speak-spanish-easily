@@ -31,7 +31,7 @@ const App = () => (
           <Route path="/postal-code" element={<PostalCode />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/verify" element={<Verify />} />
+          <Route path="/check-email" element={<CheckEmail />} />
           <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
           <Route path="/home" element={<RequireAuth><Home /></RequireAuth>} />
           <Route path="/design-system" element={<DesignSystem />} />
