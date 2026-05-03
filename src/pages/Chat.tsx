@@ -272,7 +272,7 @@ const Chat = () => {
   return (
     <div className="fixed inset-0 w-full flex justify-center items-stretch landscape:items-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 landscape:p-4 short-landscape:p-2">
       {/* ── PORTRAIT (375×667 / 768×1024) ─────────────────── */}
-      <div className="w-full max-w-[390px] h-full flex flex-col overflow-hidden landscape:hidden">
+      <div className="relative w-full max-w-[390px] h-full flex flex-col overflow-hidden landscape:hidden">
         {/* Header */}
         <motion.header
           className="flex items-center gap-3 px-4 pt-3 pb-2"
@@ -304,6 +304,13 @@ const Chat = () => {
         >
           <InputBar />
         </motion.div>
+
+        <NotificationsOverlay
+          open={notifOpen}
+          notifications={notifications}
+          onClose={() => setNotifOpen(false)}
+          onMarkRead={markRead}
+        />
       </div>
 
       {/* ── LANDSCAPE 16:9 (667×375 / 1280×550) ──────────── */}
@@ -344,14 +351,14 @@ const Chat = () => {
             <InputBar compact />
           </div>
         </motion.div>
-      </div>
 
-      <NotificationsOverlay
-        open={notifOpen}
-        notifications={notifications}
-        onClose={() => setNotifOpen(false)}
-        onMarkRead={markRead}
-      />
+        <NotificationsOverlay
+          open={notifOpen}
+          notifications={notifications}
+          onClose={() => setNotifOpen(false)}
+          onMarkRead={markRead}
+        />
+      </div>
     </div>
   );
 };
