@@ -276,32 +276,32 @@ const HomeContent = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.34 }}
           >
-            <div className="flex items-center justify-between mb-[clamp(0.125rem,1vw,0.875rem)] vertical-tablet:mb-3 horizontal-mobile:mb-1 horizontal-desktop:mb-2 horizontal-desktop:gap-3">
-              <div className="flex items-center gap-2 min-w-0 horizontal-desktop:gap-1.5 horizontal-desktop:shrink-0">
-                <img
-                  src={couponIcon}
-                  alt=""
-                  aria-hidden
-                  width={80}
-                  height={80}
-                  loading="lazy"
-                  className="w-[clamp(2.25rem,9vw,5rem)] h-[clamp(2.25rem,9vw,5rem)] object-contain shrink-0 horizontal-mobile:w-9 horizontal-mobile:h-9 horizontal-desktop:w-9 horizontal-desktop:h-9"
-                />
-                <h2 className="font-brand text-[clamp(0.875rem,3.6vw,1rem)] font-black text-km0-blue-700 horizontal-mobile:text-sm horizontal-desktop:text-base">
-                  Esto es para ti
-                </h2>
-              </div>
+            <div className="flex items-center mb-[clamp(0.125rem,1vw,0.875rem)] vertical-tablet:mb-3 horizontal-mobile:!mb-1 horizontal-desktop:!mb-2 gap-2">
+              <img
+                src={couponIcon}
+                alt=""
+                aria-hidden
+                width={80}
+                height={80}
+                loading="lazy"
+                className="w-[clamp(2.25rem,9vw,5rem)] h-[clamp(2.25rem,9vw,5rem)] object-contain shrink-0 horizontal-mobile:w-7 horizontal-mobile:h-7 horizontal-desktop:w-8 horizontal-desktop:h-8"
+              />
+              <h2 className="font-brand font-black text-km0-blue-700 text-base horizontal-mobile:!text-[13px] horizontal-desktop:!text-base whitespace-nowrap">
+                Esto es para ti
+              </h2>
               <button
                 type="button"
-                className="font-ui text-xs font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform shrink-0 horizontal-desktop:ml-auto"
+                className="font-ui text-xs font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform shrink-0 ml-1.5"
               >
                 Ver todos
                 <ArrowRight size={14} strokeWidth={2.4} />
               </button>
             </div>
 
-            <div className="horizontal-desktop:bg-white/30 horizontal-desktop:rounded-2xl horizontal-desktop:p-3 horizontal-desktop:flex-1 horizontal-desktop:flex horizontal-desktop:flex-col horizontal-desktop:justify-center horizontal-desktop:aspect-[16/7] horizontal-mobile:bg-white/30 horizontal-mobile:rounded-2xl horizontal-mobile:p-2 horizontal-mobile:flex-1 horizontal-mobile:flex horizontal-mobile:flex-col horizontal-mobile:justify-center horizontal-mobile:aspect-[16/7]">
-              <ComercioCarousel comercios={COMERCIOS} />
+            <div className="horizontal-desktop:bg-white/30 horizontal-desktop:rounded-2xl horizontal-desktop:p-3 horizontal-desktop:aspect-[16/7] horizontal-desktop:w-full horizontal-desktop:flex horizontal-desktop:items-center horizontal-mobile:bg-white/30 horizontal-mobile:rounded-2xl horizontal-mobile:p-2 horizontal-mobile:aspect-[16/7] horizontal-mobile:w-full horizontal-mobile:flex horizontal-mobile:items-center">
+              <div className="w-full">
+                <ComercioCarousel comercios={COMERCIOS} />
+              </div>
             </div>
           </motion.section>
         </div>
