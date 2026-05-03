@@ -74,7 +74,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
           // Borde inferior con doble curva (cápsula): radio horizontal
           // grande + radio vertical menor → efecto orgánico tipo "ola".
           "rounded-bl-[40%_24px] rounded-br-[40%_24px]",
-          "px-[clamp(4px,2vw,12px)] py-[20px] opacity-100",
+          "px-[clamp(4px,2vw,12px)] py-[20px] opacity-100 horizontal-mobile:!py-2",
         )}
       >
         {/* Patrón decorativo sutil arriba — círculos translúcidos
