@@ -81,7 +81,7 @@ const Login = () => {
             disabled={submitting}
             className="h-12 mt-1 rounded-xl bg-km0-yellow-500 hover:bg-km0-yellow-600 active:scale-[0.98] transition-all font-ui text-base text-km0-blue-700 disabled:opacity-50"
           >
-            {submitting ? "Enviando código..." : "Enviar código"}
+            {submitting ? "Enviando enlace..." : "Enviar enlace"}
           </button>
         </form>
 
