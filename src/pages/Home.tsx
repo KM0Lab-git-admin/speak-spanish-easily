@@ -169,7 +169,7 @@ const HomeContent = ({
   return (
     <>
       {/* Scroll body — incluye hero, módulos overlap, CTAs, promos, comercios */}
-      <div className="flex-1 min-h-0 overflow-y-auto pb-2">
+      <div className="flex-1 min-h-0 overflow-y-auto pb-2 vertical-mobile:overflow-hidden vertical-mobile:pb-0">
         {/* ── HERO con ilustración del pueblo ── */}
         <motion.section
           className="relative"
@@ -230,27 +230,27 @@ const HomeContent = ({
 
         {/* ── CTAs Auth ── */}
         <motion.section
-          className="px-4 mt-3 grid grid-cols-2 gap-3"
+          className="px-4 mt-3 grid grid-cols-2 gap-3 vertical-mobile:mt-2 vertical-mobile:gap-2"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.18 }}
         >
-          <AuthButton variant="primary" icon={<UserRound size={18} strokeWidth={2.2} />}>
+          <AuthButton variant="primary" icon={<UserRound size={16} strokeWidth={2.2} />}>
             Iniciar sesión
           </AuthButton>
-          <AuthButton variant="secondary" icon={<UserRoundPlus size={18} strokeWidth={2.2} />}>
+          <AuthButton variant="secondary" icon={<UserRoundPlus size={16} strokeWidth={2.2} />}>
             Registro
           </AuthButton>
         </motion.section>
 
         {/* ── Promos i events destacats ── */}
         <motion.section
-          className="px-4 mt-4"
+          className="px-4 mt-4 vertical-mobile:mt-3"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.26 }}
         >
-          <h2 className="font-brand text-base font-black text-km0-blue-700 mb-2">
+          <h2 className="font-brand text-base font-black text-km0-blue-700 mb-2 vertical-mobile:mb-1.5">
             Promos y eventos destacados
           </h2>
           <PromoCarousel promos={PROMOS} />
@@ -258,7 +258,7 @@ const HomeContent = ({
 
         {/* ── Comerciantes populares ── */}
         <motion.section
-          className="px-4 mt-4"
+          className="px-4 mt-4 hidden vertical-tablet:block"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.34 }}
@@ -339,6 +339,7 @@ const AuthButton = ({ variant, icon, children }: AuthButtonProps) => (
     type="button"
     className={cn(
       "flex items-center gap-2 px-3 py-3 rounded-2xl font-ui font-bold text-sm transition-all duration-200 hover:scale-[1.03] active:scale-95 shadow-[0_6px_16px_-8px_hsl(var(--km0-blue-700)/0.35)]",
+      "vertical-mobile:py-2 vertical-mobile:gap-1.5 vertical-mobile:px-2.5 vertical-mobile:text-xs vertical-mobile:rounded-xl",
       variant === "primary"
         ? "bg-km0-blue-700 text-white hover:bg-km0-blue-600"
         : "bg-km0-yellow-500 text-km0-blue-800 hover:bg-km0-yellow-400",
@@ -347,6 +348,7 @@ const AuthButton = ({ variant, icon, children }: AuthButtonProps) => (
     <span
       className={cn(
         "w-7 h-7 rounded-full flex items-center justify-center shrink-0",
+        "vertical-mobile:w-6 vertical-mobile:h-6",
         variant === "primary" ? "bg-white/15" : "bg-km0-blue-700/10",
       )}
     >
@@ -416,7 +418,7 @@ const PromoCarousel = ({ promos }: PromoCarouselProps) => {
   return (
     <>
       {/* Hero card con drag horizontal */}
-      <div className="relative rounded-2xl overflow-hidden shadow-[0_10px_24px_-12px_hsl(var(--km0-blue-700)/0.35)] aspect-[16/9]">
+      <div className="relative rounded-2xl overflow-hidden shadow-[0_10px_24px_-12px_hsl(var(--km0-blue-700)/0.35)] aspect-[16/9] vertical-mobile:aspect-[2/1]">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={promo.id}
