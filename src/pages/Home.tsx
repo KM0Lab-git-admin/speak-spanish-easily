@@ -589,7 +589,7 @@ const ComercioCarousel = ({ comercios }: ComercioCarouselProps) => {
       </div>
 
       {total > 1 && (
-        <div className="flex items-center justify-center gap-1.5 mt-3">
+        <div className="flex items-center justify-center gap-1.5 mt-3 vertical-mobile:mt-1.5">
           {pages.map((_, i) => (
             <button
               key={i}
