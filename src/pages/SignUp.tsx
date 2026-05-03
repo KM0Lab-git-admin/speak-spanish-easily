@@ -52,8 +52,8 @@ const SignUp = () => {
       return;
     }
 
-    toast.success("Te hemos enviado un código por email");
-    navigate("/verify", { state: { email: email.trim(), mode: "signup" } });
+    toast.success("Te hemos enviado un enlace por email");
+    navigate("/check-email", { state: { email: email.trim(), mode: "signup" } });
   };
 
   return (
@@ -69,7 +69,7 @@ const SignUp = () => {
             Crea tu cuenta
           </h1>
           <p className="font-body text-sm text-muted-foreground">
-            Registro rápido y seguro
+            Registro rápido. Te enviaremos un enlace para entrar.
           </p>
         </div>
 
@@ -105,7 +105,7 @@ const SignUp = () => {
             disabled={submitting}
             className="h-12 mt-1 rounded-xl bg-km0-yellow-500 hover:bg-km0-yellow-600 active:scale-[0.98] transition-all font-ui text-base text-km0-blue-700 disabled:opacity-50"
           >
-            {submitting ? "Enviando código..." : "Crear cuenta"}
+            {submitting ? "Enviando enlace..." : "Crear cuenta"}
           </button>
         </form>
 

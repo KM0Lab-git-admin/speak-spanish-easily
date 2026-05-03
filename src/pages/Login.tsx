@@ -44,8 +44,8 @@ const Login = () => {
       return;
     }
 
-    toast.success("Te hemos enviado un código por email");
-    navigate("/verify", { state: { email: email.trim(), mode: "login" } });
+    toast.success("Te hemos enviado un enlace por email");
+    navigate("/check-email", { state: { email: email.trim(), mode: "login" } });
   };
 
   return (
@@ -61,7 +61,7 @@ const Login = () => {
             Bienvenido de nuevo
           </h1>
           <p className="font-body text-sm text-muted-foreground">
-            Te enviaremos un código a tu email
+            Te enviaremos un enlace a tu email
           </p>
         </div>
 
@@ -81,7 +81,7 @@ const Login = () => {
             disabled={submitting}
             className="h-12 mt-1 rounded-xl bg-km0-yellow-500 hover:bg-km0-yellow-600 active:scale-[0.98] transition-all font-ui text-base text-km0-blue-700 disabled:opacity-50"
           >
-            {submitting ? "Enviando código..." : "Enviar código"}
+            {submitting ? "Enviando enlace..." : "Enviar enlace"}
           </button>
         </form>
 

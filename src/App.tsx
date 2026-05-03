@@ -10,7 +10,7 @@ import Chat from "./pages/Chat";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
-import Verify from "./pages/Verify";
+import CheckEmail from "./pages/CheckEmail";
 import NotFound from "./pages/NotFound";
 import DesignSystem from "./pages/DesignSystem";
 import TopLoadingBar from "./components/TopLoadingBar";
@@ -31,7 +31,7 @@ const App = () => (
           <Route path="/postal-code" element={<PostalCode />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/verify" element={<Verify />} />
+          <Route path="/check-email" element={<CheckEmail />} />
           <Route path="/chat" element={<RequireAuth><Chat /></RequireAuth>} />
           <Route path="/home" element={<RequireAuth><Home /></RequireAuth>} />
           <Route path="/design-system" element={<DesignSystem />} />
