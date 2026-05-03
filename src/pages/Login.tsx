@@ -61,7 +61,7 @@ const Login = () => {
             Bienvenido de nuevo
           </h1>
           <p className="font-body text-sm text-muted-foreground">
-            Te enviaremos un código a tu email
+            Te enviaremos un enlace a tu email
           </p>
         </div>
 
