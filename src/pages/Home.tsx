@@ -4,6 +4,8 @@ import { UserRound, UserRoundPlus, ChevronLeft, ChevronRight, ArrowRight, Home a
 import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
 import HomeModules, { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
+import NotificationsOverlay from "@/components/NotificationsOverlay";
+import { useNotifications } from "@/hooks/useNotifications";
 import skylineMalgrat from "@/assets/skyline-malgrat.png";
 import coatMalgrat from "@/assets/coat-malgrat.png";
 import couponIcon from "@/assets/coupon-icon.png";
@@ -87,7 +89,8 @@ const PROMOS: Promo[] = [
 
 const Home = () => {
   const cityName = "Malgrat de Mar";
-  const [hasAlerts, setHasAlerts] = useState(true);
+  const { notifications, hasUnread, markRead } = useNotifications();
+  const [notifOpen, setNotifOpen] = useState(false);
   const [modules, setModules] = useState<HomeModule[]>(INITIAL_MODULES_3);
   const [activeTab, setActiveTab] = useState<"home" | "info" | "ofertes" | "perfil">("home");
 
