@@ -15,5 +15,11 @@ export const useNotifications = () => {
     );
   }, []);
 
-  return { notifications, hasUnread, markRead };
+  const markAllRead = useCallback(() => {
+    setNotifications((prev) =>
+      prev.every((n) => n.read) ? prev : prev.map((n) => ({ ...n, read: true })),
+    );
+  }, []);
+
+  return { notifications, hasUnread, markRead, markAllRead };
 };

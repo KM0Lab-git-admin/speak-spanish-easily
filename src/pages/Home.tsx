@@ -89,7 +89,11 @@ const PROMOS: Promo[] = [
 
 const Home = () => {
   const cityName = "Malgrat de Mar";
-  const { notifications, hasUnread, markRead } = useNotifications();
+  const { notifications, hasUnread, markRead, markAllRead } = useNotifications();
+  const openNotifications = () => {
+    setNotifOpen(true);
+    markAllRead();
+  };
   const [notifOpen, setNotifOpen] = useState(false);
   const [modules, setModules] = useState<HomeModule[]>(INITIAL_MODULES_3);
   const [activeTab, setActiveTab] = useState<"home" | "info" | "ofertes" | "perfil">("home");

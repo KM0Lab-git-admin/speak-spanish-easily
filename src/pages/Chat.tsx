@@ -69,7 +69,11 @@ const Chat = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRefP = useRef<HTMLDivElement>(null);
   const messagesEndRefL = useRef<HTMLDivElement>(null);
-  const { notifications, hasUnread, markRead } = useNotifications();
+  const { notifications, hasUnread, markRead, markAllRead } = useNotifications();
+  const openNotifications = () => {
+    setNotifOpen(true);
+    markAllRead();
+  };
   const [notifOpen, setNotifOpen] = useState(false);
 
   useEffect(() => {
