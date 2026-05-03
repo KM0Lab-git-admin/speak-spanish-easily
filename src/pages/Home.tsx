@@ -230,15 +230,15 @@ const HomeContent = ({
 
         {/* ── CTAs Auth ── */}
         <motion.section
-          className="px-4 mt-3 grid grid-cols-2 gap-3"
+          className="px-4 mt-3 grid grid-cols-2 gap-3 vertical-mobile:mt-2 vertical-mobile:gap-2"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.18 }}
         >
-          <AuthButton variant="primary" icon={<UserRound size={18} strokeWidth={2.2} />}>
+          <AuthButton variant="primary" icon={<UserRound size={16} strokeWidth={2.2} />}>
             Iniciar sesión
           </AuthButton>
-          <AuthButton variant="secondary" icon={<UserRoundPlus size={18} strokeWidth={2.2} />}>
+          <AuthButton variant="secondary" icon={<UserRoundPlus size={16} strokeWidth={2.2} />}>
             Registro
           </AuthButton>
         </motion.section>
