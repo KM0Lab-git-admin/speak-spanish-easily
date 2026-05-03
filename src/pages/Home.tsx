@@ -121,6 +121,12 @@ const Home = () => {
           activeTab={activeTab}
           onTabChange={setActiveTab}
         />
+        <NotificationsOverlay
+          open={notifOpen}
+          notifications={notifications}
+          onClose={() => setNotifOpen(false)}
+          onMarkRead={markRead}
+        />
       </div>
 
       {/* ── LANDSCAPE ────────────────────────────────────────── */}
@@ -140,14 +146,13 @@ const Home = () => {
           onTabChange={setActiveTab}
           landscape
         />
+        <NotificationsOverlay
+          open={notifOpen}
+          notifications={notifications}
+          onClose={() => setNotifOpen(false)}
+          onMarkRead={markRead}
+        />
       </div>
-
-      <NotificationsOverlay
-        open={notifOpen}
-        notifications={notifications}
-        onClose={() => setNotifOpen(false)}
-        onMarkRead={markRead}
-      />
     </div>
   );
 };
