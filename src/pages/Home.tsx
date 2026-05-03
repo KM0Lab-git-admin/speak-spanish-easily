@@ -190,7 +190,7 @@ const HomeContent = ({
             src={skylineMalgrat}
             alt=""
             aria-hidden
-            className="pointer-events-none absolute inset-0 w-full h-full object-contain object-bottom z-0 select-none opacity-25 horizontal-mobile:!inset-auto horizontal-mobile:!top-[-8%] horizontal-mobile:!left-0 horizontal-mobile:!right-0 horizontal-mobile:!h-[78%] horizontal-mobile:!w-full horizontal-mobile:object-top horizontal-desktop:!inset-auto horizontal-desktop:!top-[-8%] horizontal-desktop:!left-0 horizontal-desktop:!right-0 horizontal-desktop:!h-[78%] horizontal-desktop:!w-full horizontal-desktop:object-top"
+            className="pointer-events-none absolute inset-0 w-full h-full object-contain object-bottom z-0 select-none opacity-25 horizontal-mobile:!inset-auto horizontal-mobile:!top-[4%] horizontal-mobile:!left-0 horizontal-mobile:!right-0 horizontal-mobile:!h-[70%] horizontal-mobile:!w-full horizontal-mobile:object-top horizontal-desktop:!inset-auto horizontal-desktop:!top-[4%] horizontal-desktop:!left-0 horizontal-desktop:!right-0 horizontal-desktop:!h-[70%] horizontal-desktop:!w-full horizontal-desktop:object-top"
           />
 
           {/* Overlay: escudo + nombre + logo arriba-izquierda, campana arriba-derecha */}
