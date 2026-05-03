@@ -251,58 +251,61 @@ const HomeContent = ({
         {/* Spacer flex 2 */}
         <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
 
-        {/* ── Promos i events destacats ── */}
-        <motion.section
-          className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.26 }}
-        >
-          <h2 className="font-brand text-base font-black text-km0-blue-700 mb-[clamp(0.25rem,1.5vw,0.875rem)] vertical-tablet:mb-3">
-            Promos y eventos destacados
-          </h2>
-          <PromoCarousel promos={PROMOS} />
-        </motion.section>
+        {/* ── Wrapper landscape: promos + recomendado en 2 columnas ── */}
+        <div className="horizontal-mobile:grid horizontal-mobile:grid-cols-2 horizontal-mobile:gap-3 horizontal-mobile:px-4 horizontal-mobile:mt-3 horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-desktop:grid horizontal-desktop:grid-cols-2 horizontal-desktop:gap-4 horizontal-desktop:px-4 horizontal-desktop:mt-4 horizontal-desktop:flex-1 horizontal-desktop:min-h-0">
+          {/* ── Promos i events destacats ── */}
+          <motion.section
+            className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8 horizontal-mobile:px-0 horizontal-mobile:mt-0 horizontal-mobile:min-w-0 horizontal-desktop:px-0 horizontal-desktop:mt-0 horizontal-desktop:min-w-0"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.26 }}
+          >
+            <h2 className="font-brand text-base font-black text-km0-blue-700 mb-[clamp(0.25rem,1.5vw,0.875rem)] vertical-tablet:mb-3 horizontal-mobile:text-sm horizontal-mobile:mb-1 horizontal-desktop:mb-2">
+              Promos y eventos destacados
+            </h2>
+            <PromoCarousel promos={PROMOS} />
+          </motion.section>
 
-        {/* Spacer flex 3 */}
-        <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
+          {/* Spacer flex 3 — solo en vertical-mobile */}
+          <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
 
-        {/* ── Comerciantes populares ── */}
-        <motion.section
-          className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.34 }}
-        >
-          <div className="flex items-center justify-between mb-[clamp(0.125rem,1vw,0.875rem)] vertical-tablet:mb-3">
-            <div className="flex items-center gap-2 min-w-0">
-              <img
-                src={couponIcon}
-                alt=""
-                aria-hidden
-                width={80}
-                height={80}
-                loading="lazy"
-                className="w-[clamp(2.25rem,9vw,5rem)] h-[clamp(2.25rem,9vw,5rem)] object-contain shrink-0"
-              />
-              <h2 className="font-brand text-[clamp(0.875rem,3.6vw,1rem)] font-black text-km0-blue-700">
-                Esto es para ti
-              </h2>
+          {/* ── Comerciantes populares ── */}
+          <motion.section
+            className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8 horizontal-mobile:px-0 horizontal-mobile:mt-0 horizontal-mobile:min-w-0 horizontal-desktop:px-0 horizontal-desktop:mt-0 horizontal-desktop:min-w-0"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.34 }}
+          >
+            <div className="flex items-center justify-between mb-[clamp(0.125rem,1vw,0.875rem)] vertical-tablet:mb-3 horizontal-mobile:mb-1 horizontal-desktop:mb-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <img
+                  src={couponIcon}
+                  alt=""
+                  aria-hidden
+                  width={80}
+                  height={80}
+                  loading="lazy"
+                  className="w-[clamp(2.25rem,9vw,5rem)] h-[clamp(2.25rem,9vw,5rem)] object-contain shrink-0 horizontal-mobile:w-9 horizontal-mobile:h-9 horizontal-desktop:w-10 horizontal-desktop:h-10"
+                />
+                <h2 className="font-brand text-[clamp(0.875rem,3.6vw,1rem)] font-black text-km0-blue-700 horizontal-mobile:text-sm">
+                  Esto es para ti
+                </h2>
+              </div>
+              <button
+                type="button"
+                className="font-ui text-xs font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform shrink-0"
+              >
+                Ver todos
+                <ArrowRight size={14} strokeWidth={2.4} />
+              </button>
             </div>
-            <button
-              type="button"
-              className="font-ui text-xs font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform shrink-0"
-            >
-              Ver todos
-              <ArrowRight size={14} strokeWidth={2.4} />
-            </button>
-          </div>
 
-          <ComercioCarousel comercios={COMERCIOS} />
-        </motion.section>
+            <ComercioCarousel comercios={COMERCIOS} />
+          </motion.section>
+        </div>
 
         {/* Spacer final (flex 4 en vertical-mobile, fijo en otros breakpoints) */}
-        <div className="h-[clamp(0.25rem,2vw,1.5rem)] vertical-mobile:h-0 vertical-mobile:flex-1" aria-hidden />
+        <div className="h-[clamp(0.25rem,2vw,1.5rem)] vertical-mobile:h-0 vertical-mobile:flex-1 horizontal-mobile:hidden horizontal-desktop:hidden" aria-hidden />
       </div>
 
       {/* ── Tab bar inferior (fixed dentro del frame) ── */}
