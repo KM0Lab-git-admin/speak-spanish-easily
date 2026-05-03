@@ -345,6 +345,13 @@ const Chat = () => {
           </div>
         </motion.div>
       </div>
+
+      <NotificationsOverlay
+        open={notifOpen}
+        notifications={notifications}
+        onClose={() => setNotifOpen(false)}
+        onMarkRead={markRead}
+      />
     </div>
   );
 };
