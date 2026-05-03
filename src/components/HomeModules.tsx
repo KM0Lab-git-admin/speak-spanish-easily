@@ -90,7 +90,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
         />
 
         {/* Iconos: el del medio crece un punto para crear jerarquía focal */}
-        <div className="relative flex items-end justify-around gap-1 vertical-tablet:gap-2">
+        <div className="relative flex items-end justify-around gap-1 vertical-mobile:justify-between vertical-mobile:gap-0 vertical-tablet:gap-2">
           {modules.map((mod, idx) => (
             <ModuleItem key={mod.id} module={mod} emphasized={false} />
           ))}
@@ -139,7 +139,7 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
       aria-pressed={active}
       aria-label={label}
       className={cn(
-        "group relative flex flex-col items-center transition-transform cursor-pointer active:scale-95",
+        "group relative flex flex-col items-center vertical-mobile:min-w-0 transition-transform cursor-pointer active:scale-95",
         !active && "opacity-50 grayscale-[0.4]",
       )}
     >
@@ -192,10 +192,10 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
         <span
           className={cn(
             "relative -mt-2.5 z-10",
-            "px-2.5 py-0.5 rounded-full bg-white",
+            "px-2.5 vertical-mobile:px-[clamp(0.375rem,1.7vw,0.625rem)] py-0.5 rounded-full bg-white",
             "border border-km0-blue-300/60",
             "shadow-[0_2px_6px_-2px_hsl(var(--km0-blue-900)/0.25)]",
-            "font-ui font-bold text-[10px] leading-tight text-km0-blue-800",
+            "font-ui font-bold text-[10px] vertical-mobile:text-[clamp(8px,2.45vw,10px)] leading-tight text-km0-blue-800",
             "text-center whitespace-nowrap max-w-[120%]",
           )}
         >
