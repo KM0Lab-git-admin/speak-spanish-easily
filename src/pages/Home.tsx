@@ -169,7 +169,7 @@ const HomeContent = ({
   return (
     <>
       {/* Scroll body — incluye hero, módulos overlap, CTAs, promos, comercios */}
-      <div className="flex-1 min-h-0 overflow-y-auto pb-[clamp(0rem,2.5vw,0.75rem)] vertical-mobile:overflow-hidden vertical-mobile:flex vertical-mobile:flex-col horizontal-mobile:relative horizontal-desktop:relative horizontal-mobile:pt-[clamp(56px,12dvh,72px)] horizontal-desktop:pt-[clamp(64px,14dvh,88px)]">
+      <div className="flex-1 min-h-0 overflow-y-auto pb-[clamp(0rem,2.5vw,0.75rem)] vertical-mobile:overflow-hidden vertical-mobile:flex vertical-mobile:flex-col horizontal-mobile:relative horizontal-mobile:overflow-hidden horizontal-mobile:flex horizontal-mobile:flex-col horizontal-desktop:relative horizontal-desktop:overflow-hidden horizontal-desktop:flex horizontal-desktop:flex-col horizontal-mobile:pt-[clamp(48px,10dvh,64px)] horizontal-desktop:pt-[clamp(56px,12dvh,80px)]">
         {/* ── HERO con ilustración del pueblo ── */}
         <motion.section
           className="relative horizontal-mobile:absolute horizontal-mobile:inset-0 horizontal-mobile:pointer-events-none horizontal-desktop:absolute horizontal-desktop:inset-0 horizontal-desktop:pointer-events-none"
