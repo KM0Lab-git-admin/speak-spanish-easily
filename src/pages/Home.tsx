@@ -194,19 +194,19 @@ const HomeContent = ({
           />
 
           {/* Overlay: escudo + nombre + logo arriba-izquierda, campana arriba-derecha */}
-          <div className="absolute inset-x-0 top-0 flex items-start justify-between pl-2 pr-4 pt-4 gap-3 horizontal-mobile:pointer-events-auto horizontal-desktop:pointer-events-auto">
+          <div className="absolute inset-x-0 top-0 flex items-start justify-between pl-2 pr-4 pt-4 gap-3 horizontal-mobile:pointer-events-auto horizontal-mobile:pt-2 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto">
             <div className="flex items-center gap-2 min-w-0">
               <img
                 src={coatMalgrat}
                 alt={`Escudo de ${cityName}`}
-                className="w-12 h-12 vertical-tablet:w-14 vertical-tablet:h-14 object-contain shrink-0 drop-shadow-[0_2px_4px_hsl(0_0%_100%/0.5)]"
+                className="w-12 h-12 vertical-tablet:w-14 vertical-tablet:h-14 horizontal-mobile:!w-9 horizontal-mobile:!h-9 object-contain shrink-0 drop-shadow-[0_2px_4px_hsl(0_0%_100%/0.5)]"
               />
               <div className="flex flex-col leading-[0.95] min-w-0">
-                <h1 className="font-brand font-black text-km0-blue-700 whitespace-pre-line text-left border-0 text-lg">
+                <h1 className="font-brand font-black text-km0-blue-700 whitespace-pre-line text-left border-0 text-lg horizontal-mobile:!text-sm">
                   {"Malgrat de Mar"}
                 </h1>
-                <div className="flex items-center mt-2">
-                  <Km0Logo className="h-4 vertical-tablet:h-5 w-auto" />
+                <div className="flex items-center mt-2 horizontal-mobile:mt-1">
+                  <Km0Logo className="h-4 vertical-tablet:h-5 horizontal-mobile:!h-3 w-auto" />
                 </div>
               </div>
             </div>
