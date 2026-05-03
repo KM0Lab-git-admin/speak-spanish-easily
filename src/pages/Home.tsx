@@ -258,12 +258,12 @@ const HomeContent = ({
 
         {/* ── Comerciantes populares ── */}
         <motion.section
-          className="px-4 mt-4 hidden vertical-tablet:block"
+          className="px-4 mt-4 vertical-mobile:mt-3"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.34 }}
         >
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between mb-2 vertical-mobile:mb-1.5">
             <div className="flex items-center gap-2 min-w-0">
               <img
                 src={couponIcon}
@@ -272,9 +272,9 @@ const HomeContent = ({
                 width={80}
                 height={80}
                 loading="lazy"
-                className="w-20 h-20 object-contain shrink-0"
+                className="w-20 h-20 vertical-mobile:w-12 vertical-mobile:h-12 object-contain shrink-0"
               />
-              <h2 className="font-brand text-base font-black text-km0-blue-700">
+              <h2 className="font-brand text-base font-black text-km0-blue-700 vertical-mobile:text-sm">
                 Esto es para ti
               </h2>
             </div>
