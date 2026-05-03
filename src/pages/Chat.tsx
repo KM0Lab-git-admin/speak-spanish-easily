@@ -4,6 +4,8 @@ import { ChevronLeft, Mic, Send, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
+import NotificationsOverlay from "@/components/NotificationsOverlay";
+import { useNotifications } from "@/hooks/useNotifications";
 import VoiceRecorder from "@/components/VoiceRecorder";
 import EventCard from "@/components/EventCard";
 import robotIcon from "@/assets/km0_robot_icon_v2.png";
@@ -67,6 +69,8 @@ const Chat = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRefP = useRef<HTMLDivElement>(null);
   const messagesEndRefL = useRef<HTMLDivElement>(null);
+  const { notifications, hasUnread, markRead } = useNotifications();
+  const [notifOpen, setNotifOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -143,7 +147,11 @@ const Chat = () => {
         </div>
       </div>
 
-      <NotificationBell hasAlerts={true} />
+      <NotificationBell
+        hasAlerts={hasUnread}
+        onClick={() => setNotifOpen(true)}
+        ariaLabel={hasUnread ? "Tienes notificaciones nuevas" : "Sin notificaciones"}
+      />
     </>
   );
 
@@ -337,6 +345,13 @@ const Chat = () => {
           </div>
         </motion.div>
       </div>
+
+      <NotificationsOverlay
+        open={notifOpen}
+        notifications={notifications}
+        onClose={() => setNotifOpen(false)}
+        onMarkRead={markRead}
+      />
     </div>
   );
 };
