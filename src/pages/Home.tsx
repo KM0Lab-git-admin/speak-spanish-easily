@@ -235,7 +235,7 @@ const HomeContent = ({
 
         {/* ── CTAs Auth ── */}
         <motion.section
-          className="px-4 mt-4 grid grid-cols-2 gap-[clamp(0.5rem,3vw,1rem)] relative z-10 vertical-mobile:mt-0 vertical-tablet:mt-8 vertical-tablet:gap-4 horizontal-mobile:max-w-[88%] horizontal-mobile:mx-auto horizontal-mobile:gap-6 horizontal-desktop:max-w-[80%] horizontal-desktop:mx-auto horizontal-desktop:gap-8"
+          className="px-4 mt-4 grid grid-cols-2 gap-[clamp(0.5rem,3vw,1rem)] relative z-10 vertical-mobile:mt-0 vertical-tablet:mt-8 vertical-tablet:gap-4 horizontal-mobile:max-w-[88%] horizontal-mobile:mx-auto horizontal-mobile:gap-4 horizontal-mobile:!mt-2 horizontal-desktop:max-w-[80%] horizontal-desktop:mx-auto horizontal-desktop:gap-8"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.18 }}
