@@ -1,63 +1,66 @@
-## Problema
+## Objetivo
 
-En **resoluciones portrait intermedias/fluidas** (cualquier ancho grande de viewport en portrait — p.ej. 600×900, 710×775, 720×900, etc., todas dentro de `vertical-mobile` ≤767), el banner azul "Festa Major Romana" y la sección "Promos y eventos destacados" se ven **cortados por la derecha** del frame portrait.
+En **landscape** (`horizontal-mobile` y `horizontal-desktop`), reorganizar el modo Home para que:
 
-No es un caso aislado: ocurre de forma fluida en todo el rango de anchos donde el viewport es bastante más ancho que el frame interior.
+- El **skyline** quede como **fondo absoluto** del scroll body (no ocupa flujo, no empuja contenido).
+- Los **HomeModules** suban hasta justo debajo de la cabecera (~22% desde arriba), sobreimpresos sobre el skyline.
+- Cabecera (escudo + Malgrat de Mar + KM0 LAB + campana) y resto del flujo (CTAs, Promos, Comercios, tab bar) se mantienen tal cual.
 
-## Causa raíz
+El **modo vertical (vertical-mobile + vertical-tablet) NO se toca**. Toda regla nueva irá prefijada con `horizontal-mobile:` / `horizontal-desktop:`.
 
-En `src/pages/Home.tsx` línea 432, la card del carrusel tiene:
+## Cambios en `src/pages/Home.tsx`
 
-```tsx
-className="... aspect-[2/1] vertical-tablet:aspect-[16/9] min-h-[clamp(120px,28vw,200px)]"
+### 1. Hero `<motion.section>` (la sección que envuelve skyline + cabecera)
+
+- Mantener todo igual en vertical.
+- En landscape: añadir `horizontal-mobile:absolute horizontal-mobile:inset-0 horizontal-mobile:pointer-events-none` (mismo para `horizontal-desktop:`) para sacarlo del flujo y que cubra todo el scroll body como fondo. La cabecera (overlay) se reactivará con `pointer-events-auto` solo donde es interactiva (la campana).
+
+### 2. Div del fondo skyline (línea 185)
+
+- Vertical: queda con su `aspect-[1920/716]` actual.
+- Landscape: anular el aspect y darle altura completa: `horizontal-mobile:!aspect-auto horizontal-mobile:h-full horizontal-desktop:!aspect-auto horizontal-desktop:h-full`. Quitar el `h-[35dvh]/h-[42dvh]` previo.
+
+### 3. Padding-top del scroll body en landscape
+
+- Reservar espacio para la cabecera absoluta arriba: `horizontal-mobile:pt-[clamp(56px,12dvh,72px)] horizontal-desktop:pt-[clamp(64px,14dvh,88px)]`.
+- Esto asegura que los módulos arrancan justo por debajo de la cabecera (la línea roja del usuario).
+
+### 4. Sección HomeModules (línea 222-229)
+
+- Vertical: mantener `-mt-8` (overlap actual con el hero).
+- Landscape: anular ese margin negativo (`horizontal-mobile:mt-0 horizontal-desktop:mt-0`) ya que el skyline ya no está en el flujo.
+
+### 5. Sin cambios en CTAs, Promos, Comercios, tab bar
+
+- Su composición vertical actual sigue intacta. Al desaparecer el hueco que ocupaba el hero en flujo, todo el bloque sube de manera natural y queda mejor repartido.
+
+## Resultado esperado en landscape
+
+```text
+┌──────────────────────────────────────────────┐
+│ escudo Malgrat KM0LAB              campana   │  ← cabecera (overlay)
+│ ─────────── línea roja del usuario ──────── │
+│ [chat] [agenda] [ayunt.] [comercios]         │  ← HomeModules (sobre skyline)
+│                                              │
+│ [Iniciar sesión]    [Registro]               │
+│                                              │
+│ Promos y eventos destacados                  │
+│ [─── banner ───]                             │
+│                                              │
+│ Esto es para ti                              │
+│ [card] [card] [card]                         │
+│                                              │
+│ [Inicio] [Info] [Ofertas] [Perfil]           │  ← tab bar
+└──────────────────────────────────────────────┘
+       (skyline beige al fondo, opacity-25)
 ```
 
-El `min-h` se calcula con `vw` (viewport units), no con el ancho real del frame portrait. El frame portrait tiene un ancho fijado por:
+## Garantías de no-regresión vertical
 
-```
-width: min(100vw - 1.5rem, (100dvh - 1.5rem) * 9 / 19.5, 420px)
-```
-
-Es decir, el frame se queda estrecho (~340–420px) aunque el viewport sea muy ancho. Mientras tanto, `28vw` crece linealmente con el ancho del viewport:
-
-| Viewport | Ancho frame | min-h (28vw) | Width implícito por aspect-[2/1] |
-|----------|-------------|--------------|----------------------------------|
-| 375×667  | ~308px      | 105px        | 210px → cabe                     |
-| 600×900  | ~415px      | 168px        | 336px → cabe ajustado            |
-| **710×775** | ~346px   | **199px**    | **398px → desborda 52px**        |
-| 720×900  | ~415px      | 200px (cap)  | 400px → desborda 15px            |
-
-Cuando `min-height × 2 > ancho del frame`, el navegador respeta el `aspect-ratio` ensanchando la card → **se sale por la derecha** del frame.
-
-## Solución
-
-Eliminar el `min-h-[clamp(...)]`. El `aspect-[2/1]` ya garantiza altura proporcional al ancho real del contenedor, sin riesgo de desbordar.
-
-### Cambio único en `src/pages/Home.tsx` línea 432
-
-```tsx
-// Antes
-<div className="relative rounded-2xl overflow-hidden shadow-[...] aspect-[2/1] vertical-tablet:aspect-[16/9] min-h-[clamp(120px,28vw,200px)]">
-
-// Después
-<div className="relative w-full rounded-2xl overflow-hidden shadow-[...] aspect-[2/1] vertical-tablet:aspect-[16/9]">
-```
-
-- Se quita `min-h-[clamp(120px,28vw,200px)]`.
-- Se añade `w-full` explícito como salvaguarda para que la card respete el ancho del padre.
-
-El contenido interno (`FESTA / MAJOR / ROMANA` + subtítulo) usa `text-2xl/text-3xl` que cabe holgado con cualquier altura derivada del aspect-ratio (la mínima realista será ~150px de altura → más que suficiente).
-
-## Verificación
-
-Tras el cambio, capturar y validar:
-
-1. **375×667** (vertical-mobile canónico): layout idéntico al actual.
-2. **710×775** (caso reportado): banner y título dentro del frame, sin recortes.
-3. **600×900, 720×1000** (otras intermedias portrait): sin recortes.
-4. **768×1024** (vertical-tablet): la card mantiene `aspect-[16/9]` sin regresión.
-5. **horizontal-mobile / horizontal-desktop**: sin cambios (el frame landscape no usa esta sección igual).
+- Todas las reglas nuevas usan exclusivamente prefijos `horizontal-mobile:` / `horizontal-desktop:`.
+- Se mantiene el `aspect-[1920/716]`, el `-mt-8` de los módulos, y los spacers `vertical-mobile:flex-1` tal cual.
+- Verificación con screenshot en las 4 resoluciones canónicas: 375×667, 768×1024, 667×375, 1280×550. Vertical debe quedar pixel-idéntico.
 
 ## Archivos a tocar
 
-- `src/pages/Home.tsx` (1 línea)
+- `src/pages/Home.tsx` (3 ediciones puntuales en líneas 174-185, 195-218 y 222-228 aproximadamente).
