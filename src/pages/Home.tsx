@@ -169,7 +169,7 @@ const HomeContent = ({
   return (
     <>
       {/* Scroll body — incluye hero, módulos overlap, CTAs, promos, comercios */}
-      <div className="flex-1 min-h-0 overflow-y-auto pb-[clamp(0rem,2.5vw,0.75rem)] vertical-mobile:overflow-hidden vertical-mobile:flex vertical-mobile:flex-col horizontal-mobile:relative horizontal-mobile:overflow-hidden horizontal-mobile:flex horizontal-mobile:flex-col horizontal-desktop:relative horizontal-desktop:overflow-hidden horizontal-desktop:flex horizontal-desktop:flex-col horizontal-mobile:pt-[clamp(48px,10dvh,64px)] horizontal-desktop:pt-[clamp(56px,12dvh,80px)]">
+      <div className="flex-1 min-h-0 overflow-y-auto pb-[clamp(0rem,2.5vw,0.75rem)] vertical-mobile:overflow-hidden vertical-mobile:flex vertical-mobile:flex-col horizontal-mobile:relative horizontal-mobile:overflow-hidden horizontal-mobile:flex horizontal-mobile:flex-col horizontal-desktop:relative horizontal-desktop:overflow-hidden horizontal-desktop:flex horizontal-desktop:flex-col horizontal-mobile:!pt-7 horizontal-desktop:pt-[clamp(56px,12dvh,80px)]">
         {/* ── HERO con ilustración del pueblo ── */}
         <motion.section
           className="relative horizontal-mobile:absolute horizontal-mobile:inset-0 horizontal-mobile:pointer-events-none horizontal-desktop:absolute horizontal-desktop:inset-0 horizontal-desktop:pointer-events-none"
@@ -194,19 +194,19 @@ const HomeContent = ({
           />
 
           {/* Overlay: escudo + nombre + logo arriba-izquierda, campana arriba-derecha */}
-          <div className="absolute inset-x-0 top-0 flex items-start justify-between pl-2 pr-4 pt-4 gap-3 horizontal-mobile:pointer-events-auto horizontal-desktop:pointer-events-auto">
+          <div className="absolute inset-x-0 top-0 flex items-start justify-between pl-2 pr-4 pt-4 gap-3 horizontal-mobile:pointer-events-auto horizontal-mobile:pt-2 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto">
             <div className="flex items-center gap-2 min-w-0">
               <img
                 src={coatMalgrat}
                 alt={`Escudo de ${cityName}`}
-                className="w-12 h-12 vertical-tablet:w-14 vertical-tablet:h-14 object-contain shrink-0 drop-shadow-[0_2px_4px_hsl(0_0%_100%/0.5)]"
+                className="w-12 h-12 vertical-tablet:w-14 vertical-tablet:h-14 horizontal-mobile:!w-9 horizontal-mobile:!h-9 object-contain shrink-0 drop-shadow-[0_2px_4px_hsl(0_0%_100%/0.5)]"
               />
               <div className="flex flex-col leading-[0.95] min-w-0">
-                <h1 className="font-brand font-black text-km0-blue-700 whitespace-pre-line text-left border-0 text-lg">
+                <h1 className="font-brand font-black text-km0-blue-700 whitespace-pre-line text-left border-0 text-lg horizontal-mobile:!text-sm">
                   {"Malgrat de Mar"}
                 </h1>
-                <div className="flex items-center mt-2">
-                  <Km0Logo className="h-4 vertical-tablet:h-5 w-auto" />
+                <div className="flex items-center mt-2 horizontal-mobile:mt-1">
+                  <Km0Logo className="h-4 vertical-tablet:h-5 horizontal-mobile:!h-3 w-auto" />
                 </div>
               </div>
             </div>
@@ -235,7 +235,7 @@ const HomeContent = ({
 
         {/* ── CTAs Auth ── */}
         <motion.section
-          className="px-4 mt-4 grid grid-cols-2 gap-[clamp(0.5rem,3vw,1rem)] relative z-10 vertical-mobile:mt-0 vertical-tablet:mt-8 vertical-tablet:gap-4 horizontal-mobile:max-w-[88%] horizontal-mobile:mx-auto horizontal-mobile:gap-6 horizontal-desktop:max-w-[80%] horizontal-desktop:mx-auto horizontal-desktop:gap-8"
+          className="px-4 mt-4 grid grid-cols-2 gap-[clamp(0.5rem,3vw,1rem)] relative z-10 vertical-mobile:mt-0 vertical-tablet:mt-8 vertical-tablet:gap-4 horizontal-mobile:max-w-[88%] horizontal-mobile:mx-auto horizontal-mobile:gap-4 horizontal-mobile:!mt-2 horizontal-desktop:max-w-[80%] horizontal-desktop:mx-auto horizontal-desktop:gap-8"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.18 }}
@@ -252,7 +252,7 @@ const HomeContent = ({
         <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
 
         {/* ── Wrapper landscape: promos + recomendado en 2 columnas ── */}
-        <div className="relative z-10 horizontal-mobile:grid horizontal-mobile:grid-cols-2 horizontal-mobile:gap-3 horizontal-mobile:px-4 horizontal-mobile:mt-3 horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-desktop:grid horizontal-desktop:grid-cols-2 horizontal-desktop:gap-4 horizontal-desktop:px-4 horizontal-desktop:mt-4 horizontal-desktop:flex-1 horizontal-desktop:min-h-0">
+        <div className="relative z-10 horizontal-mobile:grid horizontal-mobile:grid-cols-2 horizontal-mobile:gap-2 horizontal-mobile:px-3 horizontal-mobile:!mt-2 horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-desktop:grid horizontal-desktop:grid-cols-2 horizontal-desktop:gap-4 horizontal-desktop:px-4 horizontal-desktop:mt-4 horizontal-desktop:flex-1 horizontal-desktop:min-h-0">
           {/* ── Promos i events destacats ── */}
           <motion.section
             className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8 horizontal-mobile:px-0 horizontal-mobile:mt-0 horizontal-mobile:min-w-0 horizontal-desktop:px-0 horizontal-desktop:mt-0 horizontal-desktop:min-w-0"
@@ -312,7 +312,7 @@ const HomeContent = ({
 
       {/* ── Tab bar inferior (fixed dentro del frame) ── */}
       <nav
-        className="shrink-0 bg-white border-t border-km0-beige-200 px-2 pt-2 pb-3 grid grid-cols-4"
+        className="shrink-0 bg-white border-t border-km0-beige-200 px-2 pt-2 pb-3 grid grid-cols-4 horizontal-mobile:!pt-1 horizontal-mobile:!pb-1.5"
         aria-label="Navegación principal"
       >
         <TabItem
@@ -357,6 +357,7 @@ const AuthButton = ({ variant, icon, children }: AuthButtonProps) => (
       "flex items-center font-ui font-bold transition-all duration-200 hover:scale-[1.03] active:scale-95 shadow-[0_6px_16px_-8px_hsl(var(--km0-blue-700)/0.35)]",
       "gap-[clamp(0.375rem,2vw,0.5rem)] px-[clamp(0.625rem,3vw,0.75rem)] py-[clamp(0.5rem,2.4vw,0.75rem)] text-[clamp(0.75rem,3vw,0.875rem)] rounded-[clamp(0.75rem,3vw,1rem)]",
       "vertical-tablet:gap-2 vertical-tablet:px-3 vertical-tablet:py-3 vertical-tablet:text-sm vertical-tablet:rounded-2xl",
+      "horizontal-mobile:!py-1.5 horizontal-mobile:!px-2.5 horizontal-mobile:!text-xs horizontal-mobile:!gap-1.5 horizontal-mobile:!rounded-xl",
       variant === "primary"
         ? "bg-km0-blue-700 text-white hover:bg-km0-blue-600"
         : "bg-km0-yellow-500 text-km0-blue-800 hover:bg-km0-yellow-400",
@@ -367,6 +368,7 @@ const AuthButton = ({ variant, icon, children }: AuthButtonProps) => (
         "rounded-full flex items-center justify-center shrink-0",
         "w-[clamp(1.5rem,6vw,1.75rem)] h-[clamp(1.5rem,6vw,1.75rem)]",
         "vertical-tablet:w-7 vertical-tablet:h-7",
+        "horizontal-mobile:!w-5 horizontal-mobile:!h-5",
         variant === "primary" ? "bg-white/15" : "bg-km0-blue-700/10",
       )}
     >
