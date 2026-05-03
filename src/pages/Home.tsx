@@ -169,7 +169,7 @@ const HomeContent = ({
   return (
     <>
       {/* Scroll body — incluye hero, módulos overlap, CTAs, promos, comercios */}
-      <div className="flex-1 min-h-0 overflow-y-auto pb-2 vertical-mobile:overflow-hidden vertical-mobile:pb-0">
+      <div className="flex-1 min-h-0 overflow-y-auto pb-[clamp(0rem,2.5vw,0.75rem)] vertical-mobile:overflow-hidden">
         {/* ── HERO con ilustración del pueblo ── */}
         <motion.section
           className="relative"
@@ -230,7 +230,7 @@ const HomeContent = ({
 
         {/* ── CTAs Auth ── */}
         <motion.section
-          className="px-4 mt-3 grid grid-cols-2 gap-3 vertical-mobile:mt-2 vertical-mobile:gap-2"
+          className="px-4 mt-[clamp(0.5rem,2.5vw,0.75rem)] grid grid-cols-2 gap-[clamp(0.5rem,2.5vw,0.75rem)] vertical-tablet:mt-4 vertical-tablet:gap-4"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.18 }}
@@ -245,12 +245,12 @@ const HomeContent = ({
 
         {/* ── Promos i events destacats ── */}
         <motion.section
-          className="px-4 mt-4 vertical-mobile:mt-3"
+          className="px-4 mt-[clamp(0.75rem,3vw,1rem)] vertical-tablet:mt-5"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.26 }}
         >
-          <h2 className="font-brand text-base font-black text-km0-blue-700 mb-2 vertical-mobile:mb-1.5">
+          <h2 className="font-brand text-base font-black text-km0-blue-700 mb-[clamp(0.375rem,1.5vw,0.5rem)] vertical-tablet:mb-3">
             Promos y eventos destacados
           </h2>
           <PromoCarousel promos={PROMOS} />
@@ -258,12 +258,12 @@ const HomeContent = ({
 
         {/* ── Comerciantes populares ── */}
         <motion.section
-          className="px-4 mt-4 vertical-mobile:mt-3"
+          className="px-4 mt-[clamp(0.75rem,3vw,1rem)] vertical-tablet:mt-5"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.34 }}
         >
-          <div className="flex items-center justify-between mb-2 vertical-mobile:mb-1.5">
+          <div className="flex items-center justify-between mb-[clamp(0.375rem,1.5vw,0.5rem)] vertical-tablet:mb-3">
             <div className="flex items-center gap-2 min-w-0">
               <img
                 src={couponIcon}
@@ -272,9 +272,9 @@ const HomeContent = ({
                 width={80}
                 height={80}
                 loading="lazy"
-                className="w-20 h-20 vertical-mobile:w-12 vertical-mobile:h-12 object-contain shrink-0"
+                className="w-[clamp(3rem,12vw,5rem)] h-[clamp(3rem,12vw,5rem)] object-contain shrink-0"
               />
-              <h2 className="font-brand text-base font-black text-km0-blue-700 vertical-mobile:text-sm">
+              <h2 className="font-brand text-[clamp(0.875rem,3.6vw,1rem)] font-black text-km0-blue-700">
                 Esto es para ti
               </h2>
             </div>
@@ -338,8 +338,9 @@ const AuthButton = ({ variant, icon, children }: AuthButtonProps) => (
   <button
     type="button"
     className={cn(
-      "flex items-center gap-2 px-3 py-3 rounded-2xl font-ui font-bold text-sm transition-all duration-200 hover:scale-[1.03] active:scale-95 shadow-[0_6px_16px_-8px_hsl(var(--km0-blue-700)/0.35)]",
-      "vertical-mobile:py-2 vertical-mobile:gap-1.5 vertical-mobile:px-2.5 vertical-mobile:text-xs vertical-mobile:rounded-xl",
+      "flex items-center font-ui font-bold transition-all duration-200 hover:scale-[1.03] active:scale-95 shadow-[0_6px_16px_-8px_hsl(var(--km0-blue-700)/0.35)]",
+      "gap-[clamp(0.375rem,2vw,0.5rem)] px-[clamp(0.625rem,3vw,0.75rem)] py-[clamp(0.5rem,2.4vw,0.75rem)] text-[clamp(0.75rem,3vw,0.875rem)] rounded-[clamp(0.75rem,3vw,1rem)]",
+      "vertical-tablet:gap-2 vertical-tablet:px-3 vertical-tablet:py-3 vertical-tablet:text-sm vertical-tablet:rounded-2xl",
       variant === "primary"
         ? "bg-km0-blue-700 text-white hover:bg-km0-blue-600"
         : "bg-km0-yellow-500 text-km0-blue-800 hover:bg-km0-yellow-400",
@@ -347,8 +348,9 @@ const AuthButton = ({ variant, icon, children }: AuthButtonProps) => (
   >
     <span
       className={cn(
-        "w-7 h-7 rounded-full flex items-center justify-center shrink-0",
-        "vertical-mobile:w-6 vertical-mobile:h-6",
+        "rounded-full flex items-center justify-center shrink-0",
+        "w-[clamp(1.5rem,6vw,1.75rem)] h-[clamp(1.5rem,6vw,1.75rem)]",
+        "vertical-tablet:w-7 vertical-tablet:h-7",
         variant === "primary" ? "bg-white/15" : "bg-km0-blue-700/10",
       )}
     >
@@ -418,7 +420,7 @@ const PromoCarousel = ({ promos }: PromoCarouselProps) => {
   return (
     <>
       {/* Hero card con drag horizontal */}
-      <div className="relative rounded-2xl overflow-hidden shadow-[0_10px_24px_-12px_hsl(var(--km0-blue-700)/0.35)] aspect-[16/9] vertical-mobile:aspect-[2/1]">
+      <div className="relative rounded-2xl overflow-hidden shadow-[0_10px_24px_-12px_hsl(var(--km0-blue-700)/0.35)] aspect-[2/1] vertical-tablet:aspect-[16/9] min-h-[clamp(120px,28vw,200px)]">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={promo.id}
@@ -560,7 +562,7 @@ const ComercioCarousel = ({ comercios }: ComercioCarouselProps) => {
               >
                 <div
                   className={cn(
-                    "w-14 h-14 vertical-mobile:w-11 vertical-mobile:h-11 rounded-full shadow-sm border-2 border-white flex items-center justify-center overflow-hidden",
+                    "w-[clamp(2.75rem,9vw,3.5rem)] h-[clamp(2.75rem,9vw,3.5rem)] vertical-tablet:w-14 vertical-tablet:h-14 rounded-full shadow-sm border-2 border-white flex items-center justify-center overflow-hidden",
                     c.bg,
                   )}
                 >
@@ -574,7 +576,7 @@ const ComercioCarousel = ({ comercios }: ComercioCarouselProps) => {
                     draggable={false}
                   />
                 </div>
-                <span className="font-body text-[10px] text-km0-blue-800 mt-1.5 vertical-mobile:mt-1 truncate w-full text-center">
+                <span className="font-body text-[10px] text-km0-blue-800 mt-[clamp(0.25rem,1vw,0.375rem)] vertical-tablet:mt-1.5 truncate w-full text-center">
                   {c.name}
                 </span>
               </button>
@@ -589,7 +591,7 @@ const ComercioCarousel = ({ comercios }: ComercioCarouselProps) => {
       </div>
 
       {total > 1 && (
-        <div className="flex items-center justify-center gap-1.5 mt-3 vertical-mobile:mt-1.5">
+        <div className="flex items-center justify-center gap-1.5 mt-[clamp(0.375rem,1.5vw,0.75rem)] vertical-tablet:mt-3">
           {pages.map((_, i) => (
             <button
               key={i}
