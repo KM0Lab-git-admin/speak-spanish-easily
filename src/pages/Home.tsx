@@ -258,12 +258,12 @@ const HomeContent = ({
 
         {/* ── Comerciantes populares ── */}
         <motion.section
-          className="px-4 mt-[clamp(0.75rem,3vw,1rem)] vertical-tablet:mt-5"
+          className="px-4 mt-[clamp(0.75rem,5vw,2rem)] vertical-tablet:mt-8"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.34 }}
         >
-          <div className="flex items-center justify-between mb-[clamp(0.375rem,1.5vw,0.5rem)] vertical-tablet:mb-3">
+          <div className="flex items-center justify-between mb-[clamp(0.375rem,2vw,0.875rem)] vertical-tablet:mb-3">
             <div className="flex items-center gap-2 min-w-0">
               <img
                 src={couponIcon}
