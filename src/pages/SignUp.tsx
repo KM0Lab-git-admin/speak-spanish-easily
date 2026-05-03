@@ -69,7 +69,7 @@ const SignUp = () => {
             Crea tu cuenta
           </h1>
           <p className="font-body text-sm text-muted-foreground">
-            Registro rápido y seguro
+            Registro rápido. Te enviaremos un enlace para entrar.
           </p>
         </div>
 
