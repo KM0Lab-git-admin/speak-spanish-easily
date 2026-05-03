@@ -74,7 +74,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
           // Borde inferior con doble curva (cápsula): radio horizontal
           // grande + radio vertical menor → efecto orgánico tipo "ola".
           "rounded-bl-[40%_24px] rounded-br-[40%_24px]",
-          "px-[12px] py-[20px]",
+          "px-[clamp(4px,2vw,12px)] py-[20px]",
         )}
       >
         {/* Patrón decorativo sutil arriba — círculos translúcidos
@@ -90,7 +90,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
         />
 
         {/* Iconos: el del medio crece un punto para crear jerarquía focal */}
-        <div className="relative flex items-end justify-around gap-2">
+        <div className="relative flex items-end justify-around gap-1 vertical-tablet:gap-2">
           {modules.map((mod, idx) => (
             <ModuleItem key={mod.id} module={mod} emphasized={false} />
           ))}
@@ -123,10 +123,12 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
         : shopIcon;
   const { active, label, onClick } = module;
 
-  // El módulo central (emphasized) crece un poco para crear jerarquía
+  // El módulo central (emphasized) crece un poco para crear jerarquía.
+  // Tamaño fluido: en vertical-mobile (375px) se reduce para que los 4 módulos
+  // quepan sin recortar el label "Ayuntamiento".
   const sizeClasses = emphasized
-    ? "w-[78px] h-[78px] vertical-tablet:w-[88px] vertical-tablet:h-[88px]"
-    : "w-[68px] h-[68px] vertical-tablet:w-[78px] vertical-tablet:h-[78px]";
+    ? "w-[clamp(60px,17vw,78px)] h-[clamp(60px,17vw,78px)] vertical-tablet:w-[88px] vertical-tablet:h-[88px]"
+    : "w-[clamp(54px,15vw,68px)] h-[clamp(54px,15vw,68px)] vertical-tablet:w-[78px] vertical-tablet:h-[78px]";
 
   const iconSize = emphasized ? 34 : 30;
 
