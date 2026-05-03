@@ -44,8 +44,8 @@ const Login = () => {
       return;
     }
 
-    toast.success("Te hemos enviado un código por email");
-    navigate("/verify", { state: { email: email.trim(), mode: "login" } });
+    toast.success("Te hemos enviado un enlace por email");
+    navigate("/check-email", { state: { email: email.trim(), mode: "login" } });
   };
 
   return (
