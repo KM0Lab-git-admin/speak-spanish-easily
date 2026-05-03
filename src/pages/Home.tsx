@@ -128,14 +128,13 @@ const Home = () => {
           height: "min(calc(100dvh - 2rem), calc((100vw - 2rem) * 9 / 16), calc(1200px * 9 / 16))",
         }}
       >
-        <HomeContent
+        <HomeContentLandscape
           cityName={cityName}
           hasAlerts={hasAlerts}
           onToggleAlerts={() => setHasAlerts((v) => !v)}
           modules={modulesWithHandlers}
           activeTab={activeTab}
           onTabChange={setActiveTab}
-          landscape
         />
       </div>
     </div>
