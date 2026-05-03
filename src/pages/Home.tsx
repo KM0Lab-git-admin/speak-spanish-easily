@@ -128,13 +128,14 @@ const Home = () => {
           height: "min(calc(100dvh - 2rem), calc((100vw - 2rem) * 9 / 16), calc(1200px * 9 / 16))",
         }}
       >
-        <HomeContentLandscape
+        <HomeContent
           cityName={cityName}
           hasAlerts={hasAlerts}
           onToggleAlerts={() => setHasAlerts((v) => !v)}
           modules={modulesWithHandlers}
           activeTab={activeTab}
           onTabChange={setActiveTab}
+          landscape
         />
       </div>
     </div>
@@ -336,191 +337,7 @@ const HomeContent = ({
   );
 };
 
-/* ─────────────────────────────────────────────────────────────
-   HomeContentLandscape — layout específico para horizontal-mobile
-   y horizontal-desktop. Reorganiza el contenido en 2 columnas
-   (45/55) con tab bar full-width abajo. Garantiza que TODO el
-   contenido cabe sin scroll en 667×375 y 1280×550, y escala con
-   fluidez entre ambas resoluciones.
-   ───────────────────────────────────────────────────────────── */
-interface HomeContentLandscapeProps {
-  cityName: string;
-  hasAlerts: boolean;
-  onToggleAlerts: () => void;
-  modules: HomeModule[];
-  activeTab: "home" | "info" | "ofertes" | "perfil";
-  onTabChange: (t: "home" | "info" | "ofertes" | "perfil") => void;
-}
-
-const HomeContentLandscape = ({
-  cityName,
-  hasAlerts,
-  onToggleAlerts,
-  modules,
-  activeTab,
-  onTabChange,
-}: HomeContentLandscapeProps) => {
-  return (
-    <>
-      {/* Skyline decorativo de fondo, muy sutil, ocupando todo el frame */}
-      <img
-        src={skylineMalgrat}
-        alt=""
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 w-full h-[60%] object-contain object-bottom z-0 select-none opacity-[0.08]"
-      />
-
-      {/* Contenido principal: 2 columnas + tab bar */}
-      <div className="relative z-10 flex-1 min-h-0 flex flex-col">
-        <div className="flex-1 min-h-0 grid grid-cols-[45fr_55fr] gap-[clamp(0.5rem,1.5vw,1.25rem)] px-[clamp(0.75rem,2vw,1.5rem)] pt-[clamp(0.5rem,1.5vw,1rem)] pb-[clamp(0.25rem,1vw,0.75rem)]">
-          {/* ── COLUMNA IZQUIERDA: identidad + módulos + CTAs ── */}
-          <div className="flex flex-col min-h-0 min-w-0 gap-[clamp(0.375rem,1.2vh,1rem)]">
-            {/* Header compacto */}
-            <motion.div
-              className="flex items-start justify-between gap-2 shrink-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4 }}
-            >
-              <div className="flex items-center gap-2 min-w-0">
-                <img
-                  src={coatMalgrat}
-                  alt={`Escudo de ${cityName}`}
-                  className="h-[clamp(2rem,5vh,3rem)] w-auto object-contain shrink-0 drop-shadow-[0_2px_4px_hsl(0_0%_100%/0.5)]"
-                />
-                <div className="flex flex-col leading-[0.95] min-w-0">
-                  <h1 className="font-brand font-black text-km0-blue-700 text-left text-[clamp(0.875rem,2.4vh,1.25rem)] truncate">
-                    {cityName}
-                  </h1>
-                  <div className="flex items-center mt-1">
-                    <Km0Logo className="h-[clamp(0.75rem,1.6vh,1.125rem)] w-auto" />
-                  </div>
-                </div>
-              </div>
-
-              <NotificationBell
-                hasAlerts={hasAlerts}
-                onClick={onToggleAlerts}
-                ariaLabel={hasAlerts ? "Tienes notificaciones nuevas" : "Sin notificaciones"}
-                className="shrink-0"
-              />
-            </motion.div>
-
-            {/* HomeModules — banda azul con 4 accesos */}
-            <motion.div
-              className="shrink-0"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-            >
-              <HomeModules modules={modules} />
-            </motion.div>
-
-            {/* Spacer flexible para repartir aire restante */}
-            <div className="flex-1 min-h-0" aria-hidden />
-
-            {/* CTAs Auth */}
-            <motion.div
-              className="grid grid-cols-2 gap-[clamp(0.375rem,1vw,0.75rem)] shrink-0"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.18 }}
-            >
-              <AuthButton variant="primary" icon={<UserRound size={14} strokeWidth={2.2} />}>
-                Iniciar sesión
-              </AuthButton>
-              <AuthButton variant="secondary" icon={<UserRoundPlus size={14} strokeWidth={2.2} />}>
-                Registro
-              </AuthButton>
-            </motion.div>
-          </div>
-
-          {/* ── COLUMNA DERECHA: promos + comercios ── */}
-          <div className="flex flex-col min-h-0 min-w-0 gap-[clamp(0.375rem,1.5vh,1rem)]">
-            {/* Promos */}
-            <motion.section
-              className="flex flex-col min-h-0 shrink-0"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.26 }}
-            >
-              <h2 className="font-brand font-black text-km0-blue-700 text-[clamp(0.75rem,1.8vh,1rem)] mb-[clamp(0.25rem,0.8vh,0.5rem)]">
-                Promos y eventos destacados
-              </h2>
-              <PromoCarousel promos={PROMOS} />
-            </motion.section>
-
-            {/* Spacer flexible */}
-            <div className="flex-1 min-h-0" aria-hidden />
-
-            {/* Comercios */}
-            <motion.section
-              className="shrink-0"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.34 }}
-            >
-              <div className="flex items-center justify-between mb-[clamp(0.25rem,0.8vh,0.5rem)]">
-                <div className="flex items-center gap-2 min-w-0">
-                  <img
-                    src={couponIcon}
-                    alt=""
-                    aria-hidden
-                    className="h-[clamp(1.5rem,4vh,2.5rem)] w-auto object-contain shrink-0"
-                  />
-                  <h2 className="font-brand font-black text-km0-blue-700 text-[clamp(0.75rem,1.8vh,1rem)]">
-                    Esto es para ti
-                  </h2>
-                </div>
-                <button
-                  type="button"
-                  className="font-ui text-[clamp(0.625rem,1.4vh,0.75rem)] font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform shrink-0"
-                >
-                  Ver todos
-                  <ArrowRight size={12} strokeWidth={2.4} />
-                </button>
-              </div>
-
-              <ComercioCarousel comercios={COMERCIOS} />
-            </motion.section>
-          </div>
-        </div>
-
-        {/* Tab bar full-width abajo */}
-        <nav
-          className="shrink-0 bg-white border-t border-km0-beige-200 px-2 pt-1 pb-1 grid grid-cols-4"
-          aria-label="Navegación principal"
-        >
-          <TabItem
-            icon={<HomeIcon size={18} strokeWidth={2.2} />}
-            label="Inicio"
-            active={activeTab === "home"}
-            onClick={() => onTabChange("home")}
-          />
-          <TabItem
-            icon={<Info size={18} strokeWidth={2.2} />}
-            label="Información"
-            active={activeTab === "info"}
-            onClick={() => onTabChange("info")}
-          />
-          <TabItem
-            icon={<Tag size={18} strokeWidth={2.2} />}
-            label="Ofertas"
-            active={activeTab === "ofertes"}
-            onClick={() => onTabChange("ofertes")}
-          />
-          <TabItem
-            icon={<User size={18} strokeWidth={2.2} />}
-            label="Perfil"
-            active={activeTab === "perfil"}
-            onClick={() => onTabChange("perfil")}
-          />
-        </nav>
-      </div>
-    </>
-  );
-};
-
+/* ─── AuthButton ─────────────────────────────────────────────── */
 interface AuthButtonProps {
   variant: "primary" | "secondary";
   icon: React.ReactNode;
