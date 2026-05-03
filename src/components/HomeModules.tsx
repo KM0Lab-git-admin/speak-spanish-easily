@@ -69,7 +69,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
           para que el borde inferior sea más "ondulado" que el superior. */}
       <div
         className={cn(
-          "relative bg-km0-beige-100",
+          "relative bg-km0-beige-100 horizontal-mobile:bg-transparent horizontal-desktop:bg-transparent",
           "rounded-t-3xl",
           // Borde inferior con doble curva (cápsula): radio horizontal
           // grande + radio vertical menor → efecto orgánico tipo "ola".
