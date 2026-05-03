@@ -169,7 +169,7 @@ const HomeContent = ({
   return (
     <>
       {/* Scroll body — incluye hero, módulos overlap, CTAs, promos, comercios */}
-      <div className="flex-1 min-h-0 overflow-y-auto pb-2">
+      <div className="flex-1 min-h-0 overflow-y-auto pb-2 vertical-mobile:overflow-hidden vertical-mobile:pb-0">
         {/* ── HERO con ilustración del pueblo ── */}
         <motion.section
           className="relative"
