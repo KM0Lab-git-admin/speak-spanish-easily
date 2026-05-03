@@ -29,7 +29,7 @@ const NotificationsOverlay = ({
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-50 bg-km0-beige-50 flex flex-col"
+          className="absolute inset-0 z-50 bg-km0-beige-50 flex flex-col rounded-3xl overflow-hidden"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 16 }}
