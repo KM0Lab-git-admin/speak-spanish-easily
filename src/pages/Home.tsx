@@ -562,7 +562,7 @@ const ComercioCarousel = ({ comercios }: ComercioCarouselProps) => {
               >
                 <div
                   className={cn(
-                    "w-14 h-14 vertical-mobile:w-11 vertical-mobile:h-11 rounded-full shadow-sm border-2 border-white flex items-center justify-center overflow-hidden",
+                    "w-[clamp(2.75rem,9vw,3.5rem)] h-[clamp(2.75rem,9vw,3.5rem)] vertical-tablet:w-14 vertical-tablet:h-14 rounded-full shadow-sm border-2 border-white flex items-center justify-center overflow-hidden",
                     c.bg,
                   )}
                 >
@@ -576,7 +576,7 @@ const ComercioCarousel = ({ comercios }: ComercioCarouselProps) => {
                     draggable={false}
                   />
                 </div>
-                <span className="font-body text-[10px] text-km0-blue-800 mt-1.5 vertical-mobile:mt-1 truncate w-full text-center">
+                <span className="font-body text-[10px] text-km0-blue-800 mt-[clamp(0.25rem,1vw,0.375rem)] vertical-tablet:mt-1.5 truncate w-full text-center">
                   {c.name}
                 </span>
               </button>
