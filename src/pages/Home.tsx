@@ -169,7 +169,7 @@ const HomeContent = ({
   return (
     <>
       {/* Scroll body — incluye hero, módulos overlap, CTAs, promos, comercios */}
-      <div className="flex-1 min-h-0 overflow-y-auto pb-[clamp(0rem,2.5vw,0.75rem)] vertical-mobile:overflow-hidden vertical-mobile:flex vertical-mobile:flex-col horizontal-mobile:relative horizontal-desktop:relative horizontal-mobile:pt-[clamp(56px,12dvh,72px)] horizontal-desktop:pt-[clamp(64px,14dvh,88px)]">
+      <div className="flex-1 min-h-0 overflow-y-auto pb-[clamp(0rem,2.5vw,0.75rem)] vertical-mobile:overflow-hidden vertical-mobile:flex vertical-mobile:flex-col horizontal-mobile:relative horizontal-mobile:overflow-hidden horizontal-mobile:flex horizontal-mobile:flex-col horizontal-desktop:relative horizontal-desktop:overflow-hidden horizontal-desktop:flex horizontal-desktop:flex-col horizontal-mobile:pt-[clamp(48px,10dvh,64px)] horizontal-desktop:pt-[clamp(56px,12dvh,80px)]">
         {/* ── HERO con ilustración del pueblo ── */}
         <motion.section
           className="relative horizontal-mobile:absolute horizontal-mobile:inset-0 horizontal-mobile:pointer-events-none horizontal-desktop:absolute horizontal-desktop:inset-0 horizontal-desktop:pointer-events-none"
@@ -251,58 +251,61 @@ const HomeContent = ({
         {/* Spacer flex 2 */}
         <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
 
-        {/* ── Promos i events destacats ── */}
-        <motion.section
-          className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.26 }}
-        >
-          <h2 className="font-brand text-base font-black text-km0-blue-700 mb-[clamp(0.25rem,1.5vw,0.875rem)] vertical-tablet:mb-3">
-            Promos y eventos destacados
-          </h2>
-          <PromoCarousel promos={PROMOS} />
-        </motion.section>
+        {/* ── Wrapper landscape: promos + recomendado en 2 columnas ── */}
+        <div className="horizontal-mobile:grid horizontal-mobile:grid-cols-2 horizontal-mobile:gap-3 horizontal-mobile:px-4 horizontal-mobile:mt-3 horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-desktop:grid horizontal-desktop:grid-cols-2 horizontal-desktop:gap-4 horizontal-desktop:px-4 horizontal-desktop:mt-4 horizontal-desktop:flex-1 horizontal-desktop:min-h-0">
+          {/* ── Promos i events destacats ── */}
+          <motion.section
+            className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8 horizontal-mobile:px-0 horizontal-mobile:mt-0 horizontal-mobile:min-w-0 horizontal-desktop:px-0 horizontal-desktop:mt-0 horizontal-desktop:min-w-0"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.26 }}
+          >
+            <h2 className="font-brand font-black text-km0-blue-700 mb-[clamp(0.25rem,1.5vw,0.875rem)] text-base vertical-tablet:mb-3 horizontal-mobile:!text-[13px] horizontal-mobile:!mb-1 horizontal-desktop:!text-base horizontal-desktop:!mb-2">
+              Promos y eventos destacados
+            </h2>
+            <PromoCarousel promos={PROMOS} />
+          </motion.section>
 
-        {/* Spacer flex 3 */}
-        <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
+          {/* Spacer flex 3 — solo en vertical-mobile */}
+          <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
 
-        {/* ── Comerciantes populares ── */}
-        <motion.section
-          className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.34 }}
-        >
-          <div className="flex items-center justify-between mb-[clamp(0.125rem,1vw,0.875rem)] vertical-tablet:mb-3">
-            <div className="flex items-center gap-2 min-w-0">
-              <img
-                src={couponIcon}
-                alt=""
-                aria-hidden
-                width={80}
-                height={80}
-                loading="lazy"
-                className="w-[clamp(2.25rem,9vw,5rem)] h-[clamp(2.25rem,9vw,5rem)] object-contain shrink-0"
-              />
-              <h2 className="font-brand text-[clamp(0.875rem,3.6vw,1rem)] font-black text-km0-blue-700">
-                Esto es para ti
-              </h2>
+          {/* ── Comerciantes populares ── */}
+          <motion.section
+            className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8 horizontal-mobile:px-0 horizontal-mobile:mt-0 horizontal-mobile:min-w-0 horizontal-desktop:px-0 horizontal-desktop:mt-0 horizontal-desktop:min-w-0"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.34 }}
+          >
+            <div className="flex items-center justify-between mb-[clamp(0.125rem,1vw,0.875rem)] vertical-tablet:mb-3 horizontal-mobile:mb-1 horizontal-desktop:mb-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <img
+                  src={couponIcon}
+                  alt=""
+                  aria-hidden
+                  width={80}
+                  height={80}
+                  loading="lazy"
+                  className="w-[clamp(2.25rem,9vw,5rem)] h-[clamp(2.25rem,9vw,5rem)] object-contain shrink-0 horizontal-mobile:w-9 horizontal-mobile:h-9 horizontal-desktop:w-10 horizontal-desktop:h-10"
+                />
+                <h2 className="font-brand text-[clamp(0.875rem,3.6vw,1rem)] font-black text-km0-blue-700 horizontal-mobile:text-sm">
+                  Esto es para ti
+                </h2>
+              </div>
+              <button
+                type="button"
+                className="font-ui text-xs font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform shrink-0"
+              >
+                Ver todos
+                <ArrowRight size={14} strokeWidth={2.4} />
+              </button>
             </div>
-            <button
-              type="button"
-              className="font-ui text-xs font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform shrink-0"
-            >
-              Ver todos
-              <ArrowRight size={14} strokeWidth={2.4} />
-            </button>
-          </div>
 
-          <ComercioCarousel comercios={COMERCIOS} />
-        </motion.section>
+            <ComercioCarousel comercios={COMERCIOS} />
+          </motion.section>
+        </div>
 
         {/* Spacer final (flex 4 en vertical-mobile, fijo en otros breakpoints) */}
-        <div className="h-[clamp(0.25rem,2vw,1.5rem)] vertical-mobile:h-0 vertical-mobile:flex-1" aria-hidden />
+        <div className="h-[clamp(0.25rem,2vw,1.5rem)] vertical-mobile:h-0 vertical-mobile:flex-1 horizontal-mobile:hidden horizontal-desktop:hidden" aria-hidden />
       </div>
 
       {/* ── Tab bar inferior (fixed dentro del frame) ── */}
@@ -431,7 +434,7 @@ const PromoCarousel = ({ promos }: PromoCarouselProps) => {
   return (
     <>
       {/* Hero card con drag horizontal */}
-      <div className="relative w-full rounded-2xl overflow-hidden shadow-[0_10px_24px_-12px_hsl(var(--km0-blue-700)/0.35)] aspect-[2/1] vertical-tablet:aspect-[16/9]">
+      <div className="relative w-full rounded-2xl overflow-hidden shadow-[0_10px_24px_-12px_hsl(var(--km0-blue-700)/0.35)] aspect-[2/1] vertical-tablet:aspect-[16/9] horizontal-mobile:aspect-[16/7] horizontal-desktop:aspect-[16/7]">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={promo.id}
