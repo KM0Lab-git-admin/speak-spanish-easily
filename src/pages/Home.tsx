@@ -368,6 +368,7 @@ const AuthButton = ({ variant, icon, children }: AuthButtonProps) => (
         "rounded-full flex items-center justify-center shrink-0",
         "w-[clamp(1.5rem,6vw,1.75rem)] h-[clamp(1.5rem,6vw,1.75rem)]",
         "vertical-tablet:w-7 vertical-tablet:h-7",
+        "horizontal-mobile:!w-5 horizontal-mobile:!h-5",
         variant === "primary" ? "bg-white/15" : "bg-km0-blue-700/10",
       )}
     >
