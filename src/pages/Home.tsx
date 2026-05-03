@@ -245,12 +245,12 @@ const HomeContent = ({
 
         {/* ── Promos i events destacats ── */}
         <motion.section
-          className="px-4 mt-[clamp(0.75rem,5vw,2rem)] vertical-tablet:mt-8"
+          className="px-4 mt-[clamp(0.5rem,3vw,2rem)] vertical-tablet:mt-8"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.26 }}
         >
-          <h2 className="font-brand text-base font-black text-km0-blue-700 mb-[clamp(0.375rem,2vw,0.875rem)] vertical-tablet:mb-3">
+          <h2 className="font-brand text-base font-black text-km0-blue-700 mb-[clamp(0.25rem,1.5vw,0.875rem)] vertical-tablet:mb-3">
             Promos y eventos destacados
           </h2>
           <PromoCarousel promos={PROMOS} />
@@ -258,12 +258,12 @@ const HomeContent = ({
 
         {/* ── Comerciantes populares ── */}
         <motion.section
-          className="px-4 mt-[clamp(0.75rem,5vw,2rem)] vertical-tablet:mt-8"
+          className="px-4 mt-[clamp(0.375rem,2.5vw,2rem)] vertical-tablet:mt-8"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.34 }}
         >
-          <div className="flex items-center justify-between mb-[clamp(0.375rem,2vw,0.875rem)] vertical-tablet:mb-3">
+          <div className="flex items-center justify-between mb-[clamp(0.125rem,1vw,0.875rem)] vertical-tablet:mb-3">
             <div className="flex items-center gap-2 min-w-0">
               <img
                 src={couponIcon}
@@ -272,7 +272,7 @@ const HomeContent = ({
                 width={80}
                 height={80}
                 loading="lazy"
-                className="w-[clamp(3rem,12vw,5rem)] h-[clamp(3rem,12vw,5rem)] object-contain shrink-0"
+                className="w-[clamp(2.25rem,9vw,5rem)] h-[clamp(2.25rem,9vw,5rem)] object-contain shrink-0"
               />
               <h2 className="font-brand text-[clamp(0.875rem,3.6vw,1rem)] font-black text-km0-blue-700">
                 Esto es para ti
@@ -291,7 +291,7 @@ const HomeContent = ({
         </motion.section>
 
         {/* Spacer para que el último contenido no quede pegado a la tab bar */}
-        <div className="h-[clamp(0.5rem,3vw,1.5rem)]" />
+        <div className="h-[clamp(0.25rem,2vw,1.5rem)] vertical-mobile:h-1" />
       </div>
 
       {/* ── Tab bar inferior (fixed dentro del frame) ── */}
