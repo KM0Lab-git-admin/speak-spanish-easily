@@ -21,7 +21,7 @@ const PromoSection = ({
 }: PromoSectionProps) => {
   return (
     <motion.section
-      className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8 horizontal-mobile:px-0 horizontal-mobile:mt-0 horizontal-mobile:min-w-0 horizontal-mobile:flex horizontal-mobile:flex-col horizontal-mobile:h-full horizontal-desktop:px-0 horizontal-desktop:mt-0 horizontal-desktop:min-w-0 horizontal-desktop:flex horizontal-desktop:flex-col horizontal-desktop:h-full"
+      className="px-4 horizontal-mobile:px-0 horizontal-mobile:min-w-0 horizontal-mobile:flex horizontal-mobile:flex-col horizontal-mobile:h-full horizontal-desktop:px-0 horizontal-desktop:min-w-0 horizontal-desktop:flex horizontal-desktop:flex-col horizontal-desktop:h-full"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: animationDelay }}
