@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { UserRound, UserRoundPlus, ChevronLeft, ChevronRight, ArrowRight, Home as HomeIcon, Info, Tag, User } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight, Home as HomeIcon, Info, Tag, User } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
 import HomeModules, { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
@@ -90,6 +92,9 @@ const PROMOS: Promo[] = [
 const Home = () => {
   const cityName = "Malgrat de Mar";
   const { notifications, hasUnread, markRead, markAllRead } = useNotifications();
+  const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
+  const showLogin = !authLoading && !user;
   const openNotifications = () => {
     setNotifOpen(true);
     markAllRead();
@@ -124,6 +129,8 @@ const Home = () => {
           modules={modulesWithHandlers}
           activeTab={activeTab}
           onTabChange={setActiveTab}
+          showLogin={showLogin}
+          onLogin={() => navigate("/login")}
         />
         <NotificationsOverlay
           open={notifOpen}
@@ -148,6 +155,8 @@ const Home = () => {
           modules={modulesWithHandlers}
           activeTab={activeTab}
           onTabChange={setActiveTab}
+          showLogin={showLogin}
+          onLogin={() => navigate("/login")}
           landscape
         />
         <NotificationsOverlay
@@ -173,6 +182,8 @@ interface HomeContentProps {
   modules: HomeModule[];
   activeTab: "home" | "info" | "ofertes" | "perfil";
   onTabChange: (t: "home" | "info" | "ofertes" | "perfil") => void;
+  showLogin: boolean;
+  onLogin: () => void;
   landscape?: boolean;
 }
 
@@ -183,6 +194,8 @@ const HomeContent = ({
   modules,
   activeTab,
   onTabChange,
+  showLogin,
+  onLogin,
   landscape = false,
 }: HomeContentProps) => {
   return (
@@ -230,12 +243,23 @@ const HomeContent = ({
               </div>
             </div>
 
-            <NotificationBell
-              hasAlerts={hasAlerts}
-              onClick={onToggleAlerts}
-              ariaLabel={hasAlerts ? "Tienes notificaciones nuevas" : "Sin notificaciones"}
-              className="shrink-0"
-            />
+            <div className="flex items-center gap-2 shrink-0 horizontal-mobile:gap-1.5">
+              {showLogin && (
+                <button
+                  type="button"
+                  onClick={onLogin}
+                  className="font-ui font-bold text-km0-blue-700 bg-km0-yellow-500 hover:bg-km0-yellow-400 active:scale-95 transition-all rounded-full px-3 py-1.5 text-xs vertical-tablet:text-sm vertical-tablet:px-4 vertical-tablet:py-2 horizontal-mobile:!text-[11px] horizontal-mobile:!px-2.5 horizontal-mobile:!py-1 horizontal-desktop:text-sm horizontal-desktop:px-4 horizontal-desktop:py-2 shadow-[0_4px_12px_-4px_hsl(var(--km0-blue-700)/0.3)] whitespace-nowrap"
+                >
+                  Iniciar sesión
+                </button>
+              )}
+              <NotificationBell
+                hasAlerts={hasAlerts}
+                onClick={onToggleAlerts}
+                ariaLabel={hasAlerts ? "Tienes notificaciones nuevas" : "Sin notificaciones"}
+                className="shrink-0"
+              />
+            </div>
           </div>
         </motion.section>
 
@@ -251,21 +275,6 @@ const HomeContent = ({
 
         {/* Spacer flex 1 — solo en vertical-mobile, reparte aire */}
         <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
-
-        {/* ── CTAs Auth ── */}
-        <motion.section
-          className="px-4 mt-4 grid grid-cols-2 gap-[clamp(0.5rem,3vw,1rem)] relative z-10 vertical-mobile:mt-0 vertical-tablet:mt-8 vertical-tablet:gap-4 horizontal-mobile:max-w-[88%] horizontal-mobile:mx-auto horizontal-mobile:gap-4 horizontal-mobile:!mt-2 horizontal-desktop:max-w-[80%] horizontal-desktop:mx-auto horizontal-desktop:gap-8"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.18 }}
-        >
-          <AuthButton variant="primary" icon={<UserRound size={16} strokeWidth={2.2} />}>
-            Iniciar sesión
-          </AuthButton>
-          <AuthButton variant="secondary" icon={<UserRoundPlus size={16} strokeWidth={2.2} />}>
-            Registro
-          </AuthButton>
-        </motion.section>
 
         {/* Spacer flex 2 */}
         <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
@@ -366,40 +375,6 @@ const HomeContent = ({
     </>
   );
 };
-
-/* ─── AuthButton ─────────────────────────────────────────────── */
-interface AuthButtonProps {
-  variant: "primary" | "secondary";
-  icon: React.ReactNode;
-  children: React.ReactNode;
-}
-const AuthButton = ({ variant, icon, children }: AuthButtonProps) => (
-  <button
-    type="button"
-    className={cn(
-      "flex items-center font-ui font-bold transition-all duration-200 hover:scale-[1.03] active:scale-95 shadow-[0_6px_16px_-8px_hsl(var(--km0-blue-700)/0.35)]",
-      "gap-[clamp(0.375rem,2vw,0.5rem)] px-[clamp(0.625rem,3vw,0.75rem)] py-[clamp(0.5rem,2.4vw,0.75rem)] text-[clamp(0.75rem,3vw,0.875rem)] rounded-[clamp(0.75rem,3vw,1rem)]",
-      "vertical-tablet:gap-2 vertical-tablet:px-3 vertical-tablet:py-3 vertical-tablet:text-sm vertical-tablet:rounded-2xl",
-      "horizontal-mobile:!py-1.5 horizontal-mobile:!px-2.5 horizontal-mobile:!text-xs horizontal-mobile:!gap-1.5 horizontal-mobile:!rounded-xl",
-      variant === "primary"
-        ? "bg-km0-blue-700 text-white hover:bg-km0-blue-600"
-        : "bg-km0-yellow-500 text-km0-blue-800 hover:bg-km0-yellow-400",
-    )}
-  >
-    <span
-      className={cn(
-        "rounded-full flex items-center justify-center shrink-0",
-        "w-[clamp(1.5rem,6vw,1.75rem)] h-[clamp(1.5rem,6vw,1.75rem)]",
-        "vertical-tablet:w-7 vertical-tablet:h-7",
-        "horizontal-mobile:!w-5 horizontal-mobile:!h-5",
-        variant === "primary" ? "bg-white/15" : "bg-km0-blue-700/10",
-      )}
-    >
-      {icon}
-    </span>
-    <span className="truncate">{children}</span>
-  </button>
-);
 
 /* ─── TabItem ────────────────────────────────────────────────── */
 interface TabItemProps {

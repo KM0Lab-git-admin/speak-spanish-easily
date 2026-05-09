@@ -1,5 +1,5 @@
 import { useState, FormEvent } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,11 +7,13 @@ import BrandedFrame from "@/components/BrandedFrame";
 import SocialAuthButtons from "@/components/SocialAuthButtons";
 
 /**
- * Pantalla de login.
+ * Pantalla única de entrada (login + registro unificados).
  *
- * Mismo flujo passwordless: usuario introduce email, recibe OTP de 6
- * dígitos, lo valida en /verify. `shouldCreateUser: false` para que
- * no cree cuentas accidentalmente desde aquí.
+ * Flujo passwordless: el usuario introduce su email y recibe un enlace
+ * mágico. `shouldCreateUser: true` hace que la cuenta se cree si no
+ * existe y se reutilice si ya existe → mismo flujo para ambos casos
+ * (mínima fricción de entrada). Los datos extra (nombre, apellidos,
+ * etc.) se piden más adelante en la pantalla de editar perfil.
  */
 const Login = () => {
   const navigate = useNavigate();
@@ -29,17 +31,13 @@ const Login = () => {
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim(),
       options: {
-        shouldCreateUser: false,
+        shouldCreateUser: true,
         emailRedirectTo: `${window.location.origin}/home`,
       },
     });
 
     if (error) {
-      // Mensaje útil cuando el email no existe.
-      const msg = /signups not allowed|user not found/i.test(error.message)
-        ? "No encontramos esa cuenta. ¿Quieres registrarte?"
-        : error.message;
-      toast.error(msg);
+      toast.error(error.message);
       setSubmitting(false);
       return;
     }
@@ -58,7 +56,7 @@ const Login = () => {
       >
         <div className="text-center space-y-1 mt-2">
           <h1 className="font-brand text-2xl horizontal-mobile:text-xl text-km0-blue-700">
-            Bienvenido de nuevo
+            Entra o regístrate
           </h1>
           <p className="font-body text-sm text-muted-foreground">
             Te enviaremos un enlace a tu email
@@ -81,7 +79,7 @@ const Login = () => {
             disabled={submitting}
             className="h-12 mt-1 rounded-xl bg-km0-yellow-500 hover:bg-km0-yellow-600 active:scale-[0.98] transition-all font-ui text-base text-km0-blue-700 disabled:opacity-50"
           >
-            {submitting ? "Enviando enlace..." : "Enviar enlace"}
+            {submitting ? "Enviando enlace..." : "Continuar"}
           </button>
         </form>
 
@@ -92,13 +90,6 @@ const Login = () => {
         </div>
 
         <SocialAuthButtons />
-
-        <p className="text-center font-body text-sm text-muted-foreground mt-auto pt-3">
-          ¿No tienes cuenta?{" "}
-          <Link to="/signup" className="font-ui text-km0-blue-700 underline underline-offset-2">
-            Regístrate
-          </Link>
-        </p>
       </motion.div>
     </BrandedFrame>
   );
