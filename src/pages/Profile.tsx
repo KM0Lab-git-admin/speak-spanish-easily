@@ -51,8 +51,12 @@ const Profile = () => {
   const town = lookupTown(form.postal_code);
 
   // Cargar perfil al montar (RLS restringe a la fila del propio user).
+  // Modo testing: si no hay user, dejamos el formulario vacío y editable.
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setLoading(false);
+      return;
+    }
     let cancelled = false;
     (async () => {
       const { data, error } = await supabase
