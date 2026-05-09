@@ -4,6 +4,7 @@ import HomeHero from "./HomeHero";
 import PromoSection from "./PromoSection";
 import ComerciosSection from "./ComerciosSection";
 import BottomTabs, { type HomeTab } from "./BottomTabs";
+import LoginButton from "./LoginButton";
 import type { Promo } from "@/types/promo";
 import type { Comercio } from "@/types/comercio";
 
