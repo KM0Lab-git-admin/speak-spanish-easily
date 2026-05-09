@@ -61,7 +61,7 @@ const HomeContent = ({
         {/* Login CTA solo portrait — encima de los módulos */}
         {showLogin && (
           <motion.section
-            className="landscape:hidden flex justify-center px-6 py-1 mt-2 mb-2 vertical-tablet:px-8 vertical-tablet:py-2 vertical-tablet:mt-4 vertical-tablet:mb-4"
+            className="landscape:hidden flex justify-center px-6 mt-2 mb-2 vertical-tablet:px-8 vertical-tablet:mt-4 vertical-tablet:mb-4 py-0"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.08 }}
