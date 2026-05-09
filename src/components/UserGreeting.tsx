@@ -1,4 +1,5 @@
-import { Star, ShieldCheck } from "lucide-react";
+import { Star } from "lucide-react";
+import handStarIcon from "@/assets/icon-hand-star.png";
 
 /**
  * UserGreeting — saludo del usuario autenticado con puntos y progreso
@@ -35,11 +36,12 @@ const UserGreeting = ({
         {/* Avatar placeholder (luego: badge real del usuario) */}
         <div
           aria-hidden
-          className="shrink-0 w-10 h-10 vertical-tablet:w-12 vertical-tablet:h-12 horizontal-mobile:!w-9 horizontal-mobile:!h-9 rounded-full bg-km0-beige-50 border-2 border-km0-blue-700/15 shadow-sm flex items-center justify-center"
+          className="shrink-0 w-10 h-10 vertical-tablet:w-12 vertical-tablet:h-12 horizontal-mobile:!w-9 horizontal-mobile:!h-9 rounded-full bg-km0-beige-50 border-2 border-km0-blue-700/15 shadow-sm flex items-center justify-center overflow-hidden"
         >
-          <ShieldCheck
-            className="w-5 h-5 vertical-tablet:w-6 vertical-tablet:h-6 horizontal-mobile:!w-4 horizontal-mobile:!h-4 text-km0-blue-700"
-            strokeWidth={2.2}
+          <img
+            src={handStarIcon}
+            alt=""
+            className="w-full h-full object-contain"
           />
         </div>
 
