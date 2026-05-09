@@ -46,9 +46,18 @@ const Profile = () => {
     last_name: "",
     postal_code: "",
   });
-  // Población derivada del CP (read-only). Si el CP no está en el mapa,
-  // mostramos un placeholder claro en lugar de un valor obsoleto.
-  const town = lookupTown(form.postal_code);
+  // Población derivada del CP (read-only). Se resuelve async vía Supabase.
+  const [town, setTown] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    lookupTown(form.postal_code).then((t) => {
+      if (!cancelled) setTown(t);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [form.postal_code]);
 
   // Cargar perfil al montar (RLS restringe a la fila del propio user).
   // Modo testing: si no hay user, dejamos el formulario vacío y editable.
