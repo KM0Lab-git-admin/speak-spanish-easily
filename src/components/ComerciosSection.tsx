@@ -54,7 +54,7 @@ const ComerciosSection = ({
         </button>
       </div>
 
-      <div className="horizontal-desktop:bg-white/30 horizontal-desktop:rounded-2xl horizontal-desktop:p-3 horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:w-full horizontal-desktop:flex horizontal-desktop:items-center horizontal-mobile:bg-white/30 horizontal-mobile:rounded-2xl horizontal-mobile:p-2 horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-mobile:w-full horizontal-mobile:flex horizontal-mobile:items-center">
+      <div className="horizontal-desktop:bg-white/30 horizontal-desktop:rounded-2xl horizontal-desktop:p-3 horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:w-full horizontal-desktop:flex horizontal-desktop:items-center horizontal-mobile:bg-white/30 horizontal-mobile:rounded-xl horizontal-mobile:p-1 horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-mobile:w-full horizontal-mobile:flex horizontal-mobile:items-center">
         <div className="w-full">
           <ComercioCarousel comercios={comercios} />
         </div>
