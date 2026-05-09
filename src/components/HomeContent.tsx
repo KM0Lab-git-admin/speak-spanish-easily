@@ -73,6 +73,17 @@ const HomeContent = ({
             </motion.section>
           )}
 
+          {/* TODO(auth): renderizar solo cuando haya sesión activa.
+              Por ahora siempre visible para validar maquetación. */}
+          <motion.section
+            className="flex justify-center shrink-0 !m-0 !p-0 border border-black"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.08 }}
+          >
+            <UserGreeting name="Albert" points={1259} nextLevel={3000} />
+          </motion.section>
+
           {/* MÓDULOS */}
           <motion.section
             className="shrink-0 m-0 p-0 landscape:col-span-2 border border-black"
