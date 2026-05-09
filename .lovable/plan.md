@@ -1,101 +1,71 @@
 ## Objetivo
 
-Eliminar la duplicación del botón "Iniciar sesión" (hoy inline en `HomeContent.tsx` para portrait y en `HomeHero.tsx` para landscape) extrayéndolo como componente puro reutilizable. Así cada pantalla/contenedor decide su propio margin/padding alrededor del botón, y el botón solo se preocupa de su look&feel.
+En el Home, fijar `HomeHero` arriba y `BottomTabs` abajo en las 4 resoluciones, y repartir los componentes intermedios (Login CTA — solo portrait —, `HomeModules`, `PromoSection`, `ComerciosSection`) con distribución equitativa flex, sin scroll, ocupando todo el espacio entre hero y tabs.
 
-## Criterio de diseño elegido
+## Estado actual (resumen)
 
-**LoginButton "tonto"** (sin wrapper, sin animación, sin posicionamiento). Esta opción da el máximo control sobre paddings/margins porque:
+- **Portrait**: el frame del Home es `flex flex-col`. `HomeHero` vive **dentro** del scroll body de `HomeContent` (scrollea con el contenido). `BottomTabs` ya queda anclado abajo (`shrink-0`).
+- **Landscape**: `HomeHero` está posicionado **`absolute inset-0`** como fondo del scroll body, y los módulos/promos/comercios se solapan encima con `relative z-10`. El hero NO es una franja superior fija, es la imagen de fondo de toda la zona de contenido.
 
-- El botón NO impone `mt-1`, `mt-3`, `px-4`, ni `motion.section`.
-- Cada consumidor (HomeContent portrait, HomeHero landscape, futuras pantallas) lo envuelve en su propio contenedor con los márgenes que necesita.
-- Es 100% reutilizable en Login, Profile, modales, etc.
+El cambio aprobado implica **rediseñar el landscape**: dejar de usar el hero como fondo absoluto y convertirlo en una franja superior fija (igual que portrait). El bloque inferior (promos + comercios en 2 columnas) y los módulos quedan distribuidos verticalmente con `justify-evenly` en el espacio restante.
 
-## Arquitectura
+## Cambios
 
-### Nuevo componente — `src/components/LoginButton.tsx`
+### 1. `src/components/HomeContent.tsx` — Reestructurar layout
+
+Reemplazar el actual scroll body único por una estructura de **3 zonas fijas**:
 
 ```text
-Props:
-  onClick: () => void
-  size?: "sm" | "md"          // sm = portrait/horizontal-mobile, md = horizontal-desktop
-  className?: string          // hook de escape para ajustes puntuales
-
-Render:
-  <button> con las clases base actuales:
-    font-ui font-bold text-km0-blue-700 bg-km0-yellow-500
-    hover:bg-km0-yellow-400 active:scale-95 transition-all
-    rounded-full whitespace-nowrap
-    shadow-[0_4px_12px_-4px_hsl(var(--km0-blue-700)/0.3)]
-
-  Tamaño según `size`:
-    sm → text-xs px-3.5 py-1   (con vertical-tablet:text-sm vertical-tablet:px-5 vertical-tablet:py-1.5)
-    md → text-sm px-4 py-2
-
-  Sin motion, sin section, sin margins externos.
+┌───────────────────────────┐
+│  HomeHero  (shrink-0)     │  ← fijo arriba, altura natural
+├───────────────────────────┤
+│  Middle    (flex-1)       │  ← flex-col justify-evenly
+│   · LoginButton (portrait)│
+│   · HomeModules           │
+│   · PromoSection          │
+│   · ComerciosSection      │
+├───────────────────────────┤
+│  BottomTabs (shrink-0)    │  ← fijo abajo (ya lo está)
+└───────────────────────────┘
 ```
 
-### Consumidor 1 — `src/components/HomeContent.tsx`
+- Quitar `flex-1 min-h-0 overflow-y-auto` del wrapper actual; el frame externo ya es `flex flex-col` con altura fija.
+- `HomeHero`: envolver en un contenedor `shrink-0` (en landscape también, sin `absolute`).
+- `Middle`: `flex-1 min-h-0 flex flex-col justify-evenly overflow-hidden` con un `gap` proporcional (`gap-[clamp(8px,2vh,20px)]`).
+- En landscape, mantener la rejilla de 2 columnas para PromoSection + ComerciosSection dentro del bloque Middle, pero ahora como un único hijo del flex que ocupa una "fila" del reparto vertical.
 
-Sustituir el bloque actual (líneas ~58-74) por:
+### 2. `src/components/HomeHero.tsx` — Quitar modo "fondo absoluto"
 
-```tsx
-{showLogin && (
-  <motion.section
-    className="landscape:hidden flex justify-center px-4 mt-1 vertical-tablet:mt-3"
-    initial={{ opacity: 0, y: 8 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.4, delay: 0.08 }}
-  >
-    <LoginButton onClick={onLogin} size="sm" />
-  </motion.section>
-)}
-```
+- Eliminar las clases `horizontal-mobile:absolute horizontal-mobile:inset-0 horizontal-mobile:pointer-events-none` (y equivalentes `horizontal-desktop:`).
+- Eliminar también las variantes que forzaban `aspect-auto h-full` en landscape (el hero pasa a ser una banda con altura natural, no toda la pantalla).
+- El skyline + escudo + nombre + KM0 + login + bell quedan dentro de la franja, no flotando sobre el contenido.
+- Ajustar la altura del fondo en landscape para que sea proporcional (ej. `horizontal-mobile:h-[22%]` no — preferimos altura natural compacta vía padding y `aspect` controlado).
 
-El `motion.section` se queda porque define el margin/padding del CTA portrait. El botón en sí ya no contiene estilos.
+### 3. `src/components/HomeModules.tsx`, `PromoSection.tsx`, `ComerciosSection.tsx`
 
-### Consumidor 2 — `src/components/HomeHero.tsx`
+- Quitar márgenes verticales propios (`mt-*`, `mb-*`, `my-*`) en los wrappers `<section>` y dejar que el `gap` + `justify-evenly` del padre haga todo el trabajo. Mantener solo padding **horizontal**.
+- En landscape, `PromoSection` y `ComerciosSection` ya no necesitan `h-full` porque su contenedor padre les da una fila concreta del reparto.
+- Limpiar variantes `horizontal-mobile:!mt-*` / `horizontal-desktop:mt-*` que ya no aplican.
 
-Sustituir el `<button>` inline del header landscape por:
+### 4. Login CTA portrait
 
-```tsx
-{showLogin && (
-  <LoginButton
-    onClick={onLogin}
-    size="md"
-    className="hidden landscape:inline-flex horizontal-mobile:!text-[11px] horizontal-mobile:!px-2.5 horizontal-mobile:!py-1"
-  />
-)}
-```
+- Sigue siendo un hijo del bloque Middle solo en portrait (`landscape:hidden`), sin márgenes propios.
 
-Las visibility classes (`hidden landscape:inline-flex`) y los overrides finos por breakpoint quedan en el consumidor — no en el componente.
+## Garantías
 
-## Beneficios concretos
+- Sin scroll vertical en las 4 resoluciones (375×667, 768×1024, 667×375, 1280×550).
+- Espaciado simétrico entre Hero→Modules→Promos→Comercios→Tabs gracias a `justify-evenly`.
+- Aislamiento por breakpoint: el reparto se hace con la misma técnica en las 4, ajustando solo el `gap` con `clamp` para que escale.
 
-| Antes | Después |
-|---|---|
-| Estilos del botón duplicados en 2 archivos | Una sola fuente de verdad en `LoginButton.tsx` |
-| Cambiar el color del CTA = editar 2 sitios | Cambiar el color = editar 1 sitio |
-| Margin/padding mezclado con look del botón | Margin/padding 100% controlado por el contenedor |
-| No reutilizable en Login/Profile/modales | Importable en cualquier pantalla |
-| Tests: hay que montar HomeContent o HomeHero | Test unitario directo: `<LoginButton onClick={fn} />` |
+## Detalles técnicos
 
-## Lo que NO se toca
+- Frame externo (en `Home.tsx`) ya define la altura fija del "móvil/landscape" — no se toca.
+- `overflow-hidden` en el bloque Middle para garantizar que si en alguna resolución el contenido es ligeramente mayor, se recorte en lugar de generar scroll. Validaremos visualmente las 4 resoluciones tras el cambio.
+- Las animaciones Framer Motion existentes en cada sección se conservan.
 
-- Animaciones (`motion.section` y sus delays se quedan en el consumidor portrait).
-- Lógica de `showLogin` / `onLogin` (sigue en `Home.tsx` → props).
-- Estilos visuales (mismas clases, cero cambios visuales en los 4 breakpoints).
-- `HomeHero` mantiene su layout; solo cambia el `<button>` inline por `<LoginButton>`.
+## Verificación
 
-## Plan de ejecución
-
-1. Crear `src/components/LoginButton.tsx` con props `{ onClick, size?, className? }` y las clases base.
-2. Editar `src/components/HomeContent.tsx`: importar `LoginButton`, sustituir el `<button>` inline manteniendo el `motion.section` wrapper.
-3. Editar `src/components/HomeHero.tsx`: importar `LoginButton`, sustituir el `<button>` inline conservando las clases de visibilidad y overrides horizontal-mobile.
-4. Verificar visualmente las 4 resoluciones (375×667, 768×1024, 667×375, 1280×550) — cero regresiones.
-
-## Resultado esperado
-
-- 1 componente nuevo (`LoginButton.tsx`, ~40 líneas).
-- 2 archivos editados (`HomeContent.tsx`, `HomeHero.tsx`) más cortos y sin estilos duplicados.
-- Cero cambios visuales.
-- Base lista para reutilizar el botón en cualquier otra pantalla y para añadir `LoginButton.test.tsx` aislado.
+Tras implementar, revisar en preview a 375×667, 768×1024, 667×375 y 1280×550 que:
+- Hero y Tabs no se mueven al cambiar contenido.
+- Los espacios entre los 3-4 bloques intermedios son visualmente equivalentes.
+- No aparece scroll.
