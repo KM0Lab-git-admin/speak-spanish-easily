@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, ArrowRight, Home as HomeIcon, Info, Tag, User } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight, Home as HomeIcon, Info, Tag, User, LogOut } from "lucide-react";
+import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
@@ -92,9 +93,14 @@ const PROMOS: Promo[] = [
 const Home = () => {
   const cityName = "Malgrat de Mar";
   const { notifications, hasUnread, markRead, markAllRead } = useNotifications();
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   const showLogin = !authLoading && !user;
+  const showLogout = !authLoading && !!user;
+  const handleLogout = async () => {
+    await signOut();
+    toast.success("Sesión cerrada");
+  };
   const openNotifications = () => {
     setNotifOpen(true);
     markAllRead();
@@ -131,6 +137,8 @@ const Home = () => {
           onTabChange={setActiveTab}
           showLogin={showLogin}
           onLogin={() => navigate("/login")}
+          showLogout={showLogout}
+          onLogout={handleLogout}
         />
         <NotificationsOverlay
           open={notifOpen}
@@ -157,6 +165,8 @@ const Home = () => {
           onTabChange={setActiveTab}
           showLogin={showLogin}
           onLogin={() => navigate("/login")}
+          showLogout={showLogout}
+          onLogout={handleLogout}
           landscape
         />
         <NotificationsOverlay
@@ -184,6 +194,8 @@ interface HomeContentProps {
   onTabChange: (t: "home" | "info" | "ofertes" | "perfil") => void;
   showLogin: boolean;
   onLogin: () => void;
+  showLogout: boolean;
+  onLogout: () => void;
   landscape?: boolean;
 }
 
@@ -196,6 +208,8 @@ const HomeContent = ({
   onTabChange,
   showLogin,
   onLogin,
+  showLogout,
+  onLogout,
   landscape = false,
 }: HomeContentProps) => {
   return (
@@ -251,6 +265,16 @@ const HomeContent = ({
                   className="hidden landscape:inline-flex font-ui font-bold text-km0-blue-700 bg-km0-yellow-500 hover:bg-km0-yellow-400 active:scale-95 transition-all rounded-full horizontal-mobile:!text-[11px] horizontal-mobile:!px-2.5 horizontal-mobile:!py-1 horizontal-desktop:text-sm horizontal-desktop:px-4 horizontal-desktop:py-2 shadow-[0_4px_12px_-4px_hsl(var(--km0-blue-700)/0.3)] whitespace-nowrap"
                 >
                   Iniciar sesión
+                </button>
+              )}
+              {showLogout && (
+                <button
+                  type="button"
+                  onClick={onLogout}
+                  aria-label="Cerrar sesión"
+                  className="w-10 h-10 horizontal-mobile:w-8 horizontal-mobile:h-8 flex items-center justify-center rounded-xl text-km0-blue-800 transition-all duration-200 hover:bg-km0-beige-100 active:scale-95 shrink-0"
+                >
+                  <LogOut size={20} strokeWidth={2} />
                 </button>
               )}
               <NotificationBell
