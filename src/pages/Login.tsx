@@ -28,11 +28,16 @@ const Login = () => {
     }
 
     setSubmitting(true);
+    // Recuperamos CP+población del onboarding (si existen) para que se
+    // guarden en el perfil al crear la cuenta vía handle_new_user trigger.
+    const postalCode = sessionStorage.getItem("km0_postal_code") ?? undefined;
+    const town = sessionStorage.getItem("km0_town") ?? undefined;
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim(),
       options: {
         shouldCreateUser: true,
         emailRedirectTo: `${window.location.origin}/home`,
+        data: { postal_code: postalCode, town },
       },
     });
 
