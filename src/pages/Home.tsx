@@ -137,6 +137,8 @@ const Home = () => {
           onTabChange={setActiveTab}
           showLogin={showLogin}
           onLogin={() => navigate("/login")}
+          showLogout={showLogout}
+          onLogout={handleLogout}
         />
         <NotificationsOverlay
           open={notifOpen}
