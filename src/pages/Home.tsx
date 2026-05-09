@@ -295,7 +295,7 @@ const HomeContent = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.34 }}
           >
-            <div className="flex items-center mb-[clamp(0.125rem,1vw,0.875rem)] vertical-tablet:mb-3 horizontal-mobile:!mb-1 horizontal-desktop:!mb-2 gap-2 horizontal-mobile:!gap-1 text-lg">
+            <div className="flex items-center w-full mb-[clamp(0.125rem,1vw,0.875rem)] vertical-tablet:mb-3 horizontal-mobile:!mb-1 horizontal-desktop:!mb-2 gap-2 horizontal-mobile:!gap-1 text-lg">
               <img
                 src={couponIcon}
                 alt=""
