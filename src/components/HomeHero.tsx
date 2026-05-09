@@ -6,9 +6,13 @@ import skylineMalgrat from "@/assets/skyline-malgrat.png";
 import coatMalgrat from "@/assets/coat-malgrat.png";
 
 /**
- * HomeHero — header superior del Home con escudo del municipio,
- * nombre, logo KM0, botón "Iniciar sesión" (landscape) y campana
- * de notificaciones. Sirve como fondo del scroll body en landscape.
+ * HomeHero — franja superior FIJA del Home (no scrollea).
+ * Contiene escudo del municipio, nombre, logo KM0, botón
+ * "Iniciar sesión" (solo landscape) y campana de notificaciones.
+ *
+ * En todas las orientaciones es una banda con altura natural
+ * controlada por su padding, no un fondo absoluto. El layout de
+ * 3 zonas (hero / middle / tabs) se monta en HomeContent.
  */
 export interface HomeHeroProps {
   cityName: string;
@@ -27,24 +31,21 @@ const HomeHero = ({
 }: HomeHeroProps) => {
   return (
     <motion.section
-      className="relative horizontal-mobile:absolute horizontal-mobile:inset-0 horizontal-mobile:pointer-events-none horizontal-desktop:absolute horizontal-desktop:inset-0 horizontal-desktop:pointer-events-none"
+      className="relative w-full overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
-      {/* Fondo del header: gradiente beige cálido. */}
-      <div className="relative w-full aspect-[1920/716] bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 my-[5px] horizontal-mobile:!aspect-auto horizontal-mobile:h-full horizontal-mobile:my-0 horizontal-desktop:!aspect-auto horizontal-desktop:h-full horizontal-desktop:my-0" />
-
-      {/* Skyline del municipio */}
+      {/* Skyline de fondo */}
       <img
         src={skylineMalgrat}
         alt=""
         aria-hidden
-        className="pointer-events-none absolute inset-0 w-full h-full object-contain object-bottom z-0 select-none opacity-25 horizontal-mobile:!inset-auto horizontal-mobile:!top-[4%] horizontal-mobile:!left-0 horizontal-mobile:!right-0 horizontal-mobile:!h-[70%] horizontal-mobile:!w-full horizontal-mobile:object-top horizontal-desktop:!inset-auto horizontal-desktop:!top-[4%] horizontal-desktop:!left-0 horizontal-desktop:!right-0 horizontal-desktop:!h-[70%] horizontal-desktop:!w-full horizontal-desktop:object-top"
+        className="pointer-events-none absolute inset-x-0 bottom-0 w-full h-full object-contain object-bottom z-0 select-none opacity-25"
       />
 
-      {/* Overlay: escudo + nombre + KM0 logo + login + bell */}
-      <div className="absolute inset-x-0 top-0 flex items-start justify-between pl-2 pr-4 pt-4 gap-3 horizontal-mobile:pointer-events-auto horizontal-mobile:pt-2 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto">
+      {/* Overlay: escudo + nombre + KM0 + login + bell */}
+      <div className="relative z-10 flex items-center justify-between pl-2 pr-4 py-3 gap-3 horizontal-mobile:py-2 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:py-3">
         <div className="flex items-center gap-2 min-w-0">
           <img
             src={coatMalgrat}
