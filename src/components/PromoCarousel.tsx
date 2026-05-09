@@ -37,7 +37,7 @@ const PromoCarousel = ({ promos }: PromoCarouselProps) => {
   return (
     <>
       {/* Hero card con drag horizontal */}
-      <div className="relative w-full rounded-2xl overflow-hidden shadow-[0_10px_24px_-12px_hsl(var(--km0-blue-700)/0.35)] aspect-[2/1] vertical-tablet:aspect-[16/9] horizontal-mobile:aspect-[16/7] horizontal-mobile:flex-none horizontal-desktop:aspect-auto horizontal-desktop:flex-1 horizontal-desktop:min-h-0">
+      <div className="relative w-full rounded-2xl overflow-hidden shadow-[0_10px_24px_-12px_hsl(var(--km0-blue-700)/0.35)] aspect-[2/1] vertical-tablet:aspect-[16/9] horizontal-mobile:aspect-[16/5] horizontal-mobile:flex-none horizontal-desktop:aspect-auto horizontal-desktop:flex-1 horizontal-desktop:min-h-0">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={promo.id}
