@@ -63,7 +63,7 @@ const HomeContent = ({
           {/* Login CTA solo portrait */}
           {showLogin && (
             <motion.section
-              className="landscape:hidden flex justify-center shrink-0 m-0 p-0"
+              className="landscape:hidden flex justify-center shrink-0 !m-0 !p-0"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.08 }}
