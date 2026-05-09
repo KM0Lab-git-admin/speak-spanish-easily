@@ -1,51 +1,107 @@
 ## Objetivo
 
-Mover el mapa CP → población de `src/lib/postalCodes.ts` (hardcoded) a una tabla en base de datos, para que tanto la pantalla de código postal como el perfil consulten la misma fuente y se pueda ampliar sin tocar código.
+Convertir `src/pages/Home.tsx` (659 líneas, 6 componentes inline + 3 mocks + 3 interfaces) en una **página fina orquestadora** que solo gestiona estado y compone componentes. Cada componente extraído debe ser una **unidad aislada con props tipadas**, lista para tests unitarios y de integración, y portable a otro proyecto sin arrastrar dependencias de la página.
 
-## Cambios
+## Arquitectura final
 
-### 1. Base de datos
+### 1. Tipos compartidos — `src/types/`
 
-Nueva tabla `public.postal_codes`:
-- `postal_code` (text, PK) — el CP de 5 dígitos
-- `town` (text, not null) — nombre de la población
-- `province` (text, nullable) — por si más adelante queremos filtrar
-- `created_at`, `updated_at`
-
-RLS:
-- SELECT público (cualquiera puede consultar, incluso sin login — la pantalla de CP es previa al registro)
-- Sin INSERT/UPDATE/DELETE públicos (gestión interna)
-
-Seed inicial con los 10 CPs actuales del fichero `postalCodes.ts` (Barcelona, Malgrat de Mar, Mataró, Granollers, Sabadell, Terrassa, Vilanova i la Geltrú, Gavà, L'Hospitalet, Cornellà).
-
-### 2. Capa de acceso
-
-Reescribir `src/lib/postalCodes.ts` para exponer una API async basada en Supabase, manteniendo la firma simple:
-
-```ts
-export async function lookupTown(postalCode: string): Promise<string | null>
+```text
+src/types/
+  promo.ts        → interface Promo (id, title1/2/3, subtitle, gradient)
+  comercio.ts     → interface Comercio (id, name, logo, bg)
 ```
 
-Cache en memoria (Map) para evitar repetir queries del mismo CP en una misma sesión. Sin React Query para mantenerlo neutro (lo usan tanto Profile como PostalCode).
+(Los tipos `HomeModule` / `HomeModuleId` ya están en `src/components/HomeModules.tsx` — se mantienen donde están.)
 
-### 3. Pantallas
+### 2. Datos mock — `src/data/`
 
-- **`src/pages/PostalCode.tsx`**: el `useEffect` que valida el CP ya tiene un timeout de 1.2s simulado — sustituirlo por la llamada real a `lookupTown(value)`. El estado `validationResult` y `cityName` siguen igual.
-- **`src/pages/Profile.tsx`**: el `town` ahora es async. Añadir un `useEffect` que recalcule `town` cuando cambia `form.postal_code`, guardándolo en estado local. El input de población sigue read-only.
+```text
+src/data/
+  promos.ts       → export const PROMOS: Promo[]
+  comercios.ts    → export const COMERCIOS: Comercio[]
+  homeModules.ts  → export const INITIAL_MODULES: HomeModule[]
+```
 
-### 4. Limpieza
+Cada archivo exporta solo datos, sin lógica. Permite swap por fixtures en tests y por datos reales (API) en producción.
 
-Eliminar el objeto `postalCodes` exportado del fichero (ya no se usa directamente en componentes). Si algún test lo referencia, actualizarlo.
+### 3. Componentes — `src/components/`
 
-## Notas técnicas
+Cada componente: archivo propio, props tipadas, sin acceso a estado global de la página, sin imports de `src/pages/`. Acepta sus datos por props.
 
-- La tabla NO referencia `auth.users`: es un catálogo público.
-- Se mantiene la validación de formato (5 dígitos numéricos) en cliente antes de consultar.
-- El trigger `handle_new_user` sigue guardando `postal_code` y `town` en `profiles` desde `user_metadata` — no se cambia.
-- En el futuro se puede sustituir el seed manual por un import masivo (CSV oficial de Correos) sin tocar la app.
+```text
+src/components/
+  HomeModules.tsx          (ya existe — sin cambios)
+  NotificationBell.tsx     (ya existe — sin cambios)
+  PromoCarousel.tsx        ← NUEVO. Props: { promos: Promo[] }
+  ComercioCarousel.tsx     ← NUEVO. Props: { comercios: Comercio[]; perPage?: number }
+  BottomTabs.tsx           ← NUEVO. Props: { activeTab, onTabChange, onLogin, onProfile, showProfile }
+                              Incluye TabItem como subcomponente interno (no exportado).
+  HomeHero.tsx             ← NUEVO. Header con escudo + nombre + KM0 logo + bell + login CTA.
+                              Props: { cityName, hasAlerts, onToggleAlerts, showLogin, onLogin }
+  PromoSection.tsx         ← NUEVO. Wrapper con título "Promos y eventos destacados" + PromoCarousel.
+                              Props: { promos, title? }
+  ComerciosSection.tsx     ← NUEVO. Wrapper con icono cupón + "Esto es para ti" + "Ver todos" + ComercioCarousel.
+                              Props: { comercios, title?, onSeeAll? }
+  HomeContent.tsx          ← NUEVO. Layout responsive (portrait + landscape) que compone Hero/Modules/PromoSection/ComerciosSection.
+                              Props: las que hoy recibe el HomeContent interno.
+```
 
-## Fuera de alcance
+### 4. Página final — `src/pages/Home.tsx`
 
-- No se añade UI de administración del catálogo.
-- No se geocodifica ni se añaden coordenadas (solo nombre de población).
-- No se cambia el flujo de onboarding ni el guardado en `sessionStorage`.
+Queda en ~80 líneas. Solo:
+- Hooks (`useAuth`, `useNotifications`, `useNavigate`, `useState` para tab y módulos).
+- Importa datos de `src/data/`.
+- Renderiza el frame portrait/landscape + `<HomeContent />` + `<NotificationsOverlay />`.
+
+## Beneficios para testing
+
+| Tipo de test | Cómo se beneficia |
+|---|---|
+| **Unitario** de `PromoCarousel` | Renderizas con `promos={[fixture]}` y verificas dots, swipe, botones prev/next sin montar Home entera. |
+| **Unitario** de `ComercioCarousel` | Pasas `perPage={2}` o `perPage={4}` y testeas paginación con distintas longitudes. |
+| **Unitario** de `BottomTabs` | Mockeas `onTabChange` y verificas qué se invoca según `showProfile`. |
+| **Integración** de `HomeContent` | Pasas todos los props mockeados y verificas composición sin hooks de auth/router. |
+| **Pantalla completa** de `Home` | Solo aquí montas `BrowserRouter` + `QueryClient` + mocks de Supabase. |
+
+Sin esta separación, cualquier test de `PromoCarousel` arrastra `useAuth`, `useNavigate` y `useNotifications`.
+
+## Plan de ejecución (orden seguro)
+
+1. **Crear tipos** en `src/types/promo.ts` y `src/types/comercio.ts`.
+2. **Crear datos** en `src/data/promos.ts`, `src/data/comercios.ts`, `src/data/homeModules.ts`. Importan los tipos del paso 1.
+3. **Extraer componentes "hoja"** (sin dependencias entre ellos):
+   - `PromoCarousel.tsx`
+   - `ComercioCarousel.tsx`
+   - El `TabItem` queda dentro de `BottomTabs.tsx`.
+4. **Extraer wrappers de sección**:
+   - `PromoSection.tsx` (usa `PromoCarousel`)
+   - `ComerciosSection.tsx` (usa `ComercioCarousel`)
+   - `BottomTabs.tsx`
+   - `HomeHero.tsx`
+5. **Extraer `HomeContent.tsx`** componiendo todo lo anterior.
+6. **Adelgazar `src/pages/Home.tsx`** a página orquestadora. Importa datos de `src/data/` y compone con `HomeContent`.
+7. **Verificar visualmente** las 4 resoluciones canónicas (375×667, 768×1024, 667×375, 1280×550) — cero regresiones de layout.
+
+## Lo que NO se toca
+
+- `HomeModules`, `NotificationBell`, `NotificationsOverlay`, `Km0Logo` — ya están bien.
+- Tokens del design system (`tailwind.config.ts`, `index.css`).
+- Breakpoints oficiales.
+- Lógica de auth, notificaciones o navegación.
+- Estilos: cada componente conserva exactamente las clases Tailwind que ya tiene.
+
+## Convenciones aplicadas
+
+- **PascalCase** en archivos de componentes (`PromoCarousel.tsx`).
+- **camelCase** en archivos de datos (`promos.ts`).
+- Cada componente exporta `default` el componente y `named` su `interface Props`, para que los tests puedan tiparlos: `import PromoCarousel, { type PromoCarouselProps } from "@/components/PromoCarousel"`.
+- Los datos mock se exportan como `const` tipados, no como funciones.
+
+## Resultado esperado
+
+- `Home.tsx`: ~80 líneas (orquestador).
+- 8 componentes nuevos en `src/components/`, cada uno < 200 líneas y testeable en aislamiento.
+- 3 archivos de datos en `src/data/` y 2 de tipos en `src/types/`.
+- Cero cambios visuales en ninguno de los 4 breakpoints.
+- Base lista para añadir `PromoCarousel.test.tsx`, `ComercioCarousel.test.tsx`, etc., y para portar componente a componente al proyecto km0lab (RN/Expo) sin arrastrar la página entera.
