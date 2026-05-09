@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      postal_codes: {
+        Row: {
+          created_at: string
+          postal_code: string
+          province: string | null
+          town: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          postal_code: string
+          province?: string | null
+          town: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          postal_code?: string
+          province?: string | null
+          town?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

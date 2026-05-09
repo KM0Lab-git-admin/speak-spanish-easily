@@ -1,56 +1,51 @@
-# Reubicación del botón "Iniciar sesión"
+## Objetivo
 
-## Problema
+Mover el mapa CP → población de `src/lib/postalCodes.ts` (hardcoded) a una tabla en base de datos, para que tanto la pantalla de código postal como el perfil consulten la misma fuente y se pueda ampliar sin tocar código.
 
-En las dos resoluciones **verticales** (vertical-mobile 375×667 y vertical-tablet 768×1024) el botón "Iniciar sesión" comparte fila con el escudo + nombre de la ciudad + logo KM0 + campana de notificaciones. En `vertical-mobile` (375 px) no queda ancho suficiente y el botón se ve aplastado/recortado contra la campana.
+## Cambios
 
-En las dos resoluciones **horizontales** (horizontal-mobile 667×375 y horizontal-desktop 1280×550) el botón en el header funciona bien: hay ancho de sobra y la altura es la limitación, así que ocupar la franja del header es la mejor opción.
+### 1. Base de datos
 
-## Propuesta
+Nueva tabla `public.postal_codes`:
+- `postal_code` (text, PK) — el CP de 5 dígitos
+- `town` (text, not null) — nombre de la población
+- `province` (text, nullable) — por si más adelante queremos filtrar
+- `created_at`, `updated_at`
 
-Renderizar el botón **dos veces** en el JSX, controlando la visibilidad por breakpoint con las variantes oficiales — así cada orientación recibe la versión que mejor encaja, sin tocar ninguna otra resolución.
+RLS:
+- SELECT público (cualquiera puede consultar, incluso sin login — la pantalla de CP es previa al registro)
+- Sin INSERT/UPDATE/DELETE públicos (gestión interna)
 
-### 1. Versión "header" (solo landscape)
+Seed inicial con los 10 CPs actuales del fichero `postalCodes.ts` (Barcelona, Malgrat de Mar, Mataró, Granollers, Sabadell, Terrassa, Vilanova i la Geltrú, Gavà, L'Hospitalet, Cornellà).
 
-Mantener el botón actual al lado de la campana, pero ocultarlo en portrait:
+### 2. Capa de acceso
 
-- Wrapper `flex items-center gap-2` del header → el `<button>` "Iniciar sesión" pasa a tener `hidden landscape:inline-flex`.
-- Se conservan las clases responsive ya afinadas para `horizontal-mobile` y `horizontal-desktop`.
-- El header en portrait queda con: escudo + nombre + logo + campana (como antes de añadir el login).
+Reescribir `src/lib/postalCodes.ts` para exponer una API async basada en Supabase, manteniendo la firma simple:
 
-### 2. Versión "sobre módulos" (solo portrait)
+```ts
+export async function lookupTown(postalCode: string): Promise<string | null>
+```
 
-Añadir una nueva sección, **justo antes** del bloque `HomeModules` (línea ~266), envuelta en `motion.section` con la misma animación staggered que ya usa el resto del Home:
+Cache en memoria (Map) para evitar repetir queries del mismo CP en una misma sesión. Sin React Query para mantenerlo neutro (lo usan tanto Profile como PostalCode).
 
-- Visibilidad: `landscape:hidden` → solo aparece en `vertical-mobile` y `vertical-tablet`.
-- Contenedor: `flex justify-center` con padding horizontal coherente con el resto de la pantalla.
-- Botón: mismo estilo amarillo + azul que la versión header, pero con tamaño cómodo para portrait (más alto, más ancho, mejor jerarquía):
-  - `vertical-mobile`: `text-sm px-5 py-2`
-  - `vertical-tablet`: `text-base px-6 py-2.5`
-- Solo se monta cuando `showLogin === true` (igual que la versión header).
+### 3. Pantallas
 
-### 3. Layout / spacers en vertical-mobile
+- **`src/pages/PostalCode.tsx`**: el `useEffect` que valida el CP ya tiene un timeout de 1.2s simulado — sustituirlo por la llamada real a `lookupTown(value)`. El estado `validationResult` y `cityName` siguen igual.
+- **`src/pages/Profile.tsx`**: el `town` ahora es async. Añadir un `useEffect` que recalcule `town` cuando cambia `form.postal_code`, guardándolo en estado local. El input de población sigue read-only.
 
-`vertical-mobile` ya usa flex-col con varios `flex-1` repartiendo aire entre módulos, promos y comercios. Al insertar la nueva sección de login antes de los módulos hay que verificar que sigue cabiendo sin scroll en 375×667:
+### 4. Limpieza
 
-- La nueva sección es ~36 px de alto (botón + margen).
-- Si hace falta, reducir uno de los spacers `vertical-mobile:flex-1` existentes a `vertical-mobile:flex-[0.5]`, **sin tocar las demás resoluciones**.
+Eliminar el objeto `postalCodes` exportado del fichero (ya no se usa directamente en componentes). Si algún test lo referencia, actualizarlo.
 
-### Resultado por breakpoint
+## Notas técnicas
 
-| Breakpoint        | Botón en header | Botón sobre módulos |
-|-------------------|-----------------|---------------------|
-| vertical-mobile   | ❌              | ✅ (centrado)       |
-| vertical-tablet   | ❌              | ✅ (centrado)       |
-| horizontal-mobile | ✅ (compacto)   | ❌                  |
-| horizontal-desktop| ✅ (normal)     | ❌                  |
-
-## Archivos afectados
-
-- `src/pages/Home.tsx` — añadir `landscape:hidden` al botón actual del header y nueva `motion.section` con el botón portrait justo antes de `<HomeModules>`. Posible ajuste menor de un spacer en vertical-mobile.
+- La tabla NO referencia `auth.users`: es un catálogo público.
+- Se mantiene la validación de formato (5 dígitos numéricos) en cliente antes de consultar.
+- El trigger `handle_new_user` sigue guardando `postal_code` y `town` en `profiles` desde `user_metadata` — no se cambia.
+- En el futuro se puede sustituir el seed manual por un import masivo (CSV oficial de Correos) sin tocar la app.
 
 ## Fuera de alcance
 
-- Lógica de auth, rutas, `useAuth`.
-- Estilos del header en landscape (siguen igual).
-- Cualquier cambio en `HomeModules`, promos o comercios.
+- No se añade UI de administración del catálogo.
+- No se geocodifica ni se añaden coordenadas (solo nombre de población).
+- No se cambia el flujo de onboarding ni el guardado en `sessionStorage`.
