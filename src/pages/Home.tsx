@@ -271,10 +271,10 @@ const HomeContent = ({
         <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
 
         {/* ── Wrapper landscape: promos + recomendado en 2 columnas ── */}
-        <div className="relative z-10 horizontal-mobile:grid horizontal-mobile:grid-cols-2 horizontal-mobile:gap-2 horizontal-mobile:px-3 horizontal-mobile:!mt-2 horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-desktop:grid horizontal-desktop:grid-cols-2 horizontal-desktop:gap-4 horizontal-desktop:px-4 horizontal-desktop:mt-4 horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:items-stretch horizontal-desktop:pb-4">
+        <div className="relative z-10 horizontal-mobile:grid horizontal-mobile:grid-cols-2 horizontal-mobile:gap-2 horizontal-mobile:px-3 horizontal-mobile:!mt-2 horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-mobile:items-stretch horizontal-mobile:pb-2 horizontal-desktop:grid horizontal-desktop:grid-cols-2 horizontal-desktop:gap-4 horizontal-desktop:px-4 horizontal-desktop:mt-4 horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:items-stretch horizontal-desktop:pb-4">
           {/* ── Promos i events destacats ── */}
           <motion.section
-            className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8 horizontal-mobile:px-0 horizontal-mobile:mt-0 horizontal-mobile:min-w-0 horizontal-desktop:px-0 horizontal-desktop:mt-0 horizontal-desktop:min-w-0 horizontal-desktop:flex horizontal-desktop:flex-col horizontal-desktop:h-full"
+            className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8 horizontal-mobile:px-0 horizontal-mobile:mt-0 horizontal-mobile:min-w-0 horizontal-mobile:flex horizontal-mobile:flex-col horizontal-mobile:h-full horizontal-desktop:px-0 horizontal-desktop:mt-0 horizontal-desktop:min-w-0 horizontal-desktop:flex horizontal-desktop:flex-col horizontal-desktop:h-full"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.26 }}
@@ -290,7 +290,7 @@ const HomeContent = ({
 
           {/* ── Comerciantes populares ── */}
           <motion.section
-            className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8 horizontal-mobile:px-0 horizontal-mobile:mt-0 horizontal-mobile:min-w-0 horizontal-desktop:px-0 horizontal-desktop:mt-0 horizontal-desktop:min-w-0 horizontal-desktop:flex horizontal-desktop:flex-col horizontal-desktop:h-full"
+            className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8 horizontal-mobile:px-0 horizontal-mobile:mt-0 horizontal-mobile:min-w-0 horizontal-mobile:flex horizontal-mobile:flex-col horizontal-mobile:h-full horizontal-desktop:px-0 horizontal-desktop:mt-0 horizontal-desktop:min-w-0 horizontal-desktop:flex horizontal-desktop:flex-col horizontal-desktop:h-full"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.34 }}
@@ -317,7 +317,7 @@ const HomeContent = ({
               </button>
             </div>
 
-            <div className="horizontal-desktop:bg-white/30 horizontal-desktop:rounded-2xl horizontal-desktop:p-3 horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:w-full horizontal-desktop:flex horizontal-desktop:items-center horizontal-mobile:bg-white/30 horizontal-mobile:rounded-2xl horizontal-mobile:p-2 horizontal-mobile:aspect-[16/5] horizontal-mobile:w-full horizontal-mobile:flex horizontal-mobile:items-center">
+            <div className="horizontal-desktop:bg-white/30 horizontal-desktop:rounded-2xl horizontal-desktop:p-3 horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:w-full horizontal-desktop:flex horizontal-desktop:items-center horizontal-mobile:bg-white/30 horizontal-mobile:rounded-2xl horizontal-mobile:p-2 horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-mobile:w-full horizontal-mobile:flex horizontal-mobile:items-center">
               <div className="w-full">
                 <ComercioCarousel comercios={COMERCIOS} />
               </div>
@@ -457,7 +457,7 @@ const PromoCarousel = ({ promos }: PromoCarouselProps) => {
   return (
     <>
       {/* Hero card con drag horizontal */}
-      <div className="relative w-full rounded-2xl overflow-hidden shadow-[0_10px_24px_-12px_hsl(var(--km0-blue-700)/0.35)] aspect-[2/1] vertical-tablet:aspect-[16/9] horizontal-mobile:aspect-[16/5] horizontal-desktop:aspect-auto horizontal-desktop:flex-1 horizontal-desktop:min-h-0">
+      <div className="relative w-full rounded-2xl overflow-hidden shadow-[0_10px_24px_-12px_hsl(var(--km0-blue-700)/0.35)] aspect-[2/1] vertical-tablet:aspect-[16/9] horizontal-mobile:aspect-auto horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-desktop:aspect-auto horizontal-desktop:flex-1 horizontal-desktop:min-h-0">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={promo.id}
