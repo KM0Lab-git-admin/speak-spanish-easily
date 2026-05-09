@@ -38,7 +38,7 @@ const ComerciosSection = ({
             width={80}
             height={80}
             loading="lazy"
-            className="w-12 h-12 object-contain shrink-0"
+            className="w-12 h-12 horizontal-mobile:!w-7 horizontal-mobile:!h-7 object-contain shrink-0"
           />
           <h2 className="font-brand font-black text-km0-blue-700 whitespace-nowrap text-xs vertical-tablet:text-base horizontal-mobile:!text-xs horizontal-desktop:!text-lg">
             {title}
