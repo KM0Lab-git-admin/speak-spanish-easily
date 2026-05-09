@@ -50,16 +50,13 @@ const HomeContent = ({
     <>
       {/* Body — sin scroll: hero arriba (shrink-0), middle flex justify-evenly, tabs abajo */}
       <div className="flex-1 min-h-0 overflow-hidden flex flex-col relative horizontal-mobile:!pt-7 horizontal-desktop:pt-[clamp(56px,12dvh,80px)]">
-        {/* Hero: shrink-0 en portrait; en landscape se vuelve absolute (definido en HomeHero) */}
-        <div className="shrink-0 contents horizontal-mobile:!block horizontal-desktop:!block">
-          <HomeHero
-            cityName={cityName}
-            hasAlerts={hasAlerts}
-            onToggleAlerts={onToggleAlerts}
-            showLogin={showLogin}
-            onLogin={onLogin}
-          />
-        </div>
+        <HomeHero
+          cityName={cityName}
+          hasAlerts={hasAlerts}
+          onToggleAlerts={onToggleAlerts}
+          showLogin={showLogin}
+          onLogin={onLogin}
+        />
 
         {/* Middle: distribución equitativa entre hero y tabs */}
         <div className="flex-1 min-h-0 flex flex-col justify-evenly gap-[clamp(8px,2vh,20px)] overflow-hidden relative z-10 horizontal-mobile:gap-2 horizontal-mobile:px-3 horizontal-mobile:pb-2 horizontal-desktop:gap-3 horizontal-desktop:px-4 horizontal-desktop:pb-3">
