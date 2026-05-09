@@ -134,8 +134,8 @@ const Home = () => {
           onTabChange={setActiveTab}
           showLogin={showLogin}
           onLogin={() => navigate("/login")}
-          showLogout={showLogout}
-          onLogout={handleLogout}
+          showProfile={showProfile}
+          onProfile={goToProfile}
         />
         <NotificationsOverlay
           open={notifOpen}
@@ -162,8 +162,8 @@ const Home = () => {
           onTabChange={setActiveTab}
           showLogin={showLogin}
           onLogin={() => navigate("/login")}
-          showLogout={showLogout}
-          onLogout={handleLogout}
+          showProfile={showProfile}
+          onProfile={goToProfile}
           landscape
         />
         <NotificationsOverlay
