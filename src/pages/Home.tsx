@@ -295,7 +295,7 @@ const HomeContent = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.34 }}
           >
-            <div className="flex items-center mb-[clamp(0.125rem,1vw,0.875rem)] vertical-tablet:mb-3 horizontal-mobile:!mb-1 horizontal-desktop:!mb-2 gap-2 horizontal-mobile:!gap-1">
+            <div className="flex items-center mb-[clamp(0.125rem,1vw,0.875rem)] vertical-tablet:mb-3 horizontal-mobile:!mb-1 horizontal-desktop:!mb-2 gap-2 horizontal-mobile:!gap-1 text-lg">
               <img
                 src={couponIcon}
                 alt=""
@@ -305,12 +305,12 @@ const HomeContent = ({
                 loading="lazy"
                 className="w-[clamp(2.25rem,9vw,5rem)] h-[clamp(2.25rem,9vw,5rem)] object-contain shrink-0 horizontal-mobile:w-6 horizontal-mobile:h-6 horizontal-desktop:w-8 horizontal-desktop:h-8"
               />
-              <h2 className="font-brand font-black text-km0-blue-700 text-base horizontal-mobile:!text-[11px] horizontal-desktop:!text-[14px] whitespace-nowrap">
+              <h2 className="font-brand font-black text-km0-blue-700 whitespace-nowrap text-lg">
                 Esto es para ti
               </h2>
               <button
                 type="button"
-                className="font-ui text-xs font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform shrink-0 ml-1.5 horizontal-mobile:!text-[10px] horizontal-mobile:!ml-1"
+                className="font-ui font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform shrink-0 ml-1.5 horizontal-mobile:!ml-1 text-lg"
               >
                 Ver todos
                 <ArrowRight size={14} strokeWidth={2.4} className="horizontal-mobile:!w-3 horizontal-mobile:!h-3" />
