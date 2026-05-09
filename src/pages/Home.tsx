@@ -305,7 +305,7 @@ const HomeContent = ({
                 loading="lazy"
                 className="w-[clamp(2.25rem,9vw,5rem)] h-[clamp(2.25rem,9vw,5rem)] object-contain shrink-0 horizontal-mobile:w-6 horizontal-mobile:h-6 horizontal-desktop:w-8 horizontal-desktop:h-8"
               />
-              <h2 className="font-brand font-black text-km0-blue-700 text-base horizontal-mobile:!text-[11px] horizontal-desktop:!text-[14px] whitespace-nowrap">
+              <h2 className="font-brand font-black text-km0-blue-700 whitespace-nowrap text-lg">
                 Esto es para ti
               </h2>
               <button
