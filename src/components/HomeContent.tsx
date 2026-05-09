@@ -49,7 +49,7 @@ const HomeContent = ({
   return (
     <>
       {/* Body — sin scroll: hero arriba (shrink-0), middle flex justify-evenly, tabs abajo */}
-      <div className="flex-1 min-h-0 overflow-hidden flex flex-col relative horizontal-mobile:!pt-[clamp(56px,14dvh,84px)] horizontal-desktop:pt-[clamp(64px,13dvh,96px)]">
+      <div className="flex-1 min-h-0 overflow-hidden flex flex-col relative horizontal-mobile:!pt-[clamp(48px,12dvh,72px)] horizontal-desktop:pt-[clamp(64px,13dvh,96px)]">
         <HomeHero
           cityName={cityName}
           hasAlerts={hasAlerts}
@@ -59,7 +59,7 @@ const HomeContent = ({
         />
 
         {/* Middle: pegado arriba, sin padding/margin/gap */}
-        <div className="flex-1 min-h-0 flex flex-col justify-evenly gap-0 overflow-hidden relative z-10 px-[15px] horizontal-mobile:px-[clamp(12px,2.5vw,24px)] horizontal-mobile:pb-[clamp(8px,2dvh,18px)] horizontal-desktop:px-[clamp(20px,2.5vw,36px)] horizontal-desktop:pb-[clamp(12px,2.5dvh,24px)] border border-black">
+        <div className="flex-1 min-h-0 flex flex-col justify-evenly gap-0 overflow-hidden relative z-10 px-[15px] horizontal-mobile:px-[clamp(8px,1.5vw,14px)] horizontal-mobile:pb-[clamp(4px,1dvh,10px)] horizontal-desktop:px-[clamp(20px,2.5vw,36px)] horizontal-desktop:pb-[clamp(12px,2.5dvh,24px)] border border-black">
           {/* Login CTA solo portrait */}
           {showLogin && (
             <motion.section

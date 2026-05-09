@@ -38,7 +38,7 @@ const ComerciosSection = ({
             width={80}
             height={80}
             loading="lazy"
-            className="w-12 h-12 object-contain shrink-0"
+            className="w-12 h-12 horizontal-mobile:!w-7 horizontal-mobile:!h-7 object-contain shrink-0"
           />
           <h2 className="font-brand font-black text-km0-blue-700 whitespace-nowrap text-xs vertical-tablet:text-base horizontal-mobile:!text-xs horizontal-desktop:!text-lg">
             {title}
@@ -54,7 +54,7 @@ const ComerciosSection = ({
         </button>
       </div>
 
-      <div className="horizontal-desktop:bg-white/30 horizontal-desktop:rounded-2xl horizontal-desktop:p-3 horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:w-full horizontal-desktop:flex horizontal-desktop:items-center horizontal-mobile:bg-white/30 horizontal-mobile:rounded-2xl horizontal-mobile:p-2 horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-mobile:w-full horizontal-mobile:flex horizontal-mobile:items-center">
+      <div className="horizontal-desktop:bg-white/30 horizontal-desktop:rounded-2xl horizontal-desktop:p-3 horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:w-full horizontal-desktop:flex horizontal-desktop:items-center horizontal-mobile:bg-white/30 horizontal-mobile:rounded-xl horizontal-mobile:p-1 horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-mobile:w-full horizontal-mobile:flex horizontal-mobile:items-center">
         <div className="w-full">
           <ComercioCarousel comercios={comercios} />
         </div>

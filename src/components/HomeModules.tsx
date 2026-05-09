@@ -69,7 +69,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
           para que el borde inferior sea más "ondulado" que el superior. */}
       <div
         className={cn(
-          "relative bg-km0-beige-100 horizontal-mobile:bg-transparent horizontal-desktop:bg-transparent rounded-t-3xl rounded-bl-[40%_24px] rounded-br-[40%_24px] px-[clamp(4px,2vw,12px)] opacity-100 py-[20px] my-0",
+          "relative bg-km0-beige-100 horizontal-mobile:bg-transparent horizontal-desktop:bg-transparent rounded-t-3xl rounded-bl-[40%_24px] rounded-br-[40%_24px] px-[clamp(4px,2vw,12px)] opacity-100 py-[20px] horizontal-mobile:!py-1 horizontal-desktop:!py-[clamp(8px,1.5dvh,16px)] my-0",
         )}
       >
         {/* Patrón decorativo sutil arriba — círculos translúcidos
