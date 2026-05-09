@@ -46,26 +46,33 @@ const PostalCode = () => {
   const [touched, setTouched] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
   const [validationResult, setValidationResult] = useState<"idle" | "found" | "not_found">("idle");
+  const [resolvedTown, setResolvedTown] = useState<string | null>(null);
 
   const isNumeric = /^\d*$/.test(value);
   const isComplete = value.length === 5 && isNumeric;
-  const cityName = validationResult === "found" ? postalCodes[value] ?? null : null;
+  const cityName = validationResult === "found" ? resolvedTown : null;
   const showError = touched && !isNumeric;
   const showNotFound = validationResult === "not_found";
 
   useEffect(() => {
-    if (isComplete) {
-      setIsValidating(true);
-      setValidationResult("idle");
-      const timer = setTimeout(() => {
-        setIsValidating(false);
-        setValidationResult(postalCodes[value] ? "found" : "not_found");
-      }, 1200);
-      return () => clearTimeout(timer);
-    } else {
+    if (!isComplete) {
       setIsValidating(false);
       setValidationResult("idle");
+      setResolvedTown(null);
+      return;
     }
+    let cancelled = false;
+    setIsValidating(true);
+    setValidationResult("idle");
+    lookupTown(value).then((town) => {
+      if (cancelled) return;
+      setIsValidating(false);
+      setResolvedTown(town);
+      setValidationResult(town ? "found" : "not_found");
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [value, isComplete]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
