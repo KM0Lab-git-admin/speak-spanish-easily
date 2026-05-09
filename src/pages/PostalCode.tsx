@@ -4,7 +4,7 @@ import { MapPin, MapPinOff, AlertTriangle, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BrandedFrame from "@/components/BrandedFrame";
 import cityMap from "@/assets/km0_city_map.png";
-import { postalCodes } from "@/lib/postalCodes";
+import { lookupTown } from "@/lib/postalCodes";
 
 type Lang = "ca" | "es" | "en";
 
