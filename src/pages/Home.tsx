@@ -376,40 +376,6 @@ const HomeContent = ({
   );
 };
 
-/* ─── AuthButton ─────────────────────────────────────────────── */
-interface AuthButtonProps {
-  variant: "primary" | "secondary";
-  icon: React.ReactNode;
-  children: React.ReactNode;
-}
-const AuthButton = ({ variant, icon, children }: AuthButtonProps) => (
-  <button
-    type="button"
-    className={cn(
-      "flex items-center font-ui font-bold transition-all duration-200 hover:scale-[1.03] active:scale-95 shadow-[0_6px_16px_-8px_hsl(var(--km0-blue-700)/0.35)]",
-      "gap-[clamp(0.375rem,2vw,0.5rem)] px-[clamp(0.625rem,3vw,0.75rem)] py-[clamp(0.5rem,2.4vw,0.75rem)] text-[clamp(0.75rem,3vw,0.875rem)] rounded-[clamp(0.75rem,3vw,1rem)]",
-      "vertical-tablet:gap-2 vertical-tablet:px-3 vertical-tablet:py-3 vertical-tablet:text-sm vertical-tablet:rounded-2xl",
-      "horizontal-mobile:!py-1.5 horizontal-mobile:!px-2.5 horizontal-mobile:!text-xs horizontal-mobile:!gap-1.5 horizontal-mobile:!rounded-xl",
-      variant === "primary"
-        ? "bg-km0-blue-700 text-white hover:bg-km0-blue-600"
-        : "bg-km0-yellow-500 text-km0-blue-800 hover:bg-km0-yellow-400",
-    )}
-  >
-    <span
-      className={cn(
-        "rounded-full flex items-center justify-center shrink-0",
-        "w-[clamp(1.5rem,6vw,1.75rem)] h-[clamp(1.5rem,6vw,1.75rem)]",
-        "vertical-tablet:w-7 vertical-tablet:h-7",
-        "horizontal-mobile:!w-5 horizontal-mobile:!h-5",
-        variant === "primary" ? "bg-white/15" : "bg-km0-blue-700/10",
-      )}
-    >
-      {icon}
-    </span>
-    <span className="truncate">{children}</span>
-  </button>
-);
-
 /* ─── TabItem ────────────────────────────────────────────────── */
 interface TabItemProps {
   icon: React.ReactNode;
