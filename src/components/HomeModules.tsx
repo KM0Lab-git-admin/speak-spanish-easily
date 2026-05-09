@@ -69,12 +69,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
           para que el borde inferior sea más "ondulado" que el superior. */}
       <div
         className={cn(
-          "relative bg-km0-beige-100 horizontal-mobile:bg-transparent horizontal-desktop:bg-transparent",
-          "rounded-t-3xl",
-          // Borde inferior con doble curva (cápsula): radio horizontal
-          // grande + radio vertical menor → efecto orgánico tipo "ola".
-          "rounded-bl-[40%_24px] rounded-br-[40%_24px]",
-          "px-[clamp(4px,2vw,12px)] py-[20px] opacity-100 horizontal-mobile:!py-2 my-[20px] horizontal-mobile:!my-2",
+          "relative bg-km0-beige-100 horizontal-mobile:bg-transparent horizontal-desktop:bg-transparent rounded-t-3xl rounded-bl-[40%_24px] rounded-br-[40%_24px] px-[clamp(4px,2vw,12px)] opacity-100 my-0 py-[20px]",
         )}
       >
         {/* Patrón decorativo sutil arriba — círculos translúcidos
