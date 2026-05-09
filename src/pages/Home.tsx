@@ -93,14 +93,11 @@ const PROMOS: Promo[] = [
 const Home = () => {
   const cityName = "Malgrat de Mar";
   const { notifications, hasUnread, markRead, markAllRead } = useNotifications();
-  const { user, loading: authLoading, signOut } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const showLogin = !authLoading && !user;
-  const showLogout = !authLoading && !!user;
-  const handleLogout = async () => {
-    await signOut();
-    toast.success("Sesión cerrada");
-  };
+  const showProfile = !authLoading && !!user;
+  const goToProfile = () => navigate("/profile");
   const openNotifications = () => {
     setNotifOpen(true);
     markAllRead();
