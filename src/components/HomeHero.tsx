@@ -63,13 +63,11 @@ const HomeHero = ({
 
         <div className="flex items-center gap-2 shrink-0 horizontal-mobile:gap-1.5">
           {showLogin && (
-            <button
-              type="button"
+            <LoginButton
               onClick={onLogin}
-              className="hidden landscape:inline-flex font-ui font-bold text-km0-blue-700 bg-km0-yellow-500 hover:bg-km0-yellow-400 active:scale-95 transition-all rounded-full horizontal-mobile:!text-[11px] horizontal-mobile:!px-2.5 horizontal-mobile:!py-1 horizontal-desktop:text-sm horizontal-desktop:px-4 horizontal-desktop:py-2 shadow-[0_4px_12px_-4px_hsl(var(--km0-blue-700)/0.3)] whitespace-nowrap"
-            >
-              Iniciar sesión
-            </button>
+              size="md"
+              className="hidden landscape:inline-flex horizontal-mobile:!text-[11px] horizontal-mobile:!px-2.5 horizontal-mobile:!py-1"
+            />
           )}
           <NotificationBell
             hasAlerts={hasAlerts}
