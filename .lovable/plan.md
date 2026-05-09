@@ -1,67 +1,51 @@
-# Análisis de Home en vertical-mobile (375×667)
+## Objetivo
 
-## Conclusiones de la auditoría visual
+Mover el mapa CP → población de `src/lib/postalCodes.ts` (hardcoded) a una tabla en base de datos, para que tanto la pantalla de código postal como el perfil consulten la misma fuente y se pueda ampliar sin tocar código.
 
-Tras inspeccionar la captura real y el código (`src/pages/Home.tsx`), detecto **5 problemas de maquetación** específicos del breakpoint `vertical-mobile`:
+## Cambios
 
-### 1. Botón "Iniciar sesión" flota desconectado
-El botón vive en su propia `section` (líneas 277-293) entre el hero y los módulos, con `mt-1` y los módulos tienen `-mt-6` (overlap). Resultado: el botón queda visualmente *atrapado* entre dos zonas (skyline beige arriba, card de módulos abajo) sin pertenecer a ninguna. Parece un elemento huérfano.
+### 1. Base de datos
 
-### 2. Tres spacers `flex-1` repartiendo aire vacío
-Hay 3 divs vacíos con `vertical-mobile:flex-1` (líneas 306, 326, 368) que reparten el espacio sobrante por toda la columna. Esto genera **huecos grandes y desiguales** entre secciones. El usuario percibe vacío, no respiración.
+Nueva tabla `public.postal_codes`:
+- `postal_code` (text, PK) — el CP de 5 dígitos
+- `town` (text, not null) — nombre de la población
+- `province` (text, nullable) — por si más adelante queremos filtrar
+- `created_at`, `updated_at`
 
-### 3. Hero ocupa ~33% de la altura
-El hero usa `aspect-[1920/716]` → en 375px de ancho ocupa ~140px de alto. En una pantalla de 667px (menos 60px de tab bar = 607px útiles), eso es ~23% solo de skyline decorativo. Aceptable, pero combinado con el botón flotante y los spacers, presiona el contenido útil.
+RLS:
+- SELECT público (cualquiera puede consultar, incluso sin login — la pantalla de CP es previa al registro)
+- Sin INSERT/UPDATE/DELETE públicos (gestión interna)
 
-### 4. "Esto es para ti" muy apretado contra la tab bar
-Por culpa del spacer final (línea 368, `flex-1`), las cards de comercios quedan empujadas pegadas a la tab bar sin margen visual.
+Seed inicial con los 10 CPs actuales del fichero `postalCodes.ts` (Barcelona, Malgrat de Mar, Mataró, Granollers, Sabadell, Terrassa, Vilanova i la Geltrú, Gavà, L'Hospitalet, Cornellà).
 
-### 5. Indicador de paginación del PromoCarousel choca con "Esto es para ti"
-Los puntitos del carrusel quedan a 0px del header "🎫 Esto es para ti" porque el spacer entre ambos (línea 326) absorbe todo el aire arriba en vez de dejar separación local.
+### 2. Capa de acceso
 
----
+Reescribir `src/lib/postalCodes.ts` para exponer una API async basada en Supabase, manteniendo la firma simple:
 
-## Plan de corrección (solo `vertical-mobile`, resto intacto)
-
-### A. Anclar el CTA "Iniciar sesión" al header
-Mover el botón al overlay del hero (líneas 257-273), junto a la campana, en lugar de tenerlo como sección separada. Tamaño compacto (`text-xs px-3 py-1`). En vertical-mobile cabe junto al escudo+nombre+logo+campana porque el ancho disponible (375px) es suficiente con el botón pequeño.
-
-→ **Eliminar** la `motion.section` independiente (líneas 278-293).
-→ **Mostrar** el botón también en portrait dentro del overlay del header (quitar `hidden landscape:inline-flex`).
-
-### B. Reducir spacers `flex-1` de 3 a 1
-Sustituir los 3 `flex-1` por márgenes verticales fijos y dejar **un único** `flex-1` al final (antes de la tab bar) para absorber el sobrante en pantallas más altas.
-
-- Línea 306 (entre módulos y promos): cambiar `flex-1` por `mt-3`.
-- Línea 326 (entre promos y "Esto es para ti"): cambiar `flex-1` por `mt-4`.
-- Línea 368 (final): mantener `flex-1` (es el único que reparte aire residual).
-
-### C. Restaurar `-mt-8` en los módulos
-Al quitar el botón intermedio, el overlap natural de los módulos sobre el hero vuelve a funcionar. Cambiar `-mt-6` → `-mt-8`.
-
-### D. Verificar
-- Captura a 375×667 → comprobar: header con login compacto + campana, módulos pegados al hero, promos con respiración mínima, "Esto es para ti" con un poco de aire sobre la tab bar, sin scroll.
-- Captura a 768×1024 (vertical-tablet) → verificar que sigue ok.
-- Captura a 667×375 y 1280×550 (landscape) → no se tocan, deben quedar idénticas.
-
-## Detalles técnicos
-
-```text
-Header overlay (vertical-mobile):
-┌─────────────────────────────────────────┐
-│ [escudo] Malgrat de Mar  [Iniciar][🔔] │
-│          [KM0LAB]                       │
-└─────────────────────────────────────────┘
-        ↓ skyline ↓
-        ↓ módulos (-mt-8 overlap) ↓
-        ↓ mt-3 ↓
-        ↓ Promos + carrusel ↓
-        ↓ mt-4 ↓
-        ↓ Esto es para ti + carrusel ↓
-        ↓ flex-1 (absorbe sobrante) ↓
-        ↓ Tab bar ↓
+```ts
+export async function lookupTown(postalCode: string): Promise<string | null>
 ```
 
-**Archivos a tocar:** solo `src/pages/Home.tsx`. Sin cambios en componentes hijos, sin nuevas dependencias.
+Cache en memoria (Map) para evitar repetir queries del mismo CP en una misma sesión. Sin React Query para mantenerlo neutro (lo usan tanto Profile como PostalCode).
 
-**Fuera de alcance:** estética del hero, datos, navegación, otros breakpoints.
+### 3. Pantallas
+
+- **`src/pages/PostalCode.tsx`**: el `useEffect` que valida el CP ya tiene un timeout de 1.2s simulado — sustituirlo por la llamada real a `lookupTown(value)`. El estado `validationResult` y `cityName` siguen igual.
+- **`src/pages/Profile.tsx`**: el `town` ahora es async. Añadir un `useEffect` que recalcule `town` cuando cambia `form.postal_code`, guardándolo en estado local. El input de población sigue read-only.
+
+### 4. Limpieza
+
+Eliminar el objeto `postalCodes` exportado del fichero (ya no se usa directamente en componentes). Si algún test lo referencia, actualizarlo.
+
+## Notas técnicas
+
+- La tabla NO referencia `auth.users`: es un catálogo público.
+- Se mantiene la validación de formato (5 dígitos numéricos) en cliente antes de consultar.
+- El trigger `handle_new_user` sigue guardando `postal_code` y `town` en `profiles` desde `user_metadata` — no se cambia.
+- En el futuro se puede sustituir el seed manual por un import masivo (CSV oficial de Correos) sin tocar la app.
+
+## Fuera de alcance
+
+- No se añade UI de administración del catálogo.
+- No se geocodifica ni se añaden coordenadas (solo nombre de población).
+- No se cambia el flujo de onboarding ni el guardado en `sessionStorage`.
