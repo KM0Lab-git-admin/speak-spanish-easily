@@ -277,7 +277,7 @@ const HomeContent = ({
         {/* ── Login CTA solo portrait — encima de los módulos ── */}
         {showLogin && (
           <motion.section
-            className="landscape:hidden flex justify-center px-4 mt-2 vertical-tablet:mt-4"
+            className="landscape:hidden flex justify-center px-4 -mt-3 vertical-tablet:-mt-4 relative z-10"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.08 }}
@@ -285,7 +285,7 @@ const HomeContent = ({
             <button
               type="button"
               onClick={onLogin}
-              className="font-ui font-bold text-km0-blue-700 bg-km0-yellow-500 hover:bg-km0-yellow-400 active:scale-95 transition-all rounded-full text-sm px-5 py-2 vertical-tablet:text-base vertical-tablet:px-6 vertical-tablet:py-2.5 shadow-[0_4px_12px_-4px_hsl(var(--km0-blue-700)/0.3)] whitespace-nowrap"
+              className="font-ui font-bold text-km0-blue-700 bg-km0-yellow-500 hover:bg-km0-yellow-400 active:scale-95 transition-all rounded-full text-xs px-4 py-1.5 vertical-tablet:text-sm vertical-tablet:px-5 vertical-tablet:py-2 shadow-[0_4px_12px_-4px_hsl(var(--km0-blue-700)/0.3)] whitespace-nowrap"
             >
               Iniciar sesión
             </button>
