@@ -86,6 +86,12 @@ const PostalCode = () => {
 
   const handleSubmit = () => {
     if (!isComplete || !cityName) return;
+    // Persistimos el CP+población para que el flujo de login los pueda
+    // adjuntar al user_metadata y queden en el perfil al crear la cuenta.
+    try {
+      sessionStorage.setItem("km0_postal_code", value);
+      sessionStorage.setItem("km0_town", cityName);
+    } catch {/* sessionStorage puede fallar en modo privado */}
     navigate("/chat", { state: { lang, cityName, postalCode: value } });
   };
 

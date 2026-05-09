@@ -10,6 +10,7 @@ import Chat from "./pages/Chat";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import CheckEmail from "./pages/CheckEmail";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import DesignSystem from "./pages/DesignSystem";
 import TopLoadingBar from "./components/TopLoadingBar";
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/check-email" element={<CheckEmail />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
           <Route path="/design-system" element={<DesignSystem />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
