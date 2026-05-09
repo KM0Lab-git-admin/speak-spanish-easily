@@ -8,7 +8,6 @@ import Onboarding from "./pages/Onboarding";
 import PostalCode from "./pages/PostalCode";
 import Chat from "./pages/Chat";
 import Home from "./pages/Home";
-import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import CheckEmail from "./pages/CheckEmail";
 import NotFound from "./pages/NotFound";
@@ -29,7 +28,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/postal-code" element={<PostalCode />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signup" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/check-email" element={<CheckEmail />} />
           <Route path="/chat" element={<Chat />} />

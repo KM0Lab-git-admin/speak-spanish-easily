@@ -49,7 +49,7 @@ const CheckEmail = () => {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        shouldCreateUser: mode === "signup",
+        shouldCreateUser: true,
         emailRedirectTo: `${window.location.origin}/home`,
       },
     });
