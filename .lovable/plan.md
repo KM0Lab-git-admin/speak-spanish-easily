@@ -1,30 +1,51 @@
 ## Objetivo
 
-En **vertical-mobile** y **vertical-tablet** el botón "Iniciar sesión" queda flotando con demasiado aire entre el hero (skyline) y la card de módulos. El usuario quiere mantener el botón con texto en su sitio actual, pero más compacto y pegado al hero, recortando el espacio vertical marcado en rojo en la captura.
+Mover el mapa CP → población de `src/lib/postalCodes.ts` (hardcoded) a una tabla en base de datos, para que tanto la pantalla de código postal como el perfil consulten la misma fuente y se pueda ampliar sin tocar código.
 
-Cambios SOLO en portrait (vertical-mobile + vertical-tablet). Landscape intacto.
+## Cambios
 
-## Cambios en `src/pages/Home.tsx`
+### 1. Base de datos
 
-### 1. Sección CTA portrait (líneas 278-293)
+Nueva tabla `public.postal_codes`:
+- `postal_code` (text, PK) — el CP de 5 dígitos
+- `town` (text, not null) — nombre de la población
+- `province` (text, nullable) — por si más adelante queremos filtrar
+- `created_at`, `updated_at`
 
-- Reducir margen superior: `mt-2 vertical-tablet:mt-4` → `-mt-3 vertical-tablet:-mt-4` para que el botón se acerque al borde del hero (incluso lo solape ligeramente, quedando "anclado" al skyline en lugar de flotando).
-- Reducir tamaño del botón:
-  - `text-sm px-5 py-2` → `text-xs px-4 py-1.5`
-  - `vertical-tablet:text-base vertical-tablet:px-6 vertical-tablet:py-2.5` → `vertical-tablet:text-sm vertical-tablet:px-5 vertical-tablet:py-2`
-- Mantener color amarillo, sombra, fuente y animación.
+RLS:
+- SELECT público (cualquiera puede consultar, incluso sin login — la pantalla de CP es previa al registro)
+- Sin INSERT/UPDATE/DELETE públicos (gestión interna)
 
-### 2. Sección de módulos (línea 297)
+Seed inicial con los 10 CPs actuales del fichero `postalCodes.ts` (Barcelona, Malgrat de Mar, Mataró, Granollers, Sabadell, Terrassa, Vilanova i la Geltrú, Gavà, L'Hospitalet, Cornellà).
 
-- Cambiar `-mt-8` (overlap fuerte sobre el hero) a `-mt-2 vertical-tablet:-mt-3` solo en portrait, para que la card de módulos suba menos y no genere el hueco visual entre botón y módulos. Landscape sigue con `horizontal-mobile:mt-0 horizontal-desktop:mt-0`.
-- Resultado: botón pegado al hero por arriba, módulos pegados al botón por abajo, sin aire muerto.
+### 2. Capa de acceso
 
-### Verificación
+Reescribir `src/lib/postalCodes.ts` para exponer una API async basada en Supabase, manteniendo la firma simple:
 
-- vertical-mobile (375×667): el botón debe quedar entre el final del skyline y el inicio de la card de módulos sin gap visible, y todo el contenido (hero + botón + módulos + carruseles + bottom nav) debe seguir cabiendo sin scroll excesivo.
-- vertical-tablet (768×1024): mismo patrón, proporciones ligeramente mayores.
-- horizontal-mobile (667×375) y horizontal-desktop (1280×550): SIN cambios — el botón sigue en el header (`landscape:inline-flex`) y la sección CTA portrait sigue oculta (`landscape:hidden`).
+```ts
+export async function lookupTown(postalCode: string): Promise<string | null>
+```
+
+Cache en memoria (Map) para evitar repetir queries del mismo CP en una misma sesión. Sin React Query para mantenerlo neutro (lo usan tanto Profile como PostalCode).
+
+### 3. Pantallas
+
+- **`src/pages/PostalCode.tsx`**: el `useEffect` que valida el CP ya tiene un timeout de 1.2s simulado — sustituirlo por la llamada real a `lookupTown(value)`. El estado `validationResult` y `cityName` siguen igual.
+- **`src/pages/Profile.tsx`**: el `town` ahora es async. Añadir un `useEffect` que recalcule `town` cuando cambia `form.postal_code`, guardándolo en estado local. El input de población sigue read-only.
+
+### 4. Limpieza
+
+Eliminar el objeto `postalCodes` exportado del fichero (ya no se usa directamente en componentes). Si algún test lo referencia, actualizarlo.
+
+## Notas técnicas
+
+- La tabla NO referencia `auth.users`: es un catálogo público.
+- Se mantiene la validación de formato (5 dígitos numéricos) en cliente antes de consultar.
+- El trigger `handle_new_user` sigue guardando `postal_code` y `town` en `profiles` desde `user_metadata` — no se cambia.
+- En el futuro se puede sustituir el seed manual por un import masivo (CSV oficial de Correos) sin tocar la app.
 
 ## Fuera de alcance
 
-- Carrusel "Esto es para ti" cortado, bottom nav superpuesto, header skyline alto: NO se tocan en este turno.
+- No se añade UI de administración del catálogo.
+- No se geocodifica ni se añaden coordenadas (solo nombre de población).
+- No se cambia el flujo de onboarding ni el guardado en `sessionStorage`.
