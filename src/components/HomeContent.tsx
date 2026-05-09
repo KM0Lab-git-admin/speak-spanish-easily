@@ -58,12 +58,12 @@ const HomeContent = ({
           onLogin={onLogin}
         />
 
-        {/* Middle: distribución equitativa entre hero y tabs */}
-        <div className="flex-1 min-h-0 flex flex-col justify-evenly gap-[clamp(8px,2vh,20px)] overflow-hidden relative z-10 horizontal-mobile:gap-2 horizontal-mobile:px-3 horizontal-mobile:pb-2 horizontal-desktop:gap-3 horizontal-desktop:px-4 horizontal-desktop:pb-3">
+        {/* Middle: pegado arriba, sin padding/margin/gap */}
+        <div className="flex-1 min-h-0 flex flex-col justify-start gap-0 overflow-hidden relative z-10 horizontal-mobile:px-3 horizontal-mobile:pb-2 horizontal-desktop:px-4 horizontal-desktop:pb-3">
           {/* Login CTA solo portrait */}
           {showLogin && (
             <motion.section
-              className="landscape:hidden flex justify-center px-6 vertical-tablet:px-8 shrink-0 py-[10px]"
+              className="landscape:hidden flex justify-center shrink-0 m-0 p-0"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.08 }}
@@ -74,7 +74,7 @@ const HomeContent = ({
 
           {/* MÓDULOS */}
           <motion.section
-            className="shrink-0 landscape:col-span-2"
+            className="shrink-0 m-0 p-0 landscape:col-span-2"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
@@ -83,7 +83,7 @@ const HomeContent = ({
           </motion.section>
 
           {/* Promos + Comercios: portrait apilados, landscape 2 columnas */}
-          <div className="flex flex-col gap-[clamp(8px,2vh,20px)] landscape:flex-1 landscape:min-h-0 landscape:grid landscape:grid-cols-2 landscape:gap-3 horizontal-desktop:gap-4">
+          <div className="flex flex-col gap-0 m-0 p-0 landscape:flex-1 landscape:min-h-0 landscape:grid landscape:grid-cols-2 landscape:gap-3 horizontal-desktop:gap-4">
             <PromoSection promos={promos} />
             <ComerciosSection comercios={comercios} onSeeAll={onSeeAllComercios} />
           </div>
