@@ -83,9 +83,13 @@ const HomeContent = ({
           </motion.section>
 
           {/* Promos + Comercios: portrait apilados, landscape 2 columnas */}
-          <div className="flex flex-col gap-0 m-0 p-0 landscape:flex-1 landscape:min-h-0 landscape:grid landscape:grid-cols-2 landscape:gap-3 horizontal-desktop:gap-4 border border-black">
-            <PromoSection promos={promos} />
-            <ComerciosSection comercios={comercios} onSeeAll={onSeeAllComercios} />
+          <div className="flex flex-col gap-0 m-0 p-0 landscape:flex-1 landscape:min-h-0 landscape:grid landscape:grid-cols-2 landscape:gap-3 horizontal-desktop:gap-4">
+            <div className="border border-black">
+              <PromoSection promos={promos} />
+            </div>
+            <div className="border border-black">
+              <ComerciosSection comercios={comercios} onSeeAll={onSeeAllComercios} />
+            </div>
           </div>
         </div>
       </div>
