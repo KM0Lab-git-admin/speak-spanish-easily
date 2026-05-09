@@ -302,8 +302,6 @@ const HomeContent = ({
           <HomeModules modules={modules} />
         </motion.section>
 
-        {/* Spacer flex — solo en vertical-mobile, reparte aire */}
-        <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
 
         {/* ── Wrapper landscape: promos + recomendado en 2 columnas ── */}
         <div className="relative z-10 horizontal-mobile:grid horizontal-mobile:grid-cols-2 horizontal-mobile:gap-2 horizontal-mobile:px-3 horizontal-mobile:!mt-2 horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-mobile:items-stretch horizontal-mobile:pb-2 horizontal-desktop:grid horizontal-desktop:grid-cols-2 horizontal-desktop:gap-4 horizontal-desktop:px-4 horizontal-desktop:mt-4 horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:items-stretch horizontal-desktop:pb-4">
