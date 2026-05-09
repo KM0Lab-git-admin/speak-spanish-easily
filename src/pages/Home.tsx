@@ -304,8 +304,8 @@ const HomeContent = ({
             <PromoCarousel promos={PROMOS} />
           </motion.section>
 
-          {/* Spacer flex 3 — solo en vertical-mobile */}
-          <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
+          {/* Separación fija entre promos y "Esto es para ti" en vertical-mobile */}
+          <div className="hidden vertical-mobile:block vertical-mobile:h-4" aria-hidden />
 
           {/* ── Comerciantes populares ── */}
           <motion.section
