@@ -102,7 +102,7 @@ const HomeContent = ({
         {/* Promos + Comercios:
             - portrait: stack vertical (cada sección es una fila del flex)
             - landscape: dos columnas dentro de una sola fila del flex */}
-        <div className="landscape:grid landscape:grid-cols-2 landscape:gap-3 horizontal-desktop:gap-4 px-3 horizontal-desktop:px-4 contents landscape:[display:grid]">
+        <div className="contents landscape:[display:grid] landscape:grid-cols-2 landscape:gap-3 horizontal-desktop:gap-4 landscape:px-3 horizontal-desktop:px-4">
           <PromoSection promos={promos} />
           <ComerciosSection comercios={comercios} onSeeAll={onSeeAllComercios} />
         </div>
