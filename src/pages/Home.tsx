@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowRight, Home as HomeIcon, Info, Tag, User } from "lucide-react";
-import { toast } from "sonner";
+
 import { useAuth } from "@/hooks/useAuth";
 import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
