@@ -279,7 +279,7 @@ const HomeContent = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.26 }}
           >
-            <h2 className="font-brand font-black text-km0-blue-700 mb-[clamp(0.25rem,1.5vw,0.875rem)] vertical-tablet:mb-3 horizontal-mobile:!mb-1 horizontal-desktop:!mb-2 text-lg">
+            <h2 className="font-brand font-black text-km0-blue-700 mb-[clamp(0.25rem,1.5vw,0.875rem)] vertical-tablet:mb-3 horizontal-mobile:!mb-1 horizontal-desktop:!mb-2 text-sm vertical-tablet:text-base horizontal-mobile:!text-xs horizontal-desktop:!text-lg">
               Promos y eventos destacados
             </h2>
             <PromoCarousel promos={PROMOS} />
