@@ -108,7 +108,7 @@ const PromoCarousel = ({ promos }: PromoCarouselProps) => {
       </div>
 
       {/* Dots de paginación — clicables */}
-      <div className="flex items-center justify-center gap-1.5 mt-3">
+      <div className="flex items-center justify-center gap-1.5 mt-3 horizontal-mobile:mt-1">
         {promos.map((_, i) => (
           <button
             key={i}
