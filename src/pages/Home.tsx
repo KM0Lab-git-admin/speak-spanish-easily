@@ -271,10 +271,10 @@ const HomeContent = ({
         <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
 
         {/* ── Wrapper landscape: promos + recomendado en 2 columnas ── */}
-        <div className="relative z-10 horizontal-mobile:grid horizontal-mobile:grid-cols-2 horizontal-mobile:gap-2 horizontal-mobile:px-3 horizontal-mobile:!mt-2 horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-desktop:grid horizontal-desktop:grid-cols-2 horizontal-desktop:gap-4 horizontal-desktop:px-4 horizontal-desktop:mt-4 horizontal-desktop:flex-1 horizontal-desktop:min-h-0">
+        <div className="relative z-10 horizontal-mobile:grid horizontal-mobile:grid-cols-2 horizontal-mobile:gap-2 horizontal-mobile:px-3 horizontal-mobile:!mt-2 horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-desktop:grid horizontal-desktop:grid-cols-2 horizontal-desktop:gap-4 horizontal-desktop:px-4 horizontal-desktop:mt-4 horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:items-stretch horizontal-desktop:pb-4">
           {/* ── Promos i events destacats ── */}
           <motion.section
-            className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8 horizontal-mobile:px-0 horizontal-mobile:mt-0 horizontal-mobile:min-w-0 horizontal-desktop:px-0 horizontal-desktop:mt-0 horizontal-desktop:min-w-0"
+            className="px-4 mt-4 vertical-mobile:mt-0 vertical-tablet:mt-8 horizontal-mobile:px-0 horizontal-mobile:mt-0 horizontal-mobile:min-w-0 horizontal-desktop:px-0 horizontal-desktop:mt-0 horizontal-desktop:min-w-0 horizontal-desktop:flex horizontal-desktop:flex-col horizontal-desktop:h-full"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.26 }}
