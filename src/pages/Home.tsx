@@ -259,7 +259,7 @@ const HomeContent = ({
                 <button
                   type="button"
                   onClick={onLogin}
-                  className="hidden landscape:inline-flex font-ui font-bold text-km0-blue-700 bg-km0-yellow-500 hover:bg-km0-yellow-400 active:scale-95 transition-all rounded-full horizontal-mobile:!text-[11px] horizontal-mobile:!px-2.5 horizontal-mobile:!py-1 horizontal-desktop:text-sm horizontal-desktop:px-4 horizontal-desktop:py-2 shadow-[0_4px_12px_-4px_hsl(var(--km0-blue-700)/0.3)] whitespace-nowrap"
+                  className="inline-flex font-ui font-bold text-km0-blue-700 bg-km0-yellow-500 hover:bg-km0-yellow-400 active:scale-95 transition-all rounded-full text-[11px] px-3 py-1 vertical-tablet:text-sm vertical-tablet:px-4 vertical-tablet:py-1.5 horizontal-mobile:!text-[11px] horizontal-mobile:!px-2.5 horizontal-mobile:!py-1 horizontal-desktop:text-sm horizontal-desktop:px-4 horizontal-desktop:py-2 shadow-[0_4px_12px_-4px_hsl(var(--km0-blue-700)/0.3)] whitespace-nowrap"
                 >
                   Iniciar sesión
                 </button>
@@ -274,27 +274,9 @@ const HomeContent = ({
           </div>
         </motion.section>
 
-        {/* ── Login CTA solo portrait — encima de los módulos ── */}
-        {showLogin && (
-          <motion.section
-            className="landscape:hidden flex justify-center px-4 mt-1 vertical-tablet:mt-3"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.08 }}
-          >
-            <button
-              type="button"
-              onClick={onLogin}
-              className="font-ui font-bold text-km0-blue-700 bg-km0-yellow-500 hover:bg-km0-yellow-400 active:scale-95 transition-all rounded-full text-xs px-3.5 py-1 vertical-tablet:text-sm vertical-tablet:px-5 vertical-tablet:py-1.5 shadow-[0_4px_12px_-4px_hsl(var(--km0-blue-700)/0.3)] whitespace-nowrap"
-            >
-              Iniciar sesión
-            </button>
-          </motion.section>
-        )}
-
         {/* ── MÓDULOS: card que monta sobre el hero (overlap) ── */}
         <motion.section
-          className="-mt-6 relative z-10 horizontal-mobile:mt-0 horizontal-desktop:mt-0"
+          className="-mt-8 relative z-10 horizontal-mobile:mt-0 horizontal-desktop:mt-0"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
@@ -302,8 +284,8 @@ const HomeContent = ({
           <HomeModules modules={modules} />
         </motion.section>
 
-        {/* Spacer flex — solo en vertical-mobile, reparte aire */}
-        <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
+        {/* Separación fija entre módulos y promos en vertical-mobile */}
+        <div className="hidden vertical-mobile:block vertical-mobile:h-3" aria-hidden />
 
         {/* ── Wrapper landscape: promos + recomendado en 2 columnas ── */}
         <div className="relative z-10 horizontal-mobile:grid horizontal-mobile:grid-cols-2 horizontal-mobile:gap-2 horizontal-mobile:px-3 horizontal-mobile:!mt-2 horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-mobile:items-stretch horizontal-mobile:pb-2 horizontal-desktop:grid horizontal-desktop:grid-cols-2 horizontal-desktop:gap-4 horizontal-desktop:px-4 horizontal-desktop:mt-4 horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:items-stretch horizontal-desktop:pb-4">
@@ -322,8 +304,8 @@ const HomeContent = ({
             <PromoCarousel promos={PROMOS} />
           </motion.section>
 
-          {/* Spacer flex 3 — solo en vertical-mobile */}
-          <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
+          {/* Separación fija entre promos y "Esto es para ti" en vertical-mobile */}
+          <div className="hidden vertical-mobile:block vertical-mobile:h-4" aria-hidden />
 
           {/* ── Comerciantes populares ── */}
           <motion.section
