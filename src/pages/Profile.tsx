@@ -7,6 +7,7 @@ import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import BrandedFrame from "@/components/BrandedFrame";
+import { lookupTown } from "@/lib/postalCodes";
 
 /**
  * Profile — Edición y visualización del perfil del usuario.
@@ -25,16 +26,14 @@ const profileSchema = z.object({
   postal_code: z
     .string()
     .trim()
-    .regex(/^\d{0,5}$/, "Solo números (5 dígitos)")
+    .regex(/^\d{5}$|^$/, "Código postal de 5 dígitos")
     .optional(),
-  town: z.string().trim().max(120, "Máximo 120 caracteres").optional(),
 });
 
 type ProfileForm = {
   first_name: string;
   last_name: string;
   postal_code: string;
-  town: string;
 };
 
 const Profile = () => {
@@ -46,8 +45,10 @@ const Profile = () => {
     first_name: "",
     last_name: "",
     postal_code: "",
-    town: "",
   });
+  // Población derivada del CP (read-only). Si el CP no está en el mapa,
+  // mostramos un placeholder claro en lugar de un valor obsoleto.
+  const town = lookupTown(form.postal_code);
 
   // Cargar perfil al montar (RLS restringe a la fila del propio user).
   useEffect(() => {
@@ -56,7 +57,7 @@ const Profile = () => {
     (async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select("first_name, last_name, postal_code, town")
+        .select("first_name, last_name, postal_code")
         .eq("user_id", user.id)
         .maybeSingle();
 
@@ -68,7 +69,6 @@ const Profile = () => {
           first_name: data.first_name ?? "",
           last_name: data.last_name ?? "",
           postal_code: data.postal_code ?? "",
-          town: data.town ?? "",
         });
       }
       setLoading(false);
@@ -99,7 +99,7 @@ const Profile = () => {
         first_name: form.first_name.trim() || null,
         last_name: form.last_name.trim() || null,
         postal_code: form.postal_code.trim() || null,
-        town: form.town.trim() || null,
+        town: town ?? null,
       })
       .eq("user_id", user.id);
 
@@ -188,10 +188,11 @@ const Profile = () => {
               <Field label="Población">
                 <input
                   type="text"
-                  value={form.town}
-                  onChange={handleChange("town")}
-                  placeholder="Tu población"
-                  className={inputCls}
+                  value={town ?? ""}
+                  readOnly
+                  disabled
+                  placeholder={form.postal_code.length === 5 ? "Sin coincidencia" : "Se rellena con el CP"}
+                  className={`${inputCls} opacity-60 cursor-not-allowed`}
                 />
               </Field>
             </div>

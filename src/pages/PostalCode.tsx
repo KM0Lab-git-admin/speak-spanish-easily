@@ -4,6 +4,7 @@ import { MapPin, MapPinOff, AlertTriangle, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BrandedFrame from "@/components/BrandedFrame";
 import cityMap from "@/assets/km0_city_map.png";
+import { postalCodes } from "@/lib/postalCodes";
 
 type Lang = "ca" | "es" | "en";
 
@@ -34,18 +35,6 @@ const i18n = {
   },
 };
 
-const postalCodes: Record<string, string> = {
-  "08001": "Barcelona",
-  "08380": "Malgrat de Mar",
-  "08301": "Mataró",
-  "08400": "Granollers",
-  "08201": "Sabadell",
-  "08221": "Terrassa",
-  "08800": "Vilanova i la Geltrú",
-  "08850": "Gavà",
-  "08901": "L'Hospitalet de Llobregat",
-  "08940": "Cornellà de Llobregat",
-};
 
 const PostalCode = () => {
   const navigate = useNavigate();
