@@ -49,7 +49,7 @@ const HomeContent = ({
   return (
     <>
       {/* Body — sin scroll: hero arriba (shrink-0), middle flex justify-evenly, tabs abajo */}
-      <div className="flex-1 min-h-0 overflow-hidden flex flex-col relative horizontal-mobile:!pt-7 horizontal-desktop:pt-[clamp(56px,12dvh,80px)]">
+      <div className="flex-1 min-h-0 overflow-hidden flex flex-col relative horizontal-mobile:!pt-[clamp(56px,14dvh,84px)] horizontal-desktop:pt-[clamp(64px,13dvh,96px)]">
         <HomeHero
           cityName={cityName}
           hasAlerts={hasAlerts}
