@@ -10,6 +10,7 @@ import Chat from "./pages/Chat";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import CheckEmail from "./pages/CheckEmail";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import DesignSystem from "./pages/DesignSystem";
 import TopLoadingBar from "./components/TopLoadingBar";
