@@ -267,6 +267,16 @@ const HomeContent = ({
                   Iniciar sesión
                 </button>
               )}
+              {showLogout && (
+                <button
+                  type="button"
+                  onClick={onLogout}
+                  aria-label="Cerrar sesión"
+                  className="w-10 h-10 horizontal-mobile:w-8 horizontal-mobile:h-8 flex items-center justify-center rounded-xl text-km0-blue-800 transition-all duration-200 hover:bg-km0-beige-100 active:scale-95 shrink-0"
+                >
+                  <LogOut size={20} strokeWidth={2} />
+                </button>
+              )}
               <NotificationBell
                 hasAlerts={hasAlerts}
                 onClick={onToggleAlerts}
