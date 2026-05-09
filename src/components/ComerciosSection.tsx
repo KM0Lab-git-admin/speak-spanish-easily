@@ -40,14 +40,14 @@ const ComerciosSection = ({
             loading="lazy"
             className="w-12 h-12 object-contain shrink-0"
           />
-          <h2 className="font-brand font-black text-km0-blue-700 whitespace-nowrap text-sm vertical-tablet:text-base horizontal-mobile:!text-xs horizontal-desktop:!text-lg">
+          <h2 className="font-brand font-black text-km0-blue-700 whitespace-nowrap text-xs vertical-tablet:text-base horizontal-mobile:!text-xs horizontal-desktop:!text-lg">
             {title}
           </h2>
         </div>
         <button
           type="button"
           onClick={onSeeAll}
-          className="font-ui font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform shrink-0 underline underline-offset-4 text-sm vertical-tablet:text-base horizontal-mobile:!text-xs horizontal-desktop:!text-lg"
+          className="font-ui font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform shrink-0 underline underline-offset-4 text-xs vertical-tablet:text-base horizontal-mobile:!text-xs horizontal-desktop:!text-lg"
         >
           Ver todos
           <ArrowRight size={14} strokeWidth={2.4} className="horizontal-mobile:!w-3 horizontal-mobile:!h-3" />

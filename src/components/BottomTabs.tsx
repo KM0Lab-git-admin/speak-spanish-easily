@@ -55,8 +55,8 @@ const BottomTabs = ({
         active={activeTab === "perfil"}
         onClick={() => {
           onTabChange("perfil");
-          if (showProfile) onProfile();
-          else onLogin();
+          // Modo maquetación: siempre vamos a /profile, sin requerir auth.
+          onProfile();
         }}
       />
     </nav>
