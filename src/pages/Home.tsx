@@ -294,7 +294,7 @@ const HomeContent = ({
 
         {/* ── MÓDULOS: card que monta sobre el hero (overlap) ── */}
         <motion.section
-          className="-mt-8 relative z-10 horizontal-mobile:mt-0 horizontal-desktop:mt-0"
+          className="-mt-2 vertical-tablet:-mt-3 relative z-10 horizontal-mobile:!mt-0 horizontal-desktop:!mt-0"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
