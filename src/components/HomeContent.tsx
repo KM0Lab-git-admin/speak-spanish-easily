@@ -9,9 +9,23 @@ import type { Promo } from "@/types/promo";
 import type { Comercio } from "@/types/comercio";
 
 /**
- * HomeContent — layout interno del Home reutilizado por el frame
- * portrait y el frame landscape de la página. Compone el hero, los
- * módulos, las secciones de promos y comercios y la tab bar.
+ * HomeContent — layout del Home con 3 zonas fijas:
+ *   ┌────────────────────────┐
+ *   │  HomeHero  (shrink-0)  │  ← franja superior fija
+ *   ├────────────────────────┤
+ *   │  Middle    (flex-1)    │  ← justify-evenly, sin scroll
+ *   │   · LoginButton (port.)│
+ *   │   · HomeModules        │
+ *   │   · PromoSection       │
+ *   │   · ComerciosSection   │
+ *   ├────────────────────────┤
+ *   │  BottomTabs (shrink-0) │  ← tabs fijas abajo
+ *   └────────────────────────┘
+ *
+ * El reparto vertical entre los bloques intermedios se hace con
+ * `justify-evenly` + un `gap` proporcional para que la distancia
+ * entre componentes sea visualmente equivalente en las 4 resoluciones
+ * oficiales (375×667, 768×1024, 667×375, 1280×550).
  *
  * No conoce auth, router ni hooks: todo entra por props.
  */
@@ -48,8 +62,8 @@ const HomeContent = ({
 }: HomeContentProps) => {
   return (
     <>
-      {/* Scroll body — incluye hero, módulos, CTAs, promos, comercios */}
-      <div className="flex-1 min-h-0 overflow-y-auto pb-[clamp(0rem,2.5vw,0.75rem)] vertical-mobile:overflow-hidden vertical-mobile:flex vertical-mobile:flex-col horizontal-mobile:relative horizontal-mobile:overflow-hidden horizontal-mobile:flex horizontal-mobile:flex-col horizontal-desktop:relative horizontal-desktop:overflow-hidden horizontal-desktop:flex horizontal-desktop:flex-col horizontal-mobile:!pt-7 horizontal-desktop:pt-[clamp(56px,12dvh,80px)] py-[50px]">
+      {/* ZONA 1 — Hero fijo arriba (altura natural) */}
+      <div className="shrink-0">
         <HomeHero
           cityName={cityName}
           hasAlerts={hasAlerts}
@@ -57,11 +71,16 @@ const HomeContent = ({
           showLogin={showLogin}
           onLogin={onLogin}
         />
+      </div>
 
-        {/* Login CTA solo portrait — encima de los módulos */}
+      {/* ZONA 2 — Middle: reparto equitativo de los bloques intermedios */}
+      <div
+        className="flex-1 min-h-0 flex flex-col justify-evenly overflow-hidden gap-[clamp(8px,2vh,20px)] px-0"
+      >
+        {/* Login CTA — solo portrait */}
         {showLogin && (
           <motion.section
-            className="landscape:hidden flex justify-center px-6 mt-2 mb-2 vertical-tablet:px-8 vertical-tablet:mt-4 vertical-tablet:mb-4 py-0"
+            className="landscape:hidden flex justify-center px-6 vertical-tablet:px-8"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.08 }}
@@ -70,9 +89,9 @@ const HomeContent = ({
           </motion.section>
         )}
 
-        {/* MÓDULOS: card que monta sobre el hero (overlap) */}
+        {/* Módulos */}
         <motion.section
-          className={`relative z-10 horizontal-mobile:mt-0 horizontal-desktop:mt-0 ${showLogin ? "mt-0" : "-mt-6"}`}
+          className="relative"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
@@ -80,20 +99,16 @@ const HomeContent = ({
           <HomeModules modules={modules} />
         </motion.section>
 
-        {/* Wrapper landscape: promos + recomendado en 2 columnas */}
-        <div className="relative z-10 horizontal-mobile:grid horizontal-mobile:grid-cols-2 horizontal-mobile:gap-2 horizontal-mobile:px-3 horizontal-mobile:!mt-2 horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-mobile:items-stretch horizontal-mobile:pb-2 horizontal-desktop:grid horizontal-desktop:grid-cols-2 horizontal-desktop:gap-4 horizontal-desktop:px-4 horizontal-desktop:mt-4 horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:items-stretch horizontal-desktop:pb-4">
+        {/* Promos + Comercios:
+            - portrait: stack vertical (cada sección es una fila del flex)
+            - landscape: dos columnas dentro de una sola fila del flex */}
+        <div className="contents landscape:[display:grid] landscape:grid-cols-2 landscape:gap-3 horizontal-desktop:gap-4 landscape:px-3 horizontal-desktop:px-4">
           <PromoSection promos={promos} />
-
-          {/* Spacer flex 3 — solo en vertical-mobile */}
-          <div className="hidden vertical-mobile:block vertical-mobile:flex-1" aria-hidden />
-
           <ComerciosSection comercios={comercios} onSeeAll={onSeeAllComercios} />
         </div>
-
-        {/* Spacer final */}
-        <div className="h-[clamp(0.25rem,2vw,1.5rem)] vertical-mobile:h-0 vertical-mobile:flex-1 horizontal-mobile:hidden horizontal-desktop:hidden" aria-hidden />
       </div>
 
+      {/* ZONA 3 — Tabs fijas abajo */}
       <BottomTabs
         activeTab={activeTab}
         onTabChange={onTabChange}
