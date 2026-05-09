@@ -1,107 +1,101 @@
 ## Objetivo
 
-Convertir `src/pages/Home.tsx` (659 líneas, 6 componentes inline + 3 mocks + 3 interfaces) en una **página fina orquestadora** que solo gestiona estado y compone componentes. Cada componente extraído debe ser una **unidad aislada con props tipadas**, lista para tests unitarios y de integración, y portable a otro proyecto sin arrastrar dependencias de la página.
+Eliminar la duplicación del botón "Iniciar sesión" (hoy inline en `HomeContent.tsx` para portrait y en `HomeHero.tsx` para landscape) extrayéndolo como componente puro reutilizable. Así cada pantalla/contenedor decide su propio margin/padding alrededor del botón, y el botón solo se preocupa de su look&feel.
 
-## Arquitectura final
+## Criterio de diseño elegido
 
-### 1. Tipos compartidos — `src/types/`
+**LoginButton "tonto"** (sin wrapper, sin animación, sin posicionamiento). Esta opción da el máximo control sobre paddings/margins porque:
 
-```text
-src/types/
-  promo.ts        → interface Promo (id, title1/2/3, subtitle, gradient)
-  comercio.ts     → interface Comercio (id, name, logo, bg)
-```
+- El botón NO impone `mt-1`, `mt-3`, `px-4`, ni `motion.section`.
+- Cada consumidor (HomeContent portrait, HomeHero landscape, futuras pantallas) lo envuelve en su propio contenedor con los márgenes que necesita.
+- Es 100% reutilizable en Login, Profile, modales, etc.
 
-(Los tipos `HomeModule` / `HomeModuleId` ya están en `src/components/HomeModules.tsx` — se mantienen donde están.)
+## Arquitectura
 
-### 2. Datos mock — `src/data/`
+### Nuevo componente — `src/components/LoginButton.tsx`
 
 ```text
-src/data/
-  promos.ts       → export const PROMOS: Promo[]
-  comercios.ts    → export const COMERCIOS: Comercio[]
-  homeModules.ts  → export const INITIAL_MODULES: HomeModule[]
+Props:
+  onClick: () => void
+  size?: "sm" | "md"          // sm = portrait/horizontal-mobile, md = horizontal-desktop
+  className?: string          // hook de escape para ajustes puntuales
+
+Render:
+  <button> con las clases base actuales:
+    font-ui font-bold text-km0-blue-700 bg-km0-yellow-500
+    hover:bg-km0-yellow-400 active:scale-95 transition-all
+    rounded-full whitespace-nowrap
+    shadow-[0_4px_12px_-4px_hsl(var(--km0-blue-700)/0.3)]
+
+  Tamaño según `size`:
+    sm → text-xs px-3.5 py-1   (con vertical-tablet:text-sm vertical-tablet:px-5 vertical-tablet:py-1.5)
+    md → text-sm px-4 py-2
+
+  Sin motion, sin section, sin margins externos.
 ```
 
-Cada archivo exporta solo datos, sin lógica. Permite swap por fixtures en tests y por datos reales (API) en producción.
+### Consumidor 1 — `src/components/HomeContent.tsx`
 
-### 3. Componentes — `src/components/`
+Sustituir el bloque actual (líneas ~58-74) por:
 
-Cada componente: archivo propio, props tipadas, sin acceso a estado global de la página, sin imports de `src/pages/`. Acepta sus datos por props.
-
-```text
-src/components/
-  HomeModules.tsx          (ya existe — sin cambios)
-  NotificationBell.tsx     (ya existe — sin cambios)
-  PromoCarousel.tsx        ← NUEVO. Props: { promos: Promo[] }
-  ComercioCarousel.tsx     ← NUEVO. Props: { comercios: Comercio[]; perPage?: number }
-  BottomTabs.tsx           ← NUEVO. Props: { activeTab, onTabChange, onLogin, onProfile, showProfile }
-                              Incluye TabItem como subcomponente interno (no exportado).
-  HomeHero.tsx             ← NUEVO. Header con escudo + nombre + KM0 logo + bell + login CTA.
-                              Props: { cityName, hasAlerts, onToggleAlerts, showLogin, onLogin }
-  PromoSection.tsx         ← NUEVO. Wrapper con título "Promos y eventos destacados" + PromoCarousel.
-                              Props: { promos, title? }
-  ComerciosSection.tsx     ← NUEVO. Wrapper con icono cupón + "Esto es para ti" + "Ver todos" + ComercioCarousel.
-                              Props: { comercios, title?, onSeeAll? }
-  HomeContent.tsx          ← NUEVO. Layout responsive (portrait + landscape) que compone Hero/Modules/PromoSection/ComerciosSection.
-                              Props: las que hoy recibe el HomeContent interno.
+```tsx
+{showLogin && (
+  <motion.section
+    className="landscape:hidden flex justify-center px-4 mt-1 vertical-tablet:mt-3"
+    initial={{ opacity: 0, y: 8 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.4, delay: 0.08 }}
+  >
+    <LoginButton onClick={onLogin} size="sm" />
+  </motion.section>
+)}
 ```
 
-### 4. Página final — `src/pages/Home.tsx`
+El `motion.section` se queda porque define el margin/padding del CTA portrait. El botón en sí ya no contiene estilos.
 
-Queda en ~80 líneas. Solo:
-- Hooks (`useAuth`, `useNotifications`, `useNavigate`, `useState` para tab y módulos).
-- Importa datos de `src/data/`.
-- Renderiza el frame portrait/landscape + `<HomeContent />` + `<NotificationsOverlay />`.
+### Consumidor 2 — `src/components/HomeHero.tsx`
 
-## Beneficios para testing
+Sustituir el `<button>` inline del header landscape por:
 
-| Tipo de test | Cómo se beneficia |
+```tsx
+{showLogin && (
+  <LoginButton
+    onClick={onLogin}
+    size="md"
+    className="hidden landscape:inline-flex horizontal-mobile:!text-[11px] horizontal-mobile:!px-2.5 horizontal-mobile:!py-1"
+  />
+)}
+```
+
+Las visibility classes (`hidden landscape:inline-flex`) y los overrides finos por breakpoint quedan en el consumidor — no en el componente.
+
+## Beneficios concretos
+
+| Antes | Después |
 |---|---|
-| **Unitario** de `PromoCarousel` | Renderizas con `promos={[fixture]}` y verificas dots, swipe, botones prev/next sin montar Home entera. |
-| **Unitario** de `ComercioCarousel` | Pasas `perPage={2}` o `perPage={4}` y testeas paginación con distintas longitudes. |
-| **Unitario** de `BottomTabs` | Mockeas `onTabChange` y verificas qué se invoca según `showProfile`. |
-| **Integración** de `HomeContent` | Pasas todos los props mockeados y verificas composición sin hooks de auth/router. |
-| **Pantalla completa** de `Home` | Solo aquí montas `BrowserRouter` + `QueryClient` + mocks de Supabase. |
-
-Sin esta separación, cualquier test de `PromoCarousel` arrastra `useAuth`, `useNavigate` y `useNotifications`.
-
-## Plan de ejecución (orden seguro)
-
-1. **Crear tipos** en `src/types/promo.ts` y `src/types/comercio.ts`.
-2. **Crear datos** en `src/data/promos.ts`, `src/data/comercios.ts`, `src/data/homeModules.ts`. Importan los tipos del paso 1.
-3. **Extraer componentes "hoja"** (sin dependencias entre ellos):
-   - `PromoCarousel.tsx`
-   - `ComercioCarousel.tsx`
-   - El `TabItem` queda dentro de `BottomTabs.tsx`.
-4. **Extraer wrappers de sección**:
-   - `PromoSection.tsx` (usa `PromoCarousel`)
-   - `ComerciosSection.tsx` (usa `ComercioCarousel`)
-   - `BottomTabs.tsx`
-   - `HomeHero.tsx`
-5. **Extraer `HomeContent.tsx`** componiendo todo lo anterior.
-6. **Adelgazar `src/pages/Home.tsx`** a página orquestadora. Importa datos de `src/data/` y compone con `HomeContent`.
-7. **Verificar visualmente** las 4 resoluciones canónicas (375×667, 768×1024, 667×375, 1280×550) — cero regresiones de layout.
+| Estilos del botón duplicados en 2 archivos | Una sola fuente de verdad en `LoginButton.tsx` |
+| Cambiar el color del CTA = editar 2 sitios | Cambiar el color = editar 1 sitio |
+| Margin/padding mezclado con look del botón | Margin/padding 100% controlado por el contenedor |
+| No reutilizable en Login/Profile/modales | Importable en cualquier pantalla |
+| Tests: hay que montar HomeContent o HomeHero | Test unitario directo: `<LoginButton onClick={fn} />` |
 
 ## Lo que NO se toca
 
-- `HomeModules`, `NotificationBell`, `NotificationsOverlay`, `Km0Logo` — ya están bien.
-- Tokens del design system (`tailwind.config.ts`, `index.css`).
-- Breakpoints oficiales.
-- Lógica de auth, notificaciones o navegación.
-- Estilos: cada componente conserva exactamente las clases Tailwind que ya tiene.
+- Animaciones (`motion.section` y sus delays se quedan en el consumidor portrait).
+- Lógica de `showLogin` / `onLogin` (sigue en `Home.tsx` → props).
+- Estilos visuales (mismas clases, cero cambios visuales en los 4 breakpoints).
+- `HomeHero` mantiene su layout; solo cambia el `<button>` inline por `<LoginButton>`.
 
-## Convenciones aplicadas
+## Plan de ejecución
 
-- **PascalCase** en archivos de componentes (`PromoCarousel.tsx`).
-- **camelCase** en archivos de datos (`promos.ts`).
-- Cada componente exporta `default` el componente y `named` su `interface Props`, para que los tests puedan tiparlos: `import PromoCarousel, { type PromoCarouselProps } from "@/components/PromoCarousel"`.
-- Los datos mock se exportan como `const` tipados, no como funciones.
+1. Crear `src/components/LoginButton.tsx` con props `{ onClick, size?, className? }` y las clases base.
+2. Editar `src/components/HomeContent.tsx`: importar `LoginButton`, sustituir el `<button>` inline manteniendo el `motion.section` wrapper.
+3. Editar `src/components/HomeHero.tsx`: importar `LoginButton`, sustituir el `<button>` inline conservando las clases de visibilidad y overrides horizontal-mobile.
+4. Verificar visualmente las 4 resoluciones (375×667, 768×1024, 667×375, 1280×550) — cero regresiones.
 
 ## Resultado esperado
 
-- `Home.tsx`: ~80 líneas (orquestador).
-- 8 componentes nuevos en `src/components/`, cada uno < 200 líneas y testeable en aislamiento.
-- 3 archivos de datos en `src/data/` y 2 de tipos en `src/types/`.
-- Cero cambios visuales en ninguno de los 4 breakpoints.
-- Base lista para añadir `PromoCarousel.test.tsx`, `ComercioCarousel.test.tsx`, etc., y para portar componente a componente al proyecto km0lab (RN/Expo) sin arrastrar la página entera.
+- 1 componente nuevo (`LoginButton.tsx`, ~40 líneas).
+- 2 archivos editados (`HomeContent.tsx`, `HomeHero.tsx`) más cortos y sin estilos duplicados.
+- Cero cambios visuales.
+- Base lista para reutilizar el botón en cualquier otra pantalla y para añadir `LoginButton.test.tsx` aislado.
