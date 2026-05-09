@@ -304,7 +304,7 @@ const HomeContent = ({
                   width={80}
                   height={80}
                   loading="lazy"
-                  className="w-[clamp(2.25rem,9vw,5rem)] h-[clamp(2.25rem,9vw,5rem)] object-contain shrink-0 horizontal-mobile:w-6 horizontal-mobile:h-6 horizontal-desktop:w-8 horizontal-desktop:h-8"
+                  className="w-12 h-12 object-contain shrink-0"
                 />
                 <h2 className="font-brand font-black text-km0-blue-700 whitespace-nowrap text-sm vertical-tablet:text-base horizontal-mobile:!text-xs horizontal-desktop:!text-lg">
                   Esto es para ti
