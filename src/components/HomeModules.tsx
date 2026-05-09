@@ -74,7 +74,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
           // Borde inferior con doble curva (cápsula): radio horizontal
           // grande + radio vertical menor → efecto orgánico tipo "ola".
           "rounded-bl-[40%_24px] rounded-br-[40%_24px]",
-          "px-[clamp(4px,2vw,12px)] py-[20px] opacity-100 horizontal-mobile:!py-2 my-[20px]",
+          "px-[clamp(4px,2vw,12px)] py-[20px] opacity-100 horizontal-mobile:!py-2 my-[20px] horizontal-mobile:!my-1",
         )}
       >
         {/* Patrón decorativo sutil arriba — círculos translúcidos
@@ -127,8 +127,8 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
   // Tamaño fluido: en vertical-mobile (375px) se reduce para que los 4 módulos
   // quepan sin recortar el label "Ayuntamiento".
   const sizeClasses = emphasized
-    ? "w-[clamp(60px,17vw,78px)] h-[clamp(60px,17vw,78px)] vertical-tablet:w-[88px] vertical-tablet:h-[88px] horizontal-mobile:!w-[66px] horizontal-mobile:!h-[66px] horizontal-desktop:!w-[72px] horizontal-desktop:!h-[72px]"
-    : "w-[clamp(54px,15vw,68px)] h-[clamp(54px,15vw,68px)] vertical-tablet:w-[78px] vertical-tablet:h-[78px] horizontal-mobile:!w-[64px] horizontal-mobile:!h-[64px] horizontal-desktop:!w-[70px] horizontal-desktop:!h-[70px]";
+    ? "w-[clamp(60px,17vw,78px)] h-[clamp(60px,17vw,78px)] vertical-tablet:w-[88px] vertical-tablet:h-[88px] horizontal-mobile:!w-[46px] horizontal-mobile:!h-[46px] horizontal-desktop:!w-[72px] horizontal-desktop:!h-[72px]"
+    : "w-[clamp(54px,15vw,68px)] h-[clamp(54px,15vw,68px)] vertical-tablet:w-[78px] vertical-tablet:h-[78px] horizontal-mobile:!w-[44px] horizontal-mobile:!h-[44px] horizontal-desktop:!w-[70px] horizontal-desktop:!h-[70px]";
 
   const iconSize = emphasized ? 34 : 30;
 
@@ -191,11 +191,11 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
             blanco con borde azul para que destaque sobre la banda azul. */}
         <span
           className={cn(
-            "relative -mt-2.5 z-10 horizontal-mobile:-mt-2.5 horizontal-desktop:-mt-2.5",
-            "px-2.5 vertical-mobile:px-[clamp(0.375rem,1.7vw,0.625rem)] py-0.5 rounded-full bg-white horizontal-mobile:px-2 horizontal-mobile:py-0.5 horizontal-desktop:px-2.5 horizontal-desktop:py-0.5",
+            "relative -mt-2.5 z-10 horizontal-mobile:-mt-2 horizontal-desktop:-mt-2.5",
+            "px-2.5 vertical-mobile:px-[clamp(0.375rem,1.7vw,0.625rem)] py-0.5 rounded-full bg-white horizontal-mobile:px-1.5 horizontal-mobile:py-0 horizontal-desktop:px-2.5 horizontal-desktop:py-0.5",
             "border border-km0-blue-300/60",
             "shadow-[0_2px_6px_-2px_hsl(var(--km0-blue-900)/0.25)]",
-            "font-ui font-bold text-[10px] vertical-mobile:text-[clamp(8px,2.45vw,10px)] leading-tight text-km0-blue-800 horizontal-mobile:!text-[11px] horizontal-desktop:!text-[12px]",
+            "font-ui font-bold text-[10px] vertical-mobile:text-[clamp(8px,2.45vw,10px)] leading-tight text-km0-blue-800 horizontal-mobile:!text-[9px] horizontal-desktop:!text-[12px]",
             "text-center whitespace-nowrap max-w-[120%]",
           )}
         >
