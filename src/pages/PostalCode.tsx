@@ -88,7 +88,7 @@ const PostalCode = () => {
       sessionStorage.setItem("km0_postal_code", value);
       sessionStorage.setItem("km0_town", cityName);
     } catch {/* sessionStorage puede fallar en modo privado */}
-    navigate("/chat", { state: { lang, cityName, postalCode: value } });
+    navigate("/home", { state: { lang, cityName, postalCode: value } });
   };
 
   return (
