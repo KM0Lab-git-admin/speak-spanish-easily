@@ -5,6 +5,7 @@ import PromoSection from "./PromoSection";
 import ComerciosSection from "./ComerciosSection";
 import BottomTabs, { type HomeTab } from "./BottomTabs";
 import LoginButton from "./LoginButton";
+import UserGreeting from "./UserGreeting";
 import type { Promo } from "@/types/promo";
 import type { Comercio } from "@/types/comercio";
 
