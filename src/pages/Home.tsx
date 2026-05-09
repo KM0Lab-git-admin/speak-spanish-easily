@@ -408,7 +408,11 @@ const HomeContent = ({
           icon={<User size={20} strokeWidth={2.2} />}
           label="Perfil"
           active={activeTab === "perfil"}
-          onClick={() => onTabChange("perfil")}
+          onClick={() => {
+            onTabChange("perfil");
+            if (showProfile) onProfile();
+            else onLogin();
+          }}
         />
       </nav>
     </>
