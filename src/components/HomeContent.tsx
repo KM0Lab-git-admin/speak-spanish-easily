@@ -59,11 +59,11 @@ const HomeContent = ({
         />
 
         {/* Middle: pegado arriba, sin padding/margin/gap */}
-        <div className="flex-1 min-h-0 flex flex-col justify-evenly gap-0 overflow-hidden relative z-10 px-[15px] horizontal-mobile:pb-2 horizontal-desktop:pb-3">
+        <div className="flex-1 min-h-0 flex flex-col justify-evenly gap-0 overflow-hidden relative z-10 px-[15px] horizontal-mobile:pb-2 horizontal-desktop:pb-3 border border-black">
           {/* Login CTA solo portrait */}
           {showLogin && (
             <motion.section
-              className="landscape:hidden flex justify-center shrink-0 !m-0 !p-0"
+              className="landscape:hidden flex justify-center shrink-0 !m-0 !p-0 border border-black"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.08 }}
@@ -74,7 +74,7 @@ const HomeContent = ({
 
           {/* MÓDULOS */}
           <motion.section
-            className="shrink-0 m-0 p-0 landscape:col-span-2"
+            className="shrink-0 m-0 p-0 landscape:col-span-2 border border-black"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
@@ -83,7 +83,7 @@ const HomeContent = ({
           </motion.section>
 
           {/* Promos + Comercios: portrait apilados, landscape 2 columnas */}
-          <div className="flex flex-col gap-0 m-0 p-0 landscape:flex-1 landscape:min-h-0 landscape:grid landscape:grid-cols-2 landscape:gap-3 horizontal-desktop:gap-4">
+          <div className="flex flex-col gap-0 m-0 p-0 landscape:flex-1 landscape:min-h-0 landscape:grid landscape:grid-cols-2 landscape:gap-3 horizontal-desktop:gap-4 border border-black">
             <PromoSection promos={promos} />
             <ComerciosSection comercios={comercios} onSeeAll={onSeeAllComercios} />
           </div>
