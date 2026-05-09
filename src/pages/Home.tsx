@@ -310,7 +310,7 @@ const HomeContent = ({
               </h2>
               <button
                 type="button"
-                className="font-ui font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform shrink-0 mr-auto underline underline-offset-4 text-lg"
+                className="font-ui font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform shrink-0 ml-auto underline underline-offset-4 text-lg"
               >
                 Ver todos
                 <ArrowRight size={14} strokeWidth={2.4} className="horizontal-mobile:!w-3 horizontal-mobile:!h-3" />
