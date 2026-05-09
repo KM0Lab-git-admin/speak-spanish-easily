@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { UserRound, UserRoundPlus, ChevronLeft, ChevronRight, ArrowRight, Home as HomeIcon, Info, Tag, User } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight, Home as HomeIcon, Info, Tag, User } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
 import HomeModules, { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
@@ -90,6 +92,9 @@ const PROMOS: Promo[] = [
 const Home = () => {
   const cityName = "Malgrat de Mar";
   const { notifications, hasUnread, markRead, markAllRead } = useNotifications();
+  const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
+  const showLogin = !authLoading && !user;
   const openNotifications = () => {
     setNotifOpen(true);
     markAllRead();
