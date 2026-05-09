@@ -4,7 +4,6 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import BrandedFrame from "@/components/BrandedFrame";
-import SocialAuthButtons from "@/components/SocialAuthButtons";
 
 /**
  * Pantalla única de entrada (login + registro unificados).
@@ -88,13 +87,6 @@ const Login = () => {
           </button>
         </form>
 
-        <div className="flex items-center gap-3 my-1">
-          <div className="flex-1 h-px bg-km0-blue-700/15" />
-          <span className="font-body text-xs text-muted-foreground">o continúa con</span>
-          <div className="flex-1 h-px bg-km0-blue-700/15" />
-        </div>
-
-        <SocialAuthButtons />
       </motion.div>
     </BrandedFrame>
   );
