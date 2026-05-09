@@ -29,7 +29,7 @@ const UserGreeting = ({
 
   return (
     <div
-      className={`flex items-center gap-2 vertical-tablet:gap-3 ${className}`.trim()}
+      className={`w-full flex items-center gap-2 vertical-tablet:gap-3 ${className}`.trim()}
     >
       {/* Bloque 1: avatar + saludo + puntos */}
       <div className="flex items-center gap-2 min-w-0">

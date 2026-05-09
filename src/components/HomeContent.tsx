@@ -76,7 +76,7 @@ const HomeContent = ({
           {/* TODO(auth): renderizar solo cuando haya sesión activa.
               Por ahora siempre visible para validar maquetación. */}
           <motion.section
-            className="flex justify-start shrink-0 !m-0 !p-0 border border-black"
+            className="w-full flex justify-start shrink-0 !m-0 !p-0 border border-black"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.08 }}
