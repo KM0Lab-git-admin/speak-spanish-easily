@@ -72,7 +72,7 @@ const HomeContent = ({
 
         {/* MÓDULOS: card que monta sobre el hero (overlap) */}
         <motion.section
-          className="-mt-6 relative z-10 horizontal-mobile:mt-0 horizontal-desktop:mt-0"
+          className={`relative z-10 horizontal-mobile:mt-0 horizontal-desktop:mt-0 ${showLogin ? "mt-0" : "-mt-6"}`}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
