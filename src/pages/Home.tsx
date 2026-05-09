@@ -129,6 +129,8 @@ const Home = () => {
           modules={modulesWithHandlers}
           activeTab={activeTab}
           onTabChange={setActiveTab}
+          showLogin={showLogin}
+          onLogin={() => navigate("/login")}
         />
         <NotificationsOverlay
           open={notifOpen}
@@ -153,6 +155,8 @@ const Home = () => {
           modules={modulesWithHandlers}
           activeTab={activeTab}
           onTabChange={setActiveTab}
+          showLogin={showLogin}
+          onLogin={() => navigate("/login")}
           landscape
         />
         <NotificationsOverlay
