@@ -63,12 +63,14 @@ const UserGreeting = ({
 
       {/* Bloque 2: tarjeta próximo nivel */}
       <div className="shrink-0 rounded-xl bg-km0-beige-100 border border-km0-blue-700/10 px-2.5 py-1.5 vertical-tablet:px-3 vertical-tablet:py-2 horizontal-mobile:!px-2 horizontal-mobile:!py-1">
-        <p className="font-ui font-bold text-km0-blue-700 text-[11px] vertical-tablet:text-xs horizontal-mobile:!text-[10px] leading-tight">
-          Próxim regal:
-        </p>
-        <p className="font-body text-km0-blue-800 text-[11px] vertical-tablet:text-xs horizontal-mobile:!text-[10px] leading-tight whitespace-nowrap">
-          {safePoints.toLocaleString("es-ES")} / {safeNext.toLocaleString("es-ES")} punts
-        </p>
+        <div className="flex items-baseline gap-1.5 whitespace-nowrap leading-tight">
+          <p className="font-ui font-bold text-km0-blue-700 text-[11px] vertical-tablet:text-xs horizontal-mobile:!text-[10px]">
+            Próxim regal:
+          </p>
+          <p className="font-body text-km0-blue-800 text-[11px] vertical-tablet:text-xs horizontal-mobile:!text-[10px]">
+            {safePoints.toLocaleString("es-ES")} / {safeNext.toLocaleString("es-ES")} punts
+          </p>
+        </div>
         <div
           role="progressbar"
           aria-valuemin={0}
