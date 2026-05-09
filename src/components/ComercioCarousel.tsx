@@ -64,7 +64,7 @@ const ComercioCarousel = ({ comercios, perPage = 4 }: ComercioCarouselProps) => 
               >
                 <div
                   className={cn(
-                    "w-[clamp(2.25rem,8vw,3.5rem)] h-[clamp(2.25rem,8vw,3.5rem)] vertical-tablet:w-14 vertical-tablet:h-14 rounded-full shadow-sm border-2 border-white flex items-center justify-center overflow-hidden",
+                    "w-[clamp(2.25rem,8vw,3.5rem)] h-[clamp(2.25rem,8vw,3.5rem)] vertical-tablet:w-14 vertical-tablet:h-14 horizontal-mobile:!w-9 horizontal-mobile:!h-9 rounded-full shadow-sm border-2 border-white flex items-center justify-center overflow-hidden",
                     c.bg,
                   )}
                 >
