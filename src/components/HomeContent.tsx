@@ -48,8 +48,9 @@ const HomeContent = ({
 }: HomeContentProps) => {
   return (
     <>
-      {/* Scroll body — incluye hero, módulos, CTAs, promos, comercios */}
-      <div className="flex-1 min-h-0 overflow-y-auto pb-[clamp(0rem,2.5vw,0.75rem)] vertical-mobile:overflow-hidden vertical-mobile:flex vertical-mobile:flex-col horizontal-mobile:relative horizontal-mobile:overflow-hidden horizontal-mobile:flex horizontal-mobile:flex-col horizontal-desktop:relative horizontal-desktop:overflow-hidden horizontal-desktop:flex horizontal-desktop:flex-col horizontal-mobile:!pt-7 horizontal-desktop:pt-[clamp(56px,12dvh,80px)] py-0">
+      {/* Body — sin scroll: hero fijo arriba, middle flex justify-evenly, tabs fijos abajo */}
+      <div className="flex-1 min-h-0 overflow-hidden flex flex-col horizontal-mobile:relative horizontal-desktop:relative horizontal-mobile:!pt-7 horizontal-desktop:pt-[clamp(56px,12dvh,80px)]">
+        <div className="shrink-0 horizontal-mobile:!absolute horizontal-mobile:!inset-0 horizontal-desktop:!absolute horizontal-desktop:!inset-0 horizontal-mobile:!pointer-events-none horizontal-desktop:!pointer-events-none">
         <HomeHero
           cityName={cityName}
           hasAlerts={hasAlerts}
