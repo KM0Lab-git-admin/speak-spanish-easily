@@ -194,6 +194,8 @@ interface HomeContentProps {
   onTabChange: (t: "home" | "info" | "ofertes" | "perfil") => void;
   showLogin: boolean;
   onLogin: () => void;
+  showLogout: boolean;
+  onLogout: () => void;
   landscape?: boolean;
 }
 
@@ -206,6 +208,8 @@ const HomeContent = ({
   onTabChange,
   showLogin,
   onLogin,
+  showLogout,
+  onLogout,
   landscape = false,
 }: HomeContentProps) => {
   return (
