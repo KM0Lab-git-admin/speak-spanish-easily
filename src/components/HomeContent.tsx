@@ -59,7 +59,7 @@ const HomeContent = ({
         />
 
         {/* Middle: pegado arriba, sin padding/margin/gap */}
-        <div className="flex-1 min-h-0 flex flex-col justify-start gap-0 overflow-hidden relative z-10 px-[15px] horizontal-mobile:pb-2 horizontal-desktop:pb-3">
+        <div className="flex-1 min-h-0 flex flex-col justify-evenly gap-0 overflow-hidden relative z-10 px-[15px] horizontal-mobile:pb-2 horizontal-desktop:pb-3">
           {/* Login CTA solo portrait */}
           {showLogin && (
             <motion.section
