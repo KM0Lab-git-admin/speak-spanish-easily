@@ -4,6 +4,7 @@ import HomeHero from "./HomeHero";
 import PromoSection from "./PromoSection";
 import ComerciosSection from "./ComerciosSection";
 import BottomTabs, { type HomeTab } from "./BottomTabs";
+import LoginButton from "./LoginButton";
 import type { Promo } from "@/types/promo";
 import type { Comercio } from "@/types/comercio";
 
@@ -65,13 +66,7 @@ const HomeContent = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.08 }}
           >
-            <button
-              type="button"
-              onClick={onLogin}
-              className="font-ui font-bold text-km0-blue-700 bg-km0-yellow-500 hover:bg-km0-yellow-400 active:scale-95 transition-all rounded-full text-xs px-3.5 py-1 vertical-tablet:text-sm vertical-tablet:px-5 vertical-tablet:py-1.5 shadow-[0_4px_12px_-4px_hsl(var(--km0-blue-700)/0.3)] whitespace-nowrap"
-            >
-              Iniciar sesión
-            </button>
+            <LoginButton onClick={onLogin} size="sm" />
           </motion.section>
         )}
 
