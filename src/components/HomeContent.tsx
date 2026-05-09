@@ -61,7 +61,7 @@ const HomeContent = ({
         {/* Login CTA solo portrait — encima de los módulos */}
         {showLogin && (
           <motion.section
-            className="landscape:hidden flex justify-center px-4 mt-1 vertical-tablet:mt-3"
+            className="landscape:hidden flex justify-center px-6 py-2 mt-4 mb-4 vertical-tablet:px-8 vertical-tablet:py-3 vertical-tablet:mt-6 vertical-tablet:mb-6"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.08 }}
@@ -72,7 +72,7 @@ const HomeContent = ({
 
         {/* MÓDULOS: card que monta sobre el hero (overlap) */}
         <motion.section
-          className="-mt-6 relative z-10 horizontal-mobile:mt-0 horizontal-desktop:mt-0"
+          className={`relative z-10 horizontal-mobile:mt-0 horizontal-desktop:mt-0 ${showLogin ? "mt-0" : "-mt-6"}`}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
