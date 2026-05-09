@@ -188,10 +188,11 @@ const Profile = () => {
               <Field label="Población">
                 <input
                   type="text"
-                  value={form.town}
-                  onChange={handleChange("town")}
-                  placeholder="Tu población"
-                  className={inputCls}
+                  value={town ?? ""}
+                  readOnly
+                  disabled
+                  placeholder={form.postal_code.length === 5 ? "Sin coincidencia" : "Se rellena con el CP"}
+                  className={`${inputCls} opacity-60 cursor-not-allowed`}
                 />
               </Field>
             </div>
