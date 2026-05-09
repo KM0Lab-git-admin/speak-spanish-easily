@@ -264,16 +264,6 @@ const HomeContent = ({
                   Iniciar sesión
                 </button>
               )}
-              {showProfile && (
-                <button
-                  type="button"
-                  onClick={onProfile}
-                  aria-label="Mi perfil"
-                  className="w-10 h-10 horizontal-mobile:w-8 horizontal-mobile:h-8 flex items-center justify-center rounded-full bg-km0-blue-700 text-white transition-all duration-200 hover:bg-km0-blue-800 active:scale-95 shrink-0 shadow-[0_4px_12px_-4px_hsl(var(--km0-blue-700)/0.4)]"
-                >
-                  <User size={18} strokeWidth={2.2} />
-                </button>
-              )}
               <NotificationBell
                 hasAlerts={hasAlerts}
                 onClick={onToggleAlerts}
