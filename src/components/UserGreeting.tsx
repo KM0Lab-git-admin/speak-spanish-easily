@@ -66,7 +66,7 @@ const UserGreeting = ({
       <img
         src={giftIcon}
         alt="Próximo regalo"
-        className="ml-auto shrink-0 w-7 h-7 vertical-tablet:w-8 vertical-tablet:h-8 horizontal-mobile:!w-6 horizontal-mobile:!h-6 object-contain"
+        className="ml-auto shrink-0 w-10 h-10 vertical-tablet:w-12 vertical-tablet:h-12 horizontal-mobile:!w-9 horizontal-mobile:!h-9 object-contain"
       />
 
       {/* Bloque 3: tarjeta puntos + barra */}
