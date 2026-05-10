@@ -33,7 +33,7 @@ const HomeHero = ({
       transition={{ duration: 0.4 }}
     >
       {/* Fondo del header: gradiente beige cálido. */}
-      <div className="relative w-full aspect-[1920/716] bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 my-[5px] horizontal-mobile:!aspect-auto horizontal-mobile:h-full horizontal-mobile:my-0 horizontal-desktop:!aspect-auto horizontal-desktop:h-full horizontal-desktop:my-0" />
+      <div className="relative w-full aspect-[1920/716] bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 my-[5px] vertical-mobile:!aspect-auto vertical-mobile:!h-[78px] vertical-mobile:!my-0 horizontal-mobile:!aspect-auto horizontal-mobile:h-full horizontal-mobile:my-0 horizontal-desktop:!aspect-auto horizontal-desktop:h-full horizontal-desktop:my-0" />
 
       {/* Skyline del municipio */}
       <img
