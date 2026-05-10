@@ -33,7 +33,7 @@ const HomeHero = ({
       transition={{ duration: 0.4 }}
     >
       {/* Fondo del header: gradiente beige cálido. */}
-      <div className="relative w-full aspect-[1920/716] bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 my-[5px] horizontal-mobile:!aspect-auto horizontal-mobile:h-full horizontal-mobile:my-0 horizontal-desktop:!aspect-auto horizontal-desktop:h-full horizontal-desktop:my-0" />
+      <div className="relative w-full aspect-[1920/716] bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 my-[5px] vertical-mobile:!aspect-auto vertical-mobile:!h-[78px] vertical-mobile:!my-0 horizontal-mobile:!aspect-auto horizontal-mobile:h-full horizontal-mobile:my-0 horizontal-desktop:!aspect-auto horizontal-desktop:h-full horizontal-desktop:my-0" />
 
       {/* Skyline del municipio */}
       <img
@@ -44,7 +44,7 @@ const HomeHero = ({
       />
 
       {/* Overlay: escudo + nombre + KM0 logo + login + bell */}
-      <div className="absolute inset-x-0 top-0 flex items-start justify-between pl-2 pr-4 pt-4 gap-3 horizontal-mobile:pointer-events-auto horizontal-mobile:pt-2 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto">
+      <div className="absolute inset-x-0 top-0 flex items-center justify-between pl-2 pr-4 pt-4 gap-3 vertical-mobile:!pt-2 vertical-mobile:!pb-1 horizontal-mobile:pointer-events-auto horizontal-mobile:pt-2 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto">
         <div className="flex items-center gap-2 min-w-0">
           <img
             src={coatMalgrat}
