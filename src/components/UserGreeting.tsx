@@ -62,18 +62,18 @@ const UserGreeting = ({
         </div>
       </div>
 
-      {/* Bloque 2: tarjeta próximo nivel */}
-      <div className="shrink-0 ml-auto rounded-xl bg-km0-beige-100 border border-km0-blue-700/10 px-2.5 py-1.5 vertical-tablet:px-3 vertical-tablet:py-2 horizontal-mobile:!px-2 horizontal-mobile:!py-1 text-right">
-        <div className="flex items-center gap-1.5 whitespace-nowrap leading-tight">
-          <img
-            src={giftIcon}
-            alt="Próximo regalo"
-            className="w-5 h-5 vertical-tablet:w-6 vertical-tablet:h-6 horizontal-mobile:!w-4 horizontal-mobile:!h-4 object-contain shrink-0"
-          />
-          <p className="font-body text-km0-blue-800 text-[11px] vertical-tablet:text-xs horizontal-mobile:!text-[10px]">
-            {safePoints.toLocaleString("es-ES")} / {safeNext.toLocaleString("es-ES")} punts
-          </p>
-        </div>
+      {/* Bloque 2: icono regalo (hijo directo) */}
+      <img
+        src={giftIcon}
+        alt="Próximo regalo"
+        className="ml-auto shrink-0 w-7 h-7 vertical-tablet:w-8 vertical-tablet:h-8 horizontal-mobile:!w-6 horizontal-mobile:!h-6 object-contain"
+      />
+
+      {/* Bloque 3: tarjeta puntos + barra */}
+      <div className="shrink-0 rounded-xl bg-km0-beige-100 border border-km0-blue-700/10 px-2.5 py-1.5 vertical-tablet:px-3 vertical-tablet:py-2 horizontal-mobile:!px-2 horizontal-mobile:!py-1 text-right">
+        <p className="font-body text-km0-blue-800 text-[11px] vertical-tablet:text-xs horizontal-mobile:!text-[10px] whitespace-nowrap leading-tight">
+          {safePoints.toLocaleString("es-ES")} / {safeNext.toLocaleString("es-ES")} punts
+        </p>
         <div
           role="progressbar"
           aria-valuemin={0}
