@@ -8,6 +8,7 @@ import Onboarding from "./pages/Onboarding";
 import PostalCode from "./pages/PostalCode";
 import Chat from "./pages/Chat";
 import Home from "./pages/Home";
+import Agenda from "./pages/Agenda";
 import Login from "./pages/Login";
 import CheckEmail from "./pages/CheckEmail";
 import Profile from "./pages/Profile";
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/check-email" element={<CheckEmail />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/agenda" element={<Agenda />} />
           {/* Perfil accesible sin auth para testing — Profile gestiona el estado sin user. */}
           <Route path="/profile" element={<Profile />} />
           <Route path="/design-system" element={<DesignSystem />} />
