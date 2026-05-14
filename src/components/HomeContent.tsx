@@ -50,7 +50,7 @@ const HomeContent = ({
   return (
     <>
       {/* Body — sin scroll: hero arriba (shrink-0), middle flex justify-evenly, tabs abajo */}
-      <div className="flex-1 min-h-0 overflow-hidden flex flex-col relative horizontal-mobile:!pt-[clamp(48px,12dvh,72px)] horizontal-desktop:pt-[clamp(64px,13dvh,96px)]">
+      <div className="flex-1 min-h-0 overflow-hidden flex flex-col relative horizontal-mobile:!pt-[clamp(40px,10dvh,60px)] horizontal-desktop:pt-[clamp(64px,13dvh,96px)]">
         <HomeHero
           cityName={cityName}
           hasAlerts={hasAlerts}
@@ -103,7 +103,7 @@ const HomeContent = ({
           </div>
 
           {/* Landscape: grid 2 columnas */}
-          <div className="hidden landscape:grid landscape:flex-1 landscape:min-h-0 landscape:grid-cols-2 landscape:gap-3 horizontal-desktop:gap-4 m-0 p-0">
+          <div className="hidden landscape:grid landscape:flex-1 landscape:min-h-0 landscape:grid-cols-2 landscape:gap-3 horizontal-mobile:!gap-2 horizontal-desktop:gap-4 m-0 p-0">
             <div className="border border-black">
               <PromoSection promos={promos} />
             </div>

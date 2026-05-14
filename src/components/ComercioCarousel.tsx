@@ -37,8 +37,8 @@ const ComercioCarousel = ({ comercios, perPage = 4 }: ComercioCarouselProps) => 
   const currentPage = pages[page];
 
   return (
-    <div>
-      <div className="relative overflow-hidden">
+    <div className="horizontal-mobile:flex horizontal-mobile:flex-col horizontal-mobile:h-full horizontal-mobile:min-h-0">
+      <div className="relative overflow-hidden horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-mobile:flex horizontal-mobile:items-center">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={page}
@@ -54,7 +54,7 @@ const ComercioCarousel = ({ comercios, perPage = 4 }: ComercioCarouselProps) => 
               if (info.offset.x < -50 && page < total - 1) goTo(page + 1);
               else if (info.offset.x > 50 && page > 0) goTo(page - 1);
             }}
-            className="grid grid-cols-4 gap-2 cursor-grab active:cursor-grabbing"
+            className="grid grid-cols-4 gap-2 cursor-grab active:cursor-grabbing horizontal-mobile:w-full"
           >
             {currentPage.map((c) => (
               <button
@@ -93,7 +93,7 @@ const ComercioCarousel = ({ comercios, perPage = 4 }: ComercioCarouselProps) => 
       </div>
 
       {total > 1 && (
-        <div className="flex items-center justify-center gap-1.5 mt-[clamp(0.375rem,1.5vw,0.75rem)] vertical-tablet:mt-3">
+        <div className="flex items-center justify-center gap-1.5 mt-[clamp(0.375rem,1.5vw,0.75rem)] vertical-tablet:mt-3 horizontal-mobile:!mt-1 horizontal-mobile:shrink-0">
           {pages.map((_, i) => (
             <button
               key={i}
