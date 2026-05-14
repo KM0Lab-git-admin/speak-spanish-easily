@@ -26,7 +26,7 @@ const PromoSection = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: animationDelay }}
     >
-      <div className="flex items-center min-h-12 mb-[clamp(0.125rem,1vw,0.875rem)] vertical-tablet:mb-3 horizontal-mobile:!mb-1 horizontal-desktop:!mb-2">
+      <div className="flex items-center min-h-12 horizontal-mobile:!min-h-0 horizontal-mobile:h-6 mb-[clamp(0.125rem,1vw,0.875rem)] vertical-tablet:mb-3 horizontal-mobile:!mb-1 horizontal-desktop:!mb-2">
         <h2 className="font-brand font-black text-km0-blue-700 text-sm vertical-tablet:text-base horizontal-mobile:!text-xs horizontal-desktop:!text-lg">
           {title}
         </h2>
