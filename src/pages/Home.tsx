@@ -40,7 +40,13 @@ const Home = () => {
 
   const modulesWithHandlers: HomeModule[] = modules.map((m) => ({
     ...m,
-    onClick: () => toggleModule(m.id),
+    onClick: () => {
+      if (m.id === "agenda") {
+        navigate("/agenda");
+        return;
+      }
+      toggleModule(m.id);
+    },
   }));
 
   const openNotifications = () => {
