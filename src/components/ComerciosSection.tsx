@@ -29,7 +29,7 @@ const ComerciosSection = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: animationDelay }}
     >
-      <div className="flex items-center w-full justify-between mb-[clamp(0.125rem,1vw,0.875rem)] vertical-tablet:mb-3 horizontal-mobile:!mb-1 horizontal-desktop:!mb-2 gap-2 horizontal-mobile:!gap-1">
+      <div className="flex items-center w-full justify-between mb-[clamp(0.125rem,1vw,0.875rem)] vertical-tablet:mb-3 horizontal-mobile:!mb-1 horizontal-mobile:h-6 horizontal-desktop:!mb-2 gap-2 horizontal-mobile:!gap-1">
         <div className="flex items-center gap-2 horizontal-mobile:gap-1 min-w-0">
           <img
             src={couponIcon}
@@ -38,7 +38,7 @@ const ComerciosSection = ({
             width={80}
             height={80}
             loading="lazy"
-            className="w-12 h-12 horizontal-mobile:!w-7 horizontal-mobile:!h-7 object-contain shrink-0"
+            className="w-12 h-12 horizontal-mobile:!hidden object-contain shrink-0"
           />
           <h2 className="font-brand font-black text-km0-blue-700 whitespace-nowrap text-xs vertical-tablet:text-base horizontal-mobile:!text-xs horizontal-desktop:!text-lg">
             {title}
