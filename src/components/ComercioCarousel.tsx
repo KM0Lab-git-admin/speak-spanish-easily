@@ -54,7 +54,7 @@ const ComercioCarousel = ({ comercios, perPage = 4 }: ComercioCarouselProps) => 
               if (info.offset.x < -50 && page < total - 1) goTo(page + 1);
               else if (info.offset.x > 50 && page > 0) goTo(page - 1);
             }}
-            className="grid grid-cols-4 gap-2 cursor-grab active:cursor-grabbing"
+            className="grid grid-cols-4 gap-2 cursor-grab active:cursor-grabbing horizontal-mobile:w-full"
           >
             {currentPage.map((c) => (
               <button
