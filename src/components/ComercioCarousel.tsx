@@ -93,7 +93,7 @@ const ComercioCarousel = ({ comercios, perPage = 4 }: ComercioCarouselProps) => 
       </div>
 
       {total > 1 && (
-        <div className="flex items-center justify-center gap-1.5 mt-[clamp(0.375rem,1.5vw,0.75rem)] vertical-tablet:mt-3">
+        <div className="flex items-center justify-center gap-1.5 mt-[clamp(0.375rem,1.5vw,0.75rem)] vertical-tablet:mt-3 horizontal-mobile:!mt-1 horizontal-mobile:shrink-0">
           {pages.map((_, i) => (
             <button
               key={i}
