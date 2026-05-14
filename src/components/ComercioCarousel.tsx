@@ -37,8 +37,8 @@ const ComercioCarousel = ({ comercios, perPage = 4 }: ComercioCarouselProps) => 
   const currentPage = pages[page];
 
   return (
-    <div>
-      <div className="relative overflow-hidden">
+    <div className="horizontal-mobile:flex horizontal-mobile:flex-col horizontal-mobile:h-full horizontal-mobile:min-h-0">
+      <div className="relative overflow-hidden horizontal-mobile:flex-1 horizontal-mobile:min-h-0 horizontal-mobile:flex horizontal-mobile:items-center">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={page}
