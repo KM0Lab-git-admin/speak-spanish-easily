@@ -104,10 +104,10 @@ const HomeContent = ({
 
           {/* Landscape: grid 2 columnas */}
           <div className="hidden landscape:grid landscape:flex-1 landscape:min-h-0 landscape:grid-cols-2 landscape:gap-3 horizontal-desktop:gap-4 m-0 p-0">
-            <div className="border border-black">
+            <div className="">
               <PromoSection promos={promos} />
             </div>
-            <div className="border border-black">
+            <div className="">
               <ComerciosSection comercios={comercios} onSeeAll={onSeeAllComercios} />
             </div>
           </div>
