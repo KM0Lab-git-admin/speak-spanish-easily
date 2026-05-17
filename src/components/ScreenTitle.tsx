@@ -31,7 +31,7 @@ const ScreenTitle = ({ title, date, className = "" }: ScreenTitleProps) => {
 
   return (
     <div
-      className={`w-full flex items-center gap-2 vertical-tablet:gap-3 my-0 ${className}`.trim()}
+      className={`w-full flex items-center gap-2 vertical-tablet:gap-3 my-0 px-[10px] ${className}`.trim()}
     >
       {/* Bloque 1: icono + título */}
       <div className="flex items-center gap-2 min-w-0">
