@@ -327,17 +327,17 @@ const VariantTicket = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }
         </button>
       </div>
 
-      {/* Ticket — ocupa todo el alto disponible, sin scroll */}
+      {/* Ticket — scroll vertical interno para no perder texto */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative bg-white rounded-3xl overflow-hidden shadow-lg border border-km0-blue-100 flex-1 min-h-0 flex flex-col"
+        className="relative bg-white rounded-3xl shadow-lg border border-km0-blue-100 flex-1 min-h-0 flex flex-col overflow-y-auto overscroll-contain"
       >
-        {/* Imagen / carrusel */}
+        {/* Imagen / carrusel — vertical/poster (aspect 3/4) */}
         <ImageCarousel
           imagenes={ev.imagenes}
           alt={ev.titulo}
-          className="relative w-full flex-1 min-h-0"
+          className="relative w-full aspect-[3/4] shrink-0 rounded-t-3xl"
           overlay={
             <>
               <div className="absolute inset-0 bg-gradient-to-t from-km0-blue-900/90 via-transparent to-km0-blue-900/30 pointer-events-none" />
