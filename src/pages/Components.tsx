@@ -146,6 +146,116 @@ const previews: Record<string, ReactNode> = {
       <EventCard evento={MOCK_EVENTO} index={0} />
     </div>
   ),
+
+  /* ── Cabeceras ── */
+  "home-hero": (
+    <PhoneFrame height={180}>
+      <HomeHero
+        cityName="Malgrat de Mar"
+        hasAlerts
+        onToggleAlerts={() => {}}
+        showLogin
+        onLogin={() => {}}
+      />
+    </PhoneFrame>
+  ),
+  "user-greeting": (
+    <div className="max-w-[390px] mx-auto bg-white/55 px-2 py-2 rounded-xl">
+      <UserGreeting name="Albert" points={1259} nextLevel={3000} />
+    </div>
+  ),
+  "screen-title": (
+    <div className="space-y-3">
+      <div className="max-w-[390px] mx-auto bg-white/55 px-2 py-2 rounded-xl">
+        <ScreenTitle title="Agenda" />
+      </div>
+      <p className="font-body text-xs text-km0-blue-800/60 text-center">
+        Mismo slot, fecha personalizada:
+      </p>
+      <div className="max-w-[390px] mx-auto bg-white/55 px-2 py-2 rounded-xl">
+        <ScreenTitle title="Chat" date={new Date("2026-12-25")} />
+      </div>
+    </div>
+  ),
+  "notification-bell": (
+    <div className="flex items-center gap-6 bg-km0-beige-100 p-4 rounded-2xl">
+      <div className="flex flex-col items-center gap-2">
+        <NotificationBell hasAlerts onClick={() => {}} />
+        <span className="font-body text-xs text-km0-blue-800/70">hasAlerts</span>
+      </div>
+      <div className="flex flex-col items-center gap-2">
+        <NotificationBell onClick={() => {}} />
+        <span className="font-body text-xs text-km0-blue-800/70">sin alertas</span>
+      </div>
+      <div className="flex flex-col items-center gap-2">
+        <NotificationBell hasAlerts />
+        <span className="font-body text-xs text-km0-blue-800/70">decorativa (sin onClick)</span>
+      </div>
+    </div>
+  ),
+
+  /* ── Home ── */
+  "home-content": (
+    <p className="font-body text-sm text-km0-blue-800/70">
+      Orquestador interno. Previsualiza el Home completo navegando a{" "}
+      <Link to="/" className="underline text-km0-blue-700 font-semibold">
+        /
+      </Link>{" "}
+      (página Home). No tiene sentido renderizar uno aislado aquí porque depende del
+      frame portrait/landscape de la página.
+    </p>
+  ),
+  "home-modules": (
+    <PhoneFrame height={150}>
+      <div className="p-3">
+        <HomeModules modules={INITIAL_MODULES} />
+      </div>
+    </PhoneFrame>
+  ),
+  "promo-section": (
+    <PhoneFrame height={220}>
+      <div className="p-3">
+        <PromoSection promos={PROMOS} />
+      </div>
+    </PhoneFrame>
+  ),
+  "promo-carousel": (
+    <PhoneFrame height={200}>
+      <div className="p-3">
+        <PromoCarousel promos={PROMOS} />
+      </div>
+    </PhoneFrame>
+  ),
+  "comercios-section": (
+    <PhoneFrame height={180}>
+      <div className="p-3">
+        <ComerciosSection comercios={COMERCIOS} onSeeAll={() => {}} />
+      </div>
+    </PhoneFrame>
+  ),
+  "comercio-carousel": (
+    <PhoneFrame height={140}>
+      <div className="p-3">
+        <ComercioCarousel comercios={COMERCIOS} />
+      </div>
+    </PhoneFrame>
+  ),
+
+  /* ── Chat ── */
+  "voice-recorder": <VoiceRecorderStub />,
+
+  /* ── Auth ── */
+  "social-auth-buttons": (
+    <div className="max-w-md mx-auto">
+      <SocialAuthButtons />
+    </div>
+  ),
+
+  /* ── Overlays ── */
+  "notifications-overlay": <NotificationsOverlayPreview />,
+
+  /* ── Idioma ── */
+  "language-card": <LanguageCardPreview />,
 };
 
 function BottomTabsPreview() {
@@ -164,6 +274,91 @@ function BottomTabsPreview() {
 function WhenTabsPreview() {
   const [value, setValue] = useState<WhenKey>("semana");
   return <WhenTabs value={value} onChange={setValue} />;
+}
+
+/** Stub estático del VoiceRecorder: no pide micro, solo enseña la pill visual. */
+function VoiceRecorderStub() {
+  return (
+    <div className="flex items-center gap-3 bg-card rounded-full border border-border px-3 py-2 shadow-sm max-w-md">
+      <span className="font-body text-sm text-primary font-semibold ml-1 whitespace-nowrap">
+        Escuchando…
+      </span>
+      <div className="flex items-center gap-[3px] flex-1 justify-center">
+        {[8, 22, 12, 20, 8].map((h, i) => (
+          <span
+            key={i}
+            className="w-[4px] rounded-full bg-accent"
+            style={{ height: h }}
+          />
+        ))}
+      </div>
+      <span className="font-body text-xs text-muted-foreground truncate max-w-[100px]">
+        hola que tal…
+      </span>
+      <button
+        type="button"
+        className="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-primary-foreground shrink-0"
+        aria-label="Stop demo"
+      >
+        <Mic size={16} />
+      </button>
+    </div>
+  );
+}
+
+function NotificationsOverlayPreview() {
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState(INITIAL_NOTIFICATIONS);
+  return (
+    <div className="space-y-3">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="px-4 py-2 rounded-xl bg-primary text-primary-foreground font-ui text-sm font-semibold"
+      >
+        {open ? "Cerrar overlay" : "Abrir overlay"}
+      </button>
+      <PhoneFrame height={520}>
+        <NotificationsOverlay
+          open={open}
+          notifications={items}
+          onClose={() => setOpen(false)}
+          onMarkRead={(id) =>
+            setItems((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)))
+          }
+        />
+        {!open && (
+          <div className="absolute inset-0 flex items-center justify-center font-body text-sm text-km0-blue-800/60">
+            Frame contenedor — pulsa "Abrir overlay"
+          </div>
+        )}
+      </PhoneFrame>
+    </div>
+  );
+}
+
+function LanguageCardPreview() {
+  const [selected, setSelected] = useState("ca");
+  const langs = [
+    { id: "ca", flag: "🇪🇸", name: "Català", description: "Catalán" },
+    { id: "es", flag: "🇪🇸", name: "Castellano", description: "Spanish" },
+    { id: "en", flag: "🇬🇧", name: "English", description: "Inglés" },
+  ];
+  return (
+    <div className="max-w-md mx-auto space-y-3">
+      {langs.map((l) => (
+        <LanguageCard
+          key={l.id}
+          flag={l.flag}
+          name={l.name}
+          description={l.description}
+          selected={selected === l.id}
+          onClick={() => setSelected(l.id)}
+        />
+      ))}
+      <LanguageCard flag="🇫🇷" name="Français" description="Próximamente" disabled />
+    </div>
+  );
 }
 
 /* ── Página ────────────────────────────────────────── */
