@@ -355,27 +355,8 @@ const Agenda = () => {
         />
       </div>
 
-      {/* ── Segmented "¿Cuándo?" (4 opciones, sin scroll) ─── */}
-      <div className="grid grid-cols-4 gap-1 bg-white border-2 border-km0-blue-900 rounded-full p-1">
-        {WHEN_OPTIONS.map((opt) => {
-          const active = when === opt.key;
-          return (
-            <button
-              key={opt.key}
-              type="button"
-              onClick={() => setWhen(opt.key)}
-              className={cn(
-                "h-8 rounded-full font-ui text-xs font-bold transition-all active:scale-95",
-                active
-                  ? "bg-km0-blue-900 text-white shadow-sm"
-                  : "text-km0-blue-900 hover:bg-km0-beige-100",
-              )}
-            >
-              {opt.label}
-            </button>
-          );
-        })}
-      </div>
+      {/* ── Selector de rango temporal ─── */}
+      <WhenTabs value={when} onChange={setWhen} />
 
       {/* ── Categorías (grid 4×2, sin scroll horizontal) ─── */}
       <div className="grid grid-cols-4 gap-1.5">
