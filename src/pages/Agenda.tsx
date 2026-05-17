@@ -19,6 +19,7 @@ import {
 import BrandedFrame from "@/components/BrandedFrame";
 import HomeHero from "@/components/HomeHero";
 import ScreenTitle from "@/components/ScreenTitle";
+import WhenTabs, { type WhenKey } from "@/components/WhenTabs";
 import { useNotifications } from "@/hooks/useNotifications";
 import { cn } from "@/lib/utils";
 import { queryEvents, type Evento } from "@/services/eventQueryApi";
