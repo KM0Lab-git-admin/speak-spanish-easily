@@ -102,9 +102,11 @@ const HomeHero = ({
       </div>
 
       {/* UserGreeting en flujo normal, separado del header con margen real */}
-      <div className="relative z-10 px-3 mt-3 pb-3 vertical-tablet:mt-4 vertical-tablet:pb-4 horizontal-mobile:mt-2 horizontal-mobile:pb-2 horizontal-mobile:pointer-events-auto horizontal-desktop:pointer-events-auto my-0 bg-white/55">
-        <UserGreeting name="Albert" points={1259} nextLevel={3000} />
-      </div>
+      {showGreeting && (
+        <div className="relative z-10 px-3 mt-3 pb-3 vertical-tablet:mt-4 vertical-tablet:pb-4 horizontal-mobile:mt-2 horizontal-mobile:pb-2 horizontal-mobile:pointer-events-auto horizontal-desktop:pointer-events-auto my-0 bg-white/55">
+          <UserGreeting name="Albert" points={1259} nextLevel={3000} />
+        </div>
+      )}
     </motion.section>
   );
 };
