@@ -368,7 +368,7 @@ const Agenda = () => {
       </div>
 
       {/* ── Categorías (grid 4×2, sin scroll horizontal) ─── */}
-      <div className="grid grid-cols-4 gap-1.5 my-0 shrink-0">
+      <div className="grid grid-cols-4 gap-1 vertical-tablet:gap-1.5 my-0 shrink-0">
         {CATEGORIES.map((c) => {
           const active = category === c.key;
           const Icon = c.Icon;
@@ -378,14 +378,14 @@ const Agenda = () => {
               type="button"
               onClick={() => setCategory(c.key)}
               className={cn(
-                "h-9 rounded-full inline-flex items-center justify-center gap-1 px-1 font-ui text-[10.5px] font-bold transition-all active:scale-95 border",
+                "h-9 rounded-full inline-flex items-center justify-center gap-0.5 vertical-tablet:gap-1 px-0.5 vertical-tablet:px-1 font-ui text-[10px] vertical-tablet:text-[10.5px] font-bold transition-all active:scale-95 border",
                 active
                   ? `${c.activeBg} ${c.activeText} border-km0-blue-900 ring-2 ring-km0-blue-900/20 shadow-sm`
                   : `${c.idleBg} ${c.idleText} border-transparent opacity-90 hover:opacity-100`,
                 c.key === "infantil" && "border-km0-blue-200",
               )}
             >
-              <Icon size={11} strokeWidth={2.5} className="shrink-0" />
+              <Icon size={10} strokeWidth={2.5} className="shrink-0 hidden vertical-tablet:block" />
               <span className="truncate">{c.label}</span>
             </button>
           );
