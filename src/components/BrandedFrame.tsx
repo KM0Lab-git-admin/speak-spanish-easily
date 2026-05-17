@@ -109,13 +109,15 @@ const BrandedFrame = ({
         }}
       >
         {/* Header */}
-        <header className="relative shrink-0 flex items-center justify-center pt-3 horizontal-desktop:pt-5 pb-2 horizontal-desktop:pb-4 px-5">
-          {renderBackButton("left-3 horizontal-desktop:left-4 w-9 h-9", 20)}
-          <Km0Logo className="h-8 horizontal-desktop:h-11 w-auto" />
-        </header>
+        {!hideHeader && (
+          <header className="relative shrink-0 flex items-center justify-center pt-3 horizontal-desktop:pt-5 pb-2 horizontal-desktop:pb-4 px-5">
+            {renderBackButton("left-3 horizontal-desktop:left-4 w-9 h-9", 20)}
+            <Km0Logo className="h-8 horizontal-desktop:h-11 w-auto" />
+          </header>
+        )}
 
         {/* Body */}
-        <div className={`flex-1 min-h-0 flex w-full px-4 horizontal-desktop:px-6 pb-3 horizontal-desktop:pb-6 overflow-hidden ${landscapeContentClassName}`}>
+        <div className={`flex-1 min-h-0 flex w-full px-4 horizontal-desktop:px-6 pb-3 horizontal-desktop:pb-6 overflow-hidden ${hideHeader ? 'pt-3 horizontal-desktop:pt-5' : ''} ${landscapeContentClassName}`}>
           {children}
         </div>
       </div>
