@@ -79,7 +79,7 @@ const UserGreeting = ({
           aria-valuemin={0}
           aria-valuemax={safeNext}
           aria-valuenow={safePoints}
-          className="mt-1 h-1.5 w-full min-w-[110px] vertical-tablet:min-w-[140px] horizontal-mobile:!min-w-[90px] rounded-full bg-km0-beige-200 overflow-hidden"
+          className="mt-1 h-1.5 w-full rounded-full bg-km0-beige-200 overflow-hidden"
         >
           <div
             className="h-full rounded-full bg-km0-teal-500 transition-all"
