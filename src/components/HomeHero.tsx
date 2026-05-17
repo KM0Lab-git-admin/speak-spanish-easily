@@ -43,6 +43,7 @@ const HomeHero = ({
   onBack,
   backAriaLabel = "Volver",
   showGreeting = true,
+  greetingSlot,
 }: HomeHeroProps) => {
   return (
     <motion.section
