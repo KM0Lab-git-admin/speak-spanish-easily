@@ -24,6 +24,11 @@ export interface HomeHeroProps {
   onToggleAlerts: () => void;
   showLogin: boolean;
   onLogin: () => void;
+  /** Si se pasa, muestra el botón Back a la izquierda (pantallas interiores: agenda, chat…). */
+  onBack?: () => void;
+  backAriaLabel?: string;
+  /** Si false, oculta el saludo de usuario (útil en pantallas interiores). */
+  showGreeting?: boolean;
 }
 
 const HomeHero = ({
@@ -32,6 +37,9 @@ const HomeHero = ({
   onToggleAlerts,
   showLogin,
   onLogin,
+  onBack,
+  backAriaLabel = "Volver",
+  showGreeting = true,
 }: HomeHeroProps) => {
   return (
     <motion.section
