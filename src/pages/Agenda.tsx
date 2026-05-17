@@ -346,9 +346,9 @@ const Agenda = () => {
 
   /* ─── Render ─────────────────────────────────────── */
   const content = (
-    <div className="flex flex-col gap-3 w-full">
+    <div className="flex flex-col gap-3 w-full h-full min-h-0">
       {/* ── Hero superior reutilizado del Home ─── */}
-      <div className="-mx-4 -mt-2">
+      <div className="-mx-4 -mt-2 shrink-0">
         <HomeHero
           cityName="Malgrat de Mar"
           hasAlerts={hasUnread}
@@ -363,10 +363,12 @@ const Agenda = () => {
       </div>
 
       {/* ── Selector de rango temporal ─── */}
-      <WhenTabs value={when} onChange={setWhen} />
+      <div className="shrink-0">
+        <WhenTabs value={when} onChange={setWhen} />
+      </div>
 
       {/* ── Categorías (grid 4×2, sin scroll horizontal) ─── */}
-      <div className="grid grid-cols-4 gap-1.5 my-0">
+      <div className="grid grid-cols-4 gap-1.5 my-0 shrink-0">
         {CATEGORIES.map((c) => {
           const active = category === c.key;
           const Icon = c.Icon;
@@ -391,7 +393,7 @@ const Agenda = () => {
       </div>
 
       {/* ── Contador ─── */}
-      <div className="text-[11px] font-ui text-km0-blue-700/80 px-0.5">
+      <div className="text-[11px] font-ui text-km0-blue-700/80 px-0.5 shrink-0">
         {loading ? (
           <span className="inline-flex items-center gap-1">
             <Loader2 size={11} className="animate-spin" />
@@ -405,8 +407,8 @@ const Agenda = () => {
         )}
       </div>
 
-      {/* ── Resultados ─── */}
-      <section className="space-y-3">
+      {/* ── Resultados (única zona scrollable) ─── */}
+      <section className="flex-1 min-h-0 overflow-y-auto space-y-3 -mx-4 px-4 pb-4">
         {loading && eventos.length === 0 && (
           <>
             <SkeletonCard />
@@ -457,7 +459,11 @@ const Agenda = () => {
   );
 
   return (
-    <BrandedFrame hideHeader>
+    <BrandedFrame
+      hideHeader
+      portraitContentClassName="!overflow-hidden !pb-0"
+      landscapeContentClassName="!pb-0"
+    >
       {content}
     </BrandedFrame>
   );
