@@ -313,7 +313,7 @@ const VariantHero = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }) 
 const VariantTicket = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }) => {
   const f = formatFechaCorta(ev.fecha);
   return (
-    <div className="flex flex-col h-full min-h-0 overflow-x-hidden">
+    <div className="flex flex-col h-full min-h-0 overflow-x-hidden overflow-y-auto touch-pan-y overscroll-contain">
       {/* Header */}
       <div className="flex items-center justify-between shrink-0 mb-2">
         <button
