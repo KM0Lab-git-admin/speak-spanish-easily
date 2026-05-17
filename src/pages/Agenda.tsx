@@ -19,6 +19,7 @@ import {
 import BrandedFrame from "@/components/BrandedFrame";
 import HomeHero from "@/components/HomeHero";
 import ScreenTitle from "@/components/ScreenTitle";
+import WhenTabs, { type WhenKey } from "@/components/WhenTabs";
 import { useNotifications } from "@/hooks/useNotifications";
 import { cn } from "@/lib/utils";
 import { queryEvents, type Evento } from "@/services/eventQueryApi";
@@ -36,7 +37,6 @@ import { queryEvents, type Evento } from "@/services/eventQueryApi";
  * Sin búsqueda por texto. Sin filtros de "Lugares" ni "Tags".
  * ────────────────────────────────────────────────────────────── */
 
-type WhenKey = "hoy" | "manana" | "finde" | "mes";
 type Category =
   | "todos"
   | "musica"
@@ -48,12 +48,6 @@ type Category =
   | "gastronomia";
 type Price = "todos" | "gratis" | "pago";
 
-const WHEN_OPTIONS: { key: WhenKey; label: string }[] = [
-  { key: "hoy", label: "Hoy" },
-  { key: "manana", label: "Mañana" },
-  { key: "finde", label: "Finde" },
-  { key: "mes", label: "Mes" },
-];
 
 interface CatDef {
   key: Category;
@@ -173,20 +167,18 @@ const addDays = (d: Date, n: number) => {
 const rangeFor = (key: WhenKey): [Date, Date] => {
   const today = startOfDay(new Date());
   switch (key) {
-    case "hoy":
-      return [today, endOfDay(today)];
-    case "manana": {
-      const t = addDays(today, 1);
-      return [t, endOfDay(t)];
-    }
-    case "finde": {
-      const day = today.getDay();
-      const sat = addDays(today, day === 6 ? 0 : day === 0 ? -1 : 6 - day);
-      const sun = addDays(sat, 1);
-      return [startOfDay(sat), endOfDay(sun)];
+    case "semana": {
+      // Hasta el próximo domingo inclusive
+      const day = today.getDay(); // 0=dom
+      const daysToSunday = day === 0 ? 0 : 7 - day;
+      return [today, endOfDay(addDays(today, daysToSunday))];
     }
     case "mes": {
       const last = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      return [today, endOfDay(last)];
+    }
+    case "trimestre": {
+      const last = new Date(today.getFullYear(), today.getMonth() + 3, 0);
       return [today, endOfDay(last)];
     }
   }
@@ -276,7 +268,7 @@ const SkeletonCard = () => (
 const Agenda = () => {
   const navigate = useNavigate();
   const { hasUnread, markAllRead } = useNotifications();
-  const [when, setWhen] = useState<WhenKey>("hoy");
+  const [when, setWhen] = useState<WhenKey>("semana");
   const [category, setCategory] = useState<Category>("todos");
   const [price, setPrice] = useState<Price>("todos");
 
@@ -363,27 +355,8 @@ const Agenda = () => {
         />
       </div>
 
-      {/* ── Segmented "¿Cuándo?" (4 opciones, sin scroll) ─── */}
-      <div className="grid grid-cols-4 gap-1 bg-white border-2 border-km0-blue-900 rounded-full p-1">
-        {WHEN_OPTIONS.map((opt) => {
-          const active = when === opt.key;
-          return (
-            <button
-              key={opt.key}
-              type="button"
-              onClick={() => setWhen(opt.key)}
-              className={cn(
-                "h-8 rounded-full font-ui text-xs font-bold transition-all active:scale-95",
-                active
-                  ? "bg-km0-blue-900 text-white shadow-sm"
-                  : "text-km0-blue-900 hover:bg-km0-beige-100",
-              )}
-            >
-              {opt.label}
-            </button>
-          );
-        })}
-      </div>
+      {/* ── Selector de rango temporal ─── */}
+      <WhenTabs value={when} onChange={setWhen} />
 
       {/* ── Categorías (grid 4×2, sin scroll horizontal) ─── */}
       <div className="grid grid-cols-4 gap-1.5">
