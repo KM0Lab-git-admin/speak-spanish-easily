@@ -347,6 +347,17 @@ const Agenda = () => {
   /* ─── Render ─────────────────────────────────────── */
   const content = (
     <div className="flex flex-col gap-3 w-full">
+      {/* ── Hero superior reutilizado del Home ─── */}
+      <div className="-mx-4 -mt-2">
+        <HomeHero
+          cityName="Malgrat de Mar"
+          hasAlerts={hasUnread}
+          onToggleAlerts={markAllRead}
+          showLogin={false}
+          onLogin={() => navigate("/login")}
+        />
+      </div>
+
       {/* ── Título + fecha ─────────────────── */}
       <header className="flex items-end justify-between gap-2 pt-1">
         <h1 className="font-brand text-[44px] leading-none text-km0-blue-900 tracking-tight">
