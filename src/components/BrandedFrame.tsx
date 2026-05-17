@@ -35,6 +35,8 @@ interface BrandedFrameProps {
   onBack?: () => void;
   /** Aria label para el back button (i18n responsabilidad de la pantalla) */
   backAriaLabel?: string;
+  /** Si true, oculta el header con el logo (útil cuando la pantalla ya tiene su propio hero) */
+  hideHeader?: boolean;
   /** Clases extra para el contenedor de contenido en portrait */
   portraitContentClassName?: string;
   /** Clases extra para el contenedor de contenido en landscape */
