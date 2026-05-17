@@ -512,7 +512,7 @@ const Agenda = () => {
   );
 
   return (
-    <BrandedFrame>
+    <BrandedFrame hideHeader>
       {content}
     </BrandedFrame>
   );
