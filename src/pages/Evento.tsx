@@ -398,6 +398,19 @@ const VariantTicket = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }
             </div>
           </div>
         </div>
+
+        {/* Descripción — dentro del ticket, scrollable junto al resto */}
+        <div className="px-4 pb-4 pt-1 space-y-2 border-t border-dashed border-km0-blue-200/60">
+          <p className="font-body text-xs text-km0-blue-900/90 leading-relaxed">
+            {ev.descripcion}
+          </p>
+          <div className="flex items-start gap-1.5 text-[10px] font-ui text-km0-blue-700/80">
+            <MapPin size={11} className="shrink-0 mt-0.5" />
+            <span>
+              {ev.direccion} · {ev.poblacion}
+            </span>
+          </div>
+        </div>
       </motion.div>
 
       {/* CTA */}
