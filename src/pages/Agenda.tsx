@@ -48,12 +48,6 @@ type Category =
   | "gastronomia";
 type Price = "todos" | "gratis" | "pago";
 
-const WHEN_OPTIONS: { key: WhenKey; label: string }[] = [
-  { key: "hoy", label: "Hoy" },
-  { key: "manana", label: "Mañana" },
-  { key: "finde", label: "Finde" },
-  { key: "mes", label: "Mes" },
-];
 
 interface CatDef {
   key: Category;
