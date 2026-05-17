@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import Km0Logo from "./Km0Logo";
 import NotificationBell from "./NotificationBell";
 import LoginButton from "./LoginButton";
+import UserGreeting from "./UserGreeting";
 import skylineMalgrat from "@/assets/skyline-malgrat.png";
 import coatMalgrat from "@/assets/coat-malgrat.png";
 
@@ -76,6 +77,11 @@ const HomeHero = ({
             className="shrink-0"
           />
         </div>
+      </div>
+
+      {/* UserGreeting duplicado dentro del Hero */}
+      <div className="absolute left-0 right-0 bottom-2 px-3 pointer-events-auto z-10">
+        <UserGreeting name="Albert" points={1259} nextLevel={3000} />
       </div>
     </motion.section>
   );
