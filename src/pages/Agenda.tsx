@@ -167,20 +167,18 @@ const addDays = (d: Date, n: number) => {
 const rangeFor = (key: WhenKey): [Date, Date] => {
   const today = startOfDay(new Date());
   switch (key) {
-    case "hoy":
-      return [today, endOfDay(today)];
-    case "manana": {
-      const t = addDays(today, 1);
-      return [t, endOfDay(t)];
-    }
-    case "finde": {
-      const day = today.getDay();
-      const sat = addDays(today, day === 6 ? 0 : day === 0 ? -1 : 6 - day);
-      const sun = addDays(sat, 1);
-      return [startOfDay(sat), endOfDay(sun)];
+    case "semana": {
+      // Hasta el próximo domingo inclusive
+      const day = today.getDay(); // 0=dom
+      const daysToSunday = day === 0 ? 0 : 7 - day;
+      return [today, endOfDay(addDays(today, daysToSunday))];
     }
     case "mes": {
       const last = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      return [today, endOfDay(last)];
+    }
+    case "trimestre": {
+      const last = new Date(today.getFullYear(), today.getMonth() + 3, 0);
       return [today, endOfDay(last)];
     }
   }
