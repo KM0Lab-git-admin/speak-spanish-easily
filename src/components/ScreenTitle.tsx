@@ -56,7 +56,7 @@ const ScreenTitle = ({ title, date, className = "" }: ScreenTitleProps) => {
       </div>
 
       {/* Bloque 2: tarjeta con fecha (mismo "slot derecho" que UserGreeting) */}
-      <div className="ml-auto shrink-0 min-w-[125px] rounded-xl bg-km0-beige-100 border border-km0-blue-700/10 px-2.5 py-1.5 vertical-tablet:px-3 vertical-tablet:py-2 horizontal-mobile:!px-2 horizontal-mobile:!py-1 text-right">
+      <div className="ml-auto shrink-0 min-w-[125px] rounded-xl px-2.5 py-1.5 vertical-tablet:px-3 vertical-tablet:py-2 horizontal-mobile:!px-2 horizontal-mobile:!py-1 text-right">
         <p className="font-body text-km0-blue-800 whitespace-nowrap leading-tight text-base">
           Hoy
         </p>
