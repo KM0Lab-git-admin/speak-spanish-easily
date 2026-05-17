@@ -108,7 +108,14 @@ const CtaPrincipal = ({
   const href = ev.link_inscripcion || ev.link_noticia;
   if (!href) return null;
   const esInscripcion = !!ev.link_inscripcion;
-  const label = esInscripcion ? "Inscribirse" : "Ampliar información";
+  // Mostramos el dominio del enlace en lugar de un literal genérico
+  const label = (() => {
+    try {
+      return new URL(href).hostname.replace(/^www\./, "");
+    } catch {
+      return href;
+    }
+  })();
   const Icon = esInscripcion ? Ticket : ExternalLink;
 
   return (
@@ -306,7 +313,7 @@ const VariantHero = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }) 
 const VariantTicket = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }) => {
   const f = formatFechaCorta(ev.fecha);
   return (
-    <div className="flex flex-col h-full min-h-0 overflow-x-hidden">
+    <div className="flex flex-col h-full min-h-0 overflow-x-hidden overflow-y-auto touch-pan-y overscroll-contain">
       {/* Header */}
       <div className="flex items-center justify-between shrink-0 mb-2">
         <button
@@ -331,7 +338,7 @@ const VariantTicket = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative bg-white rounded-3xl shadow-lg border border-km0-blue-100 flex-1 min-h-0 flex flex-col overflow-x-hidden overflow-y-auto touch-pan-y overscroll-contain"
+        className="relative bg-white rounded-3xl shadow-lg border border-km0-blue-100 flex flex-col overflow-hidden mb-3"
       >
         {/* Imagen / carrusel — vertical/poster (aspect 3/4) */}
         <ImageCarousel
@@ -414,7 +421,7 @@ const VariantTicket = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }
       </motion.div>
 
       {/* CTA */}
-      <div className="pt-2 shrink-0 flex gap-2">
+      <div className="pt-2 pb-3 shrink-0 flex gap-2">
         <CtaPrincipal ev={ev} amarillo />
         <button
           className="w-11 h-11 rounded-full bg-white border border-km0-blue-200 text-km0-blue-900 inline-flex items-center justify-center active:scale-95 shrink-0"
