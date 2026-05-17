@@ -45,7 +45,7 @@ const HomeHero = ({
       />
 
       {/* Overlay: escudo + nombre + KM0 logo + login + bell */}
-      <div className="absolute inset-x-0 top-0 flex items-center justify-between pl-2 pr-4 pt-4 gap-3 vertical-mobile:!pt-2 vertical-mobile:!pb-1 horizontal-mobile:pointer-events-auto horizontal-mobile:pt-2 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto">
+      <div className="absolute inset-x-0 top-0 flex items-center justify-between pl-2 pr-4 pt-4 gap-3 vertical-mobile:!pt-2 vertical-mobile:!pb-1 horizontal-mobile:pointer-events-auto horizontal-mobile:pt-2 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto my-0 mb-[30px]">
         <div className="flex items-center gap-2 min-w-0">
           <img
             src={coatMalgrat}
@@ -80,7 +80,7 @@ const HomeHero = ({
       </div>
 
       {/* UserGreeting duplicado dentro del Hero */}
-      <div className="absolute left-0 right-0 top-[60px] vertical-tablet:top-[72px] horizontal-mobile:top-[44px] px-3 pointer-events-auto z-10">
+      <div className="absolute left-0 right-0 top-[60px] vertical-tablet:top-[72px] horizontal-mobile:top-[44px] px-3 pointer-events-auto z-10 opacity-100 bg-white/50">
         <UserGreeting name="Albert" points={1259} nextLevel={3000} />
       </div>
     </motion.section>
