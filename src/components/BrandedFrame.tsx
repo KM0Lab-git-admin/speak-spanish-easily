@@ -47,6 +47,7 @@ const BrandedFrame = ({
   children,
   onBack,
   backAriaLabel = "Back",
+  hideHeader = false,
   portraitContentClassName = "",
   landscapeContentClassName = "",
 }: BrandedFrameProps) => {
