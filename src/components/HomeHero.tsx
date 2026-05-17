@@ -108,7 +108,7 @@ const HomeHero = ({
       {/* Slot inferior: UserGreeting (Home) o contenido custom (pantallas interiores).
           Mantiene SIEMPRE el mismo contenedor para preservar altura y fondo. */}
       {(greetingSlot || showGreeting) && (
-        <div className="relative z-10 mt-3 pb-3 vertical-tablet:mt-4 vertical-tablet:pb-4 horizontal-mobile:mt-2 horizontal-mobile:pb-2 horizontal-mobile:pointer-events-auto horizontal-desktop:pointer-events-auto bg-white/55 my-0 px-[10px]">
+        <div className="relative z-10 horizontal-mobile:pointer-events-auto horizontal-desktop:pointer-events-auto bg-white/55">
           {greetingSlot ?? <UserGreeting name="Albert" points={1259} nextLevel={3000} />}
         </div>
       )}
