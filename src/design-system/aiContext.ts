@@ -194,3 +194,53 @@ export function generateAIContext(): string {
 
   return lines.join("\n");
 }
+
+import { componentsCatalog, CATEGORY_LABELS, type ComponentCategory } from "./componentsCatalog";
+
+/**
+ * Markdown dedicado al catálogo de componentes propios.
+ * Pensado para pegar como contexto en otra IA cuando se pide componer
+ * pantallas reutilizando los componentes existentes del proyecto.
+ */
+export function generateComponentsContext(): string {
+  const lines: string[] = [];
+  lines.push("# KM0 LAB — Catálogo de componentes");
+  lines.push("");
+  lines.push("> Componentes propios del proyecto (no shadcn/ui). Importar tal cual desde las rutas indicadas. NO recrearlos.");
+  lines.push("");
+
+  (Object.keys(CATEGORY_LABELS) as ComponentCategory[]).forEach((cat) => {
+    const items = componentsCatalog.filter((c) => c.category === cat);
+    if (!items.length) return;
+    lines.push(`## ${CATEGORY_LABELS[cat]}`);
+    lines.push("");
+    items.forEach((c) => {
+      lines.push(`### ${c.name}`);
+      lines.push(`- **Import:** \`import ${c.name} from "${c.importPath}"\``);
+      lines.push(`- **Usado en:** ${c.usedIn.join(", ") || "—"}`);
+      lines.push(`- ${c.description}`);
+      if (c.props.length) {
+        lines.push("");
+        lines.push("**Props:**");
+        c.props.forEach((p) => {
+          const req = p.required ? " *(required)*" : "";
+          const def = p.defaultValue ? ` — default \`${p.defaultValue}\`` : "";
+          lines.push(`- \`${p.name}\`: \`${p.type}\`${req}${def} — ${p.description}`);
+        });
+      }
+      if (c.responsive.length) {
+        lines.push("");
+        lines.push("**Responsive:**");
+        c.responsive.forEach((r) => lines.push(`- \`${r.breakpoint}\`: ${r.behavior}`));
+      }
+      if (c.notes?.length) {
+        lines.push("");
+        lines.push("**Notas:**");
+        c.notes.forEach((n) => lines.push(`- ${n}`));
+      }
+      lines.push("");
+    });
+  });
+
+  return lines.join("\n");
+}

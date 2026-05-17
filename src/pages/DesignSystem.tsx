@@ -26,7 +26,7 @@ const sections = [
   { id: "breakpoints", label: "Breakpoints" },
   { id: "animations",  label: "Animaciones" },
   { id: "icons",       label: "Iconografía" },
-  { id: "components",  label: "Componentes" },
+  { id: "components",  label: "Componentes →" },
   { id: "screens",     label: "Pantallas" },
   { id: "ai-export",   label: "Export para IA" },
 ];
@@ -316,55 +316,19 @@ const DesignSystem = () => {
             </div>
           </section>
 
-          {/* Components */}
+          {/* Components — moved to its own page */}
           <section id="components">
-            <h2 className="font-brand text-3xl text-km0-blue-700 mb-6">Componentes</h2>
-
-            {/* Buttons */}
-            <h3 className="font-ui font-semibold text-lg text-km0-blue-800 mb-3">Botones</h3>
-            <div className="bg-white rounded-2xl border border-km0-beige-200 p-6 mb-8 space-y-3">
-              <button className="w-full bg-primary text-primary-foreground font-ui font-semibold text-sm px-5 py-2.5 rounded-2xl hover:bg-km0-blue-600 hover:scale-[1.03] transition-all duration-200 active:scale-95">
-                CONTINUAR (primary)
-              </button>
-              <button disabled className="w-full bg-primary text-primary-foreground font-ui font-semibold text-sm px-5 py-2.5 rounded-2xl disabled:opacity-40 disabled:pointer-events-none">
-                CONTINUAR (disabled)
-              </button>
-              <button className="w-full bg-km0-beige-100 text-km0-blue-700 font-ui font-semibold text-sm px-5 py-2.5 rounded-2xl hover:bg-km0-beige-200 transition-all duration-200">
-                Acción secundaria
-              </button>
-            </div>
-
-            {/* Inputs */}
-            <h3 className="font-ui font-semibold text-lg text-km0-blue-800 mb-3">Inputs (estados)</h3>
-            <div className="bg-white rounded-2xl border border-km0-beige-200 p-6 mb-8 space-y-3 max-w-md">
-              <div className="flex items-center gap-3 bg-white rounded-2xl border border-km0-beige-200 px-4 py-3.5 shadow-sm">
-                <MapPin className="text-km0-teal-500" size={22} />
-                <input placeholder="Idle" className="flex-1 bg-transparent font-ui text-lg outline-none placeholder:text-muted-foreground/50" />
-              </div>
-              <div className="flex items-center gap-3 bg-white rounded-2xl border border-km0-teal-400 px-4 py-3.5 shadow-sm">
-                <MapPin className="text-km0-teal-500" size={22} />
-                <input placeholder="Focus / encontrado" className="flex-1 bg-transparent font-ui text-lg outline-none placeholder:text-muted-foreground/50" />
-              </div>
-              <div className="flex items-center gap-3 bg-destructive/5 rounded-2xl border border-destructive/50 px-4 py-3.5 shadow-sm">
-                <MapPinOff className="text-destructive" size={22} />
-                <input placeholder="Error / no reconocido" className="flex-1 bg-transparent font-ui text-lg outline-none placeholder:text-muted-foreground/50" />
-              </div>
-            </div>
-
-            {/* Card */}
-            <h3 className="font-ui font-semibold text-lg text-km0-blue-800 mb-3">BrandedFrame</h3>
-            <div className="bg-white rounded-2xl border border-km0-beige-200 p-6 mb-8">
-              <p className="text-sm font-body text-km0-blue-800/70 mb-3">
-                Wrapper obligatorio para pantallas con marca (Language, Onboarding, PostalCode). Garantiza
-                logo + back button en posición idéntica en los 4 breakpoints.
-              </p>
-              <pre className="text-xs font-mono bg-km0-beige-50 p-4 rounded-xl overflow-x-auto text-km0-blue-800">
-{`<BrandedFrame onBack={() => navigate(-1)} backAriaLabel="Back">
-  <div className="landscape:hidden ...">{/* portrait */}</div>
-  <div className="hidden landscape:flex ...">{/* landscape */}</div>
-</BrandedFrame>`}
-              </pre>
-            </div>
+            <h2 className="font-brand text-3xl text-km0-blue-700 mb-3">Componentes</h2>
+            <p className="font-body text-km0-blue-800/80 max-w-2xl leading-relaxed mb-6">
+              El catálogo de componentes del proyecto (props, previews y comportamiento responsive)
+              vive en una página dedicada para no saturar el Design System.
+            </p>
+            <Link
+              to="/components"
+              className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-primary text-primary-foreground font-ui font-semibold hover:bg-km0-blue-600 transition-colors"
+            >
+              Ir al catálogo de componentes →
+            </Link>
           </section>
 
           {/* Screens */}
