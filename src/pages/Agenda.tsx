@@ -37,7 +37,6 @@ import { queryEvents, type Evento } from "@/services/eventQueryApi";
  * Sin búsqueda por texto. Sin filtros de "Lugares" ni "Tags".
  * ────────────────────────────────────────────────────────────── */
 
-type WhenKey = "hoy" | "manana" | "finde" | "mes";
 type Category =
   | "todos"
   | "musica"
