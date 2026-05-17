@@ -421,7 +421,7 @@ const VariantTicket = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }
       </motion.div>
 
       {/* CTA */}
-      <div className="pt-2 shrink-0 flex gap-2">
+      <div className="pt-2 pb-3 shrink-0 flex gap-2">
         <CtaPrincipal ev={ev} amarillo />
         <button
           className="w-11 h-11 rounded-full bg-white border border-km0-blue-200 text-km0-blue-900 inline-flex items-center justify-center active:scale-95 shrink-0"
