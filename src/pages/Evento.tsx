@@ -338,7 +338,7 @@ const VariantTicket = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative bg-white rounded-3xl shadow-lg border border-km0-blue-100 flex-1 min-h-0 flex flex-col overflow-x-hidden overflow-y-auto touch-pan-y overscroll-contain"
+        className="relative bg-white rounded-3xl shadow-lg border border-km0-blue-100 flex flex-col overflow-hidden mb-3"
       >
         {/* Imagen / carrusel — vertical/poster (aspect 3/4) */}
         <ImageCarousel
