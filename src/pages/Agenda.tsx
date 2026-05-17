@@ -366,7 +366,7 @@ const Agenda = () => {
       <WhenTabs value={when} onChange={setWhen} />
 
       {/* ── Categorías (grid 4×2, sin scroll horizontal) ─── */}
-      <div className="grid grid-cols-4 gap-1.5">
+      <div className="grid grid-cols-4 gap-1.5 my-0">
         {CATEGORIES.map((c) => {
           const active = category === c.key;
           const Icon = c.Icon;
