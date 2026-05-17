@@ -1,42 +1,61 @@
-## Problema confirmado en horizontal-mobile (667×375)
+## Objetivo
 
-A partir de tu captura:
+Refactorizar `src/components/HomeHero.tsx` para que **el gradiente beige y el skyline sean fondo del `<section>`**, y los componentes internos (header con escudo+KM0+bell y el `UserGreeting`) se apilen **en flujo normal de arriba a abajo** con `position: relative`. Así los márgenes/paddings/gaps funcionan de verdad entre ellos y desaparece la fragilidad de `top-[60px]`, `mb-[10px]` sobre absolutos, etc.
 
-1. **Promos** ("FESTA MAJOR ROMANA") aparece recortado por abajo — la card hero ocupa más alto del que tiene la columna disponible.
-2. **"Esto es para ti"** muestra solo la primera fila de comercios; el resto queda fuera del frame.
-3. **Títulos desalineados horizontalmente**: "Promos y eventos destacados" arranca pegado a la izquierda (sin icono), mientras que "Esto es para ti" lleva el icono cupón delante, por lo que su texto arranca varios píxeles más a la derecha y además su fila tiene más alto. Las dos cabeceras deberían quedar a la misma altura y con el texto en la misma X.
+## Estructura propuesta
 
-## Causas en código
+```text
+<section class="relative ... [fondo gradiente + skyline]">
+  ├── header row   (flex relative, padding propio)
+  │     ├── escudo + cityName + KM0Logo
+  │     └── LoginButton (landscape) + NotificationBell
+  └── UserGreeting  (relative, con padding/margen propio)
+</section>
+```
 
-- En `HomeContent.tsx` la grid landscape (`landscape:grid landscape:grid-cols-2 landscape:flex-1 landscape:min-h-0`) sí limita altura, pero los hijos (`PromoSection` y `ComerciosSection`) ya rellenan `h-full` solo en horizontal; el problema real es que **dentro** de cada sección los carruseles usan altura fija por aspect-ratio:
-  - `PromoCarousel` → `horizontal-mobile:aspect-[16/5] horizontal-mobile:flex-none` ⇒ no se adapta al alto disponible.
-  - `ComercioCarousel` (no mostrado, mismo patrón) ⇒ mismo recorte.
-- Los títulos no comparten altura ni padding-left:
-  - `PromoSection` cabecera = solo `<h2>` con `min-h-12` (en vertical) y sin icono.
-  - `ComerciosSection` cabecera = icono 7×7 + `<h2>` + botón "Ver todos" → más alta y con texto desplazado por el icono.
+Cambios concretos:
 
-## Cambios propuestos (solo `horizontal-mobile`, sin tocar otros breakpoints)
+1. **Mover el gradiente al `<section>`**
+   - Quitar el `<div className="relative w-full aspect-[1920/716] bg-gradient-to-b ...">` que actuaba como "fondo".
+   - Añadir las clases de gradiente directamente al `motion.section`: `bg-gradient-to-b from-km0-beige-50 to-km0-beige-100`.
 
-### 1. Alinear cabeceras de las dos secciones
-- Misma altura fija `h-6` y mismo `mb` en horizontal-mobile.
-- Mismo punto de inicio del texto: en horizontal-mobile **ocultar** el icono cupón de `ComerciosSection` (`horizontal-mobile:hidden` en `<img couponIcon>`) para que ambos títulos arranquen en X=0 de su columna. El botón "Ver todos" se mantiene a la derecha.
-- Igualar tamaño de fuente y peso ya están iguales (`text-xs font-brand font-black text-km0-blue-700`), solo falta igualar la caja contenedora.
+2. **Mover el skyline a fondo absoluto del `<section>`** (única excepción `absolute`, porque debe quedar *detrás* del contenido como capa de fondo)
+   - Mantener el `<img>` del skyline con `absolute inset-0 ... -z-0 pointer-events-none opacity-25 object-contain object-bottom`.
+   - El contenido encima irá con `relative z-10`.
 
-### 2. Que los carruseles rellenen el alto de la columna
-- `PromoCarousel.tsx`: en horizontal-mobile cambiar `aspect-[16/5] flex-none` por `aspect-auto flex-1 min-h-0` (igual que ya hace en horizontal-desktop). Así la card hero se ajusta al hueco real.
-- `ComercioCarousel.tsx`: aplicar el mismo patrón — quitar altura/aspect fijo en horizontal-mobile y usar `flex-1 min-h-0` para que los logos se reescalen al alto disponible (reduciendo tamaño de iconos si hace falta con `horizontal-mobile:!w-10 horizontal-mobile:!h-10` o similar).
-- En ambos, los dots de paginación deben quedar `shrink-0` para no comerse el alto.
+3. **Header en flujo normal**
+   - Quitar `absolute inset-x-0 top-0` y `mb-[10px]` del overlay actual.
+   - Sustituir por `relative z-10 flex items-center justify-between gap-3` + paddings (`pl-2 pr-4 pt-4` portrait, ajustes por breakpoint).
 
-### 3. Compactar ligeramente el contenedor de la grid
-- En `HomeContent.tsx`, en horizontal-mobile bajar `pt-[clamp(48px,12dvh,72px)]` a algo como `pt-[clamp(40px,10dvh,60px)]` y reducir `gap` de la grid landscape a `landscape:gap-2 horizontal-mobile:!gap-2` para liberar 8–12 px verticales que hoy faltan.
+4. **`UserGreeting` en flujo normal**
+   - Quitar `absolute left-0 right-0 top-[60px] vertical-tablet:top-[72px] horizontal-mobile:top-[44px]`.
+   - Envolver en `<div className="relative z-10 px-3 mt-2 vertical-tablet:mt-3">` (gap real entre header y greeting controlado por `mt-*`).
+   - Eliminar el `bg-white/50` que se añadió para debug.
+
+5. **Altura del Hero**
+   - Quitar `min-h-[90px]` y los `aspect-[1920/716]` / `h-[78px]` que dependían del div de fondo.
+   - La altura la dará el contenido (header + greeting + paddings). En landscape, donde el Hero estaba `absolute inset-0` ocupando todo, se mantiene ese comportamiento pero con el contenido apilado dentro vía `flex flex-col`.
+
+6. **Variantes responsive (mantener comportamiento actual sin regresiones)**
+   - `vertical-mobile` (≤767 portrait): paddings reducidos (`pt-2 pb-1`).
+   - `vertical-tablet` (≥768 portrait): tamaños actuales del escudo (`w-14 h-14`) y KM0 (`h-5`).
+   - `horizontal-mobile` (≤1279 landscape): escudo `w-7 h-7`, KM0 `h-3`, fila compacta (lo que ya estaba). El Hero sigue siendo `absolute inset-0` para superponerse al body en landscape, pero con contenido en flujo `flex-col`.
+   - `horizontal-desktop` (≥1280 landscape): igual que horizontal-mobile pero con paddings algo mayores.
+
+## Resultado esperado
+
+- Cambiar `mt-2` → `mt-4` en el wrapper del `UserGreeting` separa de verdad header y saludo.
+- Sin `top-[60px]` mágico que se descuadra si cambia el alto del header (p. ej. si el `cityName` ocupa 2 líneas).
+- Skyline + gradiente siguen cubriendo todo el Hero como fondo.
 
 ## Verificación
-- Probar a 667×375 (horizontal-mobile) con Playwright/manual: ambas secciones deben verse completas (card promo entera + al menos una fila completa de comercios) y los dos títulos deben quedar alineados en X y a la misma altura.
-- Verificar que **vertical-mobile (375×667)**, **vertical-tablet (768×1024)** y **horizontal-desktop (1280×550)** quedan idénticos a hoy (cambios encapsulados con `horizontal-mobile:`).
 
-## Archivos a tocar
-- `src/components/ComerciosSection.tsx` — ocultar icono cupón en horizontal-mobile, igualar caja del header.
-- `src/components/PromoSection.tsx` — igualar caja del header (mismo `h-6` y `mb` en horizontal-mobile).
-- `src/components/PromoCarousel.tsx` — quitar aspect fijo en horizontal-mobile, usar `flex-1 min-h-0`.
-- `src/components/ComercioCarousel.tsx` — mismo patrón flex.
-- `src/components/HomeContent.tsx` — pequeño ajuste de `pt` y `gap` solo en horizontal-mobile.
+- Revisar visualmente en las 4 resoluciones oficiales: 375×667, 768×1024, 667×375, 1280×550.
+- Confirmar que en landscape el Hero sigue ocupando todo el frame como fondo del body (el `horizontal-mobile:absolute horizontal-mobile:inset-0` del section se mantiene).
+- Confirmar que `pointer-events-none` del Hero en landscape sigue dejando clicar los módulos del body, y que header+greeting recuperan `pointer-events-auto`.
+
+## Archivos afectados
+
+- `src/components/HomeHero.tsx` (reescritura del JSX y clases; sin cambios de API/props).
+
+No se tocan `HomeContent.tsx`, `UserGreeting.tsx` ni datos.
