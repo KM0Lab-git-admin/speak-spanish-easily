@@ -18,6 +18,7 @@ import {
 
 import BrandedFrame from "@/components/BrandedFrame";
 import HomeHero from "@/components/HomeHero";
+import ScreenTitle from "@/components/ScreenTitle";
 import { useNotifications } from "@/hooks/useNotifications";
 import { cn } from "@/lib/utils";
 import { queryEvents, type Evento } from "@/services/eventQueryApi";
@@ -358,23 +359,9 @@ const Agenda = () => {
           onBack={() => navigate(-1)}
           backAriaLabel="Volver"
           showGreeting={false}
+          greetingSlot={<ScreenTitle title="Agenda" />}
         />
       </div>
-
-      {/* ── Título + fecha ─────────────────── */}
-      <header className="flex items-end justify-between gap-2 pt-1">
-        <h1 className="font-brand text-[44px] leading-none text-km0-blue-900 tracking-tight">
-          Agenda
-        </h1>
-        <div className="flex items-baseline gap-1 pb-0.5">
-          <span className="font-brand text-[40px] leading-none text-km0-yellow-500">
-            {dayNum}
-          </span>
-          <span className="font-brand text-[11px] tracking-widest text-km0-blue-900">
-            {monthLabel}
-          </span>
-        </div>
-      </header>
 
       {/* ── Segmented "¿Cuándo?" (4 opciones, sin scroll) ─── */}
       <div className="grid grid-cols-4 gap-1 bg-white border-2 border-km0-blue-900 rounded-full p-1">

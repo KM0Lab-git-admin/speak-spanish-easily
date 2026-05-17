@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 import Km0Logo from "./Km0Logo";
@@ -29,6 +30,8 @@ export interface HomeHeroProps {
   backAriaLabel?: string;
   /** Si false, oculta el saludo de usuario (útil en pantallas interiores). */
   showGreeting?: boolean;
+  /** Si se pasa, sustituye al UserGreeting manteniendo el mismo contenedor (misma altura/fondo). */
+  greetingSlot?: ReactNode;
 }
 
 const HomeHero = ({
@@ -40,6 +43,7 @@ const HomeHero = ({
   onBack,
   backAriaLabel = "Volver",
   showGreeting = true,
+  greetingSlot,
 }: HomeHeroProps) => {
   return (
     <motion.section
@@ -101,10 +105,11 @@ const HomeHero = ({
         </div>
       </div>
 
-      {/* UserGreeting en flujo normal, separado del header con margen real */}
-      {showGreeting && (
+      {/* Slot inferior: UserGreeting (Home) o contenido custom (pantallas interiores).
+          Mantiene SIEMPRE el mismo contenedor para preservar altura y fondo. */}
+      {(greetingSlot || showGreeting) && (
         <div className="relative z-10 px-3 mt-3 pb-3 vertical-tablet:mt-4 vertical-tablet:pb-4 horizontal-mobile:mt-2 horizontal-mobile:pb-2 horizontal-mobile:pointer-events-auto horizontal-desktop:pointer-events-auto my-0 bg-white/55">
-          <UserGreeting name="Albert" points={1259} nextLevel={3000} />
+          {greetingSlot ?? <UserGreeting name="Albert" points={1259} nextLevel={3000} />}
         </div>
       )}
     </motion.section>
