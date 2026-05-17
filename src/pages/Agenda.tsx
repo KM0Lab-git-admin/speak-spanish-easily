@@ -407,8 +407,11 @@ const Agenda = () => {
         )}
       </div>
 
-      {/* ── Resultados (única zona scrollable) ─── */}
-      <section className="flex-1 min-h-0 overflow-y-auto space-y-3 -mx-4 px-4 pb-4">
+      {/* ── Resultados (única zona scrollable, touch nativo móvil) ─── */}
+      <section
+        className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden touch-pan-y overscroll-contain space-y-3 -mx-4 px-4 pb-4"
+        style={{ WebkitOverflowScrolling: "touch" }}
+      >
         {loading && eventos.length === 0 && (
           <>
             <SkeletonCard />
