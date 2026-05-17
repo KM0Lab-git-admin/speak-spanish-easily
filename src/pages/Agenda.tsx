@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 
 import BrandedFrame from "@/components/BrandedFrame";
+import HomeHero from "@/components/HomeHero";
+import { useNotifications } from "@/hooks/useNotifications";
 import { cn } from "@/lib/utils";
 import { queryEvents, type Evento } from "@/services/eventQueryApi";
 
