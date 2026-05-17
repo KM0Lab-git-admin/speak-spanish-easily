@@ -70,7 +70,7 @@ const UserGreeting = ({
       />
 
       {/* Bloque 3: tarjeta puntos + barra */}
-      <div className="shrink-0 rounded-xl bg-km0-beige-100 border border-km0-blue-700/10 px-2.5 py-1.5 vertical-tablet:px-3 vertical-tablet:py-2 horizontal-mobile:!px-2 horizontal-mobile:!py-1 text-right">
+      <div className="shrink-0 max-w-[100px] rounded-xl bg-km0-beige-100 border border-km0-blue-700/10 px-2.5 py-1.5 vertical-tablet:px-3 vertical-tablet:py-2 horizontal-mobile:!px-2 horizontal-mobile:!py-1 text-right">
         <p className="font-body text-km0-blue-800 text-[11px] vertical-tablet:text-xs horizontal-mobile:!text-[10px] whitespace-nowrap leading-tight">
           {safePoints.toLocaleString("es-ES")}/{safeNext.toLocaleString("es-ES")} p
         </p>
@@ -79,7 +79,7 @@ const UserGreeting = ({
           aria-valuemin={0}
           aria-valuemax={safeNext}
           aria-valuenow={safePoints}
-          className="mt-1 h-1.5 w-full min-w-[110px] vertical-tablet:min-w-[140px] horizontal-mobile:!min-w-[90px] rounded-full bg-km0-beige-200 overflow-hidden"
+          className="mt-1 h-1.5 w-full rounded-full bg-km0-beige-200 overflow-hidden"
         >
           <div
             className="h-full rounded-full bg-km0-teal-500 transition-all"
