@@ -390,28 +390,6 @@ const Agenda = () => {
         })}
       </div>
 
-      {/* ── Toggle precio ─── */}
-      <div className="grid grid-cols-3 gap-1 bg-white/70 border border-km0-blue-200 rounded-full p-0.5">
-        {(["todos", "gratis", "pago"] as Price[]).map((p) => {
-          const active = price === p;
-          return (
-            <button
-              key={p}
-              type="button"
-              onClick={() => setPrice(p)}
-              className={cn(
-                "h-7 rounded-full font-ui text-[11px] font-bold transition-all active:scale-95",
-                active
-                  ? "bg-km0-blue-900 text-white"
-                  : "text-km0-blue-900/70 hover:text-km0-blue-900",
-              )}
-            >
-              {p === "todos" ? "Todos" : p === "gratis" ? "Gratis" : "Pago"}
-            </button>
-          );
-        })}
-      </div>
-
       {/* ── Contador ─── */}
       <div className="text-[11px] font-ui text-km0-blue-700/80 px-0.5">
         {loading ? (
