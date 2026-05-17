@@ -30,6 +30,8 @@ export interface HomeHeroProps {
   backAriaLabel?: string;
   /** Si false, oculta el saludo de usuario (útil en pantallas interiores). */
   showGreeting?: boolean;
+  /** Si se pasa, sustituye al UserGreeting manteniendo el mismo contenedor (misma altura/fondo). */
+  greetingSlot?: ReactNode;
 }
 
 const HomeHero = ({
