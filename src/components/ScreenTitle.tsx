@@ -49,7 +49,7 @@ const ScreenTitle = ({ title, date, className = "" }: ScreenTitleProps) => {
           <p className="font-brand font-black text-km0-blue-700 text-sm vertical-tablet:text-base horizontal-mobile:!text-xs whitespace-nowrap truncate">
             {title}
           </p>
-          <span className="font-ui text-xs vertical-tablet:text-sm horizontal-mobile:!text-[11px] text-km0-blue-800 capitalize">
+          <span className="font-ui text-km0-blue-800 capitalize text-lg bg-transparent">
             {weekday}
           </span>
         </div>
@@ -57,10 +57,10 @@ const ScreenTitle = ({ title, date, className = "" }: ScreenTitleProps) => {
 
       {/* Bloque 2: tarjeta con fecha (mismo "slot derecho" que UserGreeting) */}
       <div className="ml-auto shrink-0 min-w-[125px] rounded-xl bg-km0-beige-100 border border-km0-blue-700/10 px-2.5 py-1.5 vertical-tablet:px-3 vertical-tablet:py-2 horizontal-mobile:!px-2 horizontal-mobile:!py-1 text-right">
-        <p className="font-body text-km0-blue-800 text-[11px] vertical-tablet:text-xs horizontal-mobile:!text-[10px] whitespace-nowrap leading-tight">
+        <p className="font-body text-km0-blue-800 whitespace-nowrap leading-tight text-base">
           Hoy
         </p>
-        <p className="font-brand text-km0-blue-900 text-sm vertical-tablet:text-base horizontal-mobile:!text-xs whitespace-nowrap leading-tight mt-0.5">
+        <p className="font-brand text-km0-blue-900 whitespace-nowrap leading-tight mt-0.5 text-4xl">
           {dayNum} {monthName}
         </p>
       </div>
