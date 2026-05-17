@@ -108,7 +108,14 @@ const CtaPrincipal = ({
   const href = ev.link_inscripcion || ev.link_noticia;
   if (!href) return null;
   const esInscripcion = !!ev.link_inscripcion;
-  const label = esInscripcion ? "Inscribirse" : "Ampliar información";
+  // Mostramos el dominio del enlace en lugar de un literal genérico
+  const label = (() => {
+    try {
+      return new URL(href).hostname.replace(/^www\./, "");
+    } catch {
+      return href;
+    }
+  })();
   const Icon = esInscripcion ? Ticket : ExternalLink;
 
   return (
