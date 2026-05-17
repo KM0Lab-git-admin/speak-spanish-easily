@@ -45,42 +45,10 @@ const HomeHero = ({
       />
 
       {/* Overlay: escudo + nombre + KM0 logo + login + bell */}
-      <div className="absolute inset-x-0 top-0 flex items-center justify-between pl-2 pr-4 pt-4 gap-3 vertical-mobile:!pt-2 vertical-mobile:!pb-1 horizontal-mobile:pointer-events-auto horizontal-mobile:pt-2 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto">
-        <div className="flex items-center gap-2 min-w-0">
-          <img
-            src={coatMalgrat}
-            alt={`Escudo de ${cityName}`}
-            className="w-12 h-12 vertical-tablet:w-14 vertical-tablet:h-14 horizontal-mobile:!w-7 horizontal-mobile:!h-7 object-contain shrink-0 drop-shadow-[0_2px_4px_hsl(0_0%_100%/0.5)]"
-          />
-          <div className="flex flex-col leading-[0.95] min-w-0 horizontal-mobile:!flex-row horizontal-mobile:items-center horizontal-mobile:gap-2">
-            <h1 className="font-brand font-black text-km0-blue-700 whitespace-pre-line text-left border-0 text-lg horizontal-mobile:!text-sm horizontal-mobile:whitespace-nowrap">
-              {cityName}
-            </h1>
-            <div className="flex items-center mt-2 horizontal-mobile:!mt-0">
-              <Km0Logo className="h-4 vertical-tablet:h-5 horizontal-mobile:!h-3 w-auto" />
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2 shrink-0 horizontal-mobile:gap-1.5">
-          {showLogin && (
-            <LoginButton
-              onClick={onLogin}
-              size="md"
-              className="hidden landscape:inline-flex horizontal-mobile:!text-[11px] horizontal-mobile:!px-2.5 horizontal-mobile:!py-1"
-            />
-          )}
-          <NotificationBell
-            hasAlerts={hasAlerts}
-            onClick={onToggleAlerts}
-            ariaLabel={hasAlerts ? "Tienes notificaciones nuevas" : "Sin notificaciones"}
-            className="shrink-0"
-          />
-        </div>
-      </div>
-
+      <div className="absolute inset-x-0 top-0 flex items-center justify-between pl-2 pr-4 pt-4 gap-3 vertical-mobile:!pt-2 vertical-mobile:!pb-1 horizontal-mobile:pointer-events-auto horizontal-mobile:pt-2 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto my-0 mb-[30px]">
+...
       {/* UserGreeting duplicado dentro del Hero */}
-      <div className="absolute left-0 right-0 top-[60px] vertical-tablet:top-[72px] horizontal-mobile:top-[44px] px-3 pointer-events-auto z-10">
+      <div className="absolute left-0 right-0 top-[60px] vertical-tablet:top-[72px] horizontal-mobile:top-[44px] px-3 pointer-events-auto z-10 opacity-100 bg-white/50">
         <UserGreeting name="Albert" points={1259} nextLevel={3000} />
       </div>
     </motion.section>
