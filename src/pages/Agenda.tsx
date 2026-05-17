@@ -173,6 +173,13 @@ const rangeFor = (key: WhenKey): [Date, Date] => {
       const daysToSunday = day === 0 ? 0 : 7 - day;
       return [today, endOfDay(addDays(today, daysToSunday))];
     }
+    case "proxima-semana": {
+      // Lunes a domingo de la semana siguiente
+      const day = today.getDay(); // 0=dom
+      const daysToNextMonday = day === 0 ? 1 : 8 - day;
+      const start = startOfDay(addDays(today, daysToNextMonday));
+      return [start, endOfDay(addDays(start, 6))];
+    }
     case "mes": {
       const last = new Date(today.getFullYear(), today.getMonth() + 1, 0);
       return [today, endOfDay(last)];
