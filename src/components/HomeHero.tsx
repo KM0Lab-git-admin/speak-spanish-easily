@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 import Km0Logo from "./Km0Logo";
