@@ -19,7 +19,24 @@ import { NavLink } from "@/components/NavLink";
 import LoginButton from "@/components/LoginButton";
 import WhenTabs, { type WhenKey } from "@/components/WhenTabs";
 import EventCard from "@/components/EventCard";
+import HomeHero from "@/components/HomeHero";
+import UserGreeting from "@/components/UserGreeting";
+import ScreenTitle from "@/components/ScreenTitle";
+import NotificationBell from "@/components/NotificationBell";
+import HomeModules from "@/components/HomeModules";
+import PromoSection from "@/components/PromoSection";
+import PromoCarousel from "@/components/PromoCarousel";
+import ComerciosSection from "@/components/ComerciosSection";
+import ComercioCarousel from "@/components/ComercioCarousel";
+import SocialAuthButtons from "@/components/SocialAuthButtons";
+import NotificationsOverlay from "@/components/NotificationsOverlay";
+import LanguageCard from "@/components/LanguageCard";
+import { Mic } from "lucide-react";
 import type { Evento } from "@/services/eventQueryApi";
+import { PROMOS } from "@/data/promos";
+import { COMERCIOS } from "@/data/comercios";
+import { INITIAL_MODULES } from "@/data/homeModules";
+import { INITIAL_NOTIFICATIONS } from "@/data/notifications";
 
 /* ── Mock data para EventCard ──────────────────────── */
 const MOCK_EVENTO: Evento = {
@@ -45,6 +62,22 @@ const MOCK_EVENTO: Evento = {
   similitud_score: 0.9,
   nivel_coincidencia: "alto",
 };
+
+/** Wrapper "mini-móvil" para previsualizar componentes pensados para ~390px de ancho. */
+const PhoneFrame = ({
+  children,
+  height = 480,
+}: {
+  children: ReactNode;
+  height?: number;
+}) => (
+  <div
+    className="max-w-[390px] mx-auto rounded-3xl border-2 border-km0-blue-700/40 bg-km0-beige-50 overflow-hidden relative"
+    style={{ height }}
+  >
+    {children}
+  </div>
+);
 
 /* ── Mapa id → preview ─────────────────────────────── */
 const previews: Record<string, ReactNode> = {
