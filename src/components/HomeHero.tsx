@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import Km0Logo from "./Km0Logo";
 import NotificationBell from "./NotificationBell";
 import LoginButton from "./LoginButton";
+import UserGreeting from "./UserGreeting";
 import skylineMalgrat from "@/assets/skyline-malgrat.png";
 import coatMalgrat from "@/assets/coat-malgrat.png";
 
