@@ -1,14 +1,18 @@
 import { cn } from "@/lib/utils";
 
 /**
- * WhenTabs — Segmented control horizontal para filtrar por rango temporal
- * en la Agenda. Sigue el master design KM0:
- *   - contenedor: km0-beige-50 con borde km0-blue-700/20
- *   - pestaña activa: km0-blue-800 + texto km0-yellow-400 (acento marca)
- *   - pestaña inactiva: texto km0-blue-800
+ * WhenTabs — Segmented control para filtrar por rango temporal en la Agenda.
+ *
+ * Master design KM0:
+ *  - Contenedor: km0-beige-50 con borde km0-blue-700/20
+ *  - Pestaña activa: km0-blue-600 (azul principal de marca) + texto km0-yellow-400
+ *  - Pestaña inactiva: texto km0-blue-700
+ *
+ * Layout 2×2: garantiza que las etiquetas largas ("Próximos 3 meses",
+ * "Próxima semana") nunca se truncan. Pildoras con padding generoso.
  */
 
-export type WhenKey = "semana" | "mes" | "trimestre";
+export type WhenKey = "semana" | "proxima-semana" | "mes" | "trimestre";
 
 export interface WhenTabOption {
   key: WhenKey;
@@ -17,6 +21,7 @@ export interface WhenTabOption {
 
 export const WHEN_TABS: WhenTabOption[] = [
   { key: "semana", label: "Esta semana" },
+  { key: "proxima-semana", label: "Próxima semana" },
   { key: "mes", label: "Este mes" },
   { key: "trimestre", label: "Próximos 3 meses" },
 ];
@@ -33,7 +38,7 @@ const WhenTabs = ({ value, onChange, className = "" }: WhenTabsProps) => {
       role="tablist"
       aria-label="Rango temporal"
       className={cn(
-        "grid grid-cols-3 gap-1 bg-km0-beige-50 border border-km0-blue-700/20 rounded-full p-1",
+        "grid grid-cols-2 gap-1.5 bg-km0-beige-50 border border-km0-blue-700/20 rounded-2xl p-1.5",
         className,
       )}
     >
@@ -47,10 +52,10 @@ const WhenTabs = ({ value, onChange, className = "" }: WhenTabsProps) => {
             aria-selected={active}
             onClick={() => onChange(opt.key)}
             className={cn(
-              "h-9 rounded-full font-ui text-xs vertical-tablet:text-sm font-bold transition-all active:scale-95 px-2 truncate",
+              "min-h-9 rounded-full font-ui text-xs vertical-tablet:text-sm font-bold transition-all active:scale-95 px-3 py-1.5 whitespace-nowrap",
               active
-                ? "bg-km0-blue-800 text-km0-yellow-400 shadow-sm"
-                : "text-km0-blue-800 hover:bg-km0-beige-100",
+                ? "bg-km0-blue-600 text-km0-yellow-400 shadow-sm"
+                : "text-km0-blue-700 hover:bg-km0-beige-100",
             )}
           >
             {opt.label}
