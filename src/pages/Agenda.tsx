@@ -355,6 +355,9 @@ const Agenda = () => {
           onToggleAlerts={markAllRead}
           showLogin={false}
           onLogin={() => navigate("/login")}
+          onBack={() => navigate(-1)}
+          backAriaLabel="Volver"
+          showGreeting={false}
         />
       </div>
 
