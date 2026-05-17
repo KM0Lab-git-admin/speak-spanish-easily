@@ -352,7 +352,7 @@ const VariantTicket = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }
                 )}
               </div>
               <div className="absolute bottom-7 left-3 right-3 z-[5] pointer-events-none">
-                <h1 className="font-brand text-base text-white leading-tight drop-shadow line-clamp-2">
+                <h1 className="font-brand text-base text-white leading-tight drop-shadow">
                   {ev.titulo}
                 </h1>
                 {ev.organizador && (
