@@ -327,17 +327,17 @@ const VariantTicket = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }
         </button>
       </div>
 
-      {/* Ticket — ocupa todo el alto disponible, sin scroll */}
+      {/* Ticket — scroll vertical interno para no perder texto */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative bg-white rounded-3xl overflow-hidden shadow-lg border border-km0-blue-100 flex-1 min-h-0 flex flex-col"
+        className="relative bg-white rounded-3xl shadow-lg border border-km0-blue-100 flex-1 min-h-0 flex flex-col overflow-y-auto overscroll-contain"
       >
-        {/* Imagen / carrusel */}
+        {/* Imagen / carrusel — vertical/poster (aspect 3/4) */}
         <ImageCarousel
           imagenes={ev.imagenes}
           alt={ev.titulo}
-          className="relative w-full flex-1 min-h-0"
+          className="relative w-full aspect-[3/4] shrink-0 rounded-t-3xl"
           overlay={
             <>
               <div className="absolute inset-0 bg-gradient-to-t from-km0-blue-900/90 via-transparent to-km0-blue-900/30 pointer-events-none" />
@@ -352,7 +352,7 @@ const VariantTicket = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }
                 )}
               </div>
               <div className="absolute bottom-7 left-3 right-3 z-[5] pointer-events-none">
-                <h1 className="font-brand text-base text-white leading-tight drop-shadow line-clamp-2">
+                <h1 className="font-brand text-base text-white leading-tight drop-shadow">
                   {ev.titulo}
                 </h1>
                 {ev.organizador && (
@@ -396,6 +396,19 @@ const VariantTicket = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }
             <div className="font-ui text-[9px] text-km0-blue-700/70 truncate">
               {ev.poblacion}
             </div>
+          </div>
+        </div>
+
+        {/* Descripción — dentro del ticket, scrollable junto al resto */}
+        <div className="px-4 pb-4 pt-1 space-y-2 border-t border-dashed border-km0-blue-200/60">
+          <p className="font-body text-xs text-km0-blue-900/90 leading-relaxed">
+            {ev.descripcion}
+          </p>
+          <div className="flex items-start gap-1.5 text-[10px] font-ui text-km0-blue-700/80">
+            <MapPin size={11} className="shrink-0 mt-0.5" />
+            <span>
+              {ev.direccion} · {ev.poblacion}
+            </span>
           </div>
         </div>
       </motion.div>
