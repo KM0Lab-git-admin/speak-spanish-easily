@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
  *
  * POC con 2 variantes:
  *   v1 → Hero con imagen grande arriba
- *   v3 → Estilo ticket / pósters de concierto (sin scroll)
+ *   v3 → Estilo ticket / pósters de concierto con scroll vertical interno
  *
  * Soporta carrusel cuando hay múltiples imágenes.
  * ───────────────────────────────────────────────────────────── */
@@ -48,7 +48,7 @@ interface EventoMuestra {
 const EVENTO: EventoMuestra = {
   titulo: "Animeclub: «Millennium Actress»",
   descripcion:
-    "El cicle d'animació japonesa Animeclub projecta «Millennium Actress» de Satoshi Kon al Centre Cultural. Una oda al cinema i a la memòria.",
+    'El cicle d\'animació japonesa "Animeclub" projecta la pel·lícula "Millenium actress" de Satoshi Kon a dos quarts de set de la tarda al Centre Cultural.',
   fecha: "2026-05-17",
   hora_inicio: "18:30",
   hora_fin: "20:30",
@@ -302,11 +302,11 @@ const VariantHero = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }) 
   </div>
 );
 
-/* ── V3: Ticket / pósters de concierto (sin scroll) ──────────── */
+/* ── V3: Ticket / pósters de concierto ───────────────────────── */
 const VariantTicket = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }) => {
   const f = formatFechaCorta(ev.fecha);
   return (
-    <div className="flex flex-col h-full min-h-0 overflow-hidden">
+    <div className="flex flex-col h-full min-h-0 overflow-x-hidden">
       {/* Header */}
       <div className="flex items-center justify-between shrink-0 mb-2">
         <button
@@ -331,7 +331,7 @@ const VariantTicket = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative bg-white rounded-3xl shadow-lg border border-km0-blue-100 flex-1 min-h-0 flex flex-col overflow-y-auto overscroll-contain"
+        className="relative bg-white rounded-3xl shadow-lg border border-km0-blue-100 flex-1 min-h-0 flex flex-col overflow-x-hidden overflow-y-auto touch-pan-y overscroll-contain"
       >
         {/* Imagen / carrusel — vertical/poster (aspect 3/4) */}
         <ImageCarousel
@@ -400,7 +400,7 @@ const VariantTicket = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }
         </div>
 
         {/* Descripción — dentro del ticket, scrollable junto al resto */}
-        <div className="px-4 pb-4 pt-1 space-y-2 border-t border-dashed border-km0-blue-200/60">
+        <div className="px-4 pb-5 pt-2 space-y-2 border-t border-dashed border-km0-blue-200/60 shrink-0">
           <p className="font-body text-xs text-km0-blue-900/90 leading-relaxed">
             {ev.descripcion}
           </p>
