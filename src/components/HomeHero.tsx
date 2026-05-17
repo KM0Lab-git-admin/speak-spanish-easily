@@ -59,6 +59,16 @@ const HomeHero = ({
       {/* Fila header: escudo + nombre + KM0 + login + bell */}
       <div className="relative z-10 flex items-center justify-between gap-3 pl-2 pr-4 pt-4 vertical-mobile:!pt-2 vertical-mobile:!pb-1 horizontal-mobile:pointer-events-auto horizontal-mobile:pt-2 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto">
         <div className="flex items-center gap-2 min-w-0">
+          {onBack && (
+            <button
+              type="button"
+              onClick={onBack}
+              aria-label={backAriaLabel}
+              className="shrink-0 w-9 h-9 vertical-tablet:w-10 vertical-tablet:h-10 horizontal-mobile:!w-7 horizontal-mobile:!h-7 flex items-center justify-center rounded-xl border-2 border-dashed border-km0-yellow-500 text-km0-yellow-600 bg-white/70 hover:bg-km0-yellow-50 transition-all duration-200 hover:scale-105 active:scale-95"
+            >
+              <ChevronLeft size={20} strokeWidth={2.5} className="horizontal-mobile:!w-4 horizontal-mobile:!h-4" />
+            </button>
+          )}
           <img
             src={coatMalgrat}
             alt={`Escudo de ${cityName}`}
