@@ -32,7 +32,32 @@ const screens: ScreenEntry[] = [
         ├── divisor vertical
         └── LanguageCard × 3    ← columna derecha`,
   },
-  // { label: "Onboarding",  src: "/onboarding",  tree: "" },
+  {
+    label: "Onboarding",
+    src: "/onboarding",
+    tree: `BrandedFrame                    ← wrapper de marca (logo + card + back)
+└── (decide portrait/landscape con clases tailwind)
+    ├── Portrait
+    │   ├── motion.div  carousel (drag/swipe + pointer handlers)
+    │   │   └── scale wrapper (portraitScale, tablet boost)
+    │   │       └── sliding track  (translateX = trackX + dragOffset)
+    │   │           └── slide × 5  ← slides[] (id, xp, title*, desc*, color, emoji)
+    │   │               ├── stack layers (solo activa)
+    │   │               └── card  (image area + emoji + XP badge + título + desc)
+    │   ├── ChevronLeft / ChevronRight  ← prev / next
+    │   ├── thumbnails × 5     ← navegación rápida por emoji
+    │   └── footer
+    │       ├── contador  N/total
+    │       ├── dots × 5
+    │       └── botón SKIP / START  → /postal-code
+    │
+    └── Landscape
+        ├── motion.div carousel  (slotLs adaptativo: 360 mobile / 560 desktop)
+        │   └── sliding track  → slide × 5  (mismo contenido, tamaños landscape)
+        ├── ChevronLeft / ChevronRight
+        ├── thumbnails × 5
+        └── footer (contador + dots + SKIP/START)`,
+  },
   // { label: "PostalCode",  src: "/postal-code", tree: "" },
   // { label: "Login",       src: "/login",       tree: "" },
   // { label: "CheckEmail",  src: "/check-email", tree: "" },
