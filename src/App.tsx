@@ -16,6 +16,7 @@ import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import DesignSystem from "./pages/DesignSystem";
 import Components from "./pages/Components";
+import PreviewAll from "./pages/PreviewAll";
 import TopLoadingBar from "./components/TopLoadingBar";
 import RequireAuth from "./components/RequireAuth";
 
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/profile" element={<Profile />} />
           <Route path="/design-system" element={<DesignSystem />} />
           <Route path="/components" element={<Components />} />
+          <Route path="/preview-all" element={<PreviewAll />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

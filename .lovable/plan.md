@@ -1,57 +1,95 @@
+
 ## Objetivo
 
-Completar `/components` con TODOS los componentes propios del proyecto (22 en total), no solo los 8 actuales. Cada componente tendrá nombre, import path, descripción, preview en vivo, tabla de props y notas de responsive — para que puedas referirte a ellos por nombre cuando pidas cambios.
+Crear una pantalla de **catálogo visual** que renderice todas las pantallas de la app (Language, Onboarding, PostalCode, Chat, Home, Agenda, Evento, Profile, Login, CheckEmail) dentro de "marcos" de tamaño FIJO equivalentes a las dos resoluciones mínimas de testing:
 
-## Componentes a añadir (14 nuevos)
+- **vertical-mobile** → `375 × 667` (portrait)
+- **horizontal-mobile** → `667 × 375` (landscape)
 
-**Cabeceras**
-- `HomeHero` — hero del Home (mascota + saludo + campana + login)
-- `UserGreeting` — saludo dinámico según sesión
-- `ScreenTitle` — título de pantalla dentro de BrandedFrame. **Documentar prop `onBack`** (si se pasa, muestra back amarillo a la izquierda del título — responde a tu pregunta del "giro").
-- `NotificationBell` — campana con badge de no leídas
+Cada pantalla aparecerá DOS veces (una por orientación), lado a lado, para poder revisarlas de un vistazo sin tener que cambiar de viewport.
 
-**Home**
-- `HomeContent` — orquestador interno (portrait/landscape)
-- `HomeModules` — grid de módulos activables
-- `PromoSection` — sección "Ofertas destacadas"
-- `PromoCarousel` — carrusel horizontal de promos
-- `ComerciosSection` — sección "Comercios"
-- `ComercioCarousel` — carrusel horizontal de comercios
+Empezamos por **Language** y, una vez validado el patrón, replicamos para el resto.
 
-**Chat**
-- `VoiceRecorder` — botón micrófono (Web Speech API, stub en preview)
+---
 
-**Auth**
-- `SocialAuthButtons` — Google / Apple
+## Ruta y archivos
 
-**Overlays**
-- `NotificationsOverlay` — panel deslizante (con toggle abrir/cerrar en la preview)
+- Nueva ruta: `/preview-all` (registrada en `src/App.tsx`)
+- Nueva página: `src/pages/PreviewAll.tsx`
+- Nuevo componente envoltorio: `src/components/ScreenFrame.tsx`
 
-**Idioma**
-- `LanguageCard` — card de selección de idioma (preview dentro de mini-BrandedFrame con varios estados: idle / selected / disabled)
+No se toca ninguna pantalla existente.
 
-Excluidos: `RequireAuth`, `TopLoadingBar` (técnicos) y `components/ui/*` (shadcn).
+---
 
-## Trabajo
+## Cómo funciona `ScreenFrame`
 
-1. **`src/design-system/componentsCatalog.ts`** — añadir las 14 specs leyendo las props REALES de cada `src/components/*.tsx`. Cada spec con: id, categoría, importPath, descripción, usedIn, props (name · type · required · default · description), responsive en los 4 breakpoints oficiales, notas de uso.
+Wrapper que recibe:
+- `label`: nombre de la pantalla ("Language", "Agenda"…)
+- `orientation`: `"portrait" | "landscape"`
+- `children`: la pantalla a renderizar
 
-2. **`src/pages/Components.tsx`** — añadir una tarjeta con preview en vivo por componente:
-   - Anchos (`HomeHero`, `HomeContent`, `HomeModules`, carruseles, `NotificationsOverlay`) → contenedor `max-w-[390px] mx-auto overflow-x-hidden` con datos mock de `src/data/`.
-   - Necesitan contexto de marca (`LanguageCard`, `ScreenTitle`) → mini-`BrandedFrame` envolvente.
-   - `ScreenTitle` con 2 variantes: con `onBack` y sin él, para que se vea la diferencia.
-   - `LanguageCard` con 3 variantes: normal, selected, disabled.
-   - `NotificationsOverlay` con toggle local "Abrir / Cerrar".
-   - `VoiceRecorder` y `SocialAuthButtons` con handlers no-op.
+Renderiza un `div` con tamaño FIJO en píxeles:
+- portrait  → `width: 375px; height: 667px`
+- landscape → `width: 667px; height: 375px`
 
-3. **`src/design-system/aiContext.ts`** — `generateComponentsContext()` ya recorre el catálogo, se actualiza solo. Verificar el markdown resultante.
+Reglas clave:
+- `overflow: hidden` y `position: relative` para que la pantalla embebida no desborde.
+- Para que las pantallas detecten correctamente la orientación (sus `landscape:` queries de Tailwind dependen del **viewport real**, no del contenedor), el frame usa **`<iframe src="/idioma-suelto">`**. Esto garantiza que cada frame tenga su propio `window.matchMedia` con el aspect-ratio correcto.
 
-## Fuera de alcance
+```text
+┌─────────────────────────────────────────────┐
+│ Language                                    │
+│ ┌───────────┐  ┌──────────────────────┐    │
+│ │ 375×667   │  │ 667×375              │    │
+│ │ portrait  │  │ landscape            │    │
+│ │           │  │                      │    │
+│ │           │  └──────────────────────┘    │
+│ └───────────┘                              │
+└─────────────────────────────────────────────┘
+```
 
-- No tocar APIs ni estilos de componentes existentes.
-- No añadir Storybook ni dependencias.
-- No documentar `components/ui/*`.
+### Por qué iframe y no render directo
 
-## Entrega
+Las pantallas usan los breakpoints oficiales `vertical-mobile` / `horizontal-mobile` que se evalúan con `@media (orientation: portrait/landscape) and (max-width: …)`. Estas queries **solo miran el viewport del documento**, no el tamaño del contenedor padre. Si renderizamos `<Language />` dentro de un `div` de 667×375 en un viewport portrait, los estilos landscape NO se aplicarían.
 
-Un solo turno: catálogo completo de los 22 componentes con previews y props, sidebar con todas las categorías pobladas.
+Con un `<iframe>` cada pantalla obtiene su propio viewport del tamaño exacto del frame, y los breakpoints funcionan correctamente. Además aísla estilos globales y evita conflictos de routers anidados.
+
+Para que esto funcione, cada pantalla debe ser accesible por URL (ya lo son: `/`, `/agenda`, `/evento`, `/profile`, etc.). El iframe simplemente apunta a la URL de cada pantalla.
+
+---
+
+## Estructura de `PreviewAll.tsx`
+
+```text
+PreviewAll
+├── Header sticky con título "Preview · todas las pantallas"
+└── Lista vertical de bloques, uno por pantalla:
+    ├── <h2>Language</h2>
+    └── <div flex gap-6>
+        ├── <ScreenFrame label="375×667" orientation="portrait"  src="/" />
+        └── <ScreenFrame label="667×375" orientation="landscape" src="/" />
+```
+
+En esta primera iteración solo se incluye Language (`src="/"`). Una vez aprobado, se añaden las demás (`/agenda`, `/evento`, `/profile`, `/chat`, `/onboarding`, `/postal-code`, `/login`, `/check-email`, `/home`).
+
+---
+
+## Detalles técnicos
+
+- **Sin cambios** en pantallas existentes ni en breakpoints.
+- El iframe usa atributos `width=375 height=667` (o `667/375`) y CSS `border: 0; display: block;`.
+- Estilos del fondo de `PreviewAll`: gris claro neutro para que destaquen los frames.
+- Etiqueta encima de cada frame con dimensiones para facilitar QA.
+- Sin scroll horizontal: si los dos frames no caben en fila se apilan con `flex-wrap`.
+- La página `/preview-all` no se enlaza desde la app; solo se accede manualmente.
+
+---
+
+## Alcance de esta primera entrega
+
+1. Crear `ScreenFrame.tsx`.
+2. Crear `PreviewAll.tsx` con SOLO Language en portrait + landscape.
+3. Registrar la ruta `/preview-all` en `App.tsx`.
+
+Después, en un segundo paso, añadiremos el resto de pantallas (una línea por pantalla, mismo patrón).
