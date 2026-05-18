@@ -58,7 +58,36 @@ const screens: ScreenEntry[] = [
         ├── ChevronLeft / ChevronRight
         └── footer (contador + thumbs × N + dots + SKIP/START)`,
   },
-  // { label: "PostalCode",  src: "/postal-code", tree: "" },
+  {
+    label: "PostalCode",
+    src: "/postal-code",
+    tree: `BrandedFrame                    ← wrapper de marca (logo + card + back)
+└── (decide portrait/landscape con clases tailwind)
+    │
+    ├── Portrait  (landscape:hidden)
+    │   ├── motion.div  city illustration   ← <img> cityMap (km0_city_map.png)
+    │   ├── motion.div  title slot          ← alterna entre:
+    │   │   ├── default:  <h1> título + <p> subtítulo
+    │   │   └── found:    "📍 {cityName}"  (AnimatePresence)
+    │   ├── motion.div  input field
+    │   │   ├── MapPin / MapPinOff  (lucide)
+    │   │   ├── <input> numérico  maxLength=5
+    │   │   └── mensaje error / notFound  (AnimatePresence)
+    │   └── motion.div  CTA  → <button> CONTINUAR
+    │       (Loader2 spinner mientras valida)
+    │
+    └── Landscape  (hidden landscape:flex)
+        ├── motion.div  city image (basis 42%)
+        └── motion.div  columna derecha
+            ├── title slot  (default / found)
+            ├── input field  (MapPin + input + errores)
+            └── <button> CONTINUAR
+
+Lógica:
+  · lookupTown(cp)  → src/lib/postalCodes.ts (Supabase \`postal_codes\`)
+  · estados: idle / validating / found / not_found / error (no numérico)
+  · al continuar: sessionStorage (km0_postal_code + km0_town) y navega /home`,
+  },
   // { label: "Login",       src: "/login",       tree: "" },
   // { label: "CheckEmail",  src: "/check-email", tree: "" },
   // { label: "Chat",        src: "/chat",        tree: "" },
