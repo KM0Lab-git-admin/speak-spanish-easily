@@ -6,20 +6,41 @@ import ScreenFrame from "@/components/ScreenFrame";
  * 667×375) lado a lado, para QA visual rápido sin tener que cambiar el
  * viewport del navegador.
  *
- * Empezamos con Language. Las demás pantallas se irán añadiendo en
- * iteraciones siguientes (misma estructura: una entrada por ruta).
+ * Junto a cada pantalla mostramos el árbol de componentes que la
+ * compone, para servir de documentación visual + estructural.
  */
-const screens: { label: string; src: string }[] = [
-  { label: "Language", src: "/" },
-  // { label: "Onboarding",  src: "/onboarding"  },
-  // { label: "PostalCode",  src: "/postal-code" },
-  // { label: "Login",       src: "/login"       },
-  // { label: "CheckEmail",  src: "/check-email" },
-  // { label: "Chat",        src: "/chat"        },
-  // { label: "Home",        src: "/home"        },
-  // { label: "Agenda",      src: "/agenda"      },
-  // { label: "Evento",      src: "/evento"      },
-  // { label: "Profile",     src: "/profile"     },
+interface ScreenEntry {
+  label: string;
+  src: string;
+  tree: string;
+}
+
+const screens: ScreenEntry[] = [
+  {
+    label: "Language",
+    src: "/",
+    tree: `BrandedFrame                    ← wrapper de marca (logo + card + back)
+└── (decide portrait/landscape con clases tailwind)
+    ├── Portrait
+    │   ├── FloatingDots        ← partículas decorativas
+    │   ├── <img> mascota robot
+    │   ├── <h2> "Escoge tu idioma"
+    │   └── LanguageCard × 3    ← ca / es / en (driven by \`languages[]\`)
+    │
+    └── Landscape
+        ├── FloatingDots + mascota (columna izquierda)
+        ├── divisor vertical
+        └── LanguageCard × 3    ← columna derecha`,
+  },
+  // { label: "Onboarding",  src: "/onboarding",  tree: "" },
+  // { label: "PostalCode",  src: "/postal-code", tree: "" },
+  // { label: "Login",       src: "/login",       tree: "" },
+  // { label: "CheckEmail",  src: "/check-email", tree: "" },
+  // { label: "Chat",        src: "/chat",        tree: "" },
+  // { label: "Home",        src: "/home",        tree: "" },
+  // { label: "Agenda",      src: "/agenda",      tree: "" },
+  // { label: "Evento",      src: "/evento",      tree: "" },
+  // { label: "Profile",     src: "/profile",     tree: "" },
 ];
 
 const PreviewAll = () => {
@@ -39,6 +60,9 @@ const PreviewAll = () => {
             <div className="flex flex-wrap items-start gap-6 w-full">
               <ScreenFrame src={s.src} orientation="portrait"  label={s.label} />
               <ScreenFrame src={s.src} orientation="landscape" label={s.label} />
+              <pre className="flex-1 min-w-[280px] max-w-full overflow-auto rounded-xl border-2 border-km0-blue-700/20 bg-white p-4 font-mono text-xs leading-relaxed text-km0-blue-700 shadow-[0_8px_24px_-16px_hsl(var(--km0-blue-700)/0.35)] whitespace-pre">
+{s.tree}
+              </pre>
             </div>
           </section>
         ))}
