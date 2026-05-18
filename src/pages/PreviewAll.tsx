@@ -59,10 +59,12 @@ const PreviewAll = () => {
             <h2 className="font-ui text-lg text-km0-blue-700">{s.label}</h2>
             <div className="flex flex-wrap items-start gap-6 w-full">
               <ScreenFrame src={s.src} orientation="portrait"  label={s.label} />
-              <ScreenFrame src={s.src} orientation="landscape" label={s.label} />
-              <pre className="flex-1 min-w-[280px] max-w-full overflow-auto rounded-xl border-2 border-km0-blue-700/20 bg-white p-4 font-mono text-xs leading-relaxed text-km0-blue-700 shadow-[0_8px_24px_-16px_hsl(var(--km0-blue-700)/0.35)] whitespace-pre">
+              <div className="flex flex-col gap-4 flex-1 min-w-[320px]">
+                <ScreenFrame src={s.src} orientation="landscape" label={s.label} />
+                <pre className="w-full overflow-auto rounded-xl border-2 border-km0-blue-700/20 bg-white p-4 font-mono text-xs leading-relaxed text-km0-blue-700 shadow-[0_8px_24px_-16px_hsl(var(--km0-blue-700)/0.35)] whitespace-pre">
 {s.tree}
-              </pre>
+                </pre>
+              </div>
             </div>
           </section>
         ))}
