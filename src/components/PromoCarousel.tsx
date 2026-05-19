@@ -64,19 +64,14 @@ const PromoCarousel = ({ promos }: PromoCarouselProps) => {
             <div className="absolute top-4 right-16 w-2 h-2 rounded-full bg-km0-yellow-400 shadow-[0_0_12px_hsl(var(--km0-yellow-400))]" />
             <div className="absolute top-10 right-6 w-1.5 h-1.5 rounded-full bg-white" />
 
-            {/* Texto principal */}
+            {/* Texto principal — legacy renderer, ahora simplificado a
+                la nueva forma del tipo Promo (título + fecha). */}
             <div className="absolute inset-0 flex flex-col justify-center px-5 pointer-events-none select-none">
-              <span className={cn("font-brand text-2xl vertical-tablet:text-3xl font-black leading-none", promo.title1.color)}>
-                {promo.title1.text}
-              </span>
-              <span className={cn("font-brand text-3xl vertical-tablet:text-4xl font-black leading-none mt-1", promo.title2.color)}>
-                {promo.title2.text}
-              </span>
-              <span className={cn("font-brand text-2xl vertical-tablet:text-3xl font-black leading-none mt-1", promo.title3.color)}>
-                {promo.title3.text}
+              <span className="font-brand text-2xl vertical-tablet:text-3xl font-black leading-tight text-white whitespace-pre-line">
+                {promo.title}
               </span>
               <span className="font-ui text-xs text-white/90 mt-2 tracking-wider">
-                {promo.subtitle}
+                {promo.dateRange} · {promo.location}
               </span>
             </div>
           </motion.div>
