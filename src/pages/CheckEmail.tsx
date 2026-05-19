@@ -15,7 +15,7 @@ interface LocationState {
 }
 
 /**
- * CheckEmail — Entrada de código OTP de 6 dígitos enviado por email.
+ * CheckEmail — Entrada de código OTP de 4 dígitos enviado por email.
  *
  * Sustituye al flujo de magic link: el usuario NO sale de la app, teclea
  * (o pega) el código recibido por email. Funciona idéntico en web y en
