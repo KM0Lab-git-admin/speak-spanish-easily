@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import BrandedFrame from "@/components/BrandedFrame";
 
 const RESEND_COOLDOWN_SECONDS = 30;
-const CODE_LENGTH = 6;
+const CODE_LENGTH = 4;
 
 interface LocationState {
   email?: string;
