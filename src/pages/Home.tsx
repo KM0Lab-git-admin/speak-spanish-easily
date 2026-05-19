@@ -10,6 +10,7 @@ import { type HomeTab } from "@/components/BottomTabs";
 
 import { PROMOS } from "@/data/promos";
 import { COMERCIOS } from "@/data/comercios";
+import { COUPONS } from "@/data/coupons";
 import { INITIAL_MODULES } from "@/data/homeModules";
 
 /**
@@ -63,15 +64,23 @@ const Home = () => {
     cityName,
     hasAlerts: hasUnread,
     onToggleAlerts: openNotifications,
+    userName: user?.user_metadata?.full_name ?? "Aina",
+    points: 1259,
+    nextLevel: 3000,
     modules: modulesWithHandlers,
     promos: PROMOS,
     comercios: COMERCIOS,
+    coupons: COUPONS,
     activeTab,
     onTabChange: setActiveTab,
     showLogin,
     onLogin: goToLogin,
     showProfile,
     onProfile: goToProfile,
+    onSeeAllComercios: () => {},
+    onSeeAllEvents: () => navigate("/agenda"),
+    onSeeAllCoupons: () => {},
+    onOpenEvent: (id: string) => navigate(`/evento?id=${id}`),
   };
 
   return (
