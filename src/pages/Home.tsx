@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { useAuth } from "@/hooks/useAuth";
 import { useNotifications } from "@/hooks/useNotifications";
@@ -30,7 +30,9 @@ const Home = () => {
   const showLogin = !authLoading && !user;
   const showProfile = !authLoading && !!user;
 
-  const [notifOpen, setNotifOpen] = useState(false);
+  const [searchParams] = useSearchParams();
+  // Permite forzar el overlay abierto desde /preview-all (?notifs=open)
+  const [notifOpen, setNotifOpen] = useState(searchParams.get("notifs") === "open");
   const [modules, setModules] = useState<HomeModule[]>(INITIAL_MODULES);
   const [activeTab, setActiveTab] = useState<HomeTab>("home");
 
