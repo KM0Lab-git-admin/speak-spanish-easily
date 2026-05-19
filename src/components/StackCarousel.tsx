@@ -321,7 +321,7 @@ function StackCarousel<T extends StackCarouselItem>({
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.45, delay: 0.2 }}
         >
-          <div className="absolute top-1 horizontal-desktop:top-1/2 left-1/2 horizontal-desktop:-translate-y-1/2">
+          <div className="absolute top-1/2 left-1/2 -translate-y-1/2">
             <div
               className="flex items-start"
               style={{
