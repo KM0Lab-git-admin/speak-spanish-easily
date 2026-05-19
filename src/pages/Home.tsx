@@ -10,6 +10,7 @@ import { type HomeTab } from "@/components/BottomTabs";
 
 import { PROMOS } from "@/data/promos";
 import { COMERCIOS } from "@/data/comercios";
+import { COUPONS } from "@/data/coupons";
 import { INITIAL_MODULES } from "@/data/homeModules";
 
 /**
