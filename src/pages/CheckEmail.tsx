@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, KeyboardEvent, ClipboardEvent } from "react";
 import { useNavigate, useLocation, useSearchParams, Navigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import BrandedFrame from "@/components/BrandedFrame";
 
 const RESEND_COOLDOWN_SECONDS = 30;
+const CODE_LENGTH = 6;
 
 interface LocationState {
   email?: string;
@@ -14,27 +15,27 @@ interface LocationState {
 }
 
 /**
- * CheckEmail — Pantalla "Revisa tu correo" tras enviar magic link.
+ * CheckEmail — Entrada de código OTP de 6 dígitos enviado por email.
  *
- * Sustituye a la antigua /verify (OTP de 6 dígitos), porque la plantilla
- * de email por defecto de Lovable solo entrega el enlace mágico, no el
- * código. El usuario completa el login pulsando el botón en su email,
- * que le redirige directamente a /home.
+ * Sustituye al flujo de magic link: el usuario NO sale de la app, teclea
+ * (o pega) el código recibido por email. Funciona idéntico en web y en
+ * la futura app nativa (Expo / React Native) sin necesidad de configurar
+ * deep linking ni universal links.
  *
- * Aquí solo mostramos confirmación visual + opción de reenviar.
+ * Verificación: supabase.auth.verifyOtp({ email, token, type: 'email' }).
  */
 const CheckEmail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const state = (location.state ?? {}) as LocationState;
-  // Fallback por query string para que /preview-all pueda renderizar esta
-  // pantalla sin venir del flujo real de Login.
   const email = state.email ?? searchParams.get("email") ?? undefined;
-  const mode = state.mode ?? "login";
 
+  const [digits, setDigits] = useState<string[]>(Array(CODE_LENGTH).fill(""));
   const [cooldown, setCooldown] = useState(RESEND_COOLDOWN_SECONDS);
   const [resending, setResending] = useState(false);
+  const [verifying, setVerifying] = useState(false);
+  const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -42,26 +43,81 @@ const CheckEmail = () => {
     return () => clearTimeout(t);
   }, [cooldown]);
 
+  // Auto-focus al primer dígito.
+  useEffect(() => {
+    inputsRef.current[0]?.focus();
+  }, []);
+
   if (!email) {
     return <Navigate to="/login" replace />;
   }
+
+  const verify = async (code: string) => {
+    if (verifying) return;
+    setVerifying(true);
+    const { error } = await supabase.auth.verifyOtp({
+      email,
+      token: code,
+      type: "email",
+    });
+    if (error) {
+      toast.error("Código incorrecto. Inténtalo de nuevo.");
+      setDigits(Array(CODE_LENGTH).fill(""));
+      inputsRef.current[0]?.focus();
+      setVerifying(false);
+      return;
+    }
+    // verifyOtp ya deja la sesión activa → useAuth detectará al user.
+    toast.success("¡Bienvenido!");
+    navigate("/home", { replace: true });
+  };
+
+  const handleChange = (idx: number, value: string) => {
+    // Solo dígitos, un carácter.
+    const clean = value.replace(/\D/g, "").slice(-1);
+    const next = [...digits];
+    next[idx] = clean;
+    setDigits(next);
+    if (clean && idx < CODE_LENGTH - 1) {
+      inputsRef.current[idx + 1]?.focus();
+    }
+    // Auto-submit cuando se completan los 6.
+    if (next.every((d) => d !== "")) {
+      verify(next.join(""));
+    }
+  };
+
+  const handleKeyDown = (idx: number, e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && !digits[idx] && idx > 0) {
+      inputsRef.current[idx - 1]?.focus();
+    }
+  };
+
+  const handlePaste = (e: ClipboardEvent<HTMLInputElement>) => {
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, CODE_LENGTH);
+    if (!pasted) return;
+    e.preventDefault();
+    const next = Array(CODE_LENGTH).fill("");
+    for (let i = 0; i < pasted.length; i++) next[i] = pasted[i];
+    setDigits(next);
+    const lastIdx = Math.min(pasted.length, CODE_LENGTH) - 1;
+    inputsRef.current[lastIdx]?.focus();
+    if (pasted.length === CODE_LENGTH) verify(pasted);
+  };
 
   const handleResend = async () => {
     if (cooldown > 0 || resending) return;
     setResending(true);
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: {
-        shouldCreateUser: true,
-        emailRedirectTo: `${window.location.origin}/home`,
-      },
+      options: { shouldCreateUser: true },
     });
     setResending(false);
     if (error) {
       toast.error("No se pudo reenviar. Inténtalo más tarde.");
       return;
     }
-    toast.success("Enlace reenviado");
+    toast.success("Código reenviado");
     setCooldown(RESEND_COOLDOWN_SECONDS);
   };
 
@@ -71,41 +127,57 @@ const CheckEmail = () => {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="flex-1 flex flex-col items-center gap-5 pt-2"
+        className="flex-1 flex flex-col items-center gap-4 horizontal-mobile:gap-2 pt-2 horizontal-mobile:pt-0"
       >
-        <div className="w-16 h-16 rounded-full bg-km0-yellow-500/20 flex items-center justify-center mt-4">
-          <Mail className="w-8 h-8 text-km0-blue-700" />
+        <div className="w-14 h-14 horizontal-mobile:w-10 horizontal-mobile:h-10 rounded-full bg-km0-yellow-500/20 flex items-center justify-center mt-2 horizontal-mobile:mt-0">
+          <Mail className="w-7 h-7 horizontal-mobile:w-5 horizontal-mobile:h-5 text-km0-blue-700" />
         </div>
 
-        <div className="text-center space-y-2 px-2">
-          <h1 className="font-brand text-2xl horizontal-mobile:text-xl text-km0-blue-700">
+        <div className="text-center space-y-1 px-2">
+          <h1 className="font-brand text-2xl horizontal-mobile:text-lg text-km0-blue-700">
             Revisa tu correo
           </h1>
-          <p className="font-body text-sm text-muted-foreground">
-            Te hemos enviado un enlace a
+          <p className="font-body text-sm horizontal-mobile:text-xs text-muted-foreground">
+            Hemos enviado un código de 6 dígitos a
           </p>
-          <p className="font-ui text-base text-foreground break-all">
+          <p className="font-ui text-base horizontal-mobile:text-sm text-foreground break-all">
             {email}
           </p>
-          <p className="font-body text-sm text-muted-foreground pt-2">
-            Pulsa el enlace del email para entrar.
-          </p>
+        </div>
+
+        {/* Inputs OTP */}
+        <div className="flex gap-2 horizontal-mobile:gap-1.5 mt-1" onPaste={handlePaste}>
+          {digits.map((d, i) => (
+            <input
+              key={i}
+              ref={(el) => (inputsRef.current[i] = el)}
+              type="text"
+              inputMode="numeric"
+              autoComplete={i === 0 ? "one-time-code" : "off"}
+              maxLength={1}
+              value={d}
+              disabled={verifying}
+              onChange={(e) => handleChange(i, e.target.value)}
+              onKeyDown={(e) => handleKeyDown(i, e)}
+              className="w-11 h-12 horizontal-mobile:w-8 horizontal-mobile:h-10 text-center font-ui text-xl horizontal-mobile:text-base rounded-xl border-2 border-km0-blue-700/20 bg-background text-foreground focus:outline-none focus:border-km0-blue-700 transition-colors disabled:opacity-50"
+            />
+          ))}
         </div>
 
         <button
           type="button"
           onClick={handleResend}
           disabled={cooldown > 0 || resending}
-          className="font-body text-sm text-km0-blue-700 underline underline-offset-2 disabled:text-muted-foreground disabled:no-underline mt-2"
+          className="font-body text-sm horizontal-mobile:text-xs text-km0-blue-700 underline underline-offset-2 disabled:text-muted-foreground disabled:no-underline mt-1"
         >
           {resending
             ? "Reenviando..."
             : cooldown > 0
-            ? `Reenviar enlace en ${cooldown}s`
-            : "Reenviar enlace"}
+            ? `Reenviar código en ${cooldown}s`
+            : "Reenviar código"}
         </button>
 
-        <p className="font-body text-xs text-muted-foreground text-center px-4 mt-auto pb-2">
+        <p className="font-body text-xs text-muted-foreground text-center px-4 mt-auto pb-1">
           ¿No lo encuentras? Mira en spam o promociones.
         </p>
       </motion.div>
