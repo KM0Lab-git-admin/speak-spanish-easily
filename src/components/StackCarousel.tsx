@@ -372,7 +372,10 @@ function StackCarousel<T extends StackCarouselItem>({
                 </div>
               );
             })}
+            </div>
           </div>
+
+
 
           <button
             onClick={prev}
