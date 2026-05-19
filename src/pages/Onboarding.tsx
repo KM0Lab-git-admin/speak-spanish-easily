@@ -57,10 +57,10 @@ const OnboardingCard = ({
   <div className="flex flex-col h-full max-h-full">
     {/* Image area */}
     <div
-      className="relative mx-3 mt-3 vertical-mobile:mx-2 vertical-mobile:mt-2 wide-landscape:mx-3 wide-landscape:mt-3 short-landscape:mx-2 short-landscape:mt-2 shrink-0 h-[clamp(110px,22vh,180px)] vertical-tablet:h-[200px] wide-landscape:h-[clamp(180px,38vh,300px)] short-landscape:h-[clamp(80px,22vh,140px)] rounded-2xl flex items-center justify-center overflow-hidden"
+      className="relative mx-3 mt-3 vertical-mobile:mx-2 vertical-mobile:mt-2 wide-landscape:mx-3 wide-landscape:mt-3 short-landscape:mx-2 short-landscape:mt-2 shrink-0 h-[clamp(110px,22vh,180px)] vertical-tablet:h-[200px] wide-landscape:h-[clamp(180px,38vh,300px)] short-landscape:h-[clamp(120px,38vh,180px)] rounded-2xl flex items-center justify-center overflow-hidden"
       style={{ background: slide.color }}
     >
-      <span className="text-[clamp(48px,12vh,90px)] vertical-tablet:text-[80px] wide-landscape:text-[clamp(72px,14vh,120px)] short-landscape:text-[clamp(40px,11vh,72px)] select-none">
+      <span className="text-[clamp(48px,12vh,90px)] vertical-tablet:text-[80px] wide-landscape:text-[clamp(72px,14vh,120px)] short-landscape:text-[clamp(56px,18vh,96px)] select-none">
         {slide.emoji}
       </span>
       {isActive && (
