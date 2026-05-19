@@ -92,7 +92,7 @@ const BrandedFrame = ({
         )}
 
         {/* Body — scroll interno si desborda, frame nunca se mueve */}
-        <div className={`flex-1 min-h-0 flex flex-col w-full px-4 pb-6 overflow-y-auto ${hideHeader ? 'pt-5' : ''} ${portraitContentClassName}`}>
+        <div className={`flex-1 min-h-0 flex flex-col w-full px-4 pb-6 overflow-y-auto overflow-x-hidden ${hideHeader ? 'pt-5' : ''} ${portraitContentClassName}`}>
           {children}
         </div>
       </div>
