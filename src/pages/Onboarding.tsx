@@ -54,31 +54,32 @@ const OnboardingCard = ({
   isActive: boolean;
   lang: Lang;
 }) => (
-  <>
+  <div className="flex flex-col h-full max-h-full">
     {/* Image area */}
     <div
-      className="relative mx-3 mt-3 wide-landscape:mx-3 wide-landscape:mt-3 h-[180px] landscape:h-[200px] wide-landscape:h-[300px] short-landscape:mx-[clamp(0.5rem,1.2vw,0.75rem)] short-landscape:mt-[clamp(0.5rem,1.2vw,0.75rem)] short-landscape:h-[clamp(120px,32vh,260px)] rounded-2xl flex items-center justify-center overflow-hidden"
+      className="relative mx-3 mt-3 vertical-mobile:mx-2 vertical-mobile:mt-2 wide-landscape:mx-3 wide-landscape:mt-3 short-landscape:mx-2 short-landscape:mt-2 shrink-0 h-[clamp(110px,22vh,180px)] vertical-tablet:h-[200px] wide-landscape:h-[clamp(180px,38vh,300px)] short-landscape:h-[clamp(80px,22vh,140px)] rounded-2xl flex items-center justify-center overflow-hidden"
       style={{ background: slide.color }}
     >
-      <span className="text-[70px] landscape:text-[80px] wide-landscape:text-[120px] short-landscape:text-[clamp(52px,10vh,96px)] select-none">
+      <span className="text-[clamp(48px,12vh,90px)] vertical-tablet:text-[80px] wide-landscape:text-[clamp(72px,14vh,120px)] short-landscape:text-[clamp(40px,11vh,72px)] select-none">
         {slide.emoji}
       </span>
       {isActive && (
-        <span className="absolute top-3 right-3 short-landscape:top-1.5 short-landscape:right-1.5 bg-km0-coral-400 text-white font-ui font-bold text-sm short-landscape:text-[clamp(10px,1.4vh,14px)] px-3 py-1 short-landscape:px-2 short-landscape:py-0.5 rounded-xl shadow-md">
+        <span className="absolute top-2 right-2 vertical-mobile:top-1.5 vertical-mobile:right-1.5 short-landscape:top-1 short-landscape:right-1 bg-km0-coral-400 text-white font-ui font-bold text-xs vertical-tablet:text-sm wide-landscape:text-sm short-landscape:text-[10px] px-2 vertical-tablet:px-3 py-0.5 vertical-tablet:py-1 short-landscape:px-1.5 rounded-xl shadow-md">
           +{slide.xp} XP
         </span>
       )}
     </div>
     {/* Text */}
-    <div className="px-4 pt-3 pb-4 wide-landscape:px-6 wide-landscape:pt-5 wide-landscape:pb-6 short-landscape:px-[clamp(0.75rem,1.6vw,1.25rem)] short-landscape:pt-[clamp(0.5rem,1.2vh,1rem)] short-landscape:pb-[clamp(0.75rem,1.6vh,1.25rem)] text-center">
-      <h2 className="font-brand font-bold text-lg wide-landscape:text-2xl short-landscape:text-[clamp(0.875rem,2.2vh,1.25rem)] text-primary leading-tight mb-1 wide-landscape:mb-2 short-landscape:mb-[clamp(0.125rem,0.6vh,0.5rem)]">
+    <div className="px-3 pt-2 pb-3 vertical-tablet:px-4 vertical-tablet:pt-3 vertical-tablet:pb-4 wide-landscape:px-6 wide-landscape:pt-4 wide-landscape:pb-5 short-landscape:px-3 short-landscape:pt-1.5 short-landscape:pb-2 text-center flex-1 min-h-0 overflow-hidden flex flex-col justify-start">
+      <h2 className="font-brand font-bold text-base vertical-tablet:text-lg wide-landscape:text-xl short-landscape:text-[clamp(11px,2vh,15px)] text-primary leading-tight mb-1 wide-landscape:mb-2 short-landscape:mb-0.5">
         {getTitle(slide, lang)}
       </h2>
-      <p className="font-body text-sm wide-landscape:text-base short-landscape:text-[clamp(0.6875rem,1.6vh,0.9375rem)] text-muted-foreground leading-relaxed wide-landscape:leading-snug short-landscape:leading-snug">
+      <p className="font-body text-xs vertical-tablet:text-sm wide-landscape:text-sm short-landscape:text-[clamp(9px,1.5vh,12px)] text-muted-foreground leading-snug">
         {getDesc(slide, lang)}
       </p>
     </div>
-  </>
+  </div>
+
 );
 
 export default Onboarding;
