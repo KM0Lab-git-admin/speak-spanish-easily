@@ -87,10 +87,10 @@ const HomeContent = ({
           </motion.section>
 
           {/* Portrait: hermanos directos para que justify-evenly reparta espacio igual */}
-          <div className="landscape:hidden border border-black">
+          <div className="landscape:hidden">
             <PromoSection promos={promos} />
           </div>
-          <div className="landscape:hidden border border-black">
+          <div className="landscape:hidden">
             <ComerciosSection comercios={comercios} onSeeAll={onSeeAllComercios} />
           </div>
 
