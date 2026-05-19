@@ -31,11 +31,12 @@ const Login = () => {
     // guarden en el perfil al crear la cuenta vía handle_new_user trigger.
     const postalCode = sessionStorage.getItem("km0_postal_code") ?? undefined;
     const town = sessionStorage.getItem("km0_town") ?? undefined;
+    // OTP de 6 dígitos por email — sin magic link. El usuario teclea
+    // el código en /check-email sin salir de la app (clave para nativo).
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim(),
       options: {
         shouldCreateUser: true,
-        emailRedirectTo: `${window.location.origin}/home`,
         data: { postal_code: postalCode, town },
       },
     });
