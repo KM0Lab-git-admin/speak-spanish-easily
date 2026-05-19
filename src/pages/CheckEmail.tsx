@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation, Navigate } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams, Navigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
@@ -26,8 +26,11 @@ interface LocationState {
 const CheckEmail = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const state = (location.state ?? {}) as LocationState;
-  const email = state.email;
+  // Fallback por query string para que /preview-all pueda renderizar esta
+  // pantalla sin venir del flujo real de Login.
+  const email = state.email ?? searchParams.get("email") ?? undefined;
   const mode = state.mode ?? "login";
 
   const [cooldown, setCooldown] = useState(RESEND_COOLDOWN_SECONDS);
