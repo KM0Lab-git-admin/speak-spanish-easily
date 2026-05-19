@@ -88,13 +88,196 @@ Lógica:
   · estados: idle / validating / found / not_found / error (no numérico)
   · al continuar: sessionStorage (km0_postal_code + km0_town) y navega /home`,
   },
-  // { label: "Login",       src: "/login",       tree: "" },
-  // { label: "CheckEmail",  src: "/check-email", tree: "" },
-  // { label: "Chat",        src: "/chat",        tree: "" },
-  // { label: "Home",        src: "/home",        tree: "" },
-  // { label: "Agenda",      src: "/agenda",      tree: "" },
-  // { label: "Evento",      src: "/evento",      tree: "" },
-  // { label: "Profile",     src: "/profile",     tree: "" },
+  {
+    label: "Login",
+    src: "/login",
+    tree: `BrandedFrame                    ← wrapper de marca (logo + card + back)
+└── motion.div  contenedor (fade-in + y)
+    ├── header
+    │   ├── <h1> "Entra o regístrate"
+    │   └── <p> subtítulo
+    │
+    ├── <form>  (passwordless OTP email)
+    │   ├── <input type="email">
+    │   └── <button> CONTINUAR / "Enviando enlace..."
+    │
+    ├── divider  "próximamente"
+    │
+    └── grid social  (deshabilitados)
+        ├── <button> Google  (gris + disabled)
+        └── <button> Apple   (gris + disabled)
+
+Lógica:
+  · supabase.auth.signInWithOtp({ shouldCreateUser: true })
+  · recupera km0_postal_code + km0_town de sessionStorage → data
+  · al éxito: navega a /check-email con state {email, mode:"login"}`,
+  },
+  {
+    label: "CheckEmail",
+    src: "/check-email",
+    tree: `BrandedFrame                    ← wrapper de marca (logo + card + back)
+└── motion.div  contenedor (fade-in + y, items-center)
+    ├── icon circle  (Mail dentro de círculo amarillo)
+    ├── bloque texto
+    │   ├── <h1> "Revisa tu correo"
+    │   ├── <p> "Te hemos enviado un enlace a"
+    │   ├── <p> {email}
+    │   └── <p> "Pulsa el enlace del email para entrar"
+    ├── <button> "Reenviar enlace" / cooldown 30s
+    └── <p> footer  "¿No lo encuentras? Mira en spam..."
+
+Lógica:
+  · state.email obligatorio → si falta: <Navigate to="/login">
+  · cooldown decreciente (setTimeout 1s) deshabilita el botón
+  · resend → supabase.auth.signInWithOtp(email)`,
+  },
+  {
+    label: "Chat",
+    src: "/chat",
+    tree: `(fullbleed — NO usa BrandedFrame; layout fixed inset-0)
+│
+├── Portrait  (landscape:hidden, max-w-[390px])
+│   ├── motion.header        ← HeaderContent
+│   │   ├── back button (chevron amarillo dashed)
+│   │   ├── título: {cityName} + logo KM0 CHAT/XAT
+│   │   └── NotificationBell
+│   ├── date banner          (amarillo · "AGENDA · {fecha}")
+│   ├── messages scroll
+│   │   └── MessagesList     ← burbujas + EventCard × N + loader
+│   ├── motion.div input
+│   │   └── InputBar         ← AnimatePresence (VoiceRecorder | input+mic+send)
+│   └── NotificationsOverlay
+│
+└── Landscape  (hidden landscape:flex, 16:9 frame)
+    ├── motion.header (HeaderContent compact, edge-to-edge)
+    ├── date banner   (edge-to-edge)
+    ├── messages scroll (max-w-[720px] centrado)
+    │   └── MessagesList
+    ├── motion.div input (max-w-[720px] centrado)
+    │   └── InputBar compact
+    └── NotificationsOverlay
+
+Componentes auxiliares (definidos en Chat.tsx, candidatos a extraer):
+  · HeaderContent({compact})  · InputBar({compact})  · MessagesList({endRef})
+
+Lógica:
+  · state: lang ("ca"|"es"|"en"), cityName, postalCode
+  · i18n local (greeting + placeholder + dateLabel)
+  · handleSend → queryEvents(text, postalCode) (eventQueryApi)
+  · voz: VoiceRecorder (Web Speech API) → setInput + setIsRecording(false)
+  · auto-scroll a messagesEndRef en cada nuevo mensaje`,
+  },
+  {
+    label: "Home",
+    src: "/home",
+    tree: `(NO usa BrandedFrame — frame propio portrait 9:19.5 / landscape 16:9)
+│
+├── Portrait  (landscape:hidden)
+│   └── HomeContent          ← layout reutilizable
+│       ├── HomeHero         (logo + ciudad + bell + login/profile)
+│       ├── middle (justify-evenly)
+│       │   ├── LoginButton  (solo si !user)
+│       │   ├── HomeModules  (grid de tarjetas activables)
+│       │   ├── PromoSection ← PromoCarousel
+│       │   └── ComerciosSection ← ComercioCarousel
+│       └── BottomTabs
+│   └── NotificationsOverlay
+│
+└── Landscape  (hidden landscape:flex)
+    └── HomeContent  (mismo árbol; middle = grid 2 columnas con Promos+Comercios)
+    └── NotificationsOverlay
+
+Lógica:
+  · useAuth → showLogin / showProfile
+  · useNotifications → bell + overlay
+  · modules state (INITIAL_MODULES) con toggleModule
+  · módulo "agenda" → navigate("/agenda"); resto togglea activo`,
+  },
+  {
+    label: "Agenda",
+    src: "/agenda",
+    tree: `BrandedFrame  (hideHeader, contentClassName overflow-hidden)
+└── content (flex-col h-full)
+    ├── HomeHero               ← reutilizado del Home
+    │   └── greetingSlot: ScreenTitle "Agenda"
+    ├── WhenTabs               ← segmented control (semana/próxima/mes/trimestre)
+    ├── grid 4×2 categorías    ← chips con icono lucide + color por categoría
+    │   (música, cultura, infantil, deporte, talleres, fiestas, gastro, todos)
+    ├── contador               ← "{N} eventos" / Loader2 "Buscando…"
+    └── <section> resultados (única zona scroll-y)
+        ├── SkeletonCard × 3   (estado loading)
+        ├── error card         (km0-coral, si fetch falla)
+        ├── empty state        (CalendarIcon + mensaje)
+        └── AnimatePresence
+            └── grupos por día
+                ├── <h3> sticky  "Hoy/Mañana/..." (formatDayHeader)
+                └── EventListCard × N
+
+Lógica:
+  · queryEvents(hintCategoría, CP=08380, limit=50) en cada cambio de categoría
+  · filtros locales: rango temporal (rangeFor), categoría (matches[]), precio
+  · agrupación por startOfDay → Map<isoDate, items[]>`,
+  },
+  {
+    label: "Evento",
+    src: "/evento",
+    tree: `BrandedFrame  (hideHeader, contentClassName overflow-hidden)
+└── content (flex-col h-full)
+    ├── selector POC  (toggle v1 "Hero" / v3 "Ticket")
+    └── AnimatePresence  (slide horizontal entre variantes)
+        │
+        ├── VariantHero  (v1)
+        │   ├── ImageCarousel (h-48, overlay categoría + título + back/share)
+        │   ├── card flotante datos (fecha · hora · lugar · gratis)
+        │   ├── descripción (scroll-y interno) + organizador
+        │   └── CTAs sticky  (CtaPrincipal + share circular)
+        │
+        └── VariantTicket  (v3)
+            ├── header  (back · "TU ENTRADA" · share)
+            ├── motion.div ticket
+            │   ├── ImageCarousel aspect-[3/4] (póster + categoría + GRATIS)
+            │   ├── perforaciones (línea dashed + huecos laterales)
+            │   ├── stub  (fecha · hora · lugar en 3 columnas)
+            │   └── descripción + dirección
+            └── CTA amarillo + share circular
+
+Componentes auxiliares (en Evento.tsx, candidatos a extraer):
+  · ImageCarousel  · CtaPrincipal  · VariantHero  · VariantTicket
+
+Lógica:
+  · EVENTO mock (POC)
+  · CtaPrincipal: prefiere link_inscripcion ("Ticket") sobre link_noticia
+    ("ExternalLink"); muestra hostname del link como label
+  · ImageCarousel: chevrons + dots, AnimatePresence fade entre imágenes`,
+  },
+  {
+    label: "Profile",
+    src: "/profile",
+    tree: `BrandedFrame                    ← wrapper de marca (logo + card + back)
+└── motion.div  contenedor (fade-in + y, overflow-y-auto en landscape)
+    ├── header
+    │   ├── <h1> "Mi perfil"
+    │   └── <p> "Actualiza tus datos"
+    │
+    ├── loading state  ← Loader2 spinner centrado
+    │
+    └── <form>  (handleSave)
+        ├── Field "Nombre"        → <input>
+        ├── Field "Apellidos"     → <input>
+        ├── Field "Email"         → <input readOnly disabled>  (de user.email)
+        ├── grid [110px_1fr]
+        │   ├── Field "C. postal" → <input numeric maxLength=5>
+        │   └── Field "Población" → <input readOnly>  (derivada de CP)
+        ├── <button submit> "Guardar cambios" / Loader2
+        └── <button> "Cerrar sesión"  (LogOut icon)
+
+Lógica:
+  · useAuth → user (si no hay, formulario vacío modo testing)
+  · carga inicial: supabase.from("profiles").select(...).eq(user_id)
+  · validación: zod schema (first_name, last_name, postal_code regex 5d)
+  · town se resuelve async vía lookupTown(postal_code) (Supabase postal_codes)
+  · signOut → toast + navigate("/home")`,
+  },
 ];
 
 const PreviewAll = () => {
