@@ -138,7 +138,7 @@ const CheckEmail = () => {
             Revisa tu correo
           </h1>
           <p className="font-body text-sm horizontal-mobile:text-xs text-muted-foreground">
-            Hemos enviado un código de 6 dígitos a
+            Hemos enviado un código de 4 dígitos a
           </p>
           <p className="font-ui text-base horizontal-mobile:text-sm text-foreground break-all">
             {email}
