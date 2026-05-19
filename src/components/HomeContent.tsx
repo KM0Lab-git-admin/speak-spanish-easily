@@ -1,28 +1,48 @@
 import { motion } from "framer-motion";
 import HomeModules, { type HomeModule } from "./HomeModules";
 import HomeHero from "./HomeHero";
-import PromoSection from "./PromoSection";
-import ComerciosSection from "./ComerciosSection";
+import EventHeroCarousel from "./EventHeroCarousel";
+import CouponCard from "./CouponCard";
+import PointsCard from "./PointsCard";
+import GreetingBlock from "./GreetingBlock";
+import ComercioCarousel from "./ComercioCarousel";
 import BottomTabs, { type HomeTab } from "./BottomTabs";
 import LoginButton from "./LoginButton";
+import { ArrowRight } from "lucide-react";
 
 import type { Promo } from "@/types/promo";
 import type { Comercio } from "@/types/comercio";
+import type { Coupon } from "@/types/coupon";
 
 /**
- * HomeContent — layout interno del Home reutilizado por el frame
- * portrait y el frame landscape de la página. Compone el hero, los
- * módulos, las secciones de promos y comercios y la tab bar.
+ * HomeContent — nueva distribución de la home (basada en el informe
+ * de mejoras de la home actual). Cambios principales:
  *
- * No conoce auth, router ni hooks: todo entra por props.
+ *  1. Header limpio (HomeHero sin login inline, sin saludo dentro).
+ *  2. Bloque saludo personalizado (GreetingBlock).
+ *  3. Tarjeta de puntos prominente (PointsCard).
+ *  4. Sección "Accesos rápidos" con HomeModules.
+ *  5. Sección "Eventos destacados" con EventHeroCarousel + "Ver todos".
+ *  6. Sección "Descubre lo nuestro" con ComercioCarousel + "Ver todos".
+ *  7. Sección "Promos para ti" con CouponCard.
+ *  8. BottomTabs intacto.
+ *
+ * Se permite scroll-y interno (la cantidad de contenido excede el
+ * encuadre fijo del frame). Nunca scroll-x.
+ *
+ * El componente no conoce auth ni router: todo entra por props.
  */
 export interface HomeContentProps {
   cityName: string;
   hasAlerts: boolean;
   onToggleAlerts: () => void;
+  userName?: string | null;
+  points: number;
+  nextLevel: number;
   modules: HomeModule[];
   promos: Promo[];
   comercios: Comercio[];
+  coupons: Coupon[];
   activeTab: HomeTab;
   onTabChange: (t: HomeTab) => void;
   showLogin: boolean;
@@ -30,15 +50,22 @@ export interface HomeContentProps {
   showProfile: boolean;
   onProfile: () => void;
   onSeeAllComercios?: () => void;
+  onSeeAllEvents?: () => void;
+  onSeeAllCoupons?: () => void;
+  onOpenEvent?: (id: string) => void;
 }
 
 const HomeContent = ({
   cityName,
   hasAlerts,
   onToggleAlerts,
+  userName = "Aina",
+  points,
+  nextLevel,
   modules,
   promos,
   comercios,
+  coupons,
   activeTab,
   onTabChange,
   showLogin,
@@ -46,63 +73,71 @@ const HomeContent = ({
   showProfile,
   onProfile,
   onSeeAllComercios,
+  onSeeAllEvents,
+  onSeeAllCoupons,
+  onOpenEvent,
 }: HomeContentProps) => {
   return (
     <>
-      {/* Body — sin scroll: hero arriba (shrink-0), middle flex justify-evenly, tabs abajo */}
-      <div className="flex-1 min-h-0 overflow-hidden flex flex-col relative border-0 border-none horizontal-mobile:!pt-[clamp(52px,13dvh,68px)] horizontal-desktop:pt-[clamp(64px,13dvh,96px)]">
+      {/* Body con scroll-y interno: header arriba, contenido scrollable, tabs fijo abajo */}
+      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col">
+        {/* Header con skyline de fondo (HomeHero gestiona el fondo) */}
         <HomeHero
           cityName={cityName}
           hasAlerts={hasAlerts}
           onToggleAlerts={onToggleAlerts}
-          showLogin={showLogin}
+          showLogin={false}
           onLogin={onLogin}
+          showGreeting={false}
         />
 
-        {/* Middle: pegado arriba, sin padding/margin/gap */}
-        <div className="flex-1 min-h-0 flex flex-col justify-evenly gap-0 overflow-hidden relative z-10 px-[15px] horizontal-mobile:px-[clamp(8px,1.5vw,14px)] horizontal-mobile:pb-[clamp(4px,1dvh,10px)] horizontal-desktop:px-[clamp(20px,2.5vw,36px)] horizontal-desktop:pb-[clamp(12px,2.5dvh,24px)] border-black border-0">
-          {/* Login CTA solo portrait */}
+        {/* Contenido principal apilado verticalmente */}
+        <div className="relative z-10 flex flex-col gap-4 vertical-tablet:gap-5 horizontal-mobile:!gap-2.5 horizontal-desktop:!gap-4 px-4 vertical-tablet:px-5 horizontal-mobile:!px-3 horizontal-desktop:!px-6 pt-3 pb-5 horizontal-mobile:!pt-2 horizontal-mobile:!pb-3">
+          {/* 1 · Saludo personalizado */}
+          <GreetingBlock name={userName} />
+
+          {/* CTA login solo si no hay sesión (portrait) */}
           {showLogin && (
-            <motion.section
-              className="landscape:hidden flex justify-center shrink-0 !m-0 !p-0 border-black border-0"
-              initial={{ opacity: 0, y: 8 }}
+            <motion.div
+              className="flex justify-center"
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.08 }}
+              transition={{ duration: 0.35, delay: 0.05 }}
             >
               <LoginButton onClick={onLogin} size="sm" />
-            </motion.section>
+            </motion.div>
           )}
 
-          {/* UserGreeting se renderiza dentro de HomeHero */}
+          {/* 2 · Tarjeta de puntos prominente */}
+          <PointsCard points={points} nextLevel={nextLevel} />
 
-
-          {/* MÓDULOS */}
-          <motion.section
-            className="shrink-0 m-0 p-0 landscape:col-span-2 border-black border-0"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-          >
+          {/* 3 · Accesos rápidos */}
+          <section className="flex flex-col gap-2">
+            <SectionHeader title="Accesos rápidos" />
             <HomeModules modules={modules} />
-          </motion.section>
+          </section>
 
-          {/* Portrait: hermanos directos para que justify-evenly reparta espacio igual */}
-          <div className="landscape:hidden">
-            <PromoSection promos={promos} />
-          </div>
-          <div className="landscape:hidden">
-            <ComerciosSection comercios={comercios} onSeeAll={onSeeAllComercios} />
-          </div>
+          {/* 4 · Eventos destacados */}
+          <section className="flex flex-col gap-2">
+            <SectionHeader title="Eventos destacados" actionLabel="Ver todos" onAction={onSeeAllEvents} />
+            <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
+          </section>
 
-          {/* Landscape: grid 2 columnas */}
-          <div className="hidden landscape:grid landscape:flex-1 landscape:min-h-0 landscape:grid-cols-2 landscape:gap-3 horizontal-mobile:!gap-2 horizontal-desktop:gap-4 m-0 p-0">
-            <div className="">
-              <PromoSection promos={promos} />
+          {/* 5 · Descubre lo nuestro (comercios) */}
+          <section className="flex flex-col gap-2">
+            <SectionHeader title="Descubre lo nuestro" actionLabel="Ver todos" onAction={onSeeAllComercios} />
+            <ComercioCarousel comercios={comercios} />
+          </section>
+
+          {/* 6 · Promos para ti (cupones) */}
+          <section className="flex flex-col gap-2">
+            <SectionHeader title="Promos para ti" actionLabel="Ver todas" onAction={onSeeAllCoupons} />
+            <div className="flex flex-col gap-2">
+              {coupons.map((c, i) => (
+                <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
+              ))}
             </div>
-            <div className="">
-              <ComerciosSection comercios={comercios} onSeeAll={onSeeAllComercios} />
-            </div>
-          </div>
+          </section>
         </div>
       </div>
 
@@ -116,5 +151,31 @@ const HomeContent = ({
     </>
   );
 };
+
+/* ─── Helpers ─────────────────────────────────────────────── */
+
+interface SectionHeaderProps {
+  title: string;
+  actionLabel?: string;
+  onAction?: () => void;
+}
+
+const SectionHeader = ({ title, actionLabel, onAction }: SectionHeaderProps) => (
+  <div className="flex items-center justify-between gap-2">
+    <h2 className="font-brand font-black text-km0-blue-800 text-base vertical-tablet:text-lg horizontal-mobile:!text-sm horizontal-desktop:!text-lg">
+      {title}
+    </h2>
+    {actionLabel && (
+      <button
+        type="button"
+        onClick={onAction}
+        className="font-ui font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform underline underline-offset-4 text-xs vertical-tablet:text-sm horizontal-mobile:!text-[11px] horizontal-desktop:!text-sm"
+      >
+        {actionLabel}
+        <ArrowRight size={13} strokeWidth={2.4} className="horizontal-mobile:!w-3 horizontal-mobile:!h-3" />
+      </button>
+    )}
+  </div>
+);
 
 export default HomeContent;
