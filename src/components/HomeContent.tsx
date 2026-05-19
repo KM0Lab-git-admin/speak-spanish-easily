@@ -60,7 +60,7 @@ const HomeContent = ({
         />
 
         {/* Middle: pegado arriba, sin padding/margin/gap */}
-        <div className="flex-1 min-h-0 flex flex-col justify-evenly gap-0 overflow-hidden relative z-10 px-[15px] horizontal-mobile:px-[clamp(8px,1.5vw,14px)] horizontal-mobile:pb-[clamp(4px,1dvh,10px)] horizontal-desktop:px-[clamp(20px,2.5vw,36px)] horizontal-desktop:pb-[clamp(12px,2.5dvh,24px)] border border-black">
+        <div className="flex-1 min-h-0 flex flex-col justify-evenly gap-0 overflow-hidden relative z-10 px-[15px] horizontal-mobile:px-[clamp(8px,1.5vw,14px)] horizontal-mobile:pb-[clamp(4px,1dvh,10px)] horizontal-desktop:px-[clamp(20px,2.5vw,36px)] horizontal-desktop:pb-[clamp(12px,2.5dvh,24px)] border-black border-0">
           {/* Login CTA solo portrait */}
           {showLogin && (
             <motion.section
