@@ -81,7 +81,9 @@ const HomeContent = ({
     <>
       {/* Body con scroll-y interno: header arriba, contenido scrollable, tabs fijo abajo */}
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col">
-        {/* Header con skyline de fondo (HomeHero gestiona el fondo) */}
+        {/* Header con skyline de fondo (HomeHero gestiona el fondo).
+            inline=true → fluye en el flujo normal en TODOS los breakpoints
+            (la nueva home apila con scroll, el hero ya no es fondo). */}
         <HomeHero
           cityName={cityName}
           hasAlerts={hasAlerts}
@@ -89,6 +91,7 @@ const HomeContent = ({
           showLogin={false}
           onLogin={onLogin}
           showGreeting={false}
+          inline
         />
 
         {/* Contenido principal apilado verticalmente */}
