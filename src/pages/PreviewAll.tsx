@@ -194,6 +194,29 @@ Lógica:
   · módulo "agenda" → navigate("/agenda"); resto togglea activo`,
   },
   {
+    label: "Home · NotificationsOverlay",
+    src: "/home?notifs=open",
+    tree: `Home (?notifs=open → notifOpen=true al montar)
+└── NotificationsOverlay         ← absolute inset-0 z-50 sobre la card
+    ├── motion.div  (fade + slide-up, AnimatePresence)
+    ├── header
+    │   ├── <h2> "Notificaciones"
+    │   └── <button X> cerrar
+    └── lista scroll-y
+        ├── empty state  "No tienes notificaciones"
+        └── notificación × N  (button)
+            ├── dot estado (coral=unread / beige=read)
+            ├── título + hora
+            ├── descripción
+            └── linkLabel + ArrowRight  → navigate(n.link)
+
+Lógica:
+  · open desde HomeHero → NotificationBell onClick
+  · markAllRead() al abrir; markRead(id) al pulsar una individual
+  · al pulsar: cierra overlay + navega a n.link
+  · datos: useNotifications() → src/data/notifications.ts`,
+  },
+  {
     label: "Agenda",
     src: "/agenda",
     tree: `BrandedFrame  (hideHeader, contentClassName overflow-hidden)
