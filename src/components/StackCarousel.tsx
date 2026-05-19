@@ -321,14 +321,15 @@ function StackCarousel<T extends StackCarouselItem>({
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.45, delay: 0.2 }}
         >
-          <div
-            className="absolute top-1 horizontal-desktop:top-1/2 left-1/2 flex items-start horizontal-desktop:items-center"
-            style={{
-              transform: `translateX(${trackXLs + dragOffset}px) translateY(var(--stack-ls-y, 0))`,
-              transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
-              width: `${total * slotLs}px`,
-            }}
-          >
+          <div className="absolute top-1 horizontal-desktop:top-1/2 left-1/2 horizontal-desktop:-translate-y-1/2">
+            <div
+              className="flex items-start"
+              style={{
+                transform: `translateX(${trackXLs + dragOffset}px)`,
+                transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
+                width: `${total * slotLs}px`,
+              }}
+            >
             {items.map((item, i) => {
               const dist = Math.abs(i - current);
               const isActive = i === current;
