@@ -114,7 +114,7 @@ Lógica:
   },
   {
     label: "CheckEmail",
-    src: "/check-email",
+    src: "/check-email?email=preview%40km0lab.com",
     tree: `BrandedFrame                    ← wrapper de marca (logo + card + back)
 └── motion.div  contenedor (fade-in + y, items-center)
     ├── icon circle  (Mail dentro de círculo amarillo)
