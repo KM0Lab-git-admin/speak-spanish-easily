@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import BrandedFrame from "@/components/BrandedFrame";
 
 const RESEND_COOLDOWN_SECONDS = 30;
-const CODE_LENGTH = 6;
+const CODE_LENGTH = 4;
 
 interface LocationState {
   email?: string;
@@ -15,7 +15,7 @@ interface LocationState {
 }
 
 /**
- * CheckEmail — Entrada de código OTP de 6 dígitos enviado por email.
+ * CheckEmail — Entrada de código OTP de 4 dígitos enviado por email.
  *
  * Sustituye al flujo de magic link: el usuario NO sale de la app, teclea
  * (o pega) el código recibido por email. Funciona idéntico en web y en
@@ -138,7 +138,7 @@ const CheckEmail = () => {
             Revisa tu correo
           </h1>
           <p className="font-body text-sm horizontal-mobile:text-xs text-muted-foreground">
-            Hemos enviado un código de 6 dígitos a
+            Hemos enviado un código de 4 dígitos a
           </p>
           <p className="font-ui text-base horizontal-mobile:text-sm text-foreground break-all">
             {email}
