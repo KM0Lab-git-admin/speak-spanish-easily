@@ -50,7 +50,7 @@ const HomeContent = ({
   return (
     <>
       {/* Body — sin scroll: hero arriba (shrink-0), middle flex justify-evenly, tabs abajo */}
-      <div className="flex-1 min-h-0 overflow-hidden flex flex-col relative horizontal-mobile:!pt-[clamp(52px,13dvh,68px)] horizontal-desktop:pt-[clamp(64px,13dvh,96px)]">
+      <div className="flex-1 min-h-0 overflow-hidden flex flex-col relative border-0 border-none horizontal-mobile:!pt-[clamp(52px,13dvh,68px)] horizontal-desktop:pt-[clamp(64px,13dvh,96px)]">
         <HomeHero
           cityName={cityName}
           hasAlerts={hasAlerts}
@@ -78,7 +78,7 @@ const HomeContent = ({
 
           {/* MÓDULOS */}
           <motion.section
-            className="shrink-0 m-0 p-0 landscape:col-span-2 border border-black"
+            className="shrink-0 m-0 p-0 landscape:col-span-2 border-black border-0"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
