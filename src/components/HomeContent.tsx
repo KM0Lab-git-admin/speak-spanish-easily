@@ -51,7 +51,31 @@ const HomeContent = ({
     <>
       {/* Body — sin scroll: hero arriba (shrink-0), middle flex justify-evenly, tabs abajo */}
       <div className="flex-1 min-h-0 overflow-hidden flex flex-col relative border-0 border-none horizontal-mobile:!pt-[clamp(52px,13dvh,68px)] horizontal-desktop:pt-[clamp(64px,13dvh,96px)]">
-...
+        <HomeHero
+          cityName={cityName}
+          hasAlerts={hasAlerts}
+          onToggleAlerts={onToggleAlerts}
+          showLogin={showLogin}
+          onLogin={onLogin}
+        />
+
+        {/* Middle: pegado arriba, sin padding/margin/gap */}
+        <div className="flex-1 min-h-0 flex flex-col justify-evenly gap-0 overflow-hidden relative z-10 px-[15px] horizontal-mobile:px-[clamp(8px,1.5vw,14px)] horizontal-mobile:pb-[clamp(4px,1dvh,10px)] horizontal-desktop:px-[clamp(20px,2.5vw,36px)] horizontal-desktop:pb-[clamp(12px,2.5dvh,24px)] border-black border-0">
+          {/* Login CTA solo portrait */}
+          {showLogin && (
+            <motion.section
+              className="landscape:hidden flex justify-center shrink-0 !m-0 !p-0 border-black border-0"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.08 }}
+            >
+              <LoginButton onClick={onLogin} size="sm" />
+            </motion.section>
+          )}
+
+          {/* UserGreeting se renderiza dentro de HomeHero */}
+
+
           {/* MÓDULOS */}
           <motion.section
             className="shrink-0 m-0 p-0 landscape:col-span-2 border-black border-0"
