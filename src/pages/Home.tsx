@@ -84,15 +84,10 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-[100dvh] w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 p-3 sm:p-4">
-      {/* PORTRAIT */}
-      <div
-        className="landscape:hidden flex flex-col bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden relative"
-        style={{
-          width: "min(calc(100vw - 1.5rem), calc((100dvh - 1.5rem) * 9 / 19.5), 420px)",
-          height: "min(calc(100dvh - 1.5rem), calc((100vw - 1.5rem) * 19.5 / 9), calc(420px * 19.5 / 9))",
-        }}
-      >
+    <div className="h-[100dvh] w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 p-3 sm:p-4 overflow-hidden">
+      {/* PORTRAIT — tamaño "teléfono" fijo (igual que el iframe de preview-all: 375×667).
+          Sin cálculos de 100dvh que se comportan distinto dentro de un iframe. */}
+      <div className="landscape:hidden flex flex-col bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden relative w-[375px] h-[667px] max-w-full max-h-full">
         <HomeContent {...sharedProps} />
         <NotificationsOverlay
           open={notifOpen}
@@ -102,14 +97,8 @@ const Home = () => {
         />
       </div>
 
-      {/* LANDSCAPE */}
-      <div
-        className="hidden landscape:flex bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col relative"
-        style={{
-          width: "min(calc(100vw - 2rem), calc((100dvh - 2rem) * 16 / 9), 1200px)",
-          height: "min(calc(100dvh - 2rem), calc((100vw - 2rem) * 9 / 16), calc(1200px * 9 / 16))",
-        }}
-      >
+      {/* LANDSCAPE — tamaño fijo 667×375 (igual que el iframe horizontal-mobile). */}
+      <div className="hidden landscape:flex bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col relative w-[667px] h-[375px] max-w-full max-h-full">
         <HomeContent {...sharedProps} />
         <NotificationsOverlay
           open={notifOpen}
