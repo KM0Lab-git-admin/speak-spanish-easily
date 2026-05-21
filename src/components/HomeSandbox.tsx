@@ -6,7 +6,6 @@ import { PROMOS } from "@/data/promos";
 import { COMERCIOS } from "@/data/comercios";
 import { COUPONS } from "@/data/coupons";
 import { type HomeTab } from "@/components/BottomTabs";
-import type { HomeModuleId } from "@/components/HomeModules";
 
 /**
  * HomeSandbox — versión auto-contenida de la Home para mostrar dentro de
