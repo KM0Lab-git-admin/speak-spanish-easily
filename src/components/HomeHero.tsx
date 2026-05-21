@@ -54,20 +54,20 @@ const HomeHero = ({
     <motion.section
       className={
         inline
-          ? "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100"
-          : "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 horizontal-mobile:absolute horizontal-mobile:inset-0 horizontal-mobile:pointer-events-none horizontal-desktop:absolute horizontal-desktop:inset-0 horizontal-desktop:pointer-events-none"
+          ? "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-[25%]"
+          : "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-[25%] horizontal-mobile:absolute horizontal-mobile:inset-0 horizontal-mobile:pointer-events-none horizontal-mobile:pb-0 horizontal-desktop:absolute horizontal-desktop:inset-0 horizontal-desktop:pointer-events-none horizontal-desktop:pb-0"
       }
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
 
-      {/* Skyline como capa de fondo del section */}
+      {/* Skyline como capa de fondo del hero: independiente del contenido superpuesto */}
       <img
         src={skylineMalgrat}
         alt=""
         aria-hidden
-        className="pointer-events-none absolute inset-0 w-full h-full object-contain object-bottom z-0 select-none opacity-25 horizontal-mobile:!inset-auto horizontal-mobile:!top-[4%] horizontal-mobile:!left-0 horizontal-mobile:!right-0 horizontal-mobile:!h-[70%] horizontal-mobile:!w-full horizontal-mobile:object-top horizontal-desktop:!inset-auto horizontal-desktop:!top-[4%] horizontal-desktop:!left-0 horizontal-desktop:!right-0 horizontal-desktop:!h-[70%] horizontal-desktop:!w-full horizontal-desktop:object-top"
+        className="pointer-events-none absolute inset-0 w-full h-full object-cover object-bottom z-0 select-none opacity-25"
       />
 
       {/* Fila header: escudo + nombre + KM0 + login + bell */}
