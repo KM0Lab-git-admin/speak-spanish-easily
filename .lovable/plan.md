@@ -1,95 +1,54 @@
-
 ## Objetivo
 
-Crear una pantalla de **catálogo visual** que renderice todas las pantallas de la app (Language, Onboarding, PostalCode, Chat, Home, Agenda, Evento, Profile, Login, CheckEmail) dentro de "marcos" de tamaño FIJO equivalentes a las dos resoluciones mínimas de testing:
+En `/preview-all`, mostrar la Home en portrait (375×667) y landscape (667×375) **sin iframes**, para que Visual Edit pueda seleccionar y editar elementos directamente. Las demás pantallas seguirán con iframe hasta que repitamos el patrón.
 
-- **vertical-mobile** → `375 × 667` (portrait)
-- **horizontal-mobile** → `667 × 375` (landscape)
+## Problema técnico que resolvemos
 
-Cada pantalla aparecerá DOS veces (una por orientación), lado a lado, para poder revisarlas de un vistazo sin tener que cambiar de viewport.
+Los iframes existen porque los breakpoints (`vertical-mobile`, `landscape:`, etc.) son **media queries** que dependen del viewport del navegador. Sin iframe, un `<div style="width:375px">` no activa `vertical-mobile`: todos los frames cogerían `horizontal-desktop` (viewport real 1468px).
 
-Empezamos por **Language** y, una vez validado el patrón, replicamos para el resto.
+La solución: un **contexto que fuerza el breakpoint** + un hook `useBreakpoint()` que respeta ese override + un pequeño refactor de los componentes de Home para usar `cn()` con clases condicionales en vez de los modificadores responsive de Tailwind.
 
----
+## Cambios
 
-## Ruta y archivos
+### 1. Contexto de breakpoint forzado
+- Nuevo archivo `src/hooks/use-breakpoint.tsx`: añadir `<BreakpointProvider value="vertical-mobile">` y modificar `useBreakpoint()` para que, si está dentro de un Provider, devuelva ese valor en lugar de leer media queries.
+- No rompe nada: si no hay Provider (uso normal en `/home`, `/chat`, etc.), funciona igual que ahora.
 
-- Nueva ruta: `/preview-all` (registrada en `src/App.tsx`)
-- Nueva página: `src/pages/PreviewAll.tsx`
-- Nuevo componente envoltorio: `src/components/ScreenFrame.tsx`
+### 2. Wrapper `<SimulatedDevice>`
+- Nuevo `src/components/SimulatedDevice.tsx`: pinta un marco de tamaño fijo (375×667 o 667×375) con borde y sombra (igual look que `ScreenFrame`), y envuelve sus children en `<BreakpointProvider value={...}>`.
+- Props: `orientation: "portrait" | "landscape"`, `label?: string`, `children`.
 
-No se toca ninguna pantalla existente.
+### 3. Refactor mínimo en la subárbol de Home
+Los componentes que usan variantes `landscape:` / `vertical-mobile:` / `horizontal-mobile:` / `horizontal-desktop:` para layout deben pasar a leer el breakpoint vía hook:
+- `src/components/HomeContent.tsx` — sustituir las clases responsive de espaciado por `cn()` con `useBreakpoint()`.
+- `src/components/HomeHero.tsx` — idem (header del skyline).
+- `src/components/GreetingBlock.tsx`, `PointsCard.tsx`, `EventHeroCarousel.tsx`, `CouponCard.tsx`, `BottomTabs.tsx`, `HomeModules.tsx`, `ComercioCarousel.tsx`, `SectionHeader` interno — solo los que usen variantes responsive de Tailwind. Los que no, intactos.
+- Las clases que **no son responsive** (colores, tipografía, paddings base) se quedan tal cual.
 
----
+Para el `<Home>` real (`/home`) no cambia nada visualmente: el hook devuelve el breakpoint del viewport como hasta ahora.
 
-## Cómo funciona `ScreenFrame`
+### 4. `/preview-all` — sección Home sin iframes
+En `src/pages/PreviewAll.tsx`, reemplazar los dos `<ScreenFrame src="/home" ... />` de la Home por:
 
-Wrapper que recibe:
-- `label`: nombre de la pantalla ("Language", "Agenda"…)
-- `orientation`: `"portrait" | "landscape"`
-- `children`: la pantalla a renderizar
-
-Renderiza un `div` con tamaño FIJO en píxeles:
-- portrait  → `width: 375px; height: 667px`
-- landscape → `width: 667px; height: 375px`
-
-Reglas clave:
-- `overflow: hidden` y `position: relative` para que la pantalla embebida no desborde.
-- Para que las pantallas detecten correctamente la orientación (sus `landscape:` queries de Tailwind dependen del **viewport real**, no del contenedor), el frame usa **`<iframe src="/idioma-suelto">`**. Esto garantiza que cada frame tenga su propio `window.matchMedia` con el aspect-ratio correcto.
-
-```text
-┌─────────────────────────────────────────────┐
-│ Language                                    │
-│ ┌───────────┐  ┌──────────────────────┐    │
-│ │ 375×667   │  │ 667×375              │    │
-│ │ portrait  │  │ landscape            │    │
-│ │           │  │                      │    │
-│ │           │  └──────────────────────┘    │
-│ └───────────┘                              │
-└─────────────────────────────────────────────┘
+```tsx
+<SimulatedDevice orientation="portrait" label="Home">
+  <HomeSandbox />
+</SimulatedDevice>
+<SimulatedDevice orientation="landscape" label="Home">
+  <HomeSandbox />
+</SimulatedDevice>
 ```
 
-### Por qué iframe y no render directo
+Donde `HomeSandbox` es un wrapper minimal que monta `<HomeContent />` con datos mock (los mismos `PROMOS`, `COMERCIOS`, `COUPONS`, `INITIAL_MODULES` que usa `pages/Home.tsx`) y estado local básico (`useState` para tab y notif). Sin `useAuth` ni `useNavigate` para evitar dependencias laterales.
 
-Las pantallas usan los breakpoints oficiales `vertical-mobile` / `horizontal-mobile` que se evalúan con `@media (orientation: portrait/landscape) and (max-width: …)`. Estas queries **solo miran el viewport del documento**, no el tamaño del contenedor padre. Si renderizamos `<Language />` dentro de un `div` de 667×375 en un viewport portrait, los estilos landscape NO se aplicarían.
+El resto de pantallas en `/preview-all` (Chat, Agenda, Login, etc.) **se quedan con iframe** en esta iteración.
 
-Con un `<iframe>` cada pantalla obtiene su propio viewport del tamaño exacto del frame, y los breakpoints funcionan correctamente. Además aísla estilos globales y evita conflictos de routers anidados.
+## Validación
 
-Para que esto funcione, cada pantalla debe ser accesible por URL (ya lo son: `/`, `/agenda`, `/evento`, `/profile`, etc.). El iframe simplemente apunta a la URL de cada pantalla.
+- En `/home` (1468×1214): se renderiza igual que ahora (hook lee viewport real → `horizontal-desktop`).
+- En `/preview-all`: dos marcos Home sin iframe, uno portrait y otro landscape, con el layout correcto en cada uno gracias al contexto.
+- Visual Edit: clicar dentro de los marcos selecciona componentes reales (GreetingBlock, PointsCard, EventHeroCarousel…).
 
----
+## Siguiente paso (no incluido)
 
-## Estructura de `PreviewAll.tsx`
-
-```text
-PreviewAll
-├── Header sticky con título "Preview · todas las pantallas"
-└── Lista vertical de bloques, uno por pantalla:
-    ├── <h2>Language</h2>
-    └── <div flex gap-6>
-        ├── <ScreenFrame label="375×667" orientation="portrait"  src="/" />
-        └── <ScreenFrame label="667×375" orientation="landscape" src="/" />
-```
-
-En esta primera iteración solo se incluye Language (`src="/"`). Una vez aprobado, se añaden las demás (`/agenda`, `/evento`, `/profile`, `/chat`, `/onboarding`, `/postal-code`, `/login`, `/check-email`, `/home`).
-
----
-
-## Detalles técnicos
-
-- **Sin cambios** en pantallas existentes ni en breakpoints.
-- El iframe usa atributos `width=375 height=667` (o `667/375`) y CSS `border: 0; display: block;`.
-- Estilos del fondo de `PreviewAll`: gris claro neutro para que destaquen los frames.
-- Etiqueta encima de cada frame con dimensiones para facilitar QA.
-- Sin scroll horizontal: si los dos frames no caben en fila se apilan con `flex-wrap`.
-- La página `/preview-all` no se enlaza desde la app; solo se accede manualmente.
-
----
-
-## Alcance de esta primera entrega
-
-1. Crear `ScreenFrame.tsx`.
-2. Crear `PreviewAll.tsx` con SOLO Language en portrait + landscape.
-3. Registrar la ruta `/preview-all` en `App.tsx`.
-
-Después, en un segundo paso, añadiremos el resto de pantallas (una línea por pantalla, mismo patrón).
+Si la prueba en Home funciona, replicar el patrón en Chat, Agenda y resto de pantallas de `/preview-all` (refactor incremental, una pantalla por iteración).
