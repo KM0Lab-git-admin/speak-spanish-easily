@@ -1,4 +1,6 @@
 import ScreenFrame from "@/components/ScreenFrame";
+import SimulatedDevice from "@/components/SimulatedDevice";
+import HomeSandbox from "@/components/HomeSandbox";
 
 /**
  * /preview-all — Catálogo visual: cada pantalla de la app renderizada en
