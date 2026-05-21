@@ -1,4 +1,6 @@
 import ScreenFrame from "@/components/ScreenFrame";
+import SimulatedDevice from "@/components/SimulatedDevice";
+import HomeSandbox from "@/components/HomeSandbox";
 
 /**
  * /preview-all — Catálogo visual: cada pantalla de la app renderizada en
@@ -314,20 +316,37 @@ const PreviewAll = () => {
       </header>
 
       <main className="w-full px-4 py-6 flex flex-col gap-10">
-        {screens.map((s) => (
-          <section key={s.label} className="flex flex-col gap-4 w-full">
-            <h2 className="font-ui text-lg text-km0-blue-700">{s.label}</h2>
-            <div className="flex flex-wrap items-start gap-6 w-full">
-              <ScreenFrame src={s.src} orientation="portrait"  label={s.label} />
-              <div className="flex flex-col gap-4 flex-1 min-w-[320px]">
-                <ScreenFrame src={s.src} orientation="landscape" label={s.label} />
-                <pre className="w-full overflow-auto rounded-xl border-2 border-km0-blue-700/20 bg-white p-4 font-mono text-xs leading-relaxed text-km0-blue-700 shadow-[0_8px_24px_-16px_hsl(var(--km0-blue-700)/0.35)] whitespace-pre">
+        {screens.map((s) => {
+          // La Home se renderiza SIN iframe para permitir Visual Edit.
+          // El resto de pantallas sigue con iframe en esta iteración.
+          const isHome = s.label === "Home";
+          return (
+            <section key={s.label} className="flex flex-col gap-4 w-full">
+              <h2 className="font-ui text-lg text-km0-blue-700">{s.label}</h2>
+              <div className="flex flex-wrap items-start gap-6 w-full">
+                {isHome ? (
+                  <SimulatedDevice orientation="portrait" label={s.label}>
+                    <HomeSandbox />
+                  </SimulatedDevice>
+                ) : (
+                  <ScreenFrame src={s.src} orientation="portrait" label={s.label} />
+                )}
+                <div className="flex flex-col gap-4 flex-1 min-w-[320px]">
+                  {isHome ? (
+                    <SimulatedDevice orientation="landscape" label={s.label}>
+                      <HomeSandbox />
+                    </SimulatedDevice>
+                  ) : (
+                    <ScreenFrame src={s.src} orientation="landscape" label={s.label} />
+                  )}
+                  <pre className="w-full overflow-auto rounded-xl border-2 border-km0-blue-700/20 bg-white p-4 font-mono text-xs leading-relaxed text-km0-blue-700 shadow-[0_8px_24px_-16px_hsl(var(--km0-blue-700)/0.35)] whitespace-pre">
 {s.tree}
-                </pre>
+                  </pre>
+                </div>
               </div>
-            </div>
-          </section>
-        ))}
+            </section>
+          );
+        })}
       </main>
     </div>
   );

@@ -33,16 +33,41 @@ function detect(): Breakpoint {
 }
 
 /**
+ * Contexto opcional para FORZAR un breakpoint en un subárbol concreto
+ * (usado por <SimulatedDevice> en /preview-all para mostrar la misma
+ * pantalla a tamaño portrait y landscape sin iframes).
+ *
+ * Si no hay provider, useBreakpoint() funciona como siempre: lee el
+ * viewport real con matchMedia.
+ */
+const BreakpointContext = React.createContext<Breakpoint | null>(null);
+
+export const BreakpointProvider = ({
+  value,
+  children,
+}: {
+  value: Breakpoint;
+  children: React.ReactNode;
+}) => (
+  <BreakpointContext.Provider value={value}>
+    {children}
+  </BreakpointContext.Provider>
+);
+
+/**
  * Devuelve el breakpoint activo. Reactivo a cambios de tamaño/orientación.
+ * Si hay un BreakpointProvider antecesor, devuelve ese valor forzado.
  *
  * @example
  *   const bp = useBreakpoint();
  *   if (bp === "horizontal-desktop") { ... }
  */
 export function useBreakpoint(): Breakpoint {
+  const forced = React.useContext(BreakpointContext);
   const [bp, setBp] = React.useState<Breakpoint>(() => detect());
 
   React.useEffect(() => {
+    if (forced) return; // No suscribimos si estamos en modo forzado.
     const mqls = (Object.keys(QUERIES) as Breakpoint[]).map((key) => ({
       key,
       mql: window.matchMedia(QUERIES[key]),
@@ -53,9 +78,9 @@ export function useBreakpoint(): Breakpoint {
     return () => {
       mqls.forEach(({ mql }) => mql.removeEventListener("change", onChange));
     };
-  }, []);
+  }, [forced]);
 
-  return bp;
+  return forced ?? bp;
 }
 
 /** Helpers booleanos para casos puntuales. */
