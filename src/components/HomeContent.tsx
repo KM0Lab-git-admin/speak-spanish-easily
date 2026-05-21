@@ -79,7 +79,9 @@ const HomeContent = ({
 }: HomeContentProps) => {
   return (
     <>
-      {/* Header fijo en la parte superior — no se desplaza con el scroll del body */}
+      {/* Header fijo en la parte superior — no se desplaza con el scroll del body.
+          El saludo personalizado vive DENTRO del hero (greetingSlot) para que
+          forme parte visualmente del bloque de marca. */}
       <HomeHero
         cityName={cityName}
         hasAlerts={hasAlerts}
@@ -87,6 +89,7 @@ const HomeContent = ({
         showLogin={false}
         onLogin={onLogin}
         showGreeting={false}
+        greetingSlot={<div className="px-4 vertical-tablet:px-5 horizontal-mobile:!px-3 horizontal-desktop:!px-6 py-3 horizontal-mobile:!py-2"><GreetingBlock name={userName} /></div>}
         inline
       />
 
@@ -94,11 +97,8 @@ const HomeContent = ({
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col">
 
 
-        {/* Contenido principal apilado verticalmente */}
+        {/* Contenido principal apilado verticalmente (saludo ya está dentro del hero) */}
         <div className="relative z-10 flex flex-col gap-4 vertical-tablet:gap-5 horizontal-mobile:!gap-2.5 horizontal-desktop:!gap-4 px-4 vertical-tablet:px-5 horizontal-mobile:!px-3 horizontal-desktop:!px-6 pt-3 pb-5 horizontal-mobile:!pt-2 horizontal-mobile:!pb-3">
-          {/* 1 · Saludo personalizado */}
-          <GreetingBlock name={userName} />
-
           {/* CTA login solo si no hay sesión (portrait) */}
           {showLogin && (
             <motion.div
