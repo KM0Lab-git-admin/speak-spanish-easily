@@ -42,7 +42,7 @@ const HomeSandbox = () => {
       coupons={COUPONS}
       activeTab={activeTab}
       onTabChange={setActiveTab}
-      showLogin={false}
+      showLogin={true}
       onLogin={noop}
       showProfile={false}
       onProfile={noop}
