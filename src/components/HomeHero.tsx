@@ -54,20 +54,20 @@ const HomeHero = ({
     <motion.section
       className={
         inline
-          ? "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-[25%]"
-          : "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-[25%] horizontal-mobile:absolute horizontal-mobile:inset-0 horizontal-mobile:pointer-events-none horizontal-mobile:pb-0 horizontal-desktop:absolute horizontal-desktop:inset-0 horizontal-desktop:pointer-events-none horizontal-desktop:pb-0"
+          ? "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100"
+          : "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 horizontal-mobile:absolute horizontal-mobile:inset-0 horizontal-mobile:pointer-events-none horizontal-desktop:absolute horizontal-desktop:inset-0 horizontal-desktop:pointer-events-none"
       }
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
 
-      {/* Skyline como capa de fondo del hero: independiente del contenido superpuesto */}
+      {/* Skyline como capa de fondo del hero: recortada por la parte inferior (object-top conserva la silueta arriba) */}
       <img
         src={skylineMalgrat}
         alt=""
         aria-hidden
-        className="pointer-events-none absolute inset-0 w-full h-full object-cover object-bottom z-0 select-none opacity-25"
+        className="pointer-events-none absolute inset-0 w-full h-full object-cover object-top z-0 select-none opacity-25"
       />
 
       {/* Fila header: escudo + nombre + KM0 + login + bell */}
