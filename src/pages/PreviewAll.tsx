@@ -175,18 +175,24 @@ Lógica:
     tree: `(NO usa BrandedFrame — frame propio portrait 9:19.5 / landscape 16:9)
 │
 ├── Portrait  (landscape:hidden)
-│   └── HomeContent          ← layout reutilizable
-│       ├── HomeHero         (logo + ciudad + bell + login/profile)
-│       ├── middle (justify-evenly)
-│       │   ├── LoginButton  (solo si !user)
-│       │   ├── HomeModules  (grid de tarjetas activables)
-│       │   ├── PromoSection ← PromoCarousel
-│       │   └── ComerciosSection ← ComercioCarousel
-│       └── BottomTabs
+│   └── HomeContent              ← layout reutilizable (scroll-y interno)
+│       ├── HomeHero             ← header FIJO (no se mueve con el scroll)
+│       │   ├── skyline malgrat  (bg absoluto, object-top, opacity-25)
+│       │   ├── fila header      (escudo + ciudad + KM0 + bell)
+│       │   └── greetingSlot
+│       │       └── GreetingBlock  ← saludo "👋 ¡Hola, {name}!" + subtítulo
+│       ├── body scroll-y
+│       │   ├── LoginButton      (solo si !user)
+│       │   ├── PointsCard       ← tarjeta puntos + progreso a nextLevel
+│       │   ├── section "Accesos rápidos"     → HomeModules
+│       │   ├── section "Eventos destacados"  → EventHeroCarousel
+│       │   ├── section "Descubre lo nuestro" → ComercioCarousel
+│       │   └── section "Promos para ti"      → CouponCard × N
+│       └── BottomTabs           ← fijo abajo
 │   └── NotificationsOverlay
 │
 └── Landscape  (hidden landscape:flex)
-    └── HomeContent  (mismo árbol; middle = grid 2 columnas con Promos+Comercios)
+    └── HomeContent  (mismo árbol; HomeHero pasa a fondo absolute en landscape)
     └── NotificationsOverlay
 
 Lógica:
