@@ -79,20 +79,20 @@ const HomeContent = ({
 }: HomeContentProps) => {
   return (
     <>
-      {/* Body con scroll-y interno: header arriba, contenido scrollable, tabs fijo abajo */}
+      {/* Header fijo en la parte superior — no se desplaza con el scroll del body */}
+      <HomeHero
+        cityName={cityName}
+        hasAlerts={hasAlerts}
+        onToggleAlerts={onToggleAlerts}
+        showLogin={false}
+        onLogin={onLogin}
+        showGreeting={false}
+        inline
+      />
+
+      {/* Body con scroll-y interno: contenido scrollable, tabs fijo abajo */}
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col">
-        {/* Header con skyline de fondo (HomeHero gestiona el fondo).
-            inline=true → fluye en el flujo normal en TODOS los breakpoints
-            (la nueva home apila con scroll, el hero ya no es fondo). */}
-        <HomeHero
-          cityName={cityName}
-          hasAlerts={hasAlerts}
-          onToggleAlerts={onToggleAlerts}
-          showLogin={false}
-          onLogin={onLogin}
-          showGreeting={false}
-          inline
-        />
+
 
         {/* Contenido principal apilado verticalmente */}
         <div className="relative z-10 flex flex-col gap-4 vertical-tablet:gap-5 horizontal-mobile:!gap-2.5 horizontal-desktop:!gap-4 px-4 vertical-tablet:px-5 horizontal-mobile:!px-3 horizontal-desktop:!px-6 pt-3 pb-5 horizontal-mobile:!pt-2 horizontal-mobile:!pb-3">
