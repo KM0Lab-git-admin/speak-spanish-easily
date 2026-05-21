@@ -1,6 +1,7 @@
 import { useState } from "react";
 import HomeContent from "@/components/HomeContent";
-import { INITIAL_MODULES, type HomeModule } from "@/data/homeModules";
+import { INITIAL_MODULES } from "@/data/homeModules";
+import type { HomeModule, HomeModuleId } from "@/components/HomeModules";
 import { PROMOS } from "@/data/promos";
 import { COMERCIOS } from "@/data/comercios";
 import { COUPONS } from "@/data/coupons";
