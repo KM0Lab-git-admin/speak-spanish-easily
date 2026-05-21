@@ -167,18 +167,29 @@ export default {
       // NO MODIFICAR sin sincronizar también apps/km0lab/tailwind.config.js
       // del repo de producción (km0lab) y AGENTS.md / docs/CONVENTIONS.md.
       // ─────────────────────────────────────────────────────────────
-      addVariant("vertical-mobile",    "@media (orientation: portrait)  and (max-width: 767px)");
-      addVariant("vertical-tablet",    "@media (orientation: portrait)  and (min-width: 768px)");
-      addVariant("horizontal-mobile",  "@media (orientation: landscape) and (max-width: 1279px)");
-      addVariant("horizontal-desktop", "@media (orientation: landscape) and (min-width: 1280px)");
+      //
+      // Cada variante acepta DOS activadores:
+      //   1) La media-query oficial (comportamiento normal por viewport).
+      //   2) Un selector basado en `[data-bp~="X"] &` que la fuerza cuando
+      //      el elemento es descendiente de un contenedor con ese atributo.
+      //      Este segundo activador tiene mayor especificidad (incluye un
+      //      selector de atributo), así que GANA frente a la media-query
+      //      cuando ambos disparan a la vez. Usado por <SimulatedDevice>
+      //      en /preview-all para renderizar pantallas a tamaño fijo sin
+      //      iframes y manteniendo Visual Edit funcional.
+      //
+      addVariant("vertical-mobile",    ["@media (orientation: portrait)  and (max-width: 767px)",  "[data-bp~='vertical-mobile'] &"]);
+      addVariant("vertical-tablet",    ["@media (orientation: portrait)  and (min-width: 768px)",  "[data-bp~='vertical-tablet'] &"]);
+      addVariant("horizontal-mobile",  ["@media (orientation: landscape) and (max-width: 1279px)", "[data-bp~='horizontal-mobile'] &"]);
+      addVariant("horizontal-desktop", ["@media (orientation: landscape) and (min-width: 1280px)", "[data-bp~='horizontal-desktop'] &"]);
 
       // ─────────────────────────────────────────────────────────────
       // ALIASES DEPRECADOS (mantener hasta migrar todas las pantallas)
       // No usar en código nuevo. Equivalen a los oficiales de arriba.
       // ─────────────────────────────────────────────────────────────
-      addVariant("short-landscape", "@media (orientation: landscape) and (max-width: 1279px)");       // = horizontal-mobile
-      addVariant("wide-landscape",  "@media (orientation: landscape) and (min-width: 1280px)");       // = horizontal-desktop
-      addVariant("tablet-portrait", "@media (orientation: portrait)  and (min-width: 768px)");        // = vertical-tablet
+      addVariant("short-landscape", ["@media (orientation: landscape) and (max-width: 1279px)", "[data-bp~='horizontal-mobile'] &"]);
+      addVariant("wide-landscape",  ["@media (orientation: landscape) and (min-width: 1280px)", "[data-bp~='horizontal-desktop'] &"]);
+      addVariant("tablet-portrait", ["@media (orientation: portrait)  and (min-width: 768px)",  "[data-bp~='vertical-tablet'] &"]);
     },
   ],
 } satisfies Config;
