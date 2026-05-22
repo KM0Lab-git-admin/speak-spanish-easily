@@ -103,11 +103,11 @@ const HomeContent = ({
 
 
         {/* Contenido principal apilado verticalmente (saludo ya está dentro del hero) */}
-        <div className="relative z-10 flex flex-col gap-4 vertical-tablet:gap-5 horizontal-mobile:!gap-2.5 horizontal-desktop:!gap-4 px-2 pt-3 pb-5 horizontal-mobile:!pt-2 horizontal-mobile:!pb-3 horizontal-mobile:grid horizontal-mobile:grid-cols-2 horizontal-mobile:gap-x-3 horizontal-desktop:grid horizontal-desktop:grid-cols-2 horizontal-desktop:gap-x-3">
+        <div className="relative z-10 flex flex-col gap-4 vertical-tablet:gap-5 horizontal-mobile:!gap-2.5 horizontal-desktop:!gap-4 px-2 pt-3 pb-5 horizontal-mobile:!pt-2 horizontal-mobile:!pb-3">
           {/* CTA login solo si no hay sesión (portrait) */}
           {showLogin && (
             <motion.div
-              className="flex justify-center horizontal-mobile:col-span-2 horizontal-desktop:col-span-2"
+              className="flex justify-center"
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, delay: 0.05 }}
@@ -118,25 +118,25 @@ const HomeContent = ({
 
 
           {/* 3 · Accesos rápidos */}
-          <section className="flex flex-col gap-2 horizontal-mobile:col-start-1 horizontal-desktop:col-start-1">
+          <section className="flex flex-col gap-2">
             <SectionHeader title="Accesos rápidos" />
             <HomeModules modules={modules} />
           </section>
 
           {/* 4 · Eventos destacados */}
-          <section className="flex flex-col gap-2 horizontal-mobile:col-start-1 horizontal-desktop:col-start-1">
+          <section className="flex flex-col gap-2">
             <SectionHeader title="Eventos destacados" actionLabel="Ver todos" onAction={onSeeAllEvents} />
             <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
           </section>
 
           {/* 5 · Descubre lo nuestro (comercios) */}
-          <section className="flex flex-col gap-2 horizontal-mobile:col-start-2 horizontal-mobile:row-start-2 horizontal-desktop:col-start-2 horizontal-desktop:row-start-2">
+          <section className="flex flex-col gap-2">
             <SectionHeader title="Descubre lo nuestro" actionLabel="Ver todos" onAction={onSeeAllComercios} />
             <ComercioCarousel comercios={comercios} />
           </section>
 
           {/* 6 · Promos para ti (cupones) */}
-          <section className="flex flex-col gap-2 horizontal-mobile:col-start-2 horizontal-mobile:row-start-3 horizontal-desktop:col-start-2 horizontal-desktop:row-start-3">
+          <section className="flex flex-col gap-2">
             <SectionHeader title="Promos para ti" actionLabel="Ver todas" onAction={onSeeAllCoupons} />
             <div className="flex flex-col gap-2">
               {coupons.map((c, i) => (

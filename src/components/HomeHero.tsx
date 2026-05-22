@@ -103,7 +103,7 @@ const HomeHero = ({
             <LoginButton
               onClick={onLogin}
               size="md"
-              className="hidden horizontal-mobile:inline-flex horizontal-desktop:inline-flex horizontal-mobile:!text-[11px] horizontal-mobile:!px-2.5 horizontal-mobile:!py-1"
+              className="hidden landscape:inline-flex horizontal-mobile:!text-[11px] horizontal-mobile:!px-2.5 horizontal-mobile:!py-1"
             />
           )}
           <NotificationBell
