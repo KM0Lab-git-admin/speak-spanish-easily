@@ -89,7 +89,7 @@ const HomeContent = ({
         showLogin={false}
         onLogin={onLogin}
         showGreeting={false}
-        greetingSlot={<div className="px-4 vertical-tablet:px-5 horizontal-mobile:!px-3 horizontal-desktop:!px-6 py-3 horizontal-mobile:!py-2"><GreetingBlock name={userName} /></div>}
+        greetingSlot={<div className="px-4 vertical-tablet:px-5 horizontal-mobile:!px-3 horizontal-desktop:!px-6 my-0 py-[15px]"><GreetingBlock name={userName} /></div>}
         inline
       />
 
