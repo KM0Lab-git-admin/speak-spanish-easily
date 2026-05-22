@@ -1,77 +1,78 @@
-# Landscape Home — un solo componente, Portrait blindado por regla
+# Landscape Home — sin afectar Portrait
 
 ## Objetivo
 
-Entregar una versión landscape definitiva del Home (referencia: `image-145.png`, layout 2 columnas) reusando el mismo `HomeContent.tsx`, sin duplicar archivos, y sin afectar Portrait (375×667 ni 768×1024).
+Entregar una versión landscape definitiva del Home (referencia: captura `image-145.png` con layout 2 columnas) que **NO modifique absolutamente nada** del Portrait actual (375×667 ni 768×1024).
 
-## Regla de oro (texto para añadir a la memoria del proyecto)
+## Regla de oro (texto sugerido para tus instrucciones / memoria del proyecto)
 
-Guardar en `mem://estilo/aislamiento-orientacion` y referenciar desde el index como Core:
+Copia esto tal cual a `mem://estilo/aislamiento-landscape-vs-portrait` y referénciala desde el index:
 
-> **Aislamiento por orientación al maquetar responsive.**
-> Cuando un cambio aplica solo a una orientación (portrait o landscape), está PROHIBIDO modificar:
-> 1. Clases base de Tailwind (las que no llevan prefijo de breakpoint).
-> 2. Clases con prefijo de la orientación que NO se está tocando.
->
-> Reglas concretas:
-> - Cambio solo-landscape → solo se añaden o editan clases con prefijo `horizontal-mobile:`, `horizontal-desktop:` o `landscape:`. NO se tocan clases base ni `vertical-mobile:` / `vertical-tablet:`.
-> - Cambio solo-portrait → simétrico: solo `vertical-mobile:`, `vertical-tablet:` o `portrait:`. NO clases base ni `horizontal-*:`.
-> - Para reordenar bloques en landscape sin romper portrait: usar `flex-col landscape:grid landscape:grid-cols-2` + `order-*` con prefijo landscape. El flujo natural del DOM lo dicta portrait.
-> - Si una clase base necesita cambiar de verdad (caso raro), verificar antes que el nuevo valor sigue siendo correcto en los 4 breakpoints Playwright (375×667, 768×1024, 667×375, 1280×550). Si no, mover el valor antiguo al prefijo opuesto antes de cambiar la base.
-> - QA obligatorio tras cualquier cambio responsive: capturas en las 4 resoluciones. La orientación no tocada debe dar diff visual = 0.
+> **Aislamiento Landscape ↔ Portrait.** Cuando se maquete o ajuste landscape (`horizontal-mobile` y/o `horizontal-desktop`), Portrait (`vertical-mobile` y `vertical-tablet`) debe quedar **byte a byte idéntico**. Reglas obligatorias:
+> 1. **Prohibido** modificar clases base o clases con prefijos `vertical-mobile:` / `vertical-tablet:` en cualquier componente compartido. Solo se pueden añadir/cambiar clases con prefijo `horizontal-mobile:` / `horizontal-desktop:`.
+> 2. **Prohibido** cambiar la firma, los defaults de props, el orden de renderizado o la estructura JSX de componentes compartidos (HomeHero, HomeContent, HomeModules, EventHeroCarousel, ComercioCarousel, CouponCard, PointsCard, GreetingBlock, BottomTabs, UserGreeting).
+> 3. Si el landscape necesita una distribución radicalmente distinta (ej. 2 columnas), **crear un componente nuevo** `HomeContentLandscape.tsx` y renderizarlo solo dentro del frame landscape de `Home.tsx`. El frame portrait sigue usando `HomeContent` sin tocar.
+> 4. `Home.tsx` ya tiene dos contenedores hermanos (`landscape:hidden` y `hidden landscape:flex`). Toda la divergencia visual vive ahí: portrait → `<HomeContent />`, landscape → `<HomeContentLandscape />`.
+> 5. QA obligatorio tras cualquier cambio landscape: diff visual de las 4 resoluciones Playwright (375×667, 768×1024, 667×375, 1280×550). Las dos primeras deben dar diff = 0.
 
 ## Plan de implementación
 
-Todo el trabajo concentrado en `src/components/HomeContent.tsx`. Cero archivos nuevos. Cero cambios en componentes hijos (`HomeHero`, `HomeModules`, `EventHeroCarousel`, `ComercioCarousel`, `CouponCard`, `PointsCard`, `GreetingBlock`, `BottomTabs`, `LoginButton`). Cero cambios en `Home.tsx`.
+### 1. Crear `src/components/HomeContentLandscape.tsx` (nuevo, aislado)
 
-### Layout objetivo en landscape
+Componente espejo de `HomeContent` con la **misma interfaz `HomeContentProps`** (para que `Home.tsx` reutilice `sharedProps` sin cambios), pero con layout propio de 2 columnas inspirado en `image-145.png`:
 
 ```text
-┌──────────────────────────────────────────────────────────────┐
-│ Header: escudo + Malgrat + KM0LAB · saludo centrado · bell   │
-├──────────────────────────────────────────────────────────────┤
-│ PointsCard full-width (estrella · 1259 · Nivel Local)        │
-│              [Iniciar sesión]  (solo si !user)               │
-├────────────────────────────┬─────────────────────────────────┤
-│ COL IZQUIERDA (scroll-y)   │ COL DERECHA (scroll-y)          │
-│ · Accesos rápidos          │ · Descubre lo nuestro           │
-│ · Eventos destacados       │ · Promos para ti                │
-├────────────────────────────┴─────────────────────────────────┤
-│ BottomTabs full-width                                        │
-└──────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────┐
+│ Header full-width: escudo + Malgrat + KM0LAB · saludo center · bell │
+├────────────────────────────────────────────────────────────────┤
+│ PointsCard full-width (estrella + 1259 puntos + Nivel Local)   │
+│                  [Iniciar sesión]  (solo si !user)             │
+├──────────────────────────────┬─────────────────────────────────┤
+│ COL IZQUIERDA (scroll-y)     │ COL DERECHA (scroll-y)          │
+│ • Accesos rápidos (4 chips)  │ • Descubre lo nuestro (carousel)│
+│ • Eventos destacados (card)  │ • Promos para ti (cupones)      │
+├──────────────────────────────┴─────────────────────────────────┤
+│ BottomTabs full-width                                          │
+└────────────────────────────────────────────────────────────────┘
 ```
 
-Portrait sigue idéntico al actual: header con saludo + puntos dentro del hero, body con scroll-y y las 4 secciones apiladas.
+Detalle:
+- Header reutiliza **piezas internas** (logo escudo, Km0Logo, NotificationBell, GreetingBlock) **sin pasar por `HomeHero`**, para no añadirle props nuevas a un componente compartido.
+- PointsCard, HomeModules, EventHeroCarousel, ComercioCarousel, CouponCard, LoginButton se importan tal cual y se usan con sus props públicas actuales. Cero modificación a esos componentes.
+- Las dos columnas internas usan `grid grid-cols-2 gap-3` + `overflow-y-auto` cada una. Sin scroll horizontal nunca.
+- Tipografías compactas con `horizontal-mobile:` para 667×375 y un poco más de aire con `horizontal-desktop:` para 1280×550.
 
-### Cambios técnicos en `HomeContent.tsx`
+### 2. Editar `src/pages/Home.tsx` (cambio mínimo, 2 líneas)
 
-1. **`greetingSlot` del `HomeHero`**: el saludo y la PointsCard pasan a renderizarse con `flex-col landscape:hidden` (saludo) + `hidden landscape:flex landscape:items-center landscape:justify-center` (saludo en línea para landscape). PointsCard se mueve fuera del hero en landscape usando `order-*` y `landscape:px-3`. Alternativa más simple: dejar `greetingSlot` solo para portrait con `landscape:hidden`, y en landscape renderizar saludo + PointsCard como primer bloque del body (también con `hidden landscape:flex`).
-2. **Contenedor de las 4 secciones**: cambiar
-   `flex flex-col gap-4 ... px-2 pt-3 pb-5`
-   por
-   `flex flex-col gap-4 ... landscape:grid landscape:grid-cols-2 landscape:gap-x-3 landscape:gap-y-2 px-2 pt-3 pb-5 horizontal-mobile:!pt-2 horizontal-mobile:!pb-3`
-3. **Orden en landscape** (con `order-*` solo prefijados):
-   - Accesos rápidos: `landscape:order-1`
-   - Eventos destacados: `landscape:order-2` (queda debajo de Accesos en col izquierda)
-   - Descubre lo nuestro: `landscape:order-3` (arriba col derecha)
-   - Promos para ti: `landscape:order-4` (debajo col derecha)
-   En CSS grid de 2 columnas con orden 1,2,3,4 el flujo natural ya rellena izquierda→derecha por filas. Para forzar col-fill ("1 y 2 izquierda, 3 y 4 derecha") se usa `landscape:grid-flow-col landscape:grid-rows-2` en el contenedor.
-4. **Tipografías y paddings landscape**: ajustes con `horizontal-mobile:!text-xs` para 667×375 y `horizontal-desktop:!text-sm` para 1280×550 donde haga falta (SectionHeader, separación entre secciones). Sin tocar clases base.
-5. **Scroll**: el body sigue siendo `flex-1 min-h-0 overflow-y-auto overflow-x-hidden`. En landscape el grid de 2 columnas vive dentro de ese mismo scroll-y, no se crean scrolls anidados.
+- Importar `HomeContentLandscape`.
+- Sustituir `<HomeContent {...sharedProps} />` **solo dentro del div `hidden landscape:flex`** por `<HomeContentLandscape {...sharedProps} />`.
+- El div `landscape:hidden` (portrait) sigue usando `<HomeContent />` exactamente igual.
 
-### Lo que NO se toca
+### 3. Lo que NO se toca (lista cerrada)
 
-- Cualquier clase sin prefijo dentro de `HomeContent.tsx` que ya estuviera funcionando en portrait.
-- Cualquier clase `vertical-mobile:` o `vertical-tablet:` existente.
-- Todos los componentes hijos listados arriba.
-- `Home.tsx`, `tailwind.config.ts`, `src/data/`.
+- `src/components/HomeContent.tsx`
+- `src/components/HomeHero.tsx`
+- `src/components/HomeModules.tsx`
+- `src/components/EventHeroCarousel.tsx`
+- `src/components/ComercioCarousel.tsx`
+- `src/components/CouponCard.tsx`
+- `src/components/PointsCard.tsx`
+- `src/components/GreetingBlock.tsx`
+- `src/components/BottomTabs.tsx`
+- `src/components/LoginButton.tsx`
+- `tailwind.config.ts` (breakpoints intocables)
+- Cualquier archivo en `src/data/`
 
-## QA post-cambio
+### 4. QA post-cambio
 
-Capturas obligatorias en las 4 resoluciones Playwright:
-- 375×667 portrait → **diff visual = 0** vs estado actual.
-- 768×1024 portrait → **diff visual = 0** vs estado actual.
-- 667×375 landscape → nuevo layout 2 columnas, BottomTabs visible, sin scroll-x.
-- 1280×550 landscape → mismo layout escalado, respira.
+Capturas en las 4 resoluciones Playwright:
+- 375×667 portrait → **debe coincidir pixel a pixel** con el estado actual.
+- 768×1024 portrait → **debe coincidir pixel a pixel** con el estado actual.
+- 667×375 landscape → nuevo layout 2 columnas, sin scroll-x, BottomTabs visible.
+- 1280×550 landscape → mismo layout escalado, respira mejor.
 
-Si portrait diverge aunque sea 1px → bug, revertir esa clase concreta.
+Si las dos primeras divergen aunque sea 1px → bug, revertir y volver al plan.
+
+## Resumen
+
+Un solo archivo nuevo (`HomeContentLandscape.tsx`) + 2 líneas cambiadas en `Home.tsx`. Cero ediciones en componentes compartidos. Portrait queda blindado por construcción, no por disciplina.

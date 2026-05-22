@@ -90,7 +90,7 @@ const HomeContent = ({
         onLogin={onLogin}
         showGreeting={false}
         greetingSlot={
-          <div className="my-0 flex flex-col gap-3 horizontal-mobile:!gap-2 px-2 py-0 landscape:hidden">
+          <div className="my-0 flex flex-col gap-3 horizontal-mobile:!gap-2 px-2 py-0">
             <GreetingBlock name={userName} />
             <PointsCard points={points} nextLevel={nextLevel} />
           </div>
@@ -101,31 +101,13 @@ const HomeContent = ({
       {/* Body con scroll-y interno: contenido scrollable, tabs fijo abajo */}
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col">
 
-        {/* Bloque solo landscape: saludo + PointsCard + login fuera del hero,
-            para que el header del hero quede compacto y los puntos respiren a lo ancho. */}
-        <div className="hidden landscape:flex landscape:flex-col landscape:gap-2 landscape:px-3 landscape:pt-2">
-          <div className="landscape:flex landscape:items-center landscape:justify-center">
-            <GreetingBlock name={userName} />
-          </div>
-          <PointsCard points={points} nextLevel={nextLevel} />
-          {showLogin && (
-            <motion.div
-              className="flex justify-center landscape:pt-1"
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: 0.05 }}
-            >
-              <LoginButton onClick={onLogin} size="sm" />
-            </motion.div>
-          )}
-        </div>
 
-        {/* Contenido principal: portrait → columna; landscape → grid 2 columnas col-fill */}
-        <div className="relative z-10 flex flex-col gap-4 vertical-tablet:gap-5 horizontal-mobile:!gap-2.5 horizontal-desktop:!gap-4 px-2 pt-3 pb-5 horizontal-mobile:!pt-2 horizontal-mobile:!pb-3 landscape:grid landscape:grid-cols-2 landscape:grid-flow-col landscape:grid-rows-2 landscape:gap-x-3 landscape:gap-y-2 landscape:!pt-2">
-          {/* CTA login solo si no hay sesión (portrait). En landscape ya se renderiza arriba. */}
+        {/* Contenido principal apilado verticalmente (saludo ya está dentro del hero) */}
+        <div className="relative z-10 flex flex-col gap-4 vertical-tablet:gap-5 horizontal-mobile:!gap-2.5 horizontal-desktop:!gap-4 px-2 pt-3 pb-5 horizontal-mobile:!pt-2 horizontal-mobile:!pb-3">
+          {/* CTA login solo si no hay sesión (portrait) */}
           {showLogin && (
             <motion.div
-              className="flex justify-center landscape:hidden"
+              className="flex justify-center"
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, delay: 0.05 }}
@@ -135,26 +117,26 @@ const HomeContent = ({
           )}
 
 
-          {/* 3 · Accesos rápidos (col izq, fila 1) */}
-          <section className="flex flex-col gap-2 landscape:order-1">
+          {/* 3 · Accesos rápidos */}
+          <section className="flex flex-col gap-2">
             <SectionHeader title="Accesos rápidos" />
             <HomeModules modules={modules} />
           </section>
 
-          {/* 4 · Eventos destacados (col izq, fila 2) */}
-          <section className="flex flex-col gap-2 landscape:order-2">
+          {/* 4 · Eventos destacados */}
+          <section className="flex flex-col gap-2">
             <SectionHeader title="Eventos destacados" actionLabel="Ver todos" onAction={onSeeAllEvents} />
             <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
           </section>
 
-          {/* 5 · Descubre lo nuestro — comercios (col der, fila 1) */}
-          <section className="flex flex-col gap-2 landscape:order-3">
+          {/* 5 · Descubre lo nuestro (comercios) */}
+          <section className="flex flex-col gap-2">
             <SectionHeader title="Descubre lo nuestro" actionLabel="Ver todos" onAction={onSeeAllComercios} />
             <ComercioCarousel comercios={comercios} />
           </section>
 
-          {/* 6 · Promos para ti — cupones (col der, fila 2) */}
-          <section className="flex flex-col gap-2 landscape:order-4">
+          {/* 6 · Promos para ti (cupones) */}
+          <section className="flex flex-col gap-2">
             <SectionHeader title="Promos para ti" actionLabel="Ver todas" onAction={onSeeAllCoupons} />
             <div className="flex flex-col gap-2">
               {coupons.map((c, i) => (
