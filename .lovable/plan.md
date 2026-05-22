@@ -1,55 +1,78 @@
-# Versión landscape del Home
+# Landscape Home — sin afectar Portrait
 
-Hoy en landscape (667×375 y 1280×550) se reutiliza el mismo apilado vertical del portrait dentro del frame fijo de teléfono. Resultado: el header con escudo + saludo + PointsCard ocupa casi toda la altura visible y todas las secciones (Accesos rápidos, Eventos, Comercios, Promos) quedan debajo del fold y se acceden por scroll vertical largo. Mala lectura, mucho desperdicio horizontal.
+## Objetivo
 
-La propuesta es darle al landscape un layout propio de dos columnas, pensado para 667×375 y escalando bien a 1280×550, manteniendo intacto el portrait.
+Entregar una versión landscape definitiva del Home (referencia: captura `image-145.png` con layout 2 columnas) que **NO modifique absolutamente nada** del Portrait actual (375×667 ni 768×1024).
 
-## Layout objetivo
+## Regla de oro (texto sugerido para tus instrucciones / memoria del proyecto)
+
+Copia esto tal cual a `mem://estilo/aislamiento-landscape-vs-portrait` y referénciala desde el index:
+
+> **Aislamiento Landscape ↔ Portrait.** Cuando se maquete o ajuste landscape (`horizontal-mobile` y/o `horizontal-desktop`), Portrait (`vertical-mobile` y `vertical-tablet`) debe quedar **byte a byte idéntico**. Reglas obligatorias:
+> 1. **Prohibido** modificar clases base o clases con prefijos `vertical-mobile:` / `vertical-tablet:` en cualquier componente compartido. Solo se pueden añadir/cambiar clases con prefijo `horizontal-mobile:` / `horizontal-desktop:`.
+> 2. **Prohibido** cambiar la firma, los defaults de props, el orden de renderizado o la estructura JSX de componentes compartidos (HomeHero, HomeContent, HomeModules, EventHeroCarousel, ComercioCarousel, CouponCard, PointsCard, GreetingBlock, BottomTabs, UserGreeting).
+> 3. Si el landscape necesita una distribución radicalmente distinta (ej. 2 columnas), **crear un componente nuevo** `HomeContentLandscape.tsx` y renderizarlo solo dentro del frame landscape de `Home.tsx`. El frame portrait sigue usando `HomeContent` sin tocar.
+> 4. `Home.tsx` ya tiene dos contenedores hermanos (`landscape:hidden` y `hidden landscape:flex`). Toda la divergencia visual vive ahí: portrait → `<HomeContent />`, landscape → `<HomeContentLandscape />`.
+> 5. QA obligatorio tras cualquier cambio landscape: diff visual de las 4 resoluciones Playwright (375×667, 768×1024, 667×375, 1280×550). Las dos primeras deben dar diff = 0.
+
+## Plan de implementación
+
+### 1. Crear `src/components/HomeContentLandscape.tsx` (nuevo, aislado)
+
+Componente espejo de `HomeContent` con la **misma interfaz `HomeContentProps`** (para que `Home.tsx` reutilice `sharedProps` sin cambios), pero con layout propio de 2 columnas inspirado en `image-145.png`:
 
 ```text
-┌──────────────────────────────────────────────────────────────┐
-│ Header KM0 compacto (escudo + ciudad + KM0LAB + bell)        │
-├────────────────────────┬─────────────────────────────────────┤
-│ COL IZQUIERDA (≈40%)   │ COL DERECHA (≈60%, scroll-y)        │
-│                        │                                     │
-│ Saludo "¡Hola Aina!"   │ Accesos rápidos (4 iconos en fila)  │
-│ PointsCard (1259 p)    │                                     │
-│ [Iniciar sesión]       │ Eventos destacados (carousel)       │
-│ (skyline de fondo      │                                     │
-│  recortado a la card)  │ Descubre lo nuestro (comercios)     │
-│                        │                                     │
-│                        │ Promos para ti (cupones)            │
-├────────────────────────┴─────────────────────────────────────┤
-│ BottomTabs (Inicio · Información · Ofertas · Perfil)         │
-└──────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────┐
+│ Header full-width: escudo + Malgrat + KM0LAB · saludo center · bell │
+├────────────────────────────────────────────────────────────────┤
+│ PointsCard full-width (estrella + 1259 puntos + Nivel Local)   │
+│                  [Iniciar sesión]  (solo si !user)             │
+├──────────────────────────────┬─────────────────────────────────┤
+│ COL IZQUIERDA (scroll-y)     │ COL DERECHA (scroll-y)          │
+│ • Accesos rápidos (4 chips)  │ • Descubre lo nuestro (carousel)│
+│ • Eventos destacados (card)  │ • Promos para ti (cupones)      │
+├──────────────────────────────┴─────────────────────────────────┤
+│ BottomTabs full-width                                          │
+└────────────────────────────────────────────────────────────────┘
 ```
 
-- Columna izquierda: marca + identidad del usuario. Fija (no scrollea), siempre visible. Reúne el "quién soy y cuántos puntos llevo" + el CTA de login si no hay sesión.
-- Columna derecha: contenido funcional, scroll-y interno, sin scroll-x. Permite ver Accesos rápidos sin perder el saludo y los puntos.
-- Header KM0 y BottomTabs se mantienen full-width arriba y abajo, idénticos al patrón actual.
+Detalle:
+- Header reutiliza **piezas internas** (logo escudo, Km0Logo, NotificationBell, GreetingBlock) **sin pasar por `HomeHero`**, para no añadirle props nuevas a un componente compartido.
+- PointsCard, HomeModules, EventHeroCarousel, ComercioCarousel, CouponCard, LoginButton se importan tal cual y se usan con sus props públicas actuales. Cero modificación a esos componentes.
+- Las dos columnas internas usan `grid grid-cols-2 gap-3` + `overflow-y-auto` cada una. Sin scroll horizontal nunca.
+- Tipografías compactas con `horizontal-mobile:` para 667×375 y un poco más de aire con `horizontal-desktop:` para 1280×550.
 
-## Reglas de aislamiento por breakpoint
+### 2. Editar `src/pages/Home.tsx` (cambio mínimo, 2 líneas)
 
-- Solo se tocan los breakpoints `horizontal-mobile` y `horizontal-desktop`.
-- `vertical-mobile` (375×667) y `vertical-tablet` (768×1024) quedan EXACTAMENTE como están hoy. Cero cambios visuales en portrait.
-- Validar las 4 resoluciones Playwright tras el cambio.
+- Importar `HomeContentLandscape`.
+- Sustituir `<HomeContent {...sharedProps} />` **solo dentro del div `hidden landscape:flex`** por `<HomeContentLandscape {...sharedProps} />`.
+- El div `landscape:hidden` (portrait) sigue usando `<HomeContent />` exactamente igual.
 
-## Detalles técnicos
+### 3. Lo que NO se toca (lista cerrada)
 
-Cambios concentrados en `src/components/HomeContent.tsx`:
+- `src/components/HomeContent.tsx`
+- `src/components/HomeHero.tsx`
+- `src/components/HomeModules.tsx`
+- `src/components/EventHeroCarousel.tsx`
+- `src/components/ComercioCarousel.tsx`
+- `src/components/CouponCard.tsx`
+- `src/components/PointsCard.tsx`
+- `src/components/GreetingBlock.tsx`
+- `src/components/BottomTabs.tsx`
+- `src/components/LoginButton.tsx`
+- `tailwind.config.ts` (breakpoints intocables)
+- Cualquier archivo en `src/data/`
 
-1. Renderizar dos árboles hermanos: el actual (portrait) envuelto en `landscape:hidden`, y uno nuevo en `hidden landscape:flex` con el grid de dos columnas.
-2. La columna izquierda usa `HomeHero` con `inline`, `showGreeting={false}` y el mismo `greetingSlot` (GreetingBlock + PointsCard) que ya existe, más el `LoginButton` cuando `showLogin` esté activo. Ancho: `w-[40%]`, sin scroll, separador derecho sutil con `border-r border-km0-beige-200`.
-3. La columna derecha es un `flex-1 overflow-y-auto overflow-x-hidden` con las 4 secciones (Accesos rápidos, Eventos, Comercios, Promos) reutilizando los componentes ya existentes (`HomeModules`, `EventHeroCarousel`, `ComercioCarousel`, `CouponCard`, `SectionHeader`). Padding compacto: `px-3 py-2 gap-3`.
-4. En `horizontal-mobile` (667×375) reducir tipografías de section headers a `text-xs` y compactar el carousel de eventos a la altura mínima ya definida (120px). En `horizontal-desktop` (1280×550) escalar a `text-sm`/`text-base` y permitir más aire (`gap-4`).
-5. Header KM0 sigue arriba (HomeHero parte superior, sin greetingSlot en landscape porque el saludo va dentro de la columna izquierda) o, alternativa más limpia: el HomeHero entero se renderiza dentro de la columna izquierda y el header superior solo lleva el escudo + bell. Decisión: usar HomeHero completo dentro de la columna izquierda y NO repetir header arriba, así se gana altura. El bell se mueve al top-right absoluto del frame.
-6. `BottomTabs` se queda como hoy, full-width abajo. No se duplica.
+### 4. QA post-cambio
 
-No se tocan: `HomeHero`, `HomeModules`, `EventHeroCarousel`, `ComercioCarousel`, `CouponCard`, `PointsCard`, `GreetingBlock`, `BottomTabs`, `Home.tsx`, `HomeSandbox.tsx`, ni la data en `src/data/`.
+Capturas en las 4 resoluciones Playwright:
+- 375×667 portrait → **debe coincidir pixel a pixel** con el estado actual.
+- 768×1024 portrait → **debe coincidir pixel a pixel** con el estado actual.
+- 667×375 landscape → nuevo layout 2 columnas, sin scroll-x, BottomTabs visible.
+- 1280×550 landscape → mismo layout escalado, respira mejor.
 
-## QA post-cambio
+Si las dos primeras divergen aunque sea 1px → bug, revertir y volver al plan.
 
-- 375×667 portrait: idéntico al actual (visual diff = 0).
-- 768×1024 portrait: idéntico al actual.
-- 667×375 landscape: dos columnas, columna izquierda fija con saludo + puntos + login, derecha con scroll de secciones, sin scroll-x, BottomTabs visible.
-- 1280×550 landscape: mismo layout escalado, todo respira.
+## Resumen
+
+Un solo archivo nuevo (`HomeContentLandscape.tsx`) + 2 líneas cambiadas en `Home.tsx`. Cero ediciones en componentes compartidos. Portrait queda blindado por construcción, no por disciplina.
