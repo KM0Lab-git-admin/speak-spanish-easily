@@ -90,7 +90,7 @@ const HomeContent = ({
         onLogin={onLogin}
         showGreeting={false}
         greetingSlot={
-          <div className="my-0 flex flex-col gap-3 horizontal-mobile:!gap-2 px-0 py-0">
+          <div className="my-0 flex flex-col gap-3 horizontal-mobile:!gap-2 px-2 py-0">
             <GreetingBlock name={userName} />
             <PointsCard points={points} nextLevel={nextLevel} />
           </div>
@@ -103,7 +103,7 @@ const HomeContent = ({
 
 
         {/* Contenido principal apilado verticalmente (saludo ya está dentro del hero) */}
-        <div className="relative z-10 flex flex-col gap-4 vertical-tablet:gap-5 horizontal-mobile:!gap-2.5 horizontal-desktop:!gap-4 px-4 vertical-tablet:px-5 horizontal-mobile:!px-3 horizontal-desktop:!px-6 pt-3 pb-5 horizontal-mobile:!pt-2 horizontal-mobile:!pb-3">
+        <div className="relative z-10 flex flex-col gap-4 vertical-tablet:gap-5 horizontal-mobile:!gap-2.5 horizontal-desktop:!gap-4 px-2 pt-3 pb-5 horizontal-mobile:!pt-2 horizontal-mobile:!pb-3">
           {/* CTA login solo si no hay sesión (portrait) */}
           {showLogin && (
             <motion.div
