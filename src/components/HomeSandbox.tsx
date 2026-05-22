@@ -1,35 +1,31 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import HomeContent from "@/components/HomeContent";
 import HomeContentLandscape from "@/components/HomeContentLandscape";
 import { useBreakpoint } from "@/hooks/use-breakpoint";
-import { INITIAL_MODULES } from "@/data/homeModules";
+import { useLang } from "@/contexts/LangContext";
+import { t } from "@/lib/i18n";
+import { INITIAL_MODULES, type HomeModuleSeed } from "@/data/homeModules";
 import type { HomeModule, HomeModuleId } from "@/components/HomeModules";
 import { PROMOS } from "@/data/promos";
 import { COMERCIOS } from "@/data/comercios";
 import { COUPONS } from "@/data/coupons";
 import { type HomeTab } from "@/components/BottomTabs";
 
-/**
- * HomeSandbox — versión auto-contenida de la Home para mostrar dentro de
- * <SimulatedDevice /> en /preview-all. No usa useAuth ni useNavigate (que
- * dependen del router/sesión de la app real); solo estado local y datos
- * mock, lo justo para que la maquetación se vea exactamente igual y
- * Visual Edit pueda seleccionar componentes reales.
- */
 const HomeSandbox = () => {
-  const [modules, setModules] = useState<HomeModule[]>(INITIAL_MODULES);
+  const [seeds, setSeeds] = useState<HomeModuleSeed[]>(INITIAL_MODULES);
   const [activeTab, setActiveTab] = useState<HomeTab>("home");
   const bp = useBreakpoint();
+  const { lang } = useLang();
   const isLandscape = bp === "horizontal-mobile" || bp === "horizontal-desktop";
   const Layout = isLandscape ? HomeContentLandscape : HomeContent;
 
   const toggle = (id: HomeModuleId) =>
-    setModules((prev) => prev.map((m) => (m.id === id ? { ...m, active: !m.active } : m)));
+    setSeeds((prev) => prev.map((m) => (m.id === id ? { ...m, active: !m.active } : m)));
 
-  const modulesWithHandlers: HomeModule[] = modules.map((m) => ({
-    ...m,
-    onClick: () => toggle(m.id),
-  }));
+  const modulesWithHandlers: HomeModule[] = useMemo(
+    () => seeds.map((m) => ({ id: m.id, active: m.active, label: t(m.labelKey, lang), onClick: () => toggle(m.id) })),
+    [seeds, lang],
+  );
 
   const noop = () => {};
 
@@ -38,7 +34,7 @@ const HomeSandbox = () => {
       cityName="Malgrat de Mar"
       hasAlerts={false}
       onToggleAlerts={noop}
-      userName="Aina"
+      greeting={lang === "en" ? "Hi, Aina!" : "¡Hola, Aina!"}
       points={1259}
       nextLevel={3000}
       modules={modulesWithHandlers}
@@ -51,6 +47,7 @@ const HomeSandbox = () => {
       onLogin={noop}
       showProfile={false}
       onProfile={noop}
+      showPoints={false}
       onSeeAllComercios={noop}
       onSeeAllEvents={noop}
       onSeeAllCoupons={noop}

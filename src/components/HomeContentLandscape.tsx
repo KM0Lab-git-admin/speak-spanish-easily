@@ -9,36 +9,15 @@ import PointsCard from "./PointsCard";
 import GreetingBlock from "./GreetingBlock";
 import BottomTabs from "./BottomTabs";
 import LoginButton from "./LoginButton";
+import { useLang } from "@/contexts/LangContext";
+import { t } from "@/lib/i18n";
 import type { HomeContentProps } from "./HomeContent";
 
-/**
- * HomeContentLandscape — versión exclusiva landscape de la home.
- *
- * AISLAMIENTO TOTAL respecto a portrait:
- *  - Este componente solo se renderiza dentro del frame `hidden landscape:flex`
- *    de `Home.tsx`. Portrait (vertical-mobile/vertical-tablet) sigue usando
- *    `HomeContent` sin tocar.
- *  - Reutiliza subcomponentes (HomeHero, PointsCard, HomeModules, etc.) sin
- *    modificarlos: solo los compone en un layout propio.
- *
- * Layout (igual que portrait, pero el body se divide en 2 columnas):
- *   ┌─────────────────────────────────────────────────────┐
- *   │ HomeHero (FIJO: marca + saludo + PointsCard ancho) │
- *   ├─────────────────────────────────────────────────────┤
- *   │ [Iniciar sesión]                                    │  ↕ scroll común
- *   │ ┌──────────────────┬────────────────────────────┐  │
- *   │ │ Accesos rápidos  │ Descubre lo nuestro        │  │
- *   │ │ Eventos destac.  │ Promos para ti             │  │
- *   │ └──────────────────┴────────────────────────────┘  │
- *   ├─────────────────────────────────────────────────────┤
- *   │ BottomTabs (FIJO)                                   │
- *   └─────────────────────────────────────────────────────┘
- */
 const HomeContentLandscape = ({
   cityName,
   hasAlerts,
   onToggleAlerts,
-  userName = "Aina",
+  greeting,
   points,
   nextLevel,
   modules,
@@ -51,14 +30,17 @@ const HomeContentLandscape = ({
   onLogin,
   showProfile,
   onProfile,
+  showPoints,
   onSeeAllComercios,
   onSeeAllEvents,
   onSeeAllCoupons,
   onOpenEvent,
 }: HomeContentProps) => {
+  const { lang } = useLang();
+  const subtitle = t("home.greeting_subtitle", lang);
+
   return (
     <>
-      {/* Header FIJO arriba — saludo centrado + PointsCard a ancho completo */}
       <HomeHero
         cityName={cityName}
         hasAlerts={hasAlerts}
@@ -68,14 +50,13 @@ const HomeContentLandscape = ({
         showGreeting={false}
         greetingSlot={
           <div className="gap-1.5 px-3 pb-1 flex flex-row">
-            <GreetingBlock name={userName} />
-            <PointsCard points={points} nextLevel={nextLevel} />
+            <GreetingBlock greeting={greeting} subtitle={subtitle} />
+            {showPoints && <PointsCard points={points} nextLevel={nextLevel} />}
           </div>
         }
         inline
       />
 
-      {/* Body con scroll-y interno (común a las 2 columnas) */}
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col gap-2 px-3 pt-2 pb-3">
         {showLogin && (
           <motion.div
@@ -84,33 +65,31 @@ const HomeContentLandscape = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: 0.05 }}
           >
-            <LoginButton onClick={onLogin} size="sm" />
+            <LoginButton onClick={onLogin} size="sm" label={t("home.login_cta", lang)} />
           </motion.div>
         )}
 
         <div className="grid grid-cols-2 gap-x-4 gap-y-3 items-start">
-          {/* COL IZQUIERDA */}
           <div className="flex flex-col gap-3 min-w-0">
             <section className="flex flex-col gap-1.5">
-              <SectionHeader title="Accesos rápidos" />
+              <SectionHeader title={t("home.section.quick", lang)} />
               <HomeModules modules={modules} />
             </section>
 
             <section className="flex flex-col gap-1.5">
-              <SectionHeader title="Eventos destacados" actionLabel="Ver todos" onAction={onSeeAllEvents} />
+              <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
               <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
             </section>
           </div>
 
-          {/* COL DERECHA */}
           <div className="flex flex-col gap-3 min-w-0">
             <section className="flex flex-col gap-1.5">
-              <SectionHeader title="Descubre lo nuestro" actionLabel="Ver todos" onAction={onSeeAllComercios} />
+              <SectionHeader title={t("home.section.shops", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllComercios} />
               <ComercioCarousel comercios={comercios} />
             </section>
 
             <section className="flex flex-col gap-1.5">
-              <SectionHeader title="Promos para ti" actionLabel="Ver todas" onAction={onSeeAllCoupons} />
+              <SectionHeader title={t("home.section.coupons", lang)} actionLabel={t("home.action.see_all_f", lang)} onAction={onSeeAllCoupons} />
               <div className="flex flex-col gap-1.5">
                 {coupons.map((c, i) => (
                   <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
