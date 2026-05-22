@@ -1,5 +1,7 @@
 import { useState } from "react";
 import HomeContent from "@/components/HomeContent";
+import HomeContentLandscape from "@/components/HomeContentLandscape";
+import { useBreakpoint } from "@/hooks/use-breakpoint";
 import { INITIAL_MODULES } from "@/data/homeModules";
 import type { HomeModule, HomeModuleId } from "@/components/HomeModules";
 import { PROMOS } from "@/data/promos";
@@ -17,6 +19,9 @@ import { type HomeTab } from "@/components/BottomTabs";
 const HomeSandbox = () => {
   const [modules, setModules] = useState<HomeModule[]>(INITIAL_MODULES);
   const [activeTab, setActiveTab] = useState<HomeTab>("home");
+  const bp = useBreakpoint();
+  const isLandscape = bp === "horizontal-mobile" || bp === "horizontal-desktop";
+  const Layout = isLandscape ? HomeContentLandscape : HomeContent;
 
   const toggle = (id: HomeModuleId) =>
     setModules((prev) => prev.map((m) => (m.id === id ? { ...m, active: !m.active } : m)));
@@ -29,7 +34,7 @@ const HomeSandbox = () => {
   const noop = () => {};
 
   return (
-    <HomeContent
+    <Layout
       cityName="Malgrat de Mar"
       hasAlerts={false}
       onToggleAlerts={noop}
