@@ -90,7 +90,7 @@ const HomeContent = ({
         onLogin={onLogin}
         showGreeting={false}
         greetingSlot={
-          <div className="px-4 vertical-tablet:px-5 horizontal-mobile:!px-3 horizontal-desktop:!px-6 my-0 py-[15px] flex flex-col gap-3 horizontal-mobile:!gap-2">
+          <div className="my-0 flex flex-col gap-3 horizontal-mobile:!gap-2 px-0 py-0">
             <GreetingBlock name={userName} />
             <PointsCard points={points} nextLevel={nextLevel} />
           </div>
