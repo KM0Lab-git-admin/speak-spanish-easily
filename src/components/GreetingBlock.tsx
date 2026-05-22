@@ -1,30 +1,19 @@
 import { Heart } from "lucide-react";
 
 /**
- * GreetingBlock — saludo personalizado limpio para la nueva home.
- *
- *   👋 ¡Hola, {name}!
- *      Gracias por apoyar lo local 💙
- *
- * Sustituye al UserGreeting tradicional (que mezclaba puntos+nivel).
- * Aquí solo se enfoca en el saludo emocional; los puntos viven en
- * PointsCard.
+ * GreetingBlock — saludo personalizado.
+ * `greeting` ya viene localizado y compuesto desde el caller (Home).
  */
 export interface GreetingBlockProps {
-  name?: string | null;
-  subtitle?: string;
+  greeting: string;
+  subtitle: string;
 }
 
-const GreetingBlock = ({
-  name,
-  subtitle = "Gracias por apoyar lo local",
-}: GreetingBlockProps) => {
+const GreetingBlock = ({ greeting, subtitle }: GreetingBlockProps) => {
   return (
     <div className="w-full gap-0.5 horizontal-mobile:gap-0 flex-row flex items-center justify-center px-[4px] py-[4px]">
       <h2 className="font-brand font-black text-km0-blue-700 text-xl vertical-tablet:text-2xl horizontal-mobile:!text-base flex items-center gap-2 leading-tight">
-        <span>
-          ¡Hola{name ? `, ${name}` : ""}!
-        </span>
+        <span>{greeting}</span>
       </h2>
       <p className="font-body text-foreground text-sm vertical-tablet:text-base horizontal-mobile:!text-xs flex items-center gap-1.5 leading-snug">
         {subtitle}
