@@ -20,7 +20,7 @@ const GreetingBlock = ({
   subtitle = "Gracias por apoyar lo local",
 }: GreetingBlockProps) => {
   return (
-    <div className="w-full flex flex-col gap-0.5 horizontal-mobile:gap-0">
+    <div className="w-full gap-0.5 horizontal-mobile:gap-0 flex-row flex items-center justify-center px-[4px] py-[4px]">
       <h2 className="font-brand font-black text-km0-blue-700 text-xl vertical-tablet:text-2xl horizontal-mobile:!text-base flex items-center gap-2 leading-tight">
         <span>
           ¡Hola{name ? `, ${name}` : ""}!
