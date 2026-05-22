@@ -94,7 +94,6 @@ Los ajustes de altura, separación y tipografía se harán solo con:
 
 - `horizontal-mobile:` para 667×375.
 - `horizontal-desktop:` para 1280×550.
-- `landscape:` si aplica a ambas landscapes.
 
 No se tocarán textos, datos ni estados.
 
