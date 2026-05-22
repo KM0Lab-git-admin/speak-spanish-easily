@@ -26,7 +26,7 @@ const GreetingBlock = ({
           ¡Hola{name ? `, ${name}` : ""}!
         </span>
       </h2>
-      <p className="font-body text-km0-blue-700/80 text-sm vertical-tablet:text-base horizontal-mobile:!text-xs flex items-center gap-1.5 leading-snug">
+      <p className="font-body text-foreground text-sm vertical-tablet:text-base horizontal-mobile:!text-xs flex items-center gap-1.5 leading-snug">
         {subtitle}
         <Heart
           className="w-3.5 h-3.5 horizontal-mobile:!w-3 horizontal-mobile:!h-3 text-km0-blue-700 fill-km0-blue-700"
