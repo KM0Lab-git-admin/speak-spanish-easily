@@ -19,18 +19,20 @@ import type { HomeContentProps } from "./HomeContent";
  *    de `Home.tsx`. Portrait (vertical-mobile/vertical-tablet) sigue usando
  *    `HomeContent` sin tocar.
  *  - Reutiliza subcomponentes (HomeHero, PointsCard, HomeModules, etc.) sin
- *    modificarlos ni añadirles props nuevas: solo los compone en un layout
- *    propio de 2 columnas.
+ *    modificarlos: solo los compone en un layout propio.
  *
- * Layout:
- *   ┌─────────────────────────────────────────────┐
- *   │ Header (HomeHero inline con saludo+puntos) │
- *   ├──────────────────┬──────────────────────────┤
- *   │ Accesos rápidos  │ Descubre lo nuestro      │
- *   │ Eventos destac.  │ Promos para ti           │
- *   ├──────────────────┴──────────────────────────┤
- *   │ BottomTabs                                  │
- *   └─────────────────────────────────────────────┘
+ * Layout (igual que portrait, pero el body se divide en 2 columnas):
+ *   ┌─────────────────────────────────────────────────────┐
+ *   │ HomeHero (FIJO: marca + saludo + PointsCard ancho) │
+ *   ├─────────────────────────────────────────────────────┤
+ *   │ [Iniciar sesión]                                    │  ↕ scroll común
+ *   │ ┌──────────────────┬────────────────────────────┐  │
+ *   │ │ Accesos rápidos  │ Descubre lo nuestro        │  │
+ *   │ │ Eventos destac.  │ Promos para ti             │  │
+ *   │ └──────────────────┴────────────────────────────┘  │
+ *   ├─────────────────────────────────────────────────────┤
+ *   │ BottomTabs (FIJO)                                   │
+ *   └─────────────────────────────────────────────────────┘
  */
 const HomeContentLandscape = ({
   cityName,
@@ -56,6 +58,7 @@ const HomeContentLandscape = ({
 }: HomeContentProps) => {
   return (
     <>
+      {/* Header FIJO arriba — saludo centrado + PointsCard a ancho completo */}
       <HomeHero
         cityName={cityName}
         hasAlerts={hasAlerts}
@@ -64,53 +67,57 @@ const HomeContentLandscape = ({
         onLogin={onLogin}
         showGreeting={false}
         greetingSlot={
-          <div className="flex items-center gap-2 px-3 py-1">
-            <div className="shrink-0">
-              <GreetingBlock name={userName} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <PointsCard points={points} nextLevel={nextLevel} />
-            </div>
-            {showLogin && (
-              <div className="shrink-0">
-                <LoginButton onClick={onLogin} size="sm" />
-              </div>
-            )}
+          <div className="flex flex-col gap-1.5 px-3 pb-1">
+            <GreetingBlock name={userName} />
+            <PointsCard points={points} nextLevel={nextLevel} />
           </div>
         }
         inline
       />
 
-      {/* Body: 2 columnas con scroll-y interno cada una */}
-      <div className="flex-1 min-h-0 overflow-hidden grid grid-cols-2 gap-2 px-2 py-2 horizontal-desktop:gap-4 horizontal-desktop:px-4 horizontal-desktop:py-3">
-        {/* COL IZQUIERDA */}
-        <div className="min-h-0 overflow-y-auto overflow-x-hidden flex flex-col gap-2 horizontal-desktop:gap-3 pr-1">
-          <section className="flex flex-col gap-1.5">
-            <SectionHeader title="Accesos rápidos" />
-            <HomeModules modules={modules} />
-          </section>
+      {/* Body con scroll-y interno (común a las 2 columnas) */}
+      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col gap-2 px-3 pt-2 pb-3">
+        {showLogin && (
+          <motion.div
+            className="flex justify-center"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.05 }}
+          >
+            <LoginButton onClick={onLogin} size="sm" />
+          </motion.div>
+        )}
 
-          <section className="flex flex-col gap-1.5">
-            <SectionHeader title="Eventos destacados" actionLabel="Ver todos" onAction={onSeeAllEvents} />
-            <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
-          </section>
-        </div>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-3 items-start">
+          {/* COL IZQUIERDA */}
+          <div className="flex flex-col gap-3 min-w-0">
+            <section className="flex flex-col gap-1.5">
+              <SectionHeader title="Accesos rápidos" />
+              <HomeModules modules={modules} />
+            </section>
 
-        {/* COL DERECHA */}
-        <div className="min-h-0 overflow-y-auto overflow-x-hidden flex flex-col gap-2 horizontal-desktop:gap-3 pr-1">
-          <section className="flex flex-col gap-1.5">
-            <SectionHeader title="Descubre lo nuestro" actionLabel="Ver todos" onAction={onSeeAllComercios} />
-            <ComercioCarousel comercios={comercios} />
-          </section>
+            <section className="flex flex-col gap-1.5">
+              <SectionHeader title="Eventos destacados" actionLabel="Ver todos" onAction={onSeeAllEvents} />
+              <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
+            </section>
+          </div>
 
-          <section className="flex flex-col gap-1.5">
-            <SectionHeader title="Promos para ti" actionLabel="Ver todas" onAction={onSeeAllCoupons} />
-            <div className="flex flex-col gap-1.5">
-              {coupons.map((c, i) => (
-                <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
-              ))}
-            </div>
-          </section>
+          {/* COL DERECHA */}
+          <div className="flex flex-col gap-3 min-w-0">
+            <section className="flex flex-col gap-1.5">
+              <SectionHeader title="Descubre lo nuestro" actionLabel="Ver todos" onAction={onSeeAllComercios} />
+              <ComercioCarousel comercios={comercios} />
+            </section>
+
+            <section className="flex flex-col gap-1.5">
+              <SectionHeader title="Promos para ti" actionLabel="Ver todas" onAction={onSeeAllCoupons} />
+              <div className="flex flex-col gap-1.5">
+                {coupons.map((c, i) => (
+                  <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
+                ))}
+              </div>
+            </section>
+          </div>
         </div>
       </div>
 
@@ -133,7 +140,7 @@ interface SectionHeaderProps {
 
 const SectionHeader = ({ title, actionLabel, onAction }: SectionHeaderProps) => (
   <div className="flex items-center justify-between gap-2">
-    <h2 className="font-brand font-black text-km0-blue-800 text-sm horizontal-desktop:text-lg">
+    <h2 className="font-brand font-black text-km0-blue-800 text-sm horizontal-desktop:text-base">
       {title}
     </h2>
     {actionLabel && (
