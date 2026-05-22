@@ -102,8 +102,8 @@ const Home = () => {
   };
 
   return (
-    <div className="h-[100dvh] w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 p-3 sm:p-4 overflow-hidden">
-      <div className="landscape:hidden flex flex-col bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden relative w-[375px] h-[667px] max-w-full max-h-full">
+    <div className="h-[100dvh] w-full bg-km0-beige-50 overflow-hidden">
+      <div className="landscape:hidden flex flex-col bg-km0-beige-50 overflow-hidden relative w-full h-full">
         <HomeContent {...sharedProps} />
         <NotificationsOverlay
           open={notifOpen}
@@ -113,7 +113,7 @@ const Home = () => {
         />
       </div>
 
-      <div className="hidden landscape:flex bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col relative w-[667px] h-[375px] max-w-full max-h-full">
+      <div className="hidden landscape:flex bg-km0-beige-50 overflow-hidden flex-col relative w-full h-full">
         <HomeContentLandscape {...sharedProps} />
         <NotificationsOverlay
           open={notifOpen}
