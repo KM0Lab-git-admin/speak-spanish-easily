@@ -9,34 +9,19 @@ import ComercioCarousel from "./ComercioCarousel";
 import BottomTabs, { type HomeTab } from "./BottomTabs";
 import LoginButton from "./LoginButton";
 import { ArrowRight } from "lucide-react";
+import { useLang } from "@/contexts/LangContext";
+import { t } from "@/lib/i18n";
 
 import type { Promo } from "@/types/promo";
 import type { Comercio } from "@/types/comercio";
 import type { Coupon } from "@/types/coupon";
 
-/**
- * HomeContent — nueva distribución de la home (basada en el informe
- * de mejoras de la home actual). Cambios principales:
- *
- *  1. Header limpio (HomeHero sin login inline, sin saludo dentro).
- *  2. Bloque saludo personalizado (GreetingBlock).
- *  3. Tarjeta de puntos prominente (PointsCard).
- *  4. Sección "Accesos rápidos" con HomeModules.
- *  5. Sección "Eventos destacados" con EventHeroCarousel + "Ver todos".
- *  6. Sección "Descubre lo nuestro" con ComercioCarousel + "Ver todos".
- *  7. Sección "Promos para ti" con CouponCard.
- *  8. BottomTabs intacto.
- *
- * Se permite scroll-y interno (la cantidad de contenido excede el
- * encuadre fijo del frame). Nunca scroll-x.
- *
- * El componente no conoce auth ni router: todo entra por props.
- */
 export interface HomeContentProps {
   cityName: string;
   hasAlerts: boolean;
   onToggleAlerts: () => void;
-  userName?: string | null;
+  /** Saludo ya localizado (e.g. "¡Hola, Aina!" o "¡Hola!"). */
+  greeting: string;
   points: number;
   nextLevel: number;
   modules: HomeModule[];
@@ -49,6 +34,8 @@ export interface HomeContentProps {
   onLogin: () => void;
   showProfile: boolean;
   onProfile: () => void;
+  /** Solo se muestra PointsCard si hay sesión. */
+  showPoints: boolean;
   onSeeAllComercios?: () => void;
   onSeeAllEvents?: () => void;
   onSeeAllCoupons?: () => void;
@@ -59,7 +46,7 @@ const HomeContent = ({
   cityName,
   hasAlerts,
   onToggleAlerts,
-  userName = "Aina",
+  greeting,
   points,
   nextLevel,
   modules,
@@ -72,16 +59,17 @@ const HomeContent = ({
   onLogin,
   showProfile,
   onProfile,
+  showPoints,
   onSeeAllComercios,
   onSeeAllEvents,
   onSeeAllCoupons,
   onOpenEvent,
 }: HomeContentProps) => {
+  const { lang } = useLang();
+  const subtitle = t("home.greeting_subtitle", lang);
+
   return (
     <>
-      {/* Header fijo en la parte superior — no se desplaza con el scroll del body.
-          El saludo personalizado vive DENTRO del hero (greetingSlot) para que
-          forme parte visualmente del bloque de marca. */}
       <HomeHero
         cityName={cityName}
         hasAlerts={hasAlerts}
@@ -91,20 +79,15 @@ const HomeContent = ({
         showGreeting={false}
         greetingSlot={
           <div className="my-0 flex flex-col gap-3 horizontal-mobile:!gap-2 px-2 py-0">
-            <GreetingBlock name={userName} />
-            <PointsCard points={points} nextLevel={nextLevel} />
+            <GreetingBlock greeting={greeting} subtitle={subtitle} />
+            {showPoints && <PointsCard points={points} nextLevel={nextLevel} />}
           </div>
         }
         inline
       />
 
-      {/* Body con scroll-y interno: contenido scrollable, tabs fijo abajo */}
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col">
-
-
-        {/* Contenido principal apilado verticalmente (saludo ya está dentro del hero) */}
         <div className="relative z-10 flex flex-col gap-4 vertical-tablet:gap-5 horizontal-mobile:!gap-2.5 horizontal-desktop:!gap-4 px-2 pt-3 pb-5 horizontal-mobile:!pt-2 horizontal-mobile:!pb-3">
-          {/* CTA login solo si no hay sesión (portrait) */}
           {showLogin && (
             <motion.div
               className="flex justify-center"
@@ -112,32 +95,27 @@ const HomeContent = ({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, delay: 0.05 }}
             >
-              <LoginButton onClick={onLogin} size="sm" />
+              <LoginButton onClick={onLogin} size="sm" label={t("home.login_cta", lang)} />
             </motion.div>
           )}
 
-
-          {/* 3 · Accesos rápidos */}
           <section className="flex flex-col gap-2">
-            <SectionHeader title="Accesos rápidos" />
+            <SectionHeader title={t("home.section.quick", lang)} />
             <HomeModules modules={modules} />
           </section>
 
-          {/* 4 · Eventos destacados */}
           <section className="flex flex-col gap-2">
-            <SectionHeader title="Eventos destacados" actionLabel="Ver todos" onAction={onSeeAllEvents} />
+            <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
             <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
           </section>
 
-          {/* 5 · Descubre lo nuestro (comercios) */}
           <section className="flex flex-col gap-2">
-            <SectionHeader title="Descubre lo nuestro" actionLabel="Ver todos" onAction={onSeeAllComercios} />
+            <SectionHeader title={t("home.section.shops", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllComercios} />
             <ComercioCarousel comercios={comercios} />
           </section>
 
-          {/* 6 · Promos para ti (cupones) */}
           <section className="flex flex-col gap-2">
-            <SectionHeader title="Promos para ti" actionLabel="Ver todas" onAction={onSeeAllCoupons} />
+            <SectionHeader title={t("home.section.coupons", lang)} actionLabel={t("home.action.see_all_f", lang)} onAction={onSeeAllCoupons} />
             <div className="flex flex-col gap-2">
               {coupons.map((c, i) => (
                 <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
@@ -157,8 +135,6 @@ const HomeContent = ({
     </>
   );
 };
-
-/* ─── Helpers ─────────────────────────────────────────────── */
 
 interface SectionHeaderProps {
   title: string;

@@ -1,5 +1,7 @@
 import { Home as HomeIcon, Info, Tag, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLang } from "@/contexts/LangContext";
+import { t } from "@/lib/i18n";
 
 export type HomeTab = "home" | "info" | "ofertes" | "perfil";
 
@@ -12,13 +14,6 @@ export interface BottomTabsProps {
   onProfile: () => void;
 }
 
-/**
- * BottomTabs — barra de navegación inferior fija dentro del frame
- * del Home. 4 tabs: Inicio · Información · Ofertas · Perfil.
- *
- * El tab "Perfil" cambia su acción según `showProfile`: si hay
- * sesión llama a onProfile, si no a onLogin.
- */
 const BottomTabs = ({
   activeTab,
   onTabChange,
@@ -26,6 +21,7 @@ const BottomTabs = ({
   onLogin,
   onProfile,
 }: BottomTabsProps) => {
+  const { lang } = useLang();
   return (
     <nav
       className="shrink-0 bg-white border-t border-km0-beige-200 px-2 pt-2 pb-3 grid grid-cols-4 horizontal-mobile:!pt-1 horizontal-mobile:!pb-1.5"
@@ -33,30 +29,30 @@ const BottomTabs = ({
     >
       <TabItem
         icon={<HomeIcon size={20} strokeWidth={2.2} />}
-        label="Inicio"
+        label={t("tabs.home", lang)}
         active={activeTab === "home"}
         onClick={() => onTabChange("home")}
       />
       <TabItem
         icon={<Info size={20} strokeWidth={2.2} />}
-        label="Información"
+        label={t("tabs.info", lang)}
         active={activeTab === "info"}
         onClick={() => onTabChange("info")}
       />
       <TabItem
         icon={<Tag size={20} strokeWidth={2.2} />}
-        label="Ofertas"
+        label={t("tabs.offers", lang)}
         active={activeTab === "ofertes"}
         onClick={() => onTabChange("ofertes")}
       />
       <TabItem
         icon={<User size={20} strokeWidth={2.2} />}
-        label="Perfil"
+        label={showProfile ? t("tabs.profile", lang) : t("home.login_cta", lang)}
         active={activeTab === "perfil"}
         onClick={() => {
           onTabChange("perfil");
-          // Modo maquetación: siempre vamos a /profile, sin requerir auth.
-          onProfile();
+          if (showProfile) onProfile();
+          else onLogin();
         }}
       />
     </nav>

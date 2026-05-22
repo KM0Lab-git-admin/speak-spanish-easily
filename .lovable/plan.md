@@ -1,78 +1,105 @@
-# Landscape Home — sin afectar Portrait
+# Plan: navegación completa + auth + i18n
 
-## Objetivo
+## 1. Idioma global persistente
 
-Entregar una versión landscape definitiva del Home (referencia: captura `image-145.png` con layout 2 columnas) que **NO modifique absolutamente nada** del Portrait actual (375×667 ni 768×1024).
+**Nuevo:** `src/contexts/LangContext.tsx` con `LangProvider` + `useLang()`.
+- Estado: `lang: "ca" | "es" | "en"`, `setLang(l)`.
+- Persistencia en `localStorage` (`km0_lang`), fallback `"es"`.
+- Envolver `<App />` en `<LangProvider>` (en `main.tsx` o `App.tsx`).
 
-## Regla de oro (texto sugerido para tus instrucciones / memoria del proyecto)
-
-Copia esto tal cual a `mem://estilo/aislamiento-landscape-vs-portrait` y referénciala desde el index:
-
-> **Aislamiento Landscape ↔ Portrait.** Cuando se maquete o ajuste landscape (`horizontal-mobile` y/o `horizontal-desktop`), Portrait (`vertical-mobile` y `vertical-tablet`) debe quedar **byte a byte idéntico**. Reglas obligatorias:
-> 1. **Prohibido** modificar clases base o clases con prefijos `vertical-mobile:` / `vertical-tablet:` en cualquier componente compartido. Solo se pueden añadir/cambiar clases con prefijo `horizontal-mobile:` / `horizontal-desktop:`.
-> 2. **Prohibido** cambiar la firma, los defaults de props, el orden de renderizado o la estructura JSX de componentes compartidos (HomeHero, HomeContent, HomeModules, EventHeroCarousel, ComercioCarousel, CouponCard, PointsCard, GreetingBlock, BottomTabs, UserGreeting).
-> 3. Si el landscape necesita una distribución radicalmente distinta (ej. 2 columnas), **crear un componente nuevo** `HomeContentLandscape.tsx` y renderizarlo solo dentro del frame landscape de `Home.tsx`. El frame portrait sigue usando `HomeContent` sin tocar.
-> 4. `Home.tsx` ya tiene dos contenedores hermanos (`landscape:hidden` y `hidden landscape:flex`). Toda la divergencia visual vive ahí: portrait → `<HomeContent />`, landscape → `<HomeContentLandscape />`.
-> 5. QA obligatorio tras cualquier cambio landscape: diff visual de las 4 resoluciones Playwright (375×667, 768×1024, 667×375, 1280×550). Las dos primeras deben dar diff = 0.
-
-## Plan de implementación
-
-### 1. Crear `src/components/HomeContentLandscape.tsx` (nuevo, aislado)
-
-Componente espejo de `HomeContent` con la **misma interfaz `HomeContentProps`** (para que `Home.tsx` reutilice `sharedProps` sin cambios), pero con layout propio de 2 columnas inspirado en `image-145.png`:
-
-```text
-┌────────────────────────────────────────────────────────────────┐
-│ Header full-width: escudo + Malgrat + KM0LAB · saludo center · bell │
-├────────────────────────────────────────────────────────────────┤
-│ PointsCard full-width (estrella + 1259 puntos + Nivel Local)   │
-│                  [Iniciar sesión]  (solo si !user)             │
-├──────────────────────────────┬─────────────────────────────────┤
-│ COL IZQUIERDA (scroll-y)     │ COL DERECHA (scroll-y)          │
-│ • Accesos rápidos (4 chips)  │ • Descubre lo nuestro (carousel)│
-│ • Eventos destacados (card)  │ • Promos para ti (cupones)      │
-├──────────────────────────────┴─────────────────────────────────┤
-│ BottomTabs full-width                                          │
-└────────────────────────────────────────────────────────────────┘
+**Nuevo:** `src/lib/i18n.ts` — diccionario plano por claves anidadas, tipado, helper `t(key, lang)`.
+Estructura:
 ```
+{ language:{title,...}, postal:{...}, login:{...}, otp:{...},
+  home:{greetingHello, greetingSubtitle, sections:{quickAccess,events,shops,coupons,seeAll,seeAllF}, modules:{...}, tabs:{home,chat,profile,login}},
+  profile:{...} }
+```
+Cubre **ca / es / en** completo.
 
-Detalle:
-- Header reutiliza **piezas internas** (logo escudo, Km0Logo, NotificationBell, GreetingBlock) **sin pasar por `HomeHero`**, para no añadirle props nuevas a un componente compartido.
-- PointsCard, HomeModules, EventHeroCarousel, ComercioCarousel, CouponCard, LoginButton se importan tal cual y se usan con sus props públicas actuales. Cero modificación a esos componentes.
-- Las dos columnas internas usan `grid grid-cols-2 gap-3` + `overflow-y-auto` cada una. Sin scroll horizontal nunca.
-- Tipografías compactas con `horizontal-mobile:` para 667×375 y un poco más de aire con `horizontal-desktop:` para 1280×550.
+- `Language.tsx`: al elegir idioma → `setLang(id)` antes de navegar.
+- Resto de pantallas: leen `lang` desde `useLang()` (no router state).
 
-### 2. Editar `src/pages/Home.tsx` (cambio mínimo, 2 líneas)
+## 2. Códigos postales
 
-- Importar `HomeContentLandscape`.
-- Sustituir `<HomeContent {...sharedProps} />` **solo dentro del div `hidden landscape:flex`** por `<HomeContentLandscape {...sharedProps} />`.
-- El div `landscape:hidden` (portrait) sigue usando `<HomeContent />` exactamente igual.
+- Migración insert: `INSERT INTO postal_codes(postal_code, town, province) VALUES ('03669','Planes','Alacant') ON CONFLICT DO NOTHING;` (Malgrat ya está).
+- `PostalCode.tsx`: textos vía `t(...)`. Quitar dependencia del `state.lang`.
 
-### 3. Lo que NO se toca (lista cerrada)
+## 3. Flujo Onboarding → PostalCode → Home
 
-- `src/components/HomeContent.tsx`
-- `src/components/HomeHero.tsx`
-- `src/components/HomeModules.tsx`
-- `src/components/EventHeroCarousel.tsx`
-- `src/components/ComercioCarousel.tsx`
-- `src/components/CouponCard.tsx`
-- `src/components/PointsCard.tsx`
-- `src/components/GreetingBlock.tsx`
-- `src/components/BottomTabs.tsx`
-- `src/components/LoginButton.tsx`
-- `tailwind.config.ts` (breakpoints intocables)
-- Cualquier archivo en `src/data/`
+- Onboarding ya navega a `/postal-code` ✓.
+- `PostalCode` tras submit: navega a `/home` (sin state).
+- Persistimos `km0_postal_code` y `km0_town` en `localStorage` (no sessionStorage) para sobrevivir recargas y poder leerse desde Home como `cityName` antes de tener perfil.
 
-### 4. QA post-cambio
+## 4. Auth — flujo OTP existente
 
-Capturas en las 4 resoluciones Playwright:
-- 375×667 portrait → **debe coincidir pixel a pixel** con el estado actual.
-- 768×1024 portrait → **debe coincidir pixel a pixel** con el estado actual.
-- 667×375 landscape → nuevo layout 2 columnas, sin scroll-x, BottomTabs visible.
-- 1280×550 landscape → mismo layout escalado, respira mejor.
+El flujo ya existe (`Login.tsx` + `CheckEmail.tsx` + trigger `handle_new_user`). Cambios:
 
-Si las dos primeras divergen aunque sea 1px → bug, revertir y volver al plan.
+- Traducir Login y CheckEmail con `t(...)`.
+- En `Login`: pasar `postal_code` + `town` desde `localStorage` (ya lo hace con sessionStorage; cambiamos a localStorage).
+- Verificar que `signInWithOtp` con `shouldCreateUser: true` + `data: { postal_code, town }` puebla `profiles` vía trigger ✓ (ya implementado).
+- Tras `verifyOtp` correcto → `navigate("/home")`.
 
-## Resumen
+## 5. Home — UI condicional según sesión
 
-Un solo archivo nuevo (`HomeContentLandscape.tsx`) + 2 líneas cambiadas en `Home.tsx`. Cero ediciones en componentes compartidos. Portrait queda blindado por construcción, no por disciplina.
+Cambios en `src/pages/Home.tsx` (props compartidos) y `HomeContent.tsx` / `HomeContentLandscape.tsx`:
+
+| Elemento            | Invitado (sin sesión)  | Registrado            |
+|---------------------|------------------------|-----------------------|
+| LoginButton         | **Visible**            | Oculto                |
+| PointsCard          | **Oculto**             | **Visible**           |
+| GreetingBlock name  | `null` → "¡Hola!"      | `profile.first_name` si existe, si no `null` → "¡Hola!" |
+| BottomTabs profile  | Oculto                 | Visible               |
+
+- `GreetingBlock`: ya soporta `name?: null` → muestra "¡Hola!". Sin cambios estructurales, solo i18n del subtitle.
+- `HomeContent`: envolver `<PointsCard>` en `{showProfile && <PointsCard .../>}` (showProfile=registrado).
+- `cityName`: leer de `profile.town` si registrado, si no de `localStorage.km0_town`, fallback `"Malgrat de Mar"`.
+
+## 6. Hook `useProfile`
+
+**Nuevo:** `src/hooks/useProfile.ts` — carga `profiles` del user actual (first_name, last_name, town, postal_code). Devuelve `{ profile, loading }`. Se invalida en `onAuthStateChange`.
+
+`Home.tsx` lo usa para alimentar `userName` y `cityName`.
+
+## 7. Traducción de Home completa
+
+- Section headers, "Ver todos/todas", subtítulo greeting, etiquetas de `BottomTabs` y nombres de módulos en `HomeModules` → todos a través de `t(...)`. Para módulos: añadir `labelKey` a `INITIAL_MODULES` (`src/data/homeModules.ts`) y resolver `t(labelKey)` en el render.
+
+## 8. Profile
+
+- Traducir labels, placeholders y botones con `t(...)`.
+- Selector de idioma opcional dentro de Profile (deseable pero no bloqueante; lo incluyo como subapartado pequeño al final del form).
+
+## Archivos a crear
+
+- `src/contexts/LangContext.tsx`
+- `src/lib/i18n.ts`
+- `src/hooks/useProfile.ts`
+- Migración SQL: insertar CP `03669` Planes.
+
+## Archivos a modificar
+
+- `src/main.tsx` o `src/App.tsx` — envolver con `LangProvider`.
+- `src/pages/Language.tsx` — `setLang`, textos del título via t.
+- `src/pages/Onboarding.tsx` — usar `useLang`, textos via t (mínimo: botón).
+- `src/pages/PostalCode.tsx` — `useLang`, persistencia en localStorage.
+- `src/pages/Login.tsx` — i18n, leer CP+town de localStorage.
+- `src/pages/CheckEmail.tsx` — i18n.
+- `src/pages/Home.tsx` — usar `useAuth` + `useProfile` + `useLang` para construir props (userName, cityName, showLogin, showProfile, showPoints).
+- `src/components/HomeContent.tsx` y `HomeContentLandscape.tsx` — render condicional de `PointsCard` (nueva prop `showPoints`), strings via t.
+- `src/components/GreetingBlock.tsx` — props `helloLabel` + `subtitle` desde t.
+- `src/components/BottomTabs.tsx` — labels via t.
+- `src/components/HomeModules.tsx` + `src/data/homeModules.ts` — `labelKey` traducible.
+- `src/pages/Profile.tsx` — i18n.
+
+## Detalles técnicos
+
+- `useLang()` no causa re-render innecesario: `value = useMemo({lang,setLang})`.
+- `useProfile()` usa `react-query` (`queryClient` ya disponible) para cachear y refrescar tras login.
+- En invitado (`!user`), `useProfile` devuelve `{profile: null, loading: false}` sin tocar Supabase.
+- RLS de `profiles` ya restringe a `auth.uid() = user_id` ✓.
+
+## Fuera de alcance
+
+- Selector de idioma post-onboarding (lo dejamos como mini-control en Profile, opcional).
+- OAuth Google/Apple (siguen como "próximamente" en Login).
+- Sistema real de puntos (PointsCard sigue con datos fake hasta tener backend).

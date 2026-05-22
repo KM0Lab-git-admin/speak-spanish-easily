@@ -19,36 +19,39 @@ import Components from "./pages/Components";
 import PreviewAll from "./pages/PreviewAll";
 import TopLoadingBar from "./components/TopLoadingBar";
 import RequireAuth from "./components/RequireAuth";
+import { LangProvider } from "./contexts/LangContext";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <TopLoadingBar />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/onboarding" element={<Onboarding />} />
-          <Route path="/postal-code" element={<PostalCode />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/check-email" element={<CheckEmail />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/agenda" element={<Agenda />} />
-          <Route path="/evento" element={<Evento />} />
-          {/* Perfil accesible sin auth para testing — Profile gestiona el estado sin user. */}
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/design-system" element={<DesignSystem />} />
-          <Route path="/components" element={<Components />} />
-          <Route path="/preview-all" element={<PreviewAll />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <LangProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <TopLoadingBar />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/postal-code" element={<PostalCode />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/check-email" element={<CheckEmail />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/agenda" element={<Agenda />} />
+            <Route path="/evento" element={<Evento />} />
+            {/* Perfil accesible sin auth para testing — Profile gestiona el estado sin user. */}
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/design-system" element={<DesignSystem />} />
+            <Route path="/components" element={<Components />} />
+            <Route path="/preview-all" element={<PreviewAll />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </LangProvider>
   </QueryClientProvider>
 );
 

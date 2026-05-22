@@ -1,46 +1,16 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { MapPin, MapPinOff, AlertTriangle, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BrandedFrame from "@/components/BrandedFrame";
 import cityMap from "@/assets/km0_city_map.png";
 import { lookupTown } from "@/lib/postalCodes";
-
-type Lang = "ca" | "es" | "en";
-
-const i18n = {
-  ca: {
-    title: "INTRODUEIX EL TEU CODI POSTAL",
-    subtitle: "Descobreix comerços i serveis al teu barri",
-    placeholder: "08001",
-    error: "Només es permeten números",
-    notFound: "No es reconeix aquest codi postal",
-    cta: "CONTINUAR",
-  },
-  es: {
-    title: "INTRODUCE TU CÓDIGO POSTAL",
-    subtitle: "Descubre comercios y servicios en tu barrio",
-    placeholder: "08001",
-    error: "Solo se permiten números",
-    notFound: "No se reconoce este código postal",
-    cta: "CONTINUAR",
-  },
-  en: {
-    title: "ENTER YOUR POSTAL CODE",
-    subtitle: "Discover shops and services in your neighborhood",
-    placeholder: "08001",
-    error: "Only numbers are allowed",
-    notFound: "This postal code is not recognized",
-    cta: "CONTINUE",
-  },
-};
-
+import { useLang } from "@/contexts/LangContext";
+import { t } from "@/lib/i18n";
 
 const PostalCode = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const lang: Lang = (location.state?.lang as Lang) ?? "es";
-  const t = i18n[lang];
+  const { lang } = useLang();
 
   const [value, setValue] = useState("");
   const [touched, setTouched] = useState(false);
@@ -82,21 +52,18 @@ const PostalCode = () => {
 
   const handleSubmit = () => {
     if (!isComplete || !cityName) return;
-    // Persistimos el CP+población para que el flujo de login los pueda
-    // adjuntar al user_metadata y queden en el perfil al crear la cuenta.
+    // localStorage para que sobreviva recargas y se pueda leer desde Home/Login.
     try {
-      sessionStorage.setItem("km0_postal_code", value);
-      sessionStorage.setItem("km0_town", cityName);
-    } catch {/* sessionStorage puede fallar en modo privado */}
-    navigate("/home", { state: { lang, cityName, postalCode: value } });
+      localStorage.setItem("km0_postal_code", value);
+      localStorage.setItem("km0_town", cityName);
+    } catch {/* localStorage puede fallar en modo privado */}
+    navigate("/home");
   };
 
   return (
-    <BrandedFrame onBack={() => navigate(-1)} backAriaLabel="Back">
+    <BrandedFrame onBack={() => navigate(-1)} backAriaLabel={t("common.back", lang)}>
       {/* ── PORTRAIT ─────────────────────────────────────── */}
       <div className="w-full max-w-[390px] sm:max-w-[460px] mx-auto flex flex-col gap-6 vertical-mobile:gap-7 landscape:hidden flex-1 min-h-0 py-2">
-
-        {/* City illustration */}
         <motion.div
           className="rounded-3xl overflow-hidden shadow-lg"
           initial={{ opacity: 0, scale: 0.95 }}
@@ -106,7 +73,6 @@ const PostalCode = () => {
           <img src={cityMap} alt="Isometric city map" className="w-full h-auto object-cover" />
         </motion.div>
 
-        {/* Title / City name */}
         <motion.div
           className="text-center px-2 min-h-[52px] flex items-center justify-center"
           initial={{ opacity: 0, y: 16 }}
@@ -121,13 +87,12 @@ const PostalCode = () => {
             </motion.div>
           ) : (
             <motion.div key="default" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.25 }}>
-              <h1 className="font-brand font-bold text-2xl text-primary leading-tight mb-2 vertical-mobile:mb-3">{t.title}</h1>
-              <p className="font-body text-sm text-muted-foreground leading-relaxed">{t.subtitle}</p>
+              <h1 className="font-brand font-bold text-2xl text-primary leading-tight mb-2 vertical-mobile:mb-3">{t("postal.title", lang)}</h1>
+              <p className="font-body text-sm text-muted-foreground leading-relaxed">{t("postal.subtitle", lang)}</p>
             </motion.div>
           )}
         </motion.div>
 
-        {/* Input */}
         <motion.div
           className="flex flex-col gap-2 px-2"
           initial={{ opacity: 0, y: 16 }}
@@ -144,39 +109,37 @@ const PostalCode = () => {
               : <MapPin className="text-km0-teal-500 shrink-0" size={22} />}
             <input
               type="text" inputMode="numeric" pattern="[0-9]*" maxLength={5}
-              placeholder={t.placeholder} value={value} onChange={handleChange}
+              placeholder={t("postal.placeholder", lang)} value={value} onChange={handleChange}
               className="flex-1 bg-transparent font-ui text-lg text-foreground placeholder:text-muted-foreground/50 outline-none"
             />
           </div>
           {showError && (
             <div className="flex items-center gap-1.5 text-destructive font-ui text-sm px-1">
-              <AlertTriangle size={14} /><span>{t.error}</span>
+              <AlertTriangle size={14} /><span>{t("postal.error_numeric", lang)}</span>
             </div>
           )}
           <AnimatePresence>
             {showNotFound && (
               <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} className="flex items-center gap-1.5 text-destructive font-ui text-sm px-1">
-                <AlertTriangle size={14} /><span>{t.notFound}</span>
+                <AlertTriangle size={14} /><span>{t("postal.error_notfound", lang)}</span>
               </motion.div>
             )}
           </AnimatePresence>
         </motion.div>
 
-        {/* CTA */}
         <motion.div className="px-2" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.35 }}>
           <button
             onClick={handleSubmit}
             disabled={!cityName || isValidating}
             className="w-full bg-primary text-primary-foreground font-ui font-semibold text-sm px-5 py-2.5 rounded-2xl hover:bg-km0-blue-600 hover:scale-[1.03] transition-all duration-200 active:scale-95 disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2"
           >
-            {isValidating ? <Loader2 size={18} className="animate-spin" /> : t.cta}
+            {isValidating ? <Loader2 size={18} className="animate-spin" /> : t("common.continue", lang)}
           </button>
         </motion.div>
       </div>
 
       {/* ── LANDSCAPE ────────────────────────────────────── */}
       <div className="hidden landscape:flex flex-1 min-h-0 w-full items-stretch gap-4 horizontal-desktop:gap-8">
-        {/* Left: city image */}
         <motion.div
           className="basis-[42%] shrink-0 min-w-0 rounded-2xl overflow-hidden shadow-lg flex items-center justify-center bg-km0-beige-100"
           initial={{ opacity: 0, x: -20 }}
@@ -186,7 +149,6 @@ const PostalCode = () => {
           <img src={cityMap} alt="Isometric city map" className="w-full h-full object-cover" />
         </motion.div>
 
-        {/* Right: title + input + CTA */}
         <motion.div
           className="flex-1 min-w-0 flex flex-col justify-center gap-3 horizontal-desktop:gap-5"
           initial={{ opacity: 0, x: 20 }}
@@ -203,10 +165,10 @@ const PostalCode = () => {
             ) : (
               <motion.div key="default-ls" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.25 }}>
                 <h1 className="font-brand font-bold text-base horizontal-desktop:text-2xl text-primary leading-tight mb-0.5 horizontal-desktop:mb-1">
-                  {t.title}
+                  {t("postal.title", lang)}
                 </h1>
                 <p className="font-body text-xs horizontal-desktop:text-sm text-muted-foreground leading-snug">
-                  {t.subtitle}
+                  {t("postal.subtitle", lang)}
                 </p>
               </motion.div>
             )}
@@ -223,19 +185,19 @@ const PostalCode = () => {
                 : <MapPin className="text-km0-teal-500 shrink-0" size={20} />}
               <input
                 type="text" inputMode="numeric" pattern="[0-9]*" maxLength={5}
-                placeholder={t.placeholder} value={value} onChange={handleChange}
+                placeholder={t("postal.placeholder", lang)} value={value} onChange={handleChange}
                 className="flex-1 min-w-0 bg-transparent font-ui text-base horizontal-desktop:text-lg text-foreground placeholder:text-muted-foreground/50 outline-none"
               />
             </div>
             {showError && (
               <div className="flex items-center gap-1.5 text-destructive font-ui text-xs px-1">
-                <AlertTriangle size={12} /><span>{t.error}</span>
+                <AlertTriangle size={12} /><span>{t("postal.error_numeric", lang)}</span>
               </div>
             )}
             <AnimatePresence>
               {showNotFound && (
                 <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} className="flex items-center gap-1.5 text-destructive font-ui text-xs px-1">
-                  <AlertTriangle size={12} /><span>{t.notFound}</span>
+                  <AlertTriangle size={12} /><span>{t("postal.error_notfound", lang)}</span>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -246,7 +208,7 @@ const PostalCode = () => {
             disabled={!cityName || isValidating}
             className="w-full bg-primary text-primary-foreground font-ui font-semibold text-sm horizontal-desktop:text-base px-5 py-2.5 horizontal-desktop:py-3 rounded-2xl hover:bg-km0-blue-600 hover:scale-[1.02] transition-all duration-200 active:scale-95 disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2"
           >
-            {isValidating ? <Loader2 size={18} className="animate-spin" /> : t.cta}
+            {isValidating ? <Loader2 size={18} className="animate-spin" /> : t("common.continue", lang)}
           </button>
         </motion.div>
       </div>

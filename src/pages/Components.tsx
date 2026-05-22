@@ -208,7 +208,7 @@ const previews: Record<string, ReactNode> = {
   "home-modules": (
     <PhoneFrame height={150}>
       <div className="p-3">
-        <HomeModules modules={INITIAL_MODULES} />
+        <HomeModules modules={INITIAL_MODULES.map((m) => ({ id: m.id, active: m.active, label: m.labelKey.replace("module.", "") }))} />
       </div>
     </PhoneFrame>
   ),
