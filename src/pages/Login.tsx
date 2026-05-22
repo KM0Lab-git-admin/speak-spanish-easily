@@ -4,35 +4,32 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import BrandedFrame from "@/components/BrandedFrame";
+import { useLang } from "@/contexts/LangContext";
+import { t } from "@/lib/i18n";
 
 /**
  * Pantalla única de entrada (login + registro unificados).
  *
- * Flujo passwordless: el usuario introduce su email y recibe un enlace
- * mágico. `shouldCreateUser: true` hace que la cuenta se cree si no
- * existe y se reutilice si ya existe → mismo flujo para ambos casos
- * (mínima fricción de entrada). Los datos extra (nombre, apellidos,
- * etc.) se piden más adelante en la pantalla de editar perfil.
+ * Flujo passwordless OTP de 4 dígitos. Recupera CP/población de
+ * localStorage (escritos en /postal-code) y los adjunta al
+ * user_metadata para que el trigger handle_new_user pueble profiles.
  */
 const Login = () => {
   const navigate = useNavigate();
+  const { lang } = useLang();
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!email.trim()) {
-      toast.error("Introduce tu email.");
+      toast.error(t("login.error_email", lang));
       return;
     }
 
     setSubmitting(true);
-    // Recuperamos CP+población del onboarding (si existen) para que se
-    // guarden en el perfil al crear la cuenta vía handle_new_user trigger.
-    const postalCode = sessionStorage.getItem("km0_postal_code") ?? undefined;
-    const town = sessionStorage.getItem("km0_town") ?? undefined;
-    // OTP de 6 dígitos por email — sin magic link. El usuario teclea
-    // el código en /check-email sin salir de la app (clave para nativo).
+    const postalCode = localStorage.getItem("km0_postal_code") ?? undefined;
+    const town = localStorage.getItem("km0_town") ?? undefined;
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim(),
       options: {
@@ -47,26 +44,25 @@ const Login = () => {
       return;
     }
 
-    toast.success("Te hemos enviado un código por email");
+    toast.success(t("login.toast_sent", lang));
     navigate("/check-email", { state: { email: email.trim(), mode: "login" } });
   };
 
   return (
-    <BrandedFrame onBack={() => navigate(-1)} backAriaLabel="Volver">
+    <BrandedFrame onBack={() => navigate(-1)} backAriaLabel={t("common.back", lang)}>
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
         className="flex-1 flex flex-col gap-4 horizontal-mobile:grid horizontal-mobile:grid-cols-2 horizontal-mobile:gap-x-5 horizontal-mobile:gap-y-2 horizontal-mobile:content-center"
       >
-        {/* Columna izq (landscape) / arriba (portrait): título + form */}
         <div className="flex flex-col gap-3 horizontal-mobile:gap-2 min-w-0">
           <div className="text-center space-y-1 mt-2 horizontal-mobile:mt-0 horizontal-mobile:text-left">
             <h1 className="font-brand text-2xl horizontal-mobile:text-lg text-km0-blue-700">
-              Entra o regístrate
+              {t("login.title", lang)}
             </h1>
             <p className="font-body text-sm horizontal-mobile:text-xs text-muted-foreground">
-              Te enviaremos un enlace a tu email
+              {t("login.subtitle", lang)}
             </p>
           </div>
 
@@ -75,7 +71,7 @@ const Login = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
+              placeholder={t("login.email_placeholder", lang)}
               autoComplete="email"
               inputMode="email"
               className="h-12 horizontal-mobile:h-10 px-4 rounded-xl border-2 border-km0-blue-700/20 bg-background font-body text-base horizontal-mobile:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-km0-blue-700 transition-colors"
@@ -86,16 +82,15 @@ const Login = () => {
               disabled={submitting}
               className="h-12 horizontal-mobile:h-10 mt-1 horizontal-mobile:mt-0 rounded-xl bg-km0-yellow-500 hover:bg-km0-yellow-600 active:scale-[0.98] transition-all font-ui text-base horizontal-mobile:text-sm text-km0-blue-700 disabled:opacity-50"
             >
-              {submitting ? "Enviando enlace..." : "Continuar"}
+              {submitting ? t("login.submitting", lang) : t("login.submit", lang)}
             </button>
           </form>
         </div>
 
-        {/* Columna der (landscape) / abajo (portrait): social próximamente */}
         <div className="flex flex-col gap-3 horizontal-mobile:gap-2 min-w-0 horizontal-mobile:justify-center">
           <div className="flex items-center gap-3 my-1 horizontal-mobile:my-0">
             <div className="flex-1 h-px bg-km0-blue-700/15" />
-            <span className="font-body text-xs text-muted-foreground">próximamente</span>
+            <span className="font-body text-xs text-muted-foreground">{t("login.divider", lang)}</span>
             <div className="flex-1 h-px bg-km0-blue-700/15" />
           </div>
 
@@ -103,7 +98,7 @@ const Login = () => {
             <button
               type="button"
               disabled
-              title="Próximamente"
+              title={t("login.divider", lang)}
               className="flex items-center justify-center gap-2 h-12 horizontal-mobile:h-10 rounded-xl border-2 border-km0-blue-700/10 bg-muted/40 grayscale opacity-50 cursor-not-allowed font-ui text-sm horizontal-mobile:text-xs text-muted-foreground"
             >
               <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true" className="horizontal-mobile:w-4 horizontal-mobile:h-4">
@@ -114,7 +109,7 @@ const Login = () => {
             <button
               type="button"
               disabled
-              title="Próximamente"
+              title={t("login.divider", lang)}
               className="flex items-center justify-center gap-2 h-12 horizontal-mobile:h-10 rounded-xl border-2 border-km0-blue-700/10 bg-muted/40 grayscale opacity-50 cursor-not-allowed font-ui text-sm horizontal-mobile:text-xs text-muted-foreground"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="horizontal-mobile:w-4 horizontal-mobile:h-4">

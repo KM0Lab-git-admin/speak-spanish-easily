@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import BrandedFrame from "@/components/BrandedFrame";
+import { useLang } from "@/contexts/LangContext";
+import { t } from "@/lib/i18n";
 
 const RESEND_COOLDOWN_SECONDS = 30;
 const CODE_LENGTH = 4;
@@ -16,13 +18,6 @@ interface LocationState {
 
 /**
  * CheckEmail — Entrada de código OTP de 4 dígitos enviado por email.
- *
- * Sustituye al flujo de magic link: el usuario NO sale de la app, teclea
- * (o pega) el código recibido por email. Funciona idéntico en web y en
- * la futura app nativa (Expo / React Native) sin necesidad de configurar
- * deep linking ni universal links.
- *
- * Verificación: supabase.auth.verifyOtp({ email, token, type: 'email' }).
  */
 const CheckEmail = () => {
   const navigate = useNavigate();
@@ -30,6 +25,7 @@ const CheckEmail = () => {
   const [searchParams] = useSearchParams();
   const state = (location.state ?? {}) as LocationState;
   const email = state.email ?? searchParams.get("email") ?? undefined;
+  const { lang } = useLang();
 
   const [digits, setDigits] = useState<string[]>(Array(CODE_LENGTH).fill(""));
   const [cooldown, setCooldown] = useState(RESEND_COOLDOWN_SECONDS);
@@ -43,7 +39,6 @@ const CheckEmail = () => {
     return () => clearTimeout(t);
   }, [cooldown]);
 
-  // Auto-focus al primer dígito.
   useEffect(() => {
     inputsRef.current[0]?.focus();
   }, []);
@@ -61,19 +56,17 @@ const CheckEmail = () => {
       type: "email",
     });
     if (error) {
-      toast.error("Código incorrecto. Inténtalo de nuevo.");
+      toast.error(t("otp.toast_wrong", lang));
       setDigits(Array(CODE_LENGTH).fill(""));
       inputsRef.current[0]?.focus();
       setVerifying(false);
       return;
     }
-    // verifyOtp ya deja la sesión activa → useAuth detectará al user.
-    toast.success("¡Bienvenido!");
+    toast.success(t("otp.welcome", lang));
     navigate("/home", { replace: true });
   };
 
   const handleChange = (idx: number, value: string) => {
-    // Solo dígitos, un carácter.
     const clean = value.replace(/\D/g, "").slice(-1);
     const next = [...digits];
     next[idx] = clean;
@@ -81,7 +74,6 @@ const CheckEmail = () => {
     if (clean && idx < CODE_LENGTH - 1) {
       inputsRef.current[idx + 1]?.focus();
     }
-    // Auto-submit cuando se completan los 6.
     if (next.every((d) => d !== "")) {
       verify(next.join(""));
     }
@@ -114,15 +106,15 @@ const CheckEmail = () => {
     });
     setResending(false);
     if (error) {
-      toast.error("No se pudo reenviar. Inténtalo más tarde.");
+      toast.error(t("otp.toast_resend_fail", lang));
       return;
     }
-    toast.success("Código reenviado");
+    toast.success(t("otp.toast_resent", lang));
     setCooldown(RESEND_COOLDOWN_SECONDS);
   };
 
   return (
-    <BrandedFrame onBack={() => navigate(-1)} backAriaLabel="Volver">
+    <BrandedFrame onBack={() => navigate(-1)} backAriaLabel={t("common.back", lang)}>
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -135,17 +127,16 @@ const CheckEmail = () => {
 
         <div className="text-center space-y-1 px-2">
           <h1 className="font-brand text-2xl horizontal-mobile:text-lg text-km0-blue-700">
-            Revisa tu correo
+            {t("otp.title", lang)}
           </h1>
           <p className="font-body text-sm horizontal-mobile:text-xs text-muted-foreground">
-            Hemos enviado un código de 4 dígitos a
+            {t("otp.subtitle", lang)}
           </p>
           <p className="font-ui text-base horizontal-mobile:text-sm text-foreground break-all">
             {email}
           </p>
         </div>
 
-        {/* Inputs OTP */}
         <div className="flex gap-2 horizontal-mobile:gap-1.5 mt-1" onPaste={handlePaste}>
           {digits.map((d, i) => (
             <input
@@ -171,14 +162,14 @@ const CheckEmail = () => {
           className="font-body text-sm horizontal-mobile:text-xs text-km0-blue-700 underline underline-offset-2 disabled:text-muted-foreground disabled:no-underline mt-1"
         >
           {resending
-            ? "Reenviando..."
+            ? t("otp.resending", lang)
             : cooldown > 0
-            ? `Reenviar código en ${cooldown}s`
-            : "Reenviar código"}
+            ? `${t("otp.resend_in", lang)} ${cooldown}s`
+            : t("otp.resend", lang)}
         </button>
 
         <p className="font-body text-xs text-muted-foreground text-center px-4 mt-auto pb-1">
-          ¿No lo encuentras? Mira en spam o promociones.
+          {t("otp.footer_hint", lang)}
         </p>
       </motion.div>
     </BrandedFrame>
