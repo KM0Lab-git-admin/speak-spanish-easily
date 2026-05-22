@@ -102,9 +102,9 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
             {/* CTA chevron circle */}
             <button
               type="button"
-              onClick={() => onOpen?.(promo.id)}
-              aria-label={`Ver detalle de ${promo.title.replace(/\n/g, " ")}`}
-              className="absolute bottom-3 right-3 horizontal-mobile:!bottom-2 horizontal-mobile:!right-2 w-10 h-10 horizontal-mobile:!w-8 horizontal-mobile:!h-8 rounded-full bg-white shadow-[0_4px_14px_-2px_hsl(var(--km0-blue-900)/0.5)] flex items-center justify-center active:scale-95 hover:scale-105 transition-transform"
+              onClick={() => goTo(index + 1)}
+              aria-label="Siguiente evento"
+              className="absolute bottom-3 right-3 horizontal-mobile:!bottom-2 horizontal-mobile:!right-2 w-10 h-10 horizontal-mobile:!w-8 horizontal-mobile:!h-8 rounded-full bg-white shadow-[0_4px_14px_-2px_hsl(var(--km0-blue-900)/0.5)] flex items-center justify-center active:scale-95 hover:scale-105 transition-transform z-10"
             >
               <ChevronRight size={20} strokeWidth={2.5} className="text-km0-blue-700 horizontal-mobile:!w-4 horizontal-mobile:!h-4" />
             </button>
