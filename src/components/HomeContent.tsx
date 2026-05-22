@@ -9,28 +9,18 @@ import ComercioCarousel from "./ComercioCarousel";
 import BottomTabs, { type HomeTab } from "./BottomTabs";
 import LoginButton from "./LoginButton";
 import { ArrowRight } from "lucide-react";
+import skylineMalgrat from "@/assets/skyline-malgrat.png";
 
 import type { Promo } from "@/types/promo";
 import type { Comercio } from "@/types/comercio";
 import type { Coupon } from "@/types/coupon";
 
 /**
- * HomeContent — nueva distribución de la home (basada en el informe
- * de mejoras de la home actual). Cambios principales:
- *
- *  1. Header limpio (HomeHero sin login inline, sin saludo dentro).
- *  2. Bloque saludo personalizado (GreetingBlock).
- *  3. Tarjeta de puntos prominente (PointsCard).
- *  4. Sección "Accesos rápidos" con HomeModules.
- *  5. Sección "Eventos destacados" con EventHeroCarousel + "Ver todos".
- *  6. Sección "Descubre lo nuestro" con ComercioCarousel + "Ver todos".
- *  7. Sección "Promos para ti" con CouponCard.
- *  8. BottomTabs intacto.
- *
- * Se permite scroll-y interno (la cantidad de contenido excede el
- * encuadre fijo del frame). Nunca scroll-x.
- *
- * El componente no conoce auth ni router: todo entra por props.
+ * HomeContent — renderiza DOS layouts hermanos:
+ *  - Portrait (vertical-mobile / vertical-tablet): apilado vertical clásico.
+ *  - Landscape (horizontal-mobile / horizontal-desktop): dos columnas con
+ *    identidad (saludo + puntos + login) fija a la izquierda y secciones
+ *    scrollables a la derecha. BottomTabs full-width abajo.
  */
 export interface HomeContentProps {
   cityName: string;
@@ -77,73 +67,119 @@ const HomeContent = ({
   onSeeAllCoupons,
   onOpenEvent,
 }: HomeContentProps) => {
+  /* ─── Secciones reutilizadas en ambos layouts ─────────────── */
+  const sectionsBlock = (
+    <>
+      <section className="flex flex-col gap-2">
+        <SectionHeader title="Accesos rápidos" />
+        <HomeModules modules={modules} />
+      </section>
+
+      <section className="flex flex-col gap-2">
+        <SectionHeader title="Eventos destacados" actionLabel="Ver todos" onAction={onSeeAllEvents} />
+        <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
+      </section>
+
+      <section className="flex flex-col gap-2">
+        <SectionHeader title="Descubre lo nuestro" actionLabel="Ver todos" onAction={onSeeAllComercios} />
+        <ComercioCarousel comercios={comercios} />
+      </section>
+
+      <section className="flex flex-col gap-2">
+        <SectionHeader title="Promos para ti" actionLabel="Ver todas" onAction={onSeeAllCoupons} />
+        <div className="flex flex-col gap-2">
+          {coupons.map((c, i) => (
+            <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
+          ))}
+        </div>
+      </section>
+    </>
+  );
+
   return (
     <>
-      {/* Header fijo en la parte superior — no se desplaza con el scroll del body.
-          El saludo personalizado vive DENTRO del hero (greetingSlot) para que
-          forme parte visualmente del bloque de marca. */}
-      <HomeHero
-        cityName={cityName}
-        hasAlerts={hasAlerts}
-        onToggleAlerts={onToggleAlerts}
-        showLogin={false}
-        onLogin={onLogin}
-        showGreeting={false}
-        greetingSlot={
-          <div className="my-0 flex flex-col gap-3 horizontal-mobile:!gap-2 px-2 py-0">
-            <GreetingBlock name={userName} />
-            <PointsCard points={points} nextLevel={nextLevel} />
-          </div>
-        }
-        inline
-      />
-
-      {/* Body con scroll-y interno: contenido scrollable, tabs fijo abajo */}
-      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col">
-
-
-        {/* Contenido principal apilado verticalmente (saludo ya está dentro del hero) */}
-        <div className="relative z-10 flex flex-col gap-4 vertical-tablet:gap-5 horizontal-mobile:!gap-2.5 horizontal-desktop:!gap-4 px-2 pt-3 pb-5 horizontal-mobile:!pt-2 horizontal-mobile:!pb-3">
-          {/* CTA login solo si no hay sesión (portrait) */}
-          {showLogin && (
-            <motion.div
-              className="flex justify-center"
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: 0.05 }}
-            >
-              <LoginButton onClick={onLogin} size="sm" />
-            </motion.div>
-          )}
-
-
-          {/* 3 · Accesos rápidos */}
-          <section className="flex flex-col gap-2">
-            <SectionHeader title="Accesos rápidos" />
-            <HomeModules modules={modules} />
-          </section>
-
-          {/* 4 · Eventos destacados */}
-          <section className="flex flex-col gap-2">
-            <SectionHeader title="Eventos destacados" actionLabel="Ver todos" onAction={onSeeAllEvents} />
-            <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
-          </section>
-
-          {/* 5 · Descubre lo nuestro (comercios) */}
-          <section className="flex flex-col gap-2">
-            <SectionHeader title="Descubre lo nuestro" actionLabel="Ver todos" onAction={onSeeAllComercios} />
-            <ComercioCarousel comercios={comercios} />
-          </section>
-
-          {/* 6 · Promos para ti (cupones) */}
-          <section className="flex flex-col gap-2">
-            <SectionHeader title="Promos para ti" actionLabel="Ver todas" onAction={onSeeAllCoupons} />
-            <div className="flex flex-col gap-2">
-              {coupons.map((c, i) => (
-                <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
-              ))}
+      {/* ═══════════════════ PORTRAIT ═══════════════════ */}
+      <div className="landscape:hidden flex flex-col flex-1 min-h-0">
+        <HomeHero
+          cityName={cityName}
+          hasAlerts={hasAlerts}
+          onToggleAlerts={onToggleAlerts}
+          showLogin={false}
+          onLogin={onLogin}
+          showGreeting={false}
+          greetingSlot={
+            <div className="my-0 flex flex-col gap-3 px-2 py-0">
+              <GreetingBlock name={userName} />
+              <PointsCard points={points} nextLevel={nextLevel} />
             </div>
-          </section>
+          }
+          inline
+        />
+
+        <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col">
+          <div className="relative z-10 flex flex-col gap-4 vertical-tablet:gap-5 px-2 pt-3 pb-5">
+            {showLogin && (
+              <motion.div
+                className="flex justify-center"
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: 0.05 }}
+              >
+                <LoginButton onClick={onLogin} size="sm" />
+              </motion.div>
+            )}
+            {sectionsBlock}
+          </div>
+        </div>
+      </div>
+
+      {/* ═══════════════════ LANDSCAPE ═══════════════════ */}
+      <div className="hidden landscape:flex flex-col flex-1 min-h-0">
+        {/* Header KM0 compacto (sin greeting; el saludo va en la col izda) */}
+        <HomeHero
+          cityName={cityName}
+          hasAlerts={hasAlerts}
+          onToggleAlerts={onToggleAlerts}
+          showLogin={false}
+          onLogin={onLogin}
+          showGreeting={false}
+          inline
+        />
+
+        {/* Cuerpo 2 columnas */}
+        <div className="flex-1 min-h-0 flex">
+          {/* COL IZQUIERDA — identidad: saludo + puntos + login (fija) */}
+          <aside className="relative w-[38%] shrink-0 overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 border-r border-km0-blue-700/10 flex flex-col">
+            <img
+              src={skylineMalgrat}
+              alt=""
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 bottom-0 w-full h-2/3 object-cover object-top opacity-20 select-none"
+            />
+            <div className="relative z-10 flex-1 min-h-0 flex flex-col justify-between gap-3 px-3 py-3 horizontal-desktop:px-5 horizontal-desktop:py-4">
+              <div className="flex flex-col gap-3">
+                <GreetingBlock name={userName} />
+                <PointsCard points={points} nextLevel={nextLevel} variant="compact" />
+              </div>
+              {showLogin && (
+                <motion.div
+                  className="flex justify-center"
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35, delay: 0.05 }}
+                >
+                  <LoginButton onClick={onLogin} size="sm" />
+                </motion.div>
+              )}
+            </div>
+          </aside>
+
+          {/* COL DERECHA — secciones con scroll-y interno */}
+          <div className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden">
+            <div className="flex flex-col gap-3 horizontal-desktop:gap-4 px-3 py-2 horizontal-desktop:px-5 horizontal-desktop:py-3">
+              {sectionsBlock}
+            </div>
+          </div>
         </div>
       </div>
 
