@@ -1,9 +1,9 @@
 import type { HomeModule } from "@/components/HomeModules";
 
-/** Módulos iniciales del Home (todos activos por defecto). */
+/** Módulos iniciales del Home (solo Agenda activa por defecto). */
 export const INITIAL_MODULES: HomeModule[] = [
-  { id: "chat", label: "KM0 CHAT", active: true },
   { id: "agenda", label: "Agenda", active: true },
-  { id: "ajuntament", label: "Ayuntamiento", active: true },
-  { id: "comerc", label: "Comercios", active: true },
+  { id: "chat", label: "KM0 CHAT", active: false },
+  { id: "ajuntament", label: "Ayuntamiento", active: false },
+  { id: "comerc", label: "Comercios", active: false },
 ];
