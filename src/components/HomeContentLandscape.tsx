@@ -67,7 +67,7 @@ const HomeContentLandscape = ({
         onLogin={onLogin}
         showGreeting={false}
         greetingSlot={
-          <div className="flex flex-col gap-1.5 px-3 pb-1">
+          <div className="gap-1.5 px-3 pb-1 flex flex-row">
             <GreetingBlock name={userName} />
             <PointsCard points={points} nextLevel={nextLevel} />
           </div>
