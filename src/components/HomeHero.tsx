@@ -67,7 +67,7 @@ const HomeHero = ({
         src={skylineMalgrat}
         alt=""
         aria-hidden
-        className="pointer-events-none absolute inset-0 w-full h-full object-cover object-top z-0 select-none opacity-25"
+        className="pointer-events-none absolute inset-0 w-full h-full object-cover object-top z-0 select-none opacity-25 landscape:object-contain landscape:object-bottom"
       />
 
       {/* Fila header: escudo + nombre + KM0 + login + bell */}
