@@ -16,13 +16,14 @@ Esta vez la regla no es “tener cuidado”; la regla es verificable: en un camb
 
 Cuando el cambio sea solo-landscape:
 
-1. Solo se pueden añadir o editar clases con prefijo `horizontal-mobile:`, `horizontal-desktop:` o `landscape:`.
-2. Prohibido modificar clases base de Tailwind ya existentes.
-3. Prohibido modificar clases `vertical-mobile:` o `vertical-tablet:`.
-4. Prohibido cambiar el orden DOM que usa Portrait.
-5. Prohibido editar componentes hijos: `HomeHero`, `HomeModules`, `EventHeroCarousel`, `ComercioCarousel`, `CouponCard`, `PointsCard`, `GreetingBlock`, `BottomTabs`, `LoginButton`.
-6. Prohibido editar `Home.tsx`, `tailwind.config.ts` y `src/data/`.
-7. Si Portrait cambia aunque sea visualmente mínimo, el cambio se considera erróneo.
+1. Solo se pueden añadir o editar clases con prefijo `horizontal-mobile:` o `horizontal-desktop:`.
+2. Prohibido usar `landscape:` dentro de componentes reutilizados en `/preview-all`, porque depende del viewport real del navegador y contamina también el frame Portrait simulado.
+3. Prohibido modificar clases base de Tailwind ya existentes.
+4. Prohibido modificar clases `vertical-mobile:` o `vertical-tablet:`.
+5. Prohibido cambiar el orden DOM que usa Portrait.
+6. Prohibido editar componentes hijos: `HomeModules`, `EventHeroCarousel`, `ComercioCarousel`, `CouponCard`, `PointsCard`, `GreetingBlock`, `BottomTabs`, `LoginButton`.
+7. Prohibido editar `Home.tsx`, `tailwind.config.ts` y `src/data/`.
+8. Si Portrait cambia aunque sea visualmente mínimo, el cambio se considera erróneo.
 
 ## Alcance técnico
 
@@ -65,22 +66,20 @@ Las clases actuales sin prefijo y las clases `vertical-*` quedan congeladas.
 
 ### 2. Añadir una capa landscape al contenedor de secciones
 
-Sobre el contenedor que hoy apila las secciones se añadirán únicamente clases `landscape:` / `horizontal-*:` para convertirlo en grid de 2 columnas en landscape.
+Sobre el contenedor que hoy apila las secciones se añadirán únicamente clases `horizontal-mobile:` / `horizontal-desktop:` para convertirlo en grid de 2 columnas en landscape.
 
 Ejemplo de intención, sin tocar los valores base existentes:
 
 ```text
-landscape:grid
-landscape:grid-cols-2
-landscape:grid-flow-col
-landscape:grid-rows-2
-horizontal-mobile:...
-horizontal-desktop:...
+horizontal-mobile:grid
+horizontal-mobile:grid-cols-2
+horizontal-desktop:grid
+horizontal-desktop:grid-cols-2
 ```
 
 ### 3. Reordenar solo en landscape
 
-Cada sección recibirá orden únicamente con prefijo landscape:
+Cada sección recibirá orden únicamente con prefijo `horizontal-mobile:` / `horizontal-desktop:`:
 
 - Accesos rápidos: primera posición de la columna izquierda.
 - Eventos destacados: segunda posición de la columna izquierda.
