@@ -89,7 +89,12 @@ const HomeContent = ({
         showLogin={false}
         onLogin={onLogin}
         showGreeting={false}
-        greetingSlot={<div className="px-4 vertical-tablet:px-5 horizontal-mobile:!px-3 horizontal-desktop:!px-6 my-0 py-[15px]"><GreetingBlock name={userName} /></div>}
+        greetingSlot={
+          <div className="px-4 vertical-tablet:px-5 horizontal-mobile:!px-3 horizontal-desktop:!px-6 my-0 py-[15px] flex flex-col gap-3 horizontal-mobile:!gap-2">
+            <GreetingBlock name={userName} />
+            <PointsCard points={points} nextLevel={nextLevel} />
+          </div>
+        }
         inline
       />
 
@@ -111,8 +116,6 @@ const HomeContent = ({
             </motion.div>
           )}
 
-          {/* 2 · Tarjeta de puntos prominente */}
-          <PointsCard points={points} nextLevel={nextLevel} />
 
           {/* 3 · Accesos rápidos */}
           <section className="flex flex-col gap-2">
