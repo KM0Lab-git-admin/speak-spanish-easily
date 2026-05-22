@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useNotifications } from "@/hooks/useNotifications";
 import HomeContent from "@/components/HomeContent";
+import HomeContentLandscape from "@/components/HomeContentLandscape";
 import NotificationsOverlay from "@/components/NotificationsOverlay";
 import { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
 import { type HomeTab } from "@/components/BottomTabs";
@@ -99,7 +100,7 @@ const Home = () => {
 
       {/* LANDSCAPE — tamaño fijo 667×375 (igual que el iframe horizontal-mobile). */}
       <div className="hidden landscape:flex bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col relative w-[667px] h-[375px] max-w-full max-h-full">
-        <HomeContent {...sharedProps} />
+        <HomeContentLandscape {...sharedProps} />
         <NotificationsOverlay
           open={notifOpen}
           notifications={notifications}
