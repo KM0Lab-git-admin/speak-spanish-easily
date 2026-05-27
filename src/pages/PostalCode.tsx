@@ -174,7 +174,7 @@ const PostalCode = () => {
             )}
           </div>
 
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1.5 border-dotted border border-slate-300">
             <div className={`flex items-center gap-2 horizontal-desktop:gap-3 rounded-2xl border px-3 horizontal-desktop:px-4 py-2.5 horizontal-desktop:py-3.5 shadow-sm transition-colors ${
               showNotFound || showError
                 ? "bg-destructive/5 border-destructive/50 focus-within:border-destructive"
