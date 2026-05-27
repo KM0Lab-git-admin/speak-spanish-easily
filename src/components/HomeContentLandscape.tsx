@@ -122,15 +122,15 @@ interface SectionHeaderProps {
 }
 
 const SectionHeader = ({ title, actionLabel, onAction }: SectionHeaderProps) => (
-  <div className="flex items-center justify-between gap-2">
-    <h2 className="font-brand font-black text-km0-blue-800 text-sm horizontal-desktop:text-base">
+  <div className="flex items-center justify-between gap-2 min-w-0">
+    <h2 className="font-brand font-black text-km0-blue-800 text-[13px] horizontal-desktop:text-base truncate min-w-0">
       {title}
     </h2>
     {actionLabel && (
       <button
         type="button"
         onClick={onAction}
-        className="font-ui font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform underline underline-offset-4 text-[11px] horizontal-desktop:text-sm"
+        className="font-ui font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform underline underline-offset-4 text-[11px] horizontal-desktop:text-sm whitespace-nowrap shrink-0"
       >
         {actionLabel}
         <ArrowRight size={12} strokeWidth={2.4} className="horizontal-desktop:w-4 horizontal-desktop:h-4" />
@@ -138,5 +138,6 @@ const SectionHeader = ({ title, actionLabel, onAction }: SectionHeaderProps) => 
     )}
   </div>
 );
+
 
 export default HomeContentLandscape;
