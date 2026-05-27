@@ -24,9 +24,12 @@ const Home = () => {
   const { lang } = useLang();
   const navigate = useNavigate();
 
-  const showLogin = !authLoading && !user;
-  const showProfile = !authLoading && !!user;
-  const showPoints = showProfile; // PointsCard solo si hay sesión
+  // Regla de maquetación: mostrar SIEMPRE todos los componentes posibles
+  // de la pantalla (LoginButton, PointsCard, BottomTabs con perfil, etc.).
+  // La lógica de visibilidad por sesión se reactivará más adelante.
+  const showLogin = true;
+  const showProfile = true;
+  const showPoints = true;
 
   const [searchParams] = useSearchParams();
   const [notifOpen, setNotifOpen] = useState(searchParams.get("notifs") === "open");
