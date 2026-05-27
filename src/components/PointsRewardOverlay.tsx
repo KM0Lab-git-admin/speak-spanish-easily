@@ -1,46 +1,68 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import confetti from "canvas-confetti";
 import starIcon from "@/assets/icon-star-rewards.png";
 
 /**
  * PointsRewardOverlay — overlay de recompensa de puntos al estilo Glovo.
  *
- * Reutilizable desde cualquier pantalla. Disparadores típicos:
+ * Disparadores típicos:
  *   - Registro:  +500 pts · "¡Bienvenido!"
  *   - Pedido:    +50 pts  · "Pedido completado"
  *   - Reto:      +200 pts · "¡Reto completado!"
  *
- * Colores mapeados a tokens KM0 (NO usar hex sueltos). Para canvas-confetti
- * mantenemos los hex equivalentes a las CSS vars actuales (sincronizar si
- * cambian en index.css):
+ * Colores mapeados a tokens KM0. Para canvas-confetti se mantienen los hex
+ * equivalentes a las CSS vars (sincronizar si cambian en index.css):
  *   navy   #174094  → km0-blue-700
  *   yellow #F5C542  → km0-yellow-500
  *   coral  #FF664D  → km0-coral-400
+ *
+ * Modo `contained`: el overlay Y el confeti se anclan al contenedor `relative`
+ * padre en vez de ocupar toda la ventana. Útil para previews / sandboxes.
  */
 export interface PointsRewardOverlayProps {
   points: number;
   message?: string;
   onClose: () => void;
-  /** Si true, el overlay se ancla al contenedor `relative` padre (absolute inset-0)
-   *  en lugar de cubrir todo el viewport. Útil dentro de sandboxes / previews. */
   contained?: boolean;
 }
 
 const CONFETTI_COLORS = ["#174094", "#F5C542", "#FF664D", "#FFFFFF"];
 
-const PointsRewardOverlay = ({ points, message = "¡Bienvenido!", onClose, contained = false }: PointsRewardOverlayProps) => {
+const PointsRewardOverlay = ({
+  points,
+  message = "¡Bienvenido!",
+  onClose,
+  contained = false,
+}: PointsRewardOverlayProps) => {
   const [displayPoints, setDisplayPoints] = useState(0);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   // Confeti multi-burst + contador animado 0 → points (easeOutCubic, 1.2s).
   useEffect(() => {
-    const fire = (ratio: number, opts: confetti.Options) => {
-      confetti({
-        origin: { y: 0.55 },
-        particleCount: Math.floor(220 * ratio),
-        colors: CONFETTI_COLORS,
-        ...opts,
-      });
-    };
+    // En modo contained usamos un canvas propio dentro del overlay para que
+    // las partículas no escapen del contenedor del sandbox.
+    let fire: (ratio: number, opts: confetti.Options) => void;
+    let instance: confetti.CreateTypes | null = null;
+
+    if (contained && canvasRef.current) {
+      instance = confetti.create(canvasRef.current, { resize: true, useWorker: false });
+      fire = (ratio, opts) =>
+        instance!({
+          origin: { y: 0.55 },
+          particleCount: Math.floor(220 * ratio),
+          colors: CONFETTI_COLORS,
+          ...opts,
+        });
+    } else {
+      fire = (ratio, opts) =>
+        confetti({
+          origin: { y: 0.55 },
+          particleCount: Math.floor(220 * ratio),
+          colors: CONFETTI_COLORS,
+          ...opts,
+        });
+    }
+
     fire(0.25, { spread: 26, startVelocity: 55 });
     fire(0.2,  { spread: 60 });
     fire(0.35, { spread: 100, decay: 0.91, scalar: 0.9 });
@@ -57,8 +79,12 @@ const PointsRewardOverlay = ({ points, message = "¡Bienvenido!", onClose, conta
       if (t < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [points]);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      instance?.reset();
+    };
+  }, [points, contained]);
 
   // Cierre por tecla Escape.
   useEffect(() => {
@@ -77,13 +103,20 @@ const PointsRewardOverlay = ({ points, message = "¡Bienvenido!", onClose, conta
       aria-modal="true"
       aria-label={message}
       onClick={onClose}
-      className={`${positionClass} z-50 flex items-center justify-center animate-fade-in-overlay bg-km0-blue-700/55 backdrop-blur-sm`}
+      className={`${positionClass} z-50 flex items-center justify-center overflow-hidden animate-fade-in-overlay bg-km0-blue-700/55 backdrop-blur-sm`}
     >
+      {contained && (
+        <canvas
+          ref={canvasRef}
+          aria-hidden
+          className="pointer-events-none absolute inset-0 h-full w-full"
+        />
+      )}
+
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative flex flex-col items-center px-6 py-6 rounded-3xl bg-card shadow-2xl animate-pop-in max-w-[90%]"
+        className="relative z-10 flex flex-col items-center px-6 py-6 rounded-3xl bg-card shadow-2xl animate-pop-in max-w-[90%]"
       >
-
         <div className="relative mb-4 h-36 w-36">
           {/* Sparkles decorativos */}
           <span className="absolute top-2 left-2 h-3 w-3 rounded-full bg-km0-coral-400 animate-sparkle" style={{ animationDelay: "0s" }} />
