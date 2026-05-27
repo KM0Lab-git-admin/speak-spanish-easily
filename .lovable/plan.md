@@ -1,62 +1,43 @@
-La causa no es solo “faltan 12px”. Esos 12px existen visualmente entre círculos, pero el layout actual no puede usarlos bien por cómo está montado el componente:
+## Objetivo
 
-1. En `HomeModules` hay 4 botones fijos.
-   - Cada círculo mide `68px`.
-   - Pero cada botón no ocupa solo 68px: el label también participa en el ancho del botón.
-   - El label más largo, `Ayuntamiento`, con `whitespace-nowrap`, hace que su botón mida bastante más que el círculo.
+Añadir un tercer estado al `HomeSandbox` (`reward-welcome`) que monta la Home registered y dispara automáticamente el overlay de recompensa de +500 pts ("¡Bienvenido!"). Sirve para visualizar el prompt de puntos ejecutado sobre la Home real.
 
-2. Por eso el cálculo real no es:
+## Cambios
 
-```text
-4 × 68px = 272px
-```
+### 1. Asset
+- Esperar el PNG de estrella que vas a adjuntar y copiarlo a `src/assets/icon-star-rewards.png`. Si tarda, fallback temporal: reutilizar `src/assets/icon-hand-star.png`.
 
-Sino algo más parecido a:
+### 2. Tailwind (`tailwind.config.ts`)
+Añadir en `theme.extend.keyframes` y `theme.extend.animation` los 4 keyframes del prompt: `pop-in`, `float-up`, `sparkle`, `wiggle` (y sus animations correspondientes). No tocar breakpoints.
 
-```text
-Agenda label + KM0 CHAT label + Ayuntamiento label + Comercios label + gaps
-```
+### 3. Dependencia
+- `canvas-confetti` + `@types/canvas-confetti`.
 
-El cuello de botella es el texto, no el círculo.
+### 4. Componente `src/components/PointsRewardOverlay.tsx`
+- Misma estructura que el prompt (overlay + tarjeta + estrella + sparkles + badge flotante + contador animado + confeti + botón "¡Genial!").
+- **Colores mapeados a tokens KM0** (no hex crudos):
+  - navy → `km0-blue-700`
+  - amarillo → `km0-yellow-500`
+  - coral → `km0-coral-400`
+  - confeti: leer los HSL de `tailwind.config.ts` y convertir a hex en una constante local (canvas-confetti necesita hex, no clases).
+- Tipografías: `font-brand` para el número de puntos, `font-ui` para el botón, `font-body` para el mensaje. Sin `font-bold/black` añadidos.
+- Props: `points`, `message?`, `onClose`.
+- Cierre por backdrop, botón y tecla Escape.
 
-3. Además, la Home portrait y la vista aislada no están usando exactamente el mismo envoltorio.
-   - En `HomeContent.tsx`, la sección de “Accesos rápidos” sigue con `px-6 py-6`.
-   - En landscape ya está con `px-[10px] py-[10px]`.
-   - Eso significa que portrait pierde 48px internos solo por padding de la sección, antes de que `HomeModules` pinte nada.
+### 5. `HomeSandbox.tsx`
+- Ampliar `HomeSandboxState` a `"guest" | "registered" | "reward-welcome"`.
+- `reward-welcome` se comporta como `registered` (login oculto, perfil + puntos visibles) y monta `<PointsRewardOverlay points={500} message="¡Bienvenido!" />` la primera vez que el sandbox se monta con ese estado. Botón "¡Genial!" lo desmonta.
+- No tocar `HomeContent` ni `HomeContentLandscape`.
 
-4. Dentro de `HomeModules` todavía hay otro `px-3`.
-   - Si el contenedor visible mide ~350px, la fila útil pasa a ~326px.
-   - Si la sección Home además usa `px-6`, el ancho útil baja todavía más.
+### 6. Catálogo (`src/design-system/componentsCatalog.ts`)
+- Añadir un preview extra de `HomeSandbox` con `state="reward-welcome"` para que aparezca en `/preview-all`.
+- Añadir entrada propia para `PointsRewardOverlay` (preview con +500/"¡Bienvenido!").
 
-5. `justify-around` reparte espacio alrededor de cada botón, pero no “recupera” espacio cuando un label ancho empuja el ancho real del botón. En un carril justo, esa distribución puede dejar los círculos con hueco aparente mientras los labels se pisan o se recortan.
+## Fuera de alcance
+- Conectarlo a flujos reales (registro, pedido, reto). Solo se monta el escenario de bienvenida.
+- Hook `useRewardPoints` opcional del prompt: lo dejo para una iteración futura.
 
-Conclusión: visualmente parece que hay hueco entre iconos, pero el navegador está maquetando por el ancho completo de cada botón, y ese ancho lo agrandan los labels. El problema viene de la combinación:
-
-```text
-sección portrait con px-6
-+ HomeModules con px-3
-+ labels nowrap
-+ botones cuyo ancho depende del label
-+ justify-around
-```
-
-Plan de corrección si quieres que lo implemente:
-
-1. Igualar el wrapper de “Accesos rápidos” en portrait al de landscape:
-   - Cambiar la sección de `HomeContent.tsx` a `space-y-3 px-[10px] py-[10px]`, igual que pediste para landscape.
-
-2. Hacer que cada módulo tenga un ancho fijo común, no dependiente del label:
-   - Por ejemplo `w-[78px]` o `w-[80px]` para cada botón.
-   - El círculo seguirá centrado dentro.
-   - Así `Ayuntamiento` no ensancha su botón ni desplaza a los demás.
-
-3. Cambiar la fila de `justify-around` a una distribución determinista:
-   - `justify-between gap-0` o `grid grid-cols-4`.
-   - Con 4 columnas iguales, el componente se verá igual en Home y en aislado.
-
-4. Permitir que el texto quepa sin cortar:
-   - Mantener font pequeño.
-   - Quitar dependencia de `max-w-[120%]`.
-   - Usar `max-w-full` y, si hace falta, permitir 2 líneas solo para labels largos.
-
-Esto atacaría la causa real: el ancho variable de los botones por el label y los paddings distintos del contenedor.
+## Dudas resueltas
+- Estado nuevo: solo `reward-welcome` (+500).
+- Icono: el que adjuntes; mientras no llegue, fallback a `icon-hand-star.png`.
+- Colores: tokens KM0 (no hex literales).
