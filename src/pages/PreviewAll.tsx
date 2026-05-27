@@ -315,6 +315,7 @@ Lógica:
 const HOME_STATES: { id: HomeSandboxState; label: string }[] = [
   { id: "guest", label: "No registrado" },
   { id: "registered", label: "Registrado" },
+  { id: "reward-welcome", label: "Bienvenida (+500 pts)" },
 ];
 
 const PreviewAll = () => {
