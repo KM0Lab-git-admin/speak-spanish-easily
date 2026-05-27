@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { ChevronLeft, Mic, Send, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Km0Logo from "@/components/Km0Logo";
+import DeviceShell from "@/components/DeviceShell";
 import NotificationBell from "@/components/NotificationBell";
 import NotificationsOverlay from "@/components/NotificationsOverlay";
 import { useNotifications } from "@/hooks/useNotifications";
@@ -274,9 +275,9 @@ const Chat = () => {
   );
 
   return (
-    <div className="fixed inset-0 w-full flex justify-center items-stretch landscape:items-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 landscape:p-4 short-landscape:p-2">
+    <DeviceShell>
       {/* ── PORTRAIT (375×667 / 768×1024) ─────────────────── */}
-      <div className="relative w-full max-w-[390px] h-full flex flex-col overflow-hidden landscape:hidden">
+      <div className="relative w-full h-full flex flex-col overflow-hidden landscape:hidden">
         {/* Header */}
         <motion.header
           className="flex items-center gap-3 px-4 pt-3 pb-2"
@@ -318,7 +319,7 @@ const Chat = () => {
       </div>
 
       {/* ── LANDSCAPE 16:9 (667×375 / 1280×550) ──────────── */}
-      <div className="hidden landscape:flex w-full max-w-[1200px] h-full max-h-[min(95dvh,calc(100vw*9/16))] aspect-video bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col relative">
+      <div className="hidden landscape:flex w-full h-full bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 overflow-hidden flex-col relative">
 
         {/* Header — full width edge-to-edge */}
         <motion.header
@@ -363,7 +364,7 @@ const Chat = () => {
           onMarkRead={markRead}
         />
       </div>
-    </div>
+    </DeviceShell>
   );
 };
 
