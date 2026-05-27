@@ -49,7 +49,7 @@ const HomeContentLandscape = ({
         onLogin={onLogin}
         showGreeting={false}
         greetingSlot={
-          <div className="gap-1.5 px-3 pb-1 flex flex-col">
+          <div className="gap-1.5 px-3 pb-1 flex-col flex items-center justify-start">
             <GreetingBlock greeting={greeting} subtitle={subtitle} />
             {showPoints && <PointsCard points={points} nextLevel={nextLevel} />}
           </div>

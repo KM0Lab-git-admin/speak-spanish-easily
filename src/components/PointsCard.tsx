@@ -34,7 +34,7 @@ const PointsCard = ({
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
-      className="w-full max-w-[600px] rounded-2xl bg-white border border-km0-blue-700/10 shadow-[0_8px_24px_-12px_hsl(var(--km0-blue-900)/0.18)] px-4 py-3 vertical-tablet:px-5 vertical-tablet:py-4 horizontal-mobile:!px-3 horizontal-mobile:!py-2 flex items-center gap-4 horizontal-mobile:!gap-3"
+      className="w-full max-w-[600px] rounded-2xl bg-white border border-km0-blue-700/10 shadow-[0_8px_24px_-12px_hsl(var(--km0-blue-900)/0.18)] px-4 py-3 vertical-tablet:px-5 vertical-tablet:py-4 horizontal-mobile:!px-3 horizontal-mobile:!py-2 gap-4 horizontal-mobile:!gap-3 flex items-center justify-center"
     >
       {/* Estrella + puntos */}
       <div className="flex items-center gap-2.5 shrink-0">
