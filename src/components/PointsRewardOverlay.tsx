@@ -21,11 +21,14 @@ export interface PointsRewardOverlayProps {
   points: number;
   message?: string;
   onClose: () => void;
+  /** Si true, el overlay se ancla al contenedor `relative` padre (absolute inset-0)
+   *  en lugar de cubrir todo el viewport. Útil dentro de sandboxes / previews. */
+  contained?: boolean;
 }
 
 const CONFETTI_COLORS = ["#174094", "#F5C542", "#FF664D", "#FFFFFF"];
 
-const PointsRewardOverlay = ({ points, message = "¡Bienvenido!", onClose }: PointsRewardOverlayProps) => {
+const PointsRewardOverlay = ({ points, message = "¡Bienvenido!", onClose, contained = false }: PointsRewardOverlayProps) => {
   const [displayPoints, setDisplayPoints] = useState(0);
 
   // Confeti multi-burst + contador animado 0 → points (easeOutCubic, 1.2s).
