@@ -51,7 +51,7 @@ const HomeSandbox = ({ state = "guest" }: HomeSandboxProps) => {
   const isRegistered = state === "registered" || state === "reward-welcome";
 
   return (
-    <>
+    <div className="relative w-full h-full">
       <Layout
         cityName="Malgrat de Mar"
         hasAlerts={false}
@@ -80,9 +80,10 @@ const HomeSandbox = ({ state = "guest" }: HomeSandboxProps) => {
           points={500}
           message="¡Bienvenido!"
           onClose={() => setShowReward(false)}
+          contained
         />
       )}
-    </>
+    </div>
   );
 };
 
