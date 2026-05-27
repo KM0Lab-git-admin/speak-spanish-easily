@@ -462,13 +462,11 @@ const Agenda = () => {
   );
 
   return (
-    <BrandedFrame
-      hideHeader
-      portraitContentClassName="!overflow-hidden !pb-0"
-      landscapeContentClassName="!pb-0"
-    >
-      {content}
-    </BrandedFrame>
+    <DeviceShell>
+      <div className="flex-1 min-h-0 flex flex-col w-full px-4 pt-5 pb-0 overflow-hidden">
+        {content}
+      </div>
+    </DeviceShell>
   );
 };
 
