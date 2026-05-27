@@ -364,7 +364,7 @@ const Chat = () => {
           onMarkRead={markRead}
         />
       </div>
-    </div>
+    </DeviceShell>
   );
 };
 
