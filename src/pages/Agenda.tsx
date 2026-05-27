@@ -463,7 +463,8 @@ const Agenda = () => {
 
   return (
     <DeviceShell>
-      <div className="flex-1 min-h-0 flex flex-col w-full px-4 pt-5 pb-0 overflow-hidden">
+      {/* Body: portrait → col + scroll-y; landscape → row (HomeHero gestiona su layout). */}
+      <div className="flex-1 min-h-0 w-full flex flex-col landscape:flex-row px-4 horizontal-desktop:px-6 pt-5 landscape:pt-3 horizontal-desktop:pt-5 pb-0 overflow-y-auto landscape:overflow-hidden overflow-x-hidden">
         {content}
       </div>
     </DeviceShell>
