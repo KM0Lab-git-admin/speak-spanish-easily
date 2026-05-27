@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+
 
 /**
  * GreetingBlock — saludo personalizado.
