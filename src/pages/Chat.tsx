@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { ChevronLeft, Mic, Send, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Km0Logo from "@/components/Km0Logo";
+import DeviceShell from "@/components/DeviceShell";
 import NotificationBell from "@/components/NotificationBell";
 import NotificationsOverlay from "@/components/NotificationsOverlay";
 import { useNotifications } from "@/hooks/useNotifications";
