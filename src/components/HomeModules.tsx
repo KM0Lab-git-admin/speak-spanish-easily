@@ -131,7 +131,7 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
       aria-pressed={active}
       aria-label={label}
       className={cn(
-        "group relative flex flex-col items-center vertical-mobile:min-w-0 transition-transform cursor-pointer active:scale-95",
+        "group relative flex flex-col items-center transition-transform cursor-pointer active:scale-95",
         !active && "opacity-50 grayscale-[0.4]",
       )}
     >
