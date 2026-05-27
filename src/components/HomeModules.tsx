@@ -63,13 +63,10 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
   if (modules.length === 0) return null;
 
   return (
-    <div className={cn("relative w-full max-w-full overflow-hidden", className)}>
-      {/* Banda azul institucional con curva orgánica inferior.
-          La curva se consigue con un mask radial + border-radius asimétrico
-          para que el borde inferior sea más "ondulado" que el superior. */}
+    <div className={cn("relative w-full max-w-full", className)}>
       <div
         className={cn(
-          "relative bg-km0-beige-100 horizontal-mobile:bg-transparent horizontal-desktop:bg-transparent rounded-t-3xl rounded-bl-[40%_24px] rounded-br-[40%_24px] px-[clamp(4px,2vw,12px)] opacity-100 my-0 py-0",
+          "relative bg-km0-beige-100 rounded-t-3xl rounded-bl-[40%_24px] rounded-br-[40%_24px] px-[clamp(4px,2vw,12px)] opacity-100 my-0 py-0",
         )}
       >
         {/* Patrón decorativo sutil arriba — círculos translúcidos
