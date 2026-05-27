@@ -63,13 +63,10 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
   if (modules.length === 0) return null;
 
   return (
-    <div className={cn("relative w-full max-w-full overflow-hidden", className)}>
-      {/* Banda azul institucional con curva orgánica inferior.
-          La curva se consigue con un mask radial + border-radius asimétrico
-          para que el borde inferior sea más "ondulado" que el superior. */}
+    <div className={cn("relative w-full max-w-full", className)}>
       <div
         className={cn(
-          "relative bg-km0-beige-100 horizontal-mobile:bg-transparent horizontal-desktop:bg-transparent rounded-t-3xl rounded-bl-[40%_24px] rounded-br-[40%_24px] px-[clamp(4px,2vw,12px)] opacity-100 my-0 py-0",
+          "relative bg-km0-beige-100 rounded-t-3xl rounded-bl-[40%_24px] rounded-br-[40%_24px] px-[clamp(4px,2vw,12px)] opacity-100 my-0 py-0",
         )}
       >
         {/* Patrón decorativo sutil arriba — círculos translúcidos
@@ -122,8 +119,8 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
   // Tamaño fluido: en vertical-mobile (375px) se reduce para que los 4 módulos
   // quepan sin recortar el label "Ayuntamiento".
   const sizeClasses = emphasized
-    ? "w-[clamp(60px,17vw,78px)] h-[clamp(60px,17vw,78px)] vertical-tablet:w-[88px] vertical-tablet:h-[88px] horizontal-mobile:!w-[50px] horizontal-mobile:!h-[50px] horizontal-desktop:!w-[60px] horizontal-desktop:!h-[60px]"
-    : "w-[clamp(54px,15vw,68px)] h-[clamp(54px,15vw,68px)] vertical-tablet:w-[78px] vertical-tablet:h-[78px] horizontal-mobile:!w-[48px] horizontal-mobile:!h-[48px] horizontal-desktop:!w-[58px] horizontal-desktop:!h-[58px]";
+    ? "w-[clamp(60px,17vw,78px)] h-[clamp(60px,17vw,78px)] vertical-tablet:w-[88px] vertical-tablet:h-[88px]"
+    : "w-[clamp(54px,15vw,68px)] h-[clamp(54px,15vw,68px)] vertical-tablet:w-[78px] vertical-tablet:h-[78px]";
 
   const iconSize = emphasized ? 34 : 30;
 
@@ -186,11 +183,11 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
             blanco con borde azul para que destaque sobre la banda azul. */}
         <span
           className={cn(
-            "relative -mt-2.5 z-10 horizontal-mobile:-mt-2 horizontal-desktop:-mt-2.5",
-            "px-2.5 vertical-mobile:px-[clamp(0.375rem,1.7vw,0.625rem)] py-0.5 rounded-full bg-white horizontal-mobile:px-1.5 horizontal-mobile:py-0 horizontal-desktop:px-2.5 horizontal-desktop:py-0.5",
+            "relative -mt-2.5 z-10",
+            "px-2.5 vertical-mobile:px-[clamp(0.375rem,1.7vw,0.625rem)] py-0.5 rounded-full bg-white",
             "border border-km0-blue-300/60",
             "shadow-[0_2px_6px_-2px_hsl(var(--km0-blue-900)/0.25)]",
-            "font-ui font-bold text-[10px] vertical-mobile:text-[clamp(8px,2.45vw,10px)] leading-tight text-km0-blue-800 horizontal-mobile:!text-[10px] horizontal-desktop:!text-[12px]",
+            "font-ui font-bold text-[10px] vertical-mobile:text-[clamp(8px,2.45vw,10px)] leading-tight text-km0-blue-800",
             "text-center whitespace-nowrap max-w-[120%]",
           )}
         >
