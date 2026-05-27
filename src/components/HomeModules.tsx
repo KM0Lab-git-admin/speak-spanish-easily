@@ -184,10 +184,10 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
         <span
           className={cn(
             "relative -mt-2.5 z-10",
-            "px-2.5 vertical-mobile:px-[clamp(0.375rem,1.7vw,0.625rem)] py-0.5 rounded-full bg-white",
+            "px-2.5 py-0.5 rounded-full bg-white",
             "border border-km0-blue-300/60",
             "shadow-[0_2px_6px_-2px_hsl(var(--km0-blue-900)/0.25)]",
-            "font-ui font-bold text-[10px] vertical-mobile:text-[clamp(8px,2.45vw,10px)] leading-tight text-km0-blue-800",
+            "font-ui font-bold text-[10px] leading-tight text-km0-blue-800",
             "text-center whitespace-nowrap max-w-[120%]",
           )}
         >
