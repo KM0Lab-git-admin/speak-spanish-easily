@@ -81,9 +81,10 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
           className="absolute -top-1 left-8 w-6 h-6 rounded-full bg-white/5"
         />
 
-        {/* Iconos: el del medio crece un punto para crear jerarquía focal */}
-        <div className="relative flex items-end justify-around gap-1">
-          {modules.map((mod, idx) => (
+        {/* Iconos: grid 4 columnas iguales para distribución determinista,
+            independiente del ancho del label. */}
+        <div className="relative grid grid-cols-4 items-end gap-0">
+          {modules.map((mod) => (
             <ModuleItem key={mod.id} module={mod} emphasized={false} />
           ))}
         </div>
@@ -131,7 +132,7 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
       aria-pressed={active}
       aria-label={label}
       className={cn(
-        "group relative flex flex-col items-center transition-transform cursor-pointer active:scale-95",
+        "group relative flex flex-col items-center justify-self-center w-full min-w-0 transition-transform cursor-pointer active:scale-95",
         !active && "opacity-50 grayscale-[0.4]",
       )}
     >
@@ -180,15 +181,16 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
         </span>
 
         {/* Pill del label — flota sobre el borde inferior del círculo,
-            blanco con borde azul para que destaque sobre la banda azul. */}
+            blanco con borde azul para que destaque sobre la banda azul.
+            Ancho limitado al de la columna para no empujar a los vecinos. */}
         <span
           className={cn(
             "relative -mt-2.5 z-10",
-            "px-2.5 py-0.5 rounded-full bg-white",
+            "px-1.5 py-0.5 rounded-full bg-white",
             "border border-km0-blue-300/60",
             "shadow-[0_2px_6px_-2px_hsl(var(--km0-blue-900)/0.25)]",
-            "font-ui font-bold text-[10px] leading-tight text-km0-blue-800",
-            "text-center whitespace-nowrap max-w-[120%]",
+            "font-ui font-bold text-[9px] leading-tight text-km0-blue-800",
+            "text-center whitespace-nowrap max-w-full",
           )}
         >
           {label}
