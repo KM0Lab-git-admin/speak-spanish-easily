@@ -63,7 +63,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
   if (modules.length === 0) return null;
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn("relative w-full max-w-full overflow-hidden", className)}>
       {/* Banda azul institucional con curva orgánica inferior.
           La curva se consigue con un mask radial + border-radius asimétrico
           para que el borde inferior sea más "ondulado" que el superior. */}
