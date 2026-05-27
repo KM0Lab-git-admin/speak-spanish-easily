@@ -69,24 +69,24 @@ const HomeContentLandscape = ({
           </motion.div>
         )}
 
-        <div className="grid grid-cols-2 gap-x-5 gap-y-4 items-start">
-          <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-5 py-5 min-w-0 divide-y divide-km0-beige-200">
-            <div className="space-y-2.5 pb-4">
+        <div className="grid grid-cols-2 gap-x-5 gap-y-4 items-stretch">
+          <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-5 py-4 min-w-0 divide-y divide-km0-beige-200/60 flex flex-col">
+            <div className="space-y-2.5 pb-3">
               <SectionHeader title={t("home.section.quick", lang)} />
               <HomeModules modules={modules} />
             </div>
-            <div className="space-y-2.5 pt-4">
+            <div className="space-y-2.5 pt-3 flex-1 flex flex-col min-h-0">
               <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
               <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
             </div>
           </section>
 
-          <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-5 py-5 min-w-0 divide-y divide-km0-beige-200">
-            <div className="space-y-2.5 pb-4">
+          <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-5 py-4 min-w-0 divide-y divide-km0-beige-200/60 flex flex-col">
+            <div className="space-y-2.5 pb-3">
               <SectionHeader title={t("home.section.shops", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllComercios} />
               <ComercioCarousel comercios={comercios} />
             </div>
-            <div className="space-y-2.5 pt-4">
+            <div className="space-y-2.5 pt-3 flex-1 min-h-0">
               <SectionHeader title={t("home.section.coupons", lang)} actionLabel={t("home.action.see_all_f", lang)} onAction={onSeeAllCoupons} />
               <div className="flex flex-col gap-1.5">
                 {coupons.map((c, i) => (
@@ -98,13 +98,15 @@ const HomeContentLandscape = ({
         </div>
       </div>
 
-      <BottomTabs
-        activeTab={activeTab}
-        onTabChange={onTabChange}
-        showProfile={showProfile}
-        onLogin={onLogin}
-        onProfile={onProfile}
-      />
+      <div className="landscape:hidden contents">
+        <BottomTabs
+          activeTab={activeTab}
+          onTabChange={onTabChange}
+          showProfile={showProfile}
+          onLogin={onLogin}
+          onProfile={onProfile}
+        />
+      </div>
     </>
   );
 };
