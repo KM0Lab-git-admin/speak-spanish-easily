@@ -319,7 +319,7 @@ const Chat = () => {
       </div>
 
       {/* ── LANDSCAPE 16:9 (667×375 / 1280×550) ──────────── */}
-      <div className="hidden landscape:flex w-full max-w-[1200px] h-full max-h-[min(95dvh,calc(100vw*9/16))] aspect-video bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col relative">
+      <div className="hidden landscape:flex w-full h-full bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 overflow-hidden flex-col relative">
 
         {/* Header — full width edge-to-edge */}
         <motion.header
