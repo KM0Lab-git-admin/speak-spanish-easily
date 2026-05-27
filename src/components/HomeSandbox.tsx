@@ -51,7 +51,7 @@ const HomeSandbox = ({ state = "guest" }: HomeSandboxProps) => {
   const isRegistered = state === "registered" || state === "reward-welcome";
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full flex flex-col overflow-hidden">
       <Layout
         cityName="Malgrat de Mar"
         hasAlerts={false}
