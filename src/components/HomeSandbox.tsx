@@ -47,7 +47,7 @@ const HomeSandbox = () => {
       onLogin={noop}
       showProfile={false}
       onProfile={noop}
-      showPoints={false}
+      showPoints={true}
       onSeeAllComercios={noop}
       onSeeAllEvents={noop}
       onSeeAllCoupons={noop}
