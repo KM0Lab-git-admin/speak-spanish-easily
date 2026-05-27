@@ -119,8 +119,8 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
   // Tamaño fluido: en vertical-mobile (375px) se reduce para que los 4 módulos
   // quepan sin recortar el label "Ayuntamiento".
   const sizeClasses = emphasized
-    ? "w-[clamp(60px,17vw,78px)] h-[clamp(60px,17vw,78px)] vertical-tablet:w-[88px] vertical-tablet:h-[88px] horizontal-mobile:!w-[50px] horizontal-mobile:!h-[50px] horizontal-desktop:!w-[60px] horizontal-desktop:!h-[60px]"
-    : "w-[clamp(54px,15vw,68px)] h-[clamp(54px,15vw,68px)] vertical-tablet:w-[78px] vertical-tablet:h-[78px] horizontal-mobile:!w-[48px] horizontal-mobile:!h-[48px] horizontal-desktop:!w-[58px] horizontal-desktop:!h-[58px]";
+    ? "w-[clamp(60px,17vw,78px)] h-[clamp(60px,17vw,78px)] vertical-tablet:w-[88px] vertical-tablet:h-[88px]"
+    : "w-[clamp(54px,15vw,68px)] h-[clamp(54px,15vw,68px)] vertical-tablet:w-[78px] vertical-tablet:h-[78px]";
 
   const iconSize = emphasized ? 34 : 30;
 
