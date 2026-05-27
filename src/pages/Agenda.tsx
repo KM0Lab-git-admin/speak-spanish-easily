@@ -16,7 +16,6 @@ import {
   Sparkles,
 } from "lucide-react";
 
-import BrandedFrame from "@/components/BrandedFrame";
 import DeviceShell from "@/components/DeviceShell";
 import HomeHero from "@/components/HomeHero";
 import ScreenTitle from "@/components/ScreenTitle";
