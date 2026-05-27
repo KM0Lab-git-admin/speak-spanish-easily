@@ -69,8 +69,8 @@ const HomeContentLandscape = ({
           </motion.div>
         )}
 
-        <div className="grid grid-cols-2 grid-rows-[auto_1fr] gap-x-5 gap-y-4 items-stretch">
-          <section className="row-span-2 grid grid-rows-subgrid rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-5 py-4 min-w-0 divide-y divide-km0-beige-200/60">
+        <div className="grid grid-cols-1 horizontal-desktop:grid-cols-2 horizontal-desktop:grid-rows-[auto_1fr] gap-x-5 gap-y-4 items-stretch">
+          <section className="horizontal-desktop:row-span-2 horizontal-desktop:grid horizontal-desktop:grid-rows-subgrid rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-4 py-3 horizontal-desktop:px-5 horizontal-desktop:py-4 min-w-0 divide-y divide-km0-beige-200/60">
             <div className="space-y-2.5 pb-3">
               <SectionHeader title={t("home.section.quick", lang)} />
               <HomeModules modules={modules} />
@@ -83,7 +83,7 @@ const HomeContentLandscape = ({
             </div>
           </section>
 
-          <section className="row-span-2 grid grid-rows-subgrid rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-5 py-4 min-w-0 divide-y divide-km0-beige-200/60">
+          <section className="horizontal-desktop:row-span-2 horizontal-desktop:grid horizontal-desktop:grid-rows-subgrid rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-4 py-3 horizontal-desktop:px-5 horizontal-desktop:py-4 min-w-0 divide-y divide-km0-beige-200/60">
             <div className="space-y-2.5 pb-3">
               <SectionHeader title={t("home.section.shops", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllComercios} />
               <ComercioCarousel comercios={comercios} />
@@ -98,6 +98,7 @@ const HomeContentLandscape = ({
             </div>
           </section>
         </div>
+
       </div>
 
       <div className="landscape:hidden contents">
