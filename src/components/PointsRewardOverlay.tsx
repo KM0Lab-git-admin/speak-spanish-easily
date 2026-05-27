@@ -69,18 +69,21 @@ const PointsRewardOverlay = ({ points, message = "¡Bienvenido!", onClose, conta
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
+  const positionClass = contained ? "absolute inset-0" : "fixed inset-0";
+
   return (
     <div
       role="dialog"
       aria-modal="true"
       aria-label={message}
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center animate-fade-in-overlay bg-km0-blue-700/55 backdrop-blur-sm"
+      className={`${positionClass} z-50 flex items-center justify-center animate-fade-in-overlay bg-km0-blue-700/55 backdrop-blur-sm`}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative flex flex-col items-center px-10 py-10 rounded-3xl bg-card shadow-2xl animate-pop-in max-w-[90vw]"
+        className="relative flex flex-col items-center px-6 py-6 rounded-3xl bg-card shadow-2xl animate-pop-in max-w-[90%]"
       >
+
         <div className="relative mb-4 h-36 w-36">
           {/* Sparkles decorativos */}
           <span className="absolute top-2 left-2 h-3 w-3 rounded-full bg-km0-coral-400 animate-sparkle" style={{ animationDelay: "0s" }} />
