@@ -71,26 +71,26 @@ const HomeContentLandscape = ({
 
         <div className="grid grid-cols-2 gap-x-4 gap-y-3 items-start">
           <div className="flex flex-col gap-3 min-w-0">
-            <section className="flex flex-col gap-1.5 border-dotted border border-slate-300">
+            <section className="flex flex-col gap-1.5 bg-km0-beige-50 rounded-2xl shadow-sm p-3">
               <SectionHeader title={t("home.section.quick", lang)} />
               <HomeModules modules={modules} />
             </section>
  
-            <section className="flex flex-col gap-1.5 border-dotted border border-slate-300">
+            <section className="flex flex-col gap-1.5 bg-km0-beige-50 rounded-2xl shadow-sm p-3">
               <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
               <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
             </section>
           </div>
  
           <div className="flex flex-col gap-3 min-w-0">
-            <section className="flex flex-col gap-1.5 border-dotted border border-slate-300">
+            <section className="flex flex-col gap-1.5 bg-km0-beige-50 rounded-2xl shadow-sm p-3">
               <SectionHeader title={t("home.section.shops", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllComercios} />
               <ComercioCarousel comercios={comercios} />
             </section>
  
-            <section className="flex flex-col gap-1.5 border-dotted border border-slate-300">
+            <section className="flex flex-col gap-1.5 bg-km0-beige-50 rounded-2xl shadow-sm p-3">
               <SectionHeader title={t("home.section.coupons", lang)} actionLabel={t("home.action.see_all_f", lang)} onAction={onSeeAllCoupons} />
-              <div className="flex flex-col gap-1.5 border-dotted border border-slate-300">
+              <div className="flex flex-col gap-1.5">
                 {coupons.map((c, i) => (
                   <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
                 ))}

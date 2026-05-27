@@ -99,22 +99,22 @@ const HomeContent = ({
             </motion.div>
           )}
 
-          <section className="flex flex-col gap-2">
+          <section className="flex flex-col gap-2 bg-km0-beige-50 rounded-2xl shadow-sm p-3">
             <SectionHeader title={t("home.section.quick", lang)} />
             <HomeModules modules={modules} />
           </section>
 
-          <section className="flex flex-col gap-2">
+          <section className="flex flex-col gap-2 bg-km0-beige-50 rounded-2xl shadow-sm p-3">
             <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
             <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
           </section>
 
-          <section className="flex flex-col gap-2">
+          <section className="flex flex-col gap-2 bg-km0-beige-50 rounded-2xl shadow-sm p-3">
             <SectionHeader title={t("home.section.shops", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllComercios} />
             <ComercioCarousel comercios={comercios} />
           </section>
 
-          <section className="flex flex-col gap-2">
+          <section className="flex flex-col gap-2 bg-km0-beige-50 rounded-2xl shadow-sm p-3">
             <SectionHeader title={t("home.section.coupons", lang)} actionLabel={t("home.action.see_all_f", lang)} onAction={onSeeAllCoupons} />
             <div className="flex flex-col gap-2">
               {coupons.map((c, i) => (
