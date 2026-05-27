@@ -66,7 +66,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
     <div className={cn("relative w-full max-w-full", className)}>
       <div
         className={cn(
-          "relative bg-km0-beige-100 rounded-t-3xl rounded-bl-[40%_24px] rounded-br-[40%_24px] px-[clamp(4px,2vw,12px)] opacity-100 my-0 py-0",
+          "relative bg-km0-beige-100 rounded-t-3xl rounded-bl-[40%_24px] rounded-br-[40%_24px] px-3 opacity-100 my-0 py-0",
         )}
       >
         {/* Patrón decorativo sutil arriba — círculos translúcidos
@@ -82,7 +82,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
         />
 
         {/* Iconos: el del medio crece un punto para crear jerarquía focal */}
-        <div className="relative flex items-end justify-around gap-1 vertical-mobile:justify-between vertical-mobile:gap-0 vertical-tablet:gap-2">
+        <div className="relative flex items-end justify-around gap-1">
           {modules.map((mod, idx) => (
             <ModuleItem key={mod.id} module={mod} emphasized={false} />
           ))}
@@ -119,8 +119,8 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
   // Tamaño fluido: en vertical-mobile (375px) se reduce para que los 4 módulos
   // quepan sin recortar el label "Ayuntamiento".
   const sizeClasses = emphasized
-    ? "w-[clamp(60px,17vw,78px)] h-[clamp(60px,17vw,78px)] vertical-tablet:w-[88px] vertical-tablet:h-[88px]"
-    : "w-[clamp(54px,15vw,68px)] h-[clamp(54px,15vw,68px)] vertical-tablet:w-[78px] vertical-tablet:h-[78px]";
+    ? "w-[78px] h-[78px]"
+    : "w-[68px] h-[68px]";
 
   const iconSize = emphasized ? 34 : 30;
 
@@ -131,7 +131,7 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
       aria-pressed={active}
       aria-label={label}
       className={cn(
-        "group relative flex flex-col items-center vertical-mobile:min-w-0 transition-transform cursor-pointer active:scale-95",
+        "group relative flex flex-col items-center transition-transform cursor-pointer active:scale-95",
         !active && "opacity-50 grayscale-[0.4]",
       )}
     >
@@ -184,10 +184,10 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
         <span
           className={cn(
             "relative -mt-2.5 z-10",
-            "px-2.5 vertical-mobile:px-[clamp(0.375rem,1.7vw,0.625rem)] py-0.5 rounded-full bg-white",
+            "px-2.5 py-0.5 rounded-full bg-white",
             "border border-km0-blue-300/60",
             "shadow-[0_2px_6px_-2px_hsl(var(--km0-blue-900)/0.25)]",
-            "font-ui font-bold text-[10px] vertical-mobile:text-[clamp(8px,2.45vw,10px)] leading-tight text-km0-blue-800",
+            "font-ui font-bold text-[10px] leading-tight text-km0-blue-800",
             "text-center whitespace-nowrap max-w-[120%]",
           )}
         >
