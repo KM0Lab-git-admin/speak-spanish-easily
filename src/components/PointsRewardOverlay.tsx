@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
-import starIcon from "@/assets/icon-hand-star.png";
+import starIcon from "@/assets/icon-star-rewards.png";
 
 /**
  * PointsRewardOverlay — overlay de recompensa de puntos al estilo Glovo.
