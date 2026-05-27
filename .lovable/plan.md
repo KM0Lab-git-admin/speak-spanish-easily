@@ -1,105 +1,62 @@
-# Plan: navegación completa + auth + i18n
+La causa no es solo “faltan 12px”. Esos 12px existen visualmente entre círculos, pero el layout actual no puede usarlos bien por cómo está montado el componente:
 
-## 1. Idioma global persistente
+1. En `HomeModules` hay 4 botones fijos.
+   - Cada círculo mide `68px`.
+   - Pero cada botón no ocupa solo 68px: el label también participa en el ancho del botón.
+   - El label más largo, `Ayuntamiento`, con `whitespace-nowrap`, hace que su botón mida bastante más que el círculo.
 
-**Nuevo:** `src/contexts/LangContext.tsx` con `LangProvider` + `useLang()`.
-- Estado: `lang: "ca" | "es" | "en"`, `setLang(l)`.
-- Persistencia en `localStorage` (`km0_lang`), fallback `"es"`.
-- Envolver `<App />` en `<LangProvider>` (en `main.tsx` o `App.tsx`).
+2. Por eso el cálculo real no es:
 
-**Nuevo:** `src/lib/i18n.ts` — diccionario plano por claves anidadas, tipado, helper `t(key, lang)`.
-Estructura:
+```text
+4 × 68px = 272px
 ```
-{ language:{title,...}, postal:{...}, login:{...}, otp:{...},
-  home:{greetingHello, greetingSubtitle, sections:{quickAccess,events,shops,coupons,seeAll,seeAllF}, modules:{...}, tabs:{home,chat,profile,login}},
-  profile:{...} }
+
+Sino algo más parecido a:
+
+```text
+Agenda label + KM0 CHAT label + Ayuntamiento label + Comercios label + gaps
 ```
-Cubre **ca / es / en** completo.
 
-- `Language.tsx`: al elegir idioma → `setLang(id)` antes de navegar.
-- Resto de pantallas: leen `lang` desde `useLang()` (no router state).
+El cuello de botella es el texto, no el círculo.
 
-## 2. Códigos postales
+3. Además, la Home portrait y la vista aislada no están usando exactamente el mismo envoltorio.
+   - En `HomeContent.tsx`, la sección de “Accesos rápidos” sigue con `px-6 py-6`.
+   - En landscape ya está con `px-[10px] py-[10px]`.
+   - Eso significa que portrait pierde 48px internos solo por padding de la sección, antes de que `HomeModules` pinte nada.
 
-- Migración insert: `INSERT INTO postal_codes(postal_code, town, province) VALUES ('03669','Planes','Alacant') ON CONFLICT DO NOTHING;` (Malgrat ya está).
-- `PostalCode.tsx`: textos vía `t(...)`. Quitar dependencia del `state.lang`.
+4. Dentro de `HomeModules` todavía hay otro `px-3`.
+   - Si el contenedor visible mide ~350px, la fila útil pasa a ~326px.
+   - Si la sección Home además usa `px-6`, el ancho útil baja todavía más.
 
-## 3. Flujo Onboarding → PostalCode → Home
+5. `justify-around` reparte espacio alrededor de cada botón, pero no “recupera” espacio cuando un label ancho empuja el ancho real del botón. En un carril justo, esa distribución puede dejar los círculos con hueco aparente mientras los labels se pisan o se recortan.
 
-- Onboarding ya navega a `/postal-code` ✓.
-- `PostalCode` tras submit: navega a `/home` (sin state).
-- Persistimos `km0_postal_code` y `km0_town` en `localStorage` (no sessionStorage) para sobrevivir recargas y poder leerse desde Home como `cityName` antes de tener perfil.
+Conclusión: visualmente parece que hay hueco entre iconos, pero el navegador está maquetando por el ancho completo de cada botón, y ese ancho lo agrandan los labels. El problema viene de la combinación:
 
-## 4. Auth — flujo OTP existente
+```text
+sección portrait con px-6
++ HomeModules con px-3
++ labels nowrap
++ botones cuyo ancho depende del label
++ justify-around
+```
 
-El flujo ya existe (`Login.tsx` + `CheckEmail.tsx` + trigger `handle_new_user`). Cambios:
+Plan de corrección si quieres que lo implemente:
 
-- Traducir Login y CheckEmail con `t(...)`.
-- En `Login`: pasar `postal_code` + `town` desde `localStorage` (ya lo hace con sessionStorage; cambiamos a localStorage).
-- Verificar que `signInWithOtp` con `shouldCreateUser: true` + `data: { postal_code, town }` puebla `profiles` vía trigger ✓ (ya implementado).
-- Tras `verifyOtp` correcto → `navigate("/home")`.
+1. Igualar el wrapper de “Accesos rápidos” en portrait al de landscape:
+   - Cambiar la sección de `HomeContent.tsx` a `space-y-3 px-[10px] py-[10px]`, igual que pediste para landscape.
 
-## 5. Home — UI condicional según sesión
+2. Hacer que cada módulo tenga un ancho fijo común, no dependiente del label:
+   - Por ejemplo `w-[78px]` o `w-[80px]` para cada botón.
+   - El círculo seguirá centrado dentro.
+   - Así `Ayuntamiento` no ensancha su botón ni desplaza a los demás.
 
-Cambios en `src/pages/Home.tsx` (props compartidos) y `HomeContent.tsx` / `HomeContentLandscape.tsx`:
+3. Cambiar la fila de `justify-around` a una distribución determinista:
+   - `justify-between gap-0` o `grid grid-cols-4`.
+   - Con 4 columnas iguales, el componente se verá igual en Home y en aislado.
 
-| Elemento            | Invitado (sin sesión)  | Registrado            |
-|---------------------|------------------------|-----------------------|
-| LoginButton         | **Visible**            | Oculto                |
-| PointsCard          | **Oculto**             | **Visible**           |
-| GreetingBlock name  | `null` → "¡Hola!"      | `profile.first_name` si existe, si no `null` → "¡Hola!" |
-| BottomTabs profile  | Oculto                 | Visible               |
+4. Permitir que el texto quepa sin cortar:
+   - Mantener font pequeño.
+   - Quitar dependencia de `max-w-[120%]`.
+   - Usar `max-w-full` y, si hace falta, permitir 2 líneas solo para labels largos.
 
-- `GreetingBlock`: ya soporta `name?: null` → muestra "¡Hola!". Sin cambios estructurales, solo i18n del subtitle.
-- `HomeContent`: envolver `<PointsCard>` en `{showProfile && <PointsCard .../>}` (showProfile=registrado).
-- `cityName`: leer de `profile.town` si registrado, si no de `localStorage.km0_town`, fallback `"Malgrat de Mar"`.
-
-## 6. Hook `useProfile`
-
-**Nuevo:** `src/hooks/useProfile.ts` — carga `profiles` del user actual (first_name, last_name, town, postal_code). Devuelve `{ profile, loading }`. Se invalida en `onAuthStateChange`.
-
-`Home.tsx` lo usa para alimentar `userName` y `cityName`.
-
-## 7. Traducción de Home completa
-
-- Section headers, "Ver todos/todas", subtítulo greeting, etiquetas de `BottomTabs` y nombres de módulos en `HomeModules` → todos a través de `t(...)`. Para módulos: añadir `labelKey` a `INITIAL_MODULES` (`src/data/homeModules.ts`) y resolver `t(labelKey)` en el render.
-
-## 8. Profile
-
-- Traducir labels, placeholders y botones con `t(...)`.
-- Selector de idioma opcional dentro de Profile (deseable pero no bloqueante; lo incluyo como subapartado pequeño al final del form).
-
-## Archivos a crear
-
-- `src/contexts/LangContext.tsx`
-- `src/lib/i18n.ts`
-- `src/hooks/useProfile.ts`
-- Migración SQL: insertar CP `03669` Planes.
-
-## Archivos a modificar
-
-- `src/main.tsx` o `src/App.tsx` — envolver con `LangProvider`.
-- `src/pages/Language.tsx` — `setLang`, textos del título via t.
-- `src/pages/Onboarding.tsx` — usar `useLang`, textos via t (mínimo: botón).
-- `src/pages/PostalCode.tsx` — `useLang`, persistencia en localStorage.
-- `src/pages/Login.tsx` — i18n, leer CP+town de localStorage.
-- `src/pages/CheckEmail.tsx` — i18n.
-- `src/pages/Home.tsx` — usar `useAuth` + `useProfile` + `useLang` para construir props (userName, cityName, showLogin, showProfile, showPoints).
-- `src/components/HomeContent.tsx` y `HomeContentLandscape.tsx` — render condicional de `PointsCard` (nueva prop `showPoints`), strings via t.
-- `src/components/GreetingBlock.tsx` — props `helloLabel` + `subtitle` desde t.
-- `src/components/BottomTabs.tsx` — labels via t.
-- `src/components/HomeModules.tsx` + `src/data/homeModules.ts` — `labelKey` traducible.
-- `src/pages/Profile.tsx` — i18n.
-
-## Detalles técnicos
-
-- `useLang()` no causa re-render innecesario: `value = useMemo({lang,setLang})`.
-- `useProfile()` usa `react-query` (`queryClient` ya disponible) para cachear y refrescar tras login.
-- En invitado (`!user`), `useProfile` devuelve `{profile: null, loading: false}` sin tocar Supabase.
-- RLS de `profiles` ya restringe a `auth.uid() = user_id` ✓.
-
-## Fuera de alcance
-
-- Selector de idioma post-onboarding (lo dejamos como mini-control en Profile, opcional).
-- OAuth Google/Apple (siguen como "próximamente" en Login).
-- Sistema real de puntos (PointsCard sigue con datos fake hasta tener backend).
+Esto atacaría la causa real: el ancho variable de los botones por el label y los paddings distintos del contenedor.
