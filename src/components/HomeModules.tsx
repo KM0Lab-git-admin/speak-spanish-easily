@@ -82,7 +82,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
         />
 
         {/* Iconos: el del medio crece un punto para crear jerarquía focal */}
-        <div className="relative flex items-end justify-around gap-1 vertical-mobile:justify-between vertical-mobile:gap-0 vertical-tablet:gap-2">
+        <div className="relative flex items-end justify-around gap-1">
           {modules.map((mod, idx) => (
             <ModuleItem key={mod.id} module={mod} emphasized={false} />
           ))}
