@@ -90,7 +90,7 @@ const HomeContentLandscape = ({
  
             <section className="flex flex-col gap-1.5 bg-km0-beige-50 rounded-2xl shadow-sm p-3">
               <SectionHeader title={t("home.section.coupons", lang)} actionLabel={t("home.action.see_all_f", lang)} onAction={onSeeAllCoupons} />
-              <div className="flex flex-col gap-1.5 bg-km0-beige-50 rounded-2xl shadow-sm p-3">
+              <div className="flex flex-col gap-1.5">
                 {coupons.map((c, i) => (
                   <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
                 ))}
