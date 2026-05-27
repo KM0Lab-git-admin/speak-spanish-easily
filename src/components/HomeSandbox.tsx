@@ -11,7 +11,14 @@ import { COMERCIOS } from "@/data/comercios";
 import { COUPONS } from "@/data/coupons";
 import { type HomeTab } from "@/components/BottomTabs";
 
-const HomeSandbox = () => {
+export type HomeSandboxState = "guest" | "registered";
+
+interface HomeSandboxProps {
+  /** Estado simulado de la Home. `guest` = no registrado (muestra LoginButton, oculta puntos). `registered` = sesión iniciada (oculta LoginButton, muestra puntos). Default: `guest`. */
+  state?: HomeSandboxState;
+}
+
+const HomeSandbox = ({ state = "guest" }: HomeSandboxProps) => {
   const [seeds, setSeeds] = useState<HomeModuleSeed[]>(INITIAL_MODULES);
   const [activeTab, setActiveTab] = useState<HomeTab>("home");
   const bp = useBreakpoint();
@@ -28,6 +35,7 @@ const HomeSandbox = () => {
   );
 
   const noop = () => {};
+  const isRegistered = state === "registered";
 
   return (
     <Layout
@@ -43,11 +51,11 @@ const HomeSandbox = () => {
       coupons={COUPONS}
       activeTab={activeTab}
       onTabChange={setActiveTab}
-      showLogin={true}
+      showLogin={!isRegistered}
       onLogin={noop}
-      showProfile={false}
+      showProfile={isRegistered}
       onProfile={noop}
-      showPoints={true}
+      showPoints={isRegistered}
       onSeeAllComercios={noop}
       onSeeAllEvents={noop}
       onSeeAllCoupons={noop}

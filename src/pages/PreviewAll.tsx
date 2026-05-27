@@ -1,6 +1,7 @@
+import { useState } from "react";
 import ScreenFrame from "@/components/ScreenFrame";
 import SimulatedDevice from "@/components/SimulatedDevice";
-import HomeSandbox from "@/components/HomeSandbox";
+import HomeSandbox, { type HomeSandboxState } from "@/components/HomeSandbox";
 
 /**
  * /preview-all — Catálogo visual: cada pantalla de la app renderizada en
@@ -311,7 +312,14 @@ Lógica:
   },
 ];
 
+const HOME_STATES: { id: HomeSandboxState; label: string }[] = [
+  { id: "guest", label: "No registrado" },
+  { id: "registered", label: "Registrado" },
+];
+
 const PreviewAll = () => {
+  const [homeState, setHomeState] = useState<HomeSandboxState>("guest");
+
   return (
     <div className="min-h-screen w-screen bg-km0-beige-50">
       <header className="sticky top-0 z-10 bg-km0-blue-700 text-white px-4 py-3 shadow-md">
@@ -328,11 +336,40 @@ const PreviewAll = () => {
           const isHome = s.label === "Home";
           return (
             <section key={s.label} className="flex flex-col gap-4 w-full">
-              <h2 className="font-ui text-lg text-km0-blue-700">{s.label}</h2>
+              <div className="flex flex-wrap items-center gap-3">
+                <h2 className="font-ui text-lg text-km0-blue-700">{s.label}</h2>
+                {isHome && (
+                  <div
+                    role="tablist"
+                    aria-label="Estado de la Home"
+                    className="inline-flex rounded-full border-2 border-km0-blue-700/20 bg-white p-1 shadow-sm"
+                  >
+                    {HOME_STATES.map((st) => {
+                      const active = homeState === st.id;
+                      return (
+                        <button
+                          key={st.id}
+                          type="button"
+                          role="tab"
+                          aria-selected={active}
+                          onClick={() => setHomeState(st.id)}
+                          className={`px-3 py-1 rounded-full font-ui text-xs transition-colors ${
+                            active
+                              ? "bg-km0-blue-700 text-white"
+                              : "text-km0-blue-700 hover:bg-km0-blue-700/10"
+                          }`}
+                        >
+                          {st.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
               <div className="flex flex-wrap items-start gap-6 w-full">
                 {isHome ? (
                   <SimulatedDevice orientation="portrait" label={s.label}>
-                    <HomeSandbox />
+                    <HomeSandbox state={homeState} />
                   </SimulatedDevice>
                 ) : (
                   <ScreenFrame src={s.src} orientation="portrait" label={s.label} />
@@ -340,7 +377,7 @@ const PreviewAll = () => {
                 <div className="flex flex-col gap-4 flex-1 min-w-[320px]">
                   {isHome ? (
                     <SimulatedDevice orientation="landscape" label={s.label}>
-                      <HomeSandbox />
+                      <HomeSandbox state={homeState} />
                     </SimulatedDevice>
                   ) : (
                     <ScreenFrame src={s.src} orientation="landscape" label={s.label} />
