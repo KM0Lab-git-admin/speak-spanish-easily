@@ -381,12 +381,7 @@ export const componentsCatalog: ComponentSpec[] = [
       { name: "modules", type: "HomeModule[]", required: true, description: "Lista de módulos. Ids soportados: chat · agenda · ajuntament · punts · cupons · comerc." },
       { name: "className", type: "string", description: "Clases extra del wrapper." },
     ],
-    responsive: [
-      { breakpoint: "vertical-mobile", behavior: "Círculos clamp(54-68px). Justify-between para que entren 4 sin recortar el label 'Ayuntamiento'." },
-      { breakpoint: "vertical-tablet", behavior: "Círculos 78px, padding más amplio." },
-      { breakpoint: "horizontal-mobile", behavior: "Banda transparente, círculos 48px, padding mínimo." },
-      { breakpoint: "horizontal-desktop", behavior: "Banda transparente, círculos 58px." },
-    ],
+    responsive: [],
     notes: [
       "Color del icono por módulo está hardcodeado en ICON_COLOR (azul/teal/yellow/coral). Cambiarlo allí, no por props.",
       "El módulo 'central' tenía emphasized, hoy desactivado (todos al mismo tamaño).",
