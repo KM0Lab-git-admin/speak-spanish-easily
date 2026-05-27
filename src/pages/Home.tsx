@@ -106,7 +106,7 @@ const Home = () => {
   };
 
   return (
-    <div className="h-[100dvh] w-full bg-km0-beige-50 overflow-hidden">
+    <DeviceShell>
       <div className="landscape:hidden flex flex-col bg-km0-beige-50 overflow-hidden relative w-full h-full">
         <HomeContent {...sharedProps} />
         <NotificationsOverlay
@@ -126,7 +126,7 @@ const Home = () => {
           onMarkRead={markRead}
         />
       </div>
-    </div>
+    </DeviceShell>
   );
 };
 
