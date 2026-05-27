@@ -70,29 +70,27 @@ const HomeContentLandscape = ({
         )}
 
         <div className="grid grid-cols-2 gap-x-5 gap-y-4 items-start">
-          <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-5 py-5 space-y-5 min-w-0">
-            <div className="space-y-2.5">
-              <SectionHeader title={t("home.section.quick", lang)} />
-              <HomeModules modules={modules} />
-            </div>
-            <div className="space-y-2.5">
-              <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
-              <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
-            </div>
+          <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-5 py-5 space-y-2.5 min-w-0">
+            <SectionHeader title={t("home.section.quick", lang)} />
+            <HomeModules modules={modules} />
           </section>
 
-          <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-5 py-5 space-y-5 min-w-0">
-            <div className="space-y-2.5">
-              <SectionHeader title={t("home.section.shops", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllComercios} />
-              <ComercioCarousel comercios={comercios} />
-            </div>
-            <div className="space-y-2.5">
-              <SectionHeader title={t("home.section.coupons", lang)} actionLabel={t("home.action.see_all_f", lang)} onAction={onSeeAllCoupons} />
-              <div className="flex flex-col gap-1.5">
-                {coupons.map((c, i) => (
-                  <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
-                ))}
-              </div>
+          <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-5 py-5 space-y-2.5 min-w-0">
+            <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
+            <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
+          </section>
+
+          <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-5 py-5 space-y-2.5 min-w-0">
+            <SectionHeader title={t("home.section.shops", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllComercios} />
+            <ComercioCarousel comercios={comercios} />
+          </section>
+
+          <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-5 py-5 space-y-2.5 min-w-0">
+            <SectionHeader title={t("home.section.coupons", lang)} actionLabel={t("home.action.see_all_f", lang)} onAction={onSeeAllCoupons} />
+            <div className="flex flex-col gap-1.5">
+              {coupons.map((c, i) => (
+                <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
+              ))}
             </div>
           </section>
         </div>
