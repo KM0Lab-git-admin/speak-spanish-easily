@@ -104,8 +104,8 @@ const BrandedFrame = ({
       */}
       <div className="hidden landscape:flex bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col"
         style={{
-          width: "min(calc(100vw - 2rem), calc((100dvh - 2rem) * 16 / 9), 1200px)",
-          height: "min(calc(100dvh - 2rem), calc((100vw - 2rem) * 9 / 16), calc(1200px * 9 / 16))",
+          width: "min(calc(100vw - 2rem), calc((100dvh - 2rem) * 16 / 9), 1700px)",
+          height: "min(calc(100dvh - 2rem), calc((100vw - 2rem) * 9 / 16), calc(1700px * 9 / 16))",
         }}
       >
         {/* Header */}
