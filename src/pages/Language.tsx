@@ -47,10 +47,6 @@ const Language = () => {
           </div>
         </div>
 
-        <h2 className="text-center font-ui font-semibold text-base sm:text-xl text-km0-blue-700 shrink-0">
-          {t("language.title", lang)}
-        </h2>
-
         <div className="flex flex-col gap-2 sm:gap-4 shrink-0
             [&_button]:!py-2 [&_button]:!gap-3
             [&_button>span:first-child]:!w-10 [&_button>span:first-child]:!h-10
