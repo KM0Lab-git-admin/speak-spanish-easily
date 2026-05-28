@@ -43,7 +43,5 @@ const DeviceShell = ({ children }: DeviceShellProps) => {
     </div>
   );
 };
-  );
-};
 
 export default DeviceShell;
