@@ -28,6 +28,8 @@ const DeviceShell = ({ children }: DeviceShellProps) => {
         }}
       >
         {children}
+      </div>
+
       {/* LANDSCAPE — 16:9 (horizontal-mobile + horizontal-desktop) */}
       <div
         className="hidden landscape:flex relative bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col"
@@ -36,11 +38,11 @@ const DeviceShell = ({ children }: DeviceShellProps) => {
           height: "min(calc(100dvh - 2rem), calc((100vw - 2rem) * 9 / 16), calc(1700px * 9 / 16))",
         }}
       >
-        }}
-      >
         {children}
       </div>
     </div>
+  );
+};
   );
 };
 
