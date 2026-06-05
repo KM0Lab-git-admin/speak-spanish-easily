@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { LogOut, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { supabase } from "@/integrations/supabase/client";
+import { getProfile, updateProfile } from "@/services/mock/profile";
 import { useAuth } from "@/hooks/useAuth";
 import BrandedFrame from "@/components/BrandedFrame";
 import { lookupTown } from "@/lib/postalCodes";
@@ -68,16 +68,9 @@ const Profile = () => {
     }
     let cancelled = false;
     (async () => {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("first_name, last_name, postal_code")
-        .eq("user_id", user.id)
-        .maybeSingle();
-
+      const data = await getProfile(user.id);
       if (cancelled) return;
-      if (error) {
-        toast.error("No se pudo cargar el perfil");
-      } else if (data) {
+      if (data) {
         setForm({
           first_name: data.first_name ?? "",
           last_name: data.last_name ?? "",

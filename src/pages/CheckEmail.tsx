@@ -96,10 +96,7 @@ const CheckEmail = () => {
   const handleResend = async () => {
     if (cooldown > 0 || resending) return;
     setResending(true);
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { shouldCreateUser: true },
-    });
+    const { error } = await requestOtp(email);
     setResending(false);
     if (error) {
       toast.error(t("otp.toast_resend_fail", lang));
