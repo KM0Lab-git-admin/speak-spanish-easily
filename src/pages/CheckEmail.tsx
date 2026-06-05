@@ -3,7 +3,7 @@ import { useNavigate, useLocation, useSearchParams, Navigate } from "react-route
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { requestOtp, verifyOtp } from "@/services/mock/auth";
 import BrandedFrame from "@/components/BrandedFrame";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
