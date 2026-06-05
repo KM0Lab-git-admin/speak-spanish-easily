@@ -68,7 +68,7 @@ const HomeContentLandscape = ({
             </div>
             <div className="space-y-2.5 flex flex-col min-h-0 min-w-0">
               <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
-              <div className="flex-1 min-h-0">
+              <div className="min-h-0">
                 <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
               </div>
             </div>
