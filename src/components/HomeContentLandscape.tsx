@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import HomeHero from "./HomeHero";
 import HomeModules from "./HomeModules";
@@ -8,7 +7,6 @@ import CouponCard from "./CouponCard";
 import PointsCard from "./PointsCard";
 import GreetingBlock from "./GreetingBlock";
 import BottomTabs from "./BottomTabs";
-import LoginButton from "./LoginButton";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 import type { HomeContentProps } from "./HomeContent";
