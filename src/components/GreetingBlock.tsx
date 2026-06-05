@@ -11,7 +11,7 @@ export interface GreetingBlockProps {
 
 const GreetingBlock = ({ greeting, subtitle }: GreetingBlockProps) => {
   return (
-    <div className="w-full gap-0.5 horizontal-mobile:gap-0 flex-row flex items-center justify-center px-[4px] py-[4px]">
+    <div className="w-full gap-0.5 horizontal-mobile:gap-0 flex-row px-[4px] py-[4px] flex items-center justify-start">
       <h2 className="font-brand font-black text-km0-blue-700 text-xl vertical-tablet:text-2xl horizontal-mobile:!text-base flex items-center gap-2 leading-tight">
         <span>{greeting}</span>
       </h2>
