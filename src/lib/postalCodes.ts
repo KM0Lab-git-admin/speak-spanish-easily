@@ -1,27 +1,22 @@
 /**
- * Catálogo CP → población (Supabase, tabla `postal_codes`).
+ * Catálogo CP → población.
  *
- * Fuente única de verdad para la pantalla de onboarding (PostalCode) y
- * el perfil (Profile). Cache en memoria por sesión para evitar repetir
- * la misma query.
+ * Fase actual: mock en TS (`src/data/mockPostalCodes.ts`).
+ * Cuando se monte la BD real, sustituir el cuerpo de `lookupTown()` por
+ * la query correspondiente — la firma async se mantiene a propósito.
  */
-import { supabase } from "@/integrations/supabase/client";
+import { MOCK_POSTAL_CODES } from "@/data/mockPostalCodes";
 
 const cache = new Map<string, string | null>();
 
 export async function lookupTown(postalCode: string): Promise<string | null> {
   const cp = postalCode.trim();
   if (!/^\d{5}$/.test(cp)) return null;
-
   if (cache.has(cp)) return cache.get(cp) ?? null;
 
-  const { data, error } = await supabase
-    .from("postal_codes")
-    .select("town")
-    .eq("postal_code", cp)
-    .maybeSingle();
-
-  const town = error ? null : data?.town ?? null;
+  // Simula latencia de red mínima para mantener los estados de loading.
+  await new Promise((r) => setTimeout(r, 120));
+  const town = MOCK_POSTAL_CODES[cp] ?? null;
   cache.set(cp, town);
   return town;
 }
