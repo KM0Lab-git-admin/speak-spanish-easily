@@ -49,7 +49,7 @@ const HomeContentLandscape = ({
         onLogin={onLogin}
         showGreeting={false}
         greetingSlot={
-          <div className="gap-1.5 px-3 pb-1 horizontal-mobile:gap-0 horizontal-mobile:pb-0 flex-col flex items-center justify-start">
+          <div className="gap-1.5 px-3 pb-1 horizontal-mobile:gap-0 horizontal-mobile:px-2.5 horizontal-mobile:pb-0 flex-col flex items-center justify-start">
             <GreetingBlock greeting={greeting} subtitle={subtitle} />
             {showPoints && <PointsCard points={points} nextLevel={nextLevel} />}
           </div>
@@ -57,11 +57,11 @@ const HomeContentLandscape = ({
         inline
       />
 
-      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col gap-1.5 px-2.5 pt-1 pb-1 horizontal-desktop:gap-3 horizontal-desktop:px-3 horizontal-desktop:pt-2 horizontal-desktop:pb-3">
+      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col gap-1 px-2.5 pt-1 pb-0.5 horizontal-desktop:gap-3 horizontal-desktop:px-3 horizontal-desktop:pt-2 horizontal-desktop:pb-3">
 
 
-        <div className="grid grid-cols-[3fr_2fr] grid-rows-[auto_auto] gap-x-2.5 horizontal-desktop:gap-x-5 gap-y-1.5 horizontal-desktop:gap-y-3 items-start">
-          <section className="row-span-2 grid grid-rows-subgrid gap-y-1.5 horizontal-desktop:gap-y-3 border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-1 horizontal-desktop:py-2 space-y-0">
+        <div className="grid grid-cols-[3fr_2fr] grid-rows-[auto_auto] gap-x-2.5 horizontal-desktop:gap-x-5 gap-y-1 horizontal-desktop:gap-y-3 items-start">
+          <section className="row-span-2 grid grid-rows-subgrid gap-y-1 horizontal-desktop:gap-y-3 border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-0.5 horizontal-desktop:py-2 space-y-0">
             <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0">
               <SectionHeader title={t("home.section.quick", lang)} />
               <HomeModules modules={modules} />
@@ -74,7 +74,7 @@ const HomeContentLandscape = ({
             </div>
           </section>
 
-          <section className="row-span-2 grid grid-rows-subgrid gap-y-1.5 horizontal-desktop:gap-y-3 border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-1 horizontal-desktop:py-2 space-y-0">
+          <section className="row-span-2 grid grid-rows-subgrid gap-y-1 horizontal-desktop:gap-y-3 border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-0.5 horizontal-desktop:py-2 space-y-0">
             <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0">
               <SectionHeader title={t("home.section.shops", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllComercios} />
               <ComercioCarousel comercios={comercios} />

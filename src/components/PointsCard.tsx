@@ -34,21 +34,21 @@ const PointsCard = ({
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
-      className="w-full max-w-[600px] rounded-2xl bg-white border border-km0-blue-700/10 shadow-[0_8px_24px_-12px_hsl(var(--km0-blue-900)/0.18)] px-4 py-3 vertical-tablet:px-5 vertical-tablet:py-4 horizontal-mobile:!px-3 horizontal-mobile:!py-2 gap-4 horizontal-mobile:!gap-3 flex items-center justify-center"
+      className="w-full max-w-[600px] rounded-2xl bg-white border border-km0-blue-700/10 shadow-[0_8px_24px_-12px_hsl(var(--km0-blue-900)/0.18)] px-4 py-3 vertical-tablet:px-5 vertical-tablet:py-4 horizontal-mobile:!px-3 horizontal-mobile:!py-1.5 gap-4 horizontal-mobile:!gap-2.5 flex items-center justify-center"
     >
       {/* Estrella + puntos */}
       <div className="flex items-center gap-2.5 shrink-0">
-        <span className="w-10 h-10 vertical-tablet:w-12 vertical-tablet:h-12 horizontal-mobile:!w-8 horizontal-mobile:!h-8 rounded-full bg-km0-yellow-100 flex items-center justify-center">
+        <span className="w-10 h-10 vertical-tablet:w-12 vertical-tablet:h-12 horizontal-mobile:!w-7 horizontal-mobile:!h-7 rounded-full bg-km0-yellow-100 flex items-center justify-center">
           <Star
-            className="w-5 h-5 vertical-tablet:w-6 vertical-tablet:h-6 horizontal-mobile:!w-4 horizontal-mobile:!h-4 text-km0-yellow-500 fill-km0-yellow-400"
+            className="w-5 h-5 vertical-tablet:w-6 vertical-tablet:h-6 horizontal-mobile:!w-3.5 horizontal-mobile:!h-3.5 text-km0-yellow-500 fill-km0-yellow-400"
             strokeWidth={2}
           />
         </span>
         <div className="flex flex-col leading-tight">
-          <span className="font-brand font-black text-km0-blue-800 text-2xl vertical-tablet:text-3xl horizontal-mobile:!text-xl">
+          <span className="font-brand font-black text-km0-blue-800 text-2xl vertical-tablet:text-3xl horizontal-mobile:!text-lg">
             {safePoints.toLocaleString("es-ES")}
           </span>
-          <span className="font-body text-km0-blue-700/70 text-xs vertical-tablet:text-sm horizontal-mobile:!text-[10px] -mt-0.5">
+          <span className="font-body text-km0-blue-700/70 text-xs vertical-tablet:text-sm horizontal-mobile:!text-[9px] -mt-0.5">
             puntos
           </span>
         </div>
@@ -58,12 +58,12 @@ const PointsCard = ({
       <span aria-hidden className="w-px self-stretch bg-km0-blue-700/10" />
 
       {/* Nivel + barra */}
-      <div className="flex-1 min-w-0 flex flex-col gap-1.5 horizontal-mobile:!gap-1">
+      <div className="flex-1 min-w-0 flex flex-col gap-1.5 horizontal-mobile:!gap-0.5">
         <div className="flex items-baseline justify-between gap-2">
-          <span className="font-ui font-bold text-km0-blue-800 text-xs vertical-tablet:text-sm horizontal-mobile:!text-[11px]">
+          <span className="font-ui font-bold text-km0-blue-800 text-xs vertical-tablet:text-sm horizontal-mobile:!text-[10px]">
             {levelName}
           </span>
-          <span className="font-body text-km0-blue-700/70 text-[11px] vertical-tablet:text-xs horizontal-mobile:!text-[10px] whitespace-nowrap">
+          <span className="font-body text-km0-blue-700/70 text-[11px] vertical-tablet:text-xs horizontal-mobile:!text-[9px] whitespace-nowrap">
             {safePoints.toLocaleString("es-ES")}/{safeNext.toLocaleString("es-ES")} p
           </span>
         </div>
