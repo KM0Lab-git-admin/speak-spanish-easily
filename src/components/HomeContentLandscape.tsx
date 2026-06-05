@@ -121,7 +121,7 @@ const SectionHeader = ({ title, actionLabel, onAction }: SectionHeaderProps) => 
       <button
         type="button"
         onClick={onAction}
-        className="font-ui font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform underline underline-offset-4 text-[11px] horizontal-desktop:text-sm whitespace-nowrap shrink-0"
+        className="font-ui font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform underline underline-offset-4 whitespace-nowrap shrink-0 text-xs"
       >
         {actionLabel}
         <ArrowRight size={12} strokeWidth={2.4} className="horizontal-desktop:w-4 horizontal-desktop:h-4" />
