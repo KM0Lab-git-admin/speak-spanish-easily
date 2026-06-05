@@ -139,9 +139,9 @@ function StackCarousel<T extends StackCarouselItem>({
   const trackXLs = -(current * slotLs + slotLs / 2);
 
   const handleSkip = () => {
-    if (isLast) onFinish?.();
-    else setCurrent(total - 1);
+    onFinish?.();
   };
+
 
   const buttonLabel = isLast ? finishLabel : skipLabel;
 
