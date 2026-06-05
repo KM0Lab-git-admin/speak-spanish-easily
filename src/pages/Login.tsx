@@ -30,13 +30,7 @@ const Login = () => {
     setSubmitting(true);
     const postalCode = localStorage.getItem("km0_postal_code") ?? undefined;
     const town = localStorage.getItem("km0_town") ?? undefined;
-    const { error } = await supabase.auth.signInWithOtp({
-      email: email.trim(),
-      options: {
-        shouldCreateUser: true,
-        data: { postal_code: postalCode, town },
-      },
-    });
+    const { error } = await requestOtp(email.trim(), { postal_code: postalCode, town });
 
     if (error) {
       toast.error(error.message);
