@@ -24,29 +24,35 @@ const screens: ScreenEntry[] = [
     src: "/home",
     tree: `(NO usa BrandedFrame — frame propio portrait 9:19.5 / landscape 16:9)
 │
-├── Portrait  (landscape:hidden)
-│   └── HomeContent              ← layout reutilizable (scroll-y interno)
-│       ├── HomeHero             ← header FIJO (no se mueve con el scroll)
-│       │   ├── skyline malgrat  (bg absoluto, object-top, opacity-25)
-│       │   ├── fila header      (escudo + ciudad + KM0 + bell)
-│       │   └── greetingSlot
-│       │       └── GreetingBlock  ← saludo "👋 ¡Hola, {name}!" + subtítulo
-│       ├── body scroll-y
-│       │   ├── LoginButton      (solo si !user)
-│       │   ├── PointsCard       ← tarjeta puntos + progreso a nextLevel
-│       │   ├── section "Accesos rápidos"     → HomeModules
-│       │   ├── section "Eventos destacados"  → EventHeroCarousel
-│       │   ├── section "Descubre lo nuesto" → ComercioCarousel
-│       │   └── section "Promos para ti"      → CouponCard × N
-│       └── BottomTabs           ← fijo abajo
+├── Portrait  (landscape:hidden) → HomeContent
+│   ├── HomeHero               ← header FIJO (inline=true; showLogin={false})
+│   │   ├── skyline malgrat    (bg absoluto, object-top, opacity-25)
+│   │   ├── fila header        (escudo + ciudad + KM0 + bell)
+│   │   └── greetingSlot
+│   │       ├── GreetingBlock  ← "👋 ¡Hola, {name}!" + subtítulo
+│   │       └── PointsCard     (solo si showPoints — usuario auth)
+│   ├── body scroll-y
+│   │   ├── LoginButton        (solo si !user, centrado)
+│   │   ├── section "Accesos rápidos"     → HomeModules
+│   │   ├── section "Eventos destacados"  → EventHeroCarousel
+│   │   ├── section "Descubre lo nuestro" → ComercioCarousel
+│   │   └── section "Promos para ti"      → CouponCard × N
+│   ├── BottomTabs             ← fijo abajo (showProfile si auth)
 │   └── NotificationsOverlay
 │
-└── Landscape  (hidden landscape:flex)
-    └── HomeContent  (mismo árbol; HomeHero pasa a fondo absolute en landscape)
+└── Landscape  (hidden landscape:flex) → HomeContentLandscape
+    ├── HomeHero               ← inline=true; showLogin pasa al header
+    │   └── greetingSlot       → GreetingBlock + PointsCard (si auth)
+    ├── body scroll-y          → grid 2 columnas:
+    │   ├── col izq  → section "Accesos rápidos" (HomeModules)
+    │   │              + section "Eventos destacados" (EventHeroCarousel)
+    │   └── col der  → section "Descubre lo nuestro" (ComercioCarousel)
+    │                  + section "Promos para ti"    (CouponCard × N)
+    ├── BottomTabs             (oculto en landscape vía landscape:hidden)
     └── NotificationsOverlay
 
 Lógica:
-  · useAuth → showLogin / showProfile
+  · useAuth → isAuthed → showLogin / showProfile / showPoints
   · useNotifications → bell + overlay
   · modules state (INITIAL_MODULES) con toggleModule
   · módulo "agenda" → navigate("/agenda"); resto togglea activo`,
