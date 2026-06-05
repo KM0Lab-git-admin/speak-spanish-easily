@@ -74,12 +74,12 @@ const HomeContentLandscape = ({
             </div>
           </section>
 
-          <section className="row-span-2 grid grid-rows-subgrid border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-0 space-y-3 divide-y divide-km0-beige-200/60">
-            <div className="space-y-2.5 pb-3 min-w-0">
+          <section className="border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-2 self-start space-y-2.5">
+            <div className="space-y-2.5 min-w-0">
               <SectionHeader title={t("home.section.shops", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllComercios} />
               <ComercioCarousel comercios={comercios} />
             </div>
-            <div className="space-y-2.5 pt-3 min-h-0 min-w-0">
+            <div className="space-y-2.5 min-h-0 min-w-0">
               <SectionHeader title={t("home.section.coupons", lang)} actionLabel={t("home.action.see_all_f", lang)} onAction={onSeeAllCoupons} />
               <div className="flex flex-col gap-1.5">
                 {coupons.map((c, i) => (
