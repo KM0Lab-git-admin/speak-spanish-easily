@@ -114,7 +114,7 @@ interface SectionHeaderProps {
 }
 
 const SectionHeader = ({ title, actionLabel, onAction }: SectionHeaderProps) => (
-  <div className="flex items-center justify-between gap-2 min-w-0 text-xs">
+  <div className="gap-2 flex items-center justify-between min-w-0 text-xs">
     <h4 className="font-brand font-black text-km0-blue-800 truncate min-w-0 text-xs">
       {title}
     </h4>
