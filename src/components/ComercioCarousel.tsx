@@ -92,24 +92,6 @@ const ComercioCarousel = ({ comercios, perPage = 4 }: ComercioCarouselProps) => 
         </AnimatePresence>
       </div>
 
-      {total > 1 && (
-        <div className="flex items-center justify-center gap-1.5 mt-[clamp(0.375rem,1.5vw,0.75rem)] vertical-tablet:mt-3 horizontal-mobile:!mt-1 horizontal-mobile:shrink-0">
-          {pages.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => goTo(i)}
-              aria-label={`Ir a la página ${i + 1}`}
-              className={cn(
-                "rounded-full transition-all",
-                i === page
-                  ? "w-5 h-1.5 bg-km0-blue-700"
-                  : "w-1.5 h-1.5 bg-km0-blue-700/25 hover:bg-km0-blue-700/50",
-              )}
-            />
-          ))}
-        </div>
-      )}
     </div>
   );
 };
