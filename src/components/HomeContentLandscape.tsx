@@ -55,7 +55,7 @@ const HomeContentLandscape = ({
         inline
       />
 
-      <main className="flex-1 min-h-0 w-full grid gap-3 p-3 horizontal-desktop:p-4 horizontal-desktop:gap-4 horizontal-mobile:grid-cols-[minmax(0,1.05fr)_minmax(260px,0.75fr)] horizontal-desktop:grid-cols-[minmax(0,1.35fr)_minmax(360px,0.85fr)] overflow-hidden">
+      <main className="flex-1 min-h-0 w-full grid items-start gap-3 p-3 horizontal-desktop:p-4 horizontal-desktop:gap-4 horizontal-mobile:grid-cols-[minmax(0,1.05fr)_minmax(260px,0.75fr)] horizontal-desktop:grid-cols-[minmax(0,1.35fr)_minmax(360px,0.85fr)] overflow-hidden">
           <section className="min-w-0 overflow-hidden rounded-2xl border border-border bg-card/90 p-3 horizontal-desktop:p-4 shadow-sm grid grid-rows-[auto_auto] content-start gap-3">
             <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0">
               <SectionHeader title={t("home.section.quick", lang)} />
