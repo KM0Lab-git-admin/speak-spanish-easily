@@ -2,7 +2,7 @@ import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { supabase } from "@/integrations/supabase/client";
+import { requestOtp } from "@/services/mock/auth";
 import BrandedFrame from "@/components/BrandedFrame";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
