@@ -25,12 +25,12 @@ const Home = () => {
   const { lang } = useLang();
   const navigate = useNavigate();
 
-  // Regla de maquetación: mostrar SIEMPRE todos los componentes posibles
-  // de la pantalla (LoginButton, PointsCard, BottomTabs con perfil, etc.).
-  // La lógica de visibilidad por sesión se reactivará más adelante.
-  const showLogin = true;
-  const showProfile = true;
-  const showPoints = true;
+  // Estado real según sesión: sin user → mostrar CTA de login y ocultar
+  // puntos / acceso a perfil. Con user → al revés.
+  const isAuthed = !!user;
+  const showLogin = !isAuthed;
+  const showProfile = isAuthed;
+  const showPoints = isAuthed;
 
   const [searchParams] = useSearchParams();
   const [notifOpen, setNotifOpen] = useState(searchParams.get("notifs") === "open");
