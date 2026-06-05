@@ -2,7 +2,7 @@ import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { supabase } from "@/integrations/supabase/client";
+import { requestOtp } from "@/services/mock/auth";
 import BrandedFrame from "@/components/BrandedFrame";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
@@ -30,13 +30,7 @@ const Login = () => {
     setSubmitting(true);
     const postalCode = localStorage.getItem("km0_postal_code") ?? undefined;
     const town = localStorage.getItem("km0_town") ?? undefined;
-    const { error } = await supabase.auth.signInWithOtp({
-      email: email.trim(),
-      options: {
-        shouldCreateUser: true,
-        data: { postal_code: postalCode, town },
-      },
-    });
+    const { error } = await requestOtp(email.trim(), { postal_code: postalCode, town });
 
     if (error) {
       toast.error(error.message);

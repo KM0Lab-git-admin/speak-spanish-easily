@@ -1,12 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { getProfile } from "@/services/mock/profile";
 
 /**
- * useProfile — Lee la fila de `profiles` del usuario actual.
+ * useProfile — Lee el perfil del usuario actual (MOCK).
  *
- * Sin sesión → no toca BD y devuelve {profile: null, loading: false}.
- * Se cachea con react-query e invalida cuando cambia user.id.
+ * Sin sesión → devuelve {profile: null, loading: false}.
+ * Cuando se integre el backend real, cambiar la implementación de
+ * `getProfile` en `@/services/mock/profile` por la llamada a la API.
  */
 export interface Profile {
   first_name: string | null;
@@ -25,13 +26,7 @@ export const useProfile = () => {
     enabled: !!user && !authLoading,
     queryFn: async (): Promise<Profile | null> => {
       if (!user) return null;
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("first_name, last_name, email, postal_code, town, avatar_url")
-        .eq("user_id", user.id)
-        .maybeSingle();
-      if (error) return null;
-      return data as Profile | null;
+      return (await getProfile(user.id)) as Profile | null;
     },
   });
 

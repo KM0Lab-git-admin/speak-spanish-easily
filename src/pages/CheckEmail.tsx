@@ -3,7 +3,7 @@ import { useNavigate, useLocation, useSearchParams, Navigate } from "react-route
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { requestOtp, verifyOtp } from "@/services/mock/auth";
 import BrandedFrame from "@/components/BrandedFrame";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
@@ -50,11 +50,7 @@ const CheckEmail = () => {
   const verify = async (code: string) => {
     if (verifying) return;
     setVerifying(true);
-    const { error } = await supabase.auth.verifyOtp({
-      email,
-      token: code,
-      type: "email",
-    });
+    const { error } = await verifyOtp(email, code);
     if (error) {
       toast.error(t("otp.toast_wrong", lang));
       setDigits(Array(CODE_LENGTH).fill(""));
@@ -100,10 +96,7 @@ const CheckEmail = () => {
   const handleResend = async () => {
     if (cooldown > 0 || resending) return;
     setResending(true);
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { shouldCreateUser: true },
-    });
+    const { error } = await requestOtp(email);
     setResending(false);
     if (error) {
       toast.error(t("otp.toast_resend_fail", lang));

@@ -1,45 +1,40 @@
 import { useEffect, useState } from "react";
-import type { Session, User } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
+import {
+  getSession,
+  onAuthChange,
+  signOut as mockSignOut,
+  type MockSession,
+  type MockUser,
+} from "@/services/mock/auth";
 
 /**
- * useAuth — Hook central de sesión.
+ * useAuth — Hook central de sesión (MOCK).
  *
- * Reglas (críticas):
- *  - El listener `onAuthStateChange` se registra ANTES de `getSession()`
- *    para no perder eventos en frío.
- *  - Nunca hacemos llamadas Supabase pesadas dentro del callback del
- *    listener: solo actualizamos estado. Si hace falta cargar datos
- *    extra (perfil, etc.), se hace fuera con `setTimeout(..., 0)` o en
- *    otro hook que dependa del user.
+ * Lee la sesión desde el storage local y se suscribe a los cambios del
+ * mock de auth. Cuando se conecte el backend real, sustituir
+ * `@/services/mock/auth` por el cliente correspondiente; la API que
+ * expone este hook (`session`, `user`, `loading`, `signOut`) se mantiene.
  */
 export const useAuth = () => {
-  const [session, setSession] = useState<Session | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<MockSession | null>(null);
+  const [user, setUser] = useState<MockUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 1. Listener primero — no perder eventos.
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, newSession) => {
-        setSession(newSession);
-        setUser(newSession?.user ?? null);
-      }
-    );
-
-    // 2. Después leemos la sesión actual.
-    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
-      setSession(currentSession);
-      setUser(currentSession?.user ?? null);
-      setLoading(false);
+    const unsubscribe = onAuthChange((s) => {
+      setSession(s);
+      setUser(s?.user ?? null);
     });
 
-    return () => subscription.unsubscribe();
+    const current = getSession();
+    setSession(current);
+    setUser(current?.user ?? null);
+    setLoading(false);
+
+    return () => { unsubscribe(); };
   }, []);
 
-  const signOut = async () => {
-    await supabase.auth.signOut();
-  };
+  const signOut = async () => { await mockSignOut(); };
 
   return { session, user, loading, signOut };
 };
