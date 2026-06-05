@@ -66,7 +66,7 @@ const HomeContentLandscape = ({
               <SectionHeader title={t("home.section.quick", lang)} />
               <HomeModules modules={modules} />
             </div>
-            <div className="space-y-2.5 flex flex-col min-h-0 min-w-0">
+            <div className="space-y-2.5 flex flex-col min-h-0 min-w-0 self-start">
               <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
               <div className="min-h-0">
                 <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
