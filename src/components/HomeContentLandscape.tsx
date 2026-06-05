@@ -61,12 +61,12 @@ const HomeContentLandscape = ({
 
 
         <div className="grid grid-cols-[3fr_2fr] grid-rows-[auto_auto] gap-x-3 horizontal-desktop:gap-x-5 gap-y-4 items-start">
-          <section className="border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-2 self-start space-y-2.5">
+          <section className="row-span-2 grid grid-rows-subgrid gap-y-4 border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-2 space-y-0">
             <div className="space-y-2.5 min-w-0">
               <SectionHeader title={t("home.section.quick", lang)} />
               <HomeModules modules={modules} />
             </div>
-            <div className="space-y-2.5 flex flex-col min-h-0 min-w-0 self-start">
+            <div className="space-y-2.5 flex flex-col min-h-0 min-w-0">
               <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
               <div className="min-h-0">
                 <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
@@ -74,7 +74,7 @@ const HomeContentLandscape = ({
             </div>
           </section>
 
-          <section className="border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-2 self-start space-y-2.5">
+          <section className="row-span-2 grid grid-rows-subgrid gap-y-4 border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-2 space-y-0">
             <div className="space-y-2.5 min-w-0">
               <SectionHeader title={t("home.section.shops", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllComercios} />
               <ComercioCarousel comercios={comercios} />
@@ -89,6 +89,7 @@ const HomeContentLandscape = ({
             </div>
           </section>
         </div>
+
 
 
       </div>
