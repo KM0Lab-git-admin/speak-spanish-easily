@@ -169,9 +169,9 @@ const Chat = () => {
           lang={lang}
           onTranscript={(text) => {
             setInput(text);
-            setIsRecording(false);
+            send({ type: "TRANSCRIBED", text });
           }}
-          onCancel={() => setIsRecording(false)}
+          onCancel={() => send({ type: "CANCEL_RECORDING" })}
         />
       ) : (
         <motion.div
@@ -192,7 +192,7 @@ const Chat = () => {
           />
 
           <button
-            onClick={() => setIsRecording(true)}
+            onClick={() => send({ type: "START_RECORDING" })}
             className={`${compact ? "w-8 h-8" : "w-10 h-10"} flex items-center justify-center rounded-full bg-accent text-accent-foreground hover:opacity-90 transition-opacity shrink-0`}
             aria-label="Voice"
           >
