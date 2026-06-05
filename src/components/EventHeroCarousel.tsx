@@ -113,7 +113,7 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
       </div>
 
       {/* Dots */}
-      <div className="flex items-center justify-center gap-1.5 mt-2.5 horizontal-mobile:mt-1">
+      <div className="flex items-center justify-center gap-1.5 mt-2.5 horizontal-mobile:mt-1 landscape:hidden">
         {promos.map((_, i) => (
           <button
             key={i}
