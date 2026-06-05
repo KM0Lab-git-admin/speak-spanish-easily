@@ -1,13 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "@/hooks/useAuth";
-import { getProfile } from "@/services/mock/profile";
+import { useAppStore } from "@/stores/useAppStore";
 
 /**
- * useProfile — Lee el perfil del usuario actual (MOCK).
+ * useProfile — Perfil del usuario actual (Zustand).
  *
- * Sin sesión → devuelve {profile: null, loading: false}.
- * Cuando se integre el backend real, cambiar la implementación de
- * `getProfile` en `@/services/mock/profile` por la llamada a la API.
+ * Sin sesión devuelve `{ profile: null }`. Reactivo: cualquier cambio
+ * en el store re-renderiza los consumidores.
  */
 export interface Profile {
   first_name: string | null;
@@ -19,20 +16,12 @@ export interface Profile {
 }
 
 export const useProfile = () => {
-  const { user, loading: authLoading } = useAuth();
-
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ["profile", user?.id ?? "guest"],
-    enabled: !!user && !authLoading,
-    queryFn: async (): Promise<Profile | null> => {
-      if (!user) return null;
-      return (await getProfile(user.id)) as Profile | null;
-    },
-  });
+  const userId = useAppStore((s) => s.session?.user.id ?? null);
+  const profile = useAppStore((s) => (userId ? s.profiles[userId] ?? null : null));
 
   return {
-    profile: data ?? null,
-    loading: !!user && (authLoading || isLoading),
-    refetch,
+    profile: profile as Profile | null,
+    loading: false,
+    refetch: () => {/* no-op: el store es la fuente de verdad */},
   };
 };

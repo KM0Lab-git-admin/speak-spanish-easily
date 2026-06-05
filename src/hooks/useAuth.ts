@@ -1,40 +1,25 @@
-import { useEffect, useState } from "react";
-import {
-  getSession,
-  onAuthChange,
-  signOut as mockSignOut,
-  type MockSession,
-  type MockUser,
-} from "@/services/mock/auth";
+import { useAppStore, type AppSession, type AppUser } from "@/stores/useAppStore";
 
 /**
- * useAuth — Hook central de sesión (MOCK).
+ * useAuth — Sesión del usuario (Zustand).
  *
- * Lee la sesión desde el storage local y se suscribe a los cambios del
- * mock de auth. Cuando se conecte el backend real, sustituir
- * `@/services/mock/auth` por el cliente correspondiente; la API que
- * expone este hook (`session`, `user`, `loading`, `signOut`) se mantiene.
+ * Antes vivía en `services/mock/auth` + listeners propios; ahora es
+ * un selector fino sobre el store global. La firma se mantiene para no
+ * tocar las pantallas.
  */
+export type MockSession = AppSession;
+export type MockUser = AppUser;
+
 export const useAuth = () => {
-  const [session, setSession] = useState<MockSession | null>(null);
-  const [user, setUser] = useState<MockUser | null>(null);
-  const [loading, setLoading] = useState(true);
+  const session = useAppStore((s) => s.session);
+  const signOutAction = useAppStore((s) => s.signOut);
 
-  useEffect(() => {
-    const unsubscribe = onAuthChange((s) => {
-      setSession(s);
-      setUser(s?.user ?? null);
-    });
-
-    const current = getSession();
-    setSession(current);
-    setUser(current?.user ?? null);
-    setLoading(false);
-
-    return () => { unsubscribe(); };
-  }, []);
-
-  const signOut = async () => { await mockSignOut(); };
-
-  return { session, user, loading, signOut };
+  return {
+    session,
+    user: session?.user ?? null,
+    // Con Zustand+persist el estado se hidrata sincronamente desde
+    // localStorage en el primer render → ya no hay "loading" inicial.
+    loading: false,
+    signOut: async () => { signOutAction(); },
+  };
 };

@@ -1,77 +1,42 @@
 /**
  * Mock de autenticación (fase de maquetación).
  *
- * Reemplaza Supabase Auth. Persiste sesión en localStorage para que
- * sobreviva recargas. NO hace ninguna llamada de red.
+ * Las funciones mantienen la firma para que el porte al backend real
+ * (Twilio + Railway) sea solo un cambio de implementación. El estado
+ * vive en `useAppStore` (Zustand), no en localStorage directamente.
  *
- * Reglas de la simulación:
- *  - `requestOtp(email, metadata)`: "envía" un OTP (no-op) y guarda el email
- *    pendiente + metadata (CP/población) hasta que se verifique.
- *  - `verifyOtp(email, code)`: acepta CUALQUIER código de 4 dígitos.
- *    Crea sesión, materializa el perfil desde la metadata pendiente y
- *    notifica a los suscriptores.
- *  - `signOut()`: borra sesión y notifica.
- *
- * Cuando se integre el backend real (Twilio + Railway), sustituir el
- * cuerpo de estas funciones — la firma se mantiene.
+ *  - `requestOtp(email, metadata)`: registra pendingOtp.
+ *  - `verifyOtp(email, code)`: acepta cualquier código de 4 dígitos,
+ *    crea sesión y siembra el perfil.
+ *  - `signOut()`: limpia sesión.
+ *  - `getSession()` / `onAuthChange()`: utilitarios legacy basados en
+ *    el store; preferir `useAuth()` en componentes.
  */
+import {
+  useAppStore,
+  ensureProfileSeed,
+  type AppSession,
+  type AppUser,
+} from "@/stores/useAppStore";
 
-const SESSION_KEY = "km0_mock_session";
-const PENDING_KEY = "km0_mock_pending_otp";
+export type MockUser = AppUser;
+export type MockSession = AppSession;
 
-export interface MockUser {
-  id: string;
-  email: string;
-}
+export const getSession = (): MockSession | null => useAppStore.getState().session;
 
-export interface MockSession {
-  user: MockUser;
-  /** ISO timestamp de creación. */
-  createdAt: string;
-}
-
-interface PendingOtp {
-  email: string;
-  metadata?: { postal_code?: string; town?: string };
-}
-
-type Listener = (session: MockSession | null) => void;
-const listeners = new Set<Listener>();
-
-const safeGet = (key: string): string | null => {
-  try { return localStorage.getItem(key); } catch { return null; }
-};
-const safeSet = (key: string, value: string) => {
-  try { localStorage.setItem(key, value); } catch {/* ignore */}
-};
-const safeRemove = (key: string) => {
-  try { localStorage.removeItem(key); } catch {/* ignore */}
-};
-
-export const getSession = (): MockSession | null => {
-  const raw = safeGet(SESSION_KEY);
-  if (!raw) return null;
-  try { return JSON.parse(raw) as MockSession; } catch { return null; }
-};
-
-const notify = () => {
-  const s = getSession();
-  listeners.forEach((l) => l(s));
-};
-
-export const onAuthChange = (cb: Listener): (() => void) => {
-  listeners.add(cb);
-  return () => listeners.delete(cb);
+export const onAuthChange = (cb: (s: MockSession | null) => void): (() => void) => {
+  return useAppStore.subscribe((state, prev) => {
+    if (state.session !== prev.session) cb(state.session);
+  });
 };
 
 export const requestOtp = async (
   email: string,
-  metadata?: PendingOtp["metadata"],
+  metadata?: { postal_code?: string; town?: string },
 ): Promise<{ error: { message: string } | null }> => {
-  if (!email.trim()) return { error: { message: "Email requerido" } };
-  const pending: PendingOtp = { email: email.trim(), metadata };
-  safeSet(PENDING_KEY, JSON.stringify(pending));
-  // Simula latencia mínima de red.
+  const trimmed = email.trim();
+  if (!trimmed) return { error: { message: "Email requerido" } };
+  useAppStore.getState().setPendingOtp({ email: trimmed, ...metadata });
   await new Promise((r) => setTimeout(r, 250));
   return { error: null };
 };
@@ -80,17 +45,11 @@ export const verifyOtp = async (
   email: string,
   code: string,
 ): Promise<{ error: { message: string } | null }> => {
-  if (!/^\d{4}$/.test(code)) {
-    return { error: { message: "Código no válido" } };
-  }
+  if (!/^\d{4}$/.test(code)) return { error: { message: "Código no válido" } };
   await new Promise((r) => setTimeout(r, 200));
 
-  // Recupera metadata pendiente (si la hay) para materializar el perfil.
-  const pendingRaw = safeGet(PENDING_KEY);
-  let pendingMeta: PendingOtp["metadata"] | undefined;
-  if (pendingRaw) {
-    try { pendingMeta = (JSON.parse(pendingRaw) as PendingOtp).metadata; } catch {/* ignore */}
-  }
+  const store = useAppStore.getState();
+  const pending = store.pendingOtp;
 
   const session: MockSession = {
     user: {
@@ -99,20 +58,16 @@ export const verifyOtp = async (
     },
     createdAt: new Date().toISOString(),
   };
-  safeSet(SESSION_KEY, JSON.stringify(session));
-  safeRemove(PENDING_KEY);
 
-  // Sembrar perfil si no existe.
-  try {
-    const { ensureProfileSeed } = await import("./profile");
-    ensureProfileSeed(session.user, pendingMeta);
-  } catch {/* ignore */}
-
-  notify();
+  store.setSession(session);
+  store.setPendingOtp(null);
+  ensureProfileSeed(session.user, {
+    postal_code: pending?.postal_code,
+    town: pending?.town,
+  });
   return { error: null };
 };
 
 export const signOut = async (): Promise<void> => {
-  safeRemove(SESSION_KEY);
-  notify();
+  useAppStore.getState().signOut();
 };
