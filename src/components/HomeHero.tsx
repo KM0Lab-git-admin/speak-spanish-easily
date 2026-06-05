@@ -54,8 +54,8 @@ const HomeHero = ({
     <motion.section
       className={
         inline
-          ? "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-2"
-          : "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-2 horizontal-mobile:absolute horizontal-mobile:inset-0 horizontal-mobile:pointer-events-none horizontal-mobile:pb-0 horizontal-desktop:absolute horizontal-desktop:inset-0 horizontal-desktop:pointer-events-none horizontal-desktop:pb-0"
+          ? "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-0"
+          : "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-0 horizontal-mobile:absolute horizontal-mobile:inset-0 horizontal-mobile:pointer-events-none horizontal-mobile:pb-0 horizontal-desktop:absolute horizontal-desktop:inset-0 horizontal-desktop:pointer-events-none horizontal-desktop:pb-0"
       }
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -71,7 +71,7 @@ const HomeHero = ({
       />
 
       {/* Fila header: escudo + nombre + KM0 + login + bell */}
-      <div className="relative z-10 flex items-center justify-between gap-3 pl-2 pr-4 pt-4 vertical-mobile:!pt-2 vertical-mobile:!pb-1 horizontal-mobile:pointer-events-auto horizontal-mobile:pt-2 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto px-0 py-0">
+      <div className="relative z-10 flex items-center justify-between gap-3 pl-2 pr-4 pt-2 vertical-mobile:!pt-1 vertical-mobile:!pb-1 horizontal-mobile:pointer-events-auto horizontal-mobile:pt-1 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto px-0 py-0">
         <div className="flex items-center gap-2 min-w-0">
           {onBack && (
             <button
