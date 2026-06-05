@@ -22,7 +22,7 @@ const screens: ScreenEntry[] = [
   {
     label: "Home",
     src: "/home",
-    tree: `(NO usa BrandedFrame — frame propio portrait 9:19.5 / landscape 16:9)
+    tree: `(NO usa BrandedFrame — DeviceShell propio: portrait móvil / landscape app-frame compacto max 1200×550)
 │
 ├── Portrait  (landscape:hidden) → HomeContent
 │   ├── HomeHero               ← header FIJO (inline=true; showLogin={false})
@@ -41,13 +41,13 @@ const screens: ScreenEntry[] = [
 │   └── NotificationsOverlay
 │
 └── Landscape  (hidden landscape:flex) → HomeContentLandscape
-    ├── HomeHero               ← inline=true; showLogin pasa al header
+    ├── HomeHero               ← inline=true; header fijo 92px / 78px desktop
     │   └── greetingSlot       → GreetingBlock + PointsCard (si auth)
-    ├── body compacto          → grid 2 columnas (sin scroll en 667×375):
-    │   ├── col izq  → section "Accesos rápidos" (HomeModules)
-    │   │              + section "Eventos destacados" (EventHeroCarousel)
-    │   └── col der  → section "Descubre lo nuestro" (ComercioCarousel)
-    │                  + section "Promos para ti"    (CouponCard × N)
+    ├── main compacto          → grid 2 columnas, flex-1 dentro del frame:
+    │   ├── panel izq → Accesos rápidos (HomeModules, banda fija)
+    │   │              + Eventos destacados (EventHeroCarousel h 108/150)
+    │   └── panel der → Descubre lo nuestro (ComercioCarousel 4 cols)
+    │                  + Promos para ti (CouponCard × N, juntas bajo título)
     ├── BottomTabs             (oculto en landscape vía landscape:hidden)
     └── NotificationsOverlay
 

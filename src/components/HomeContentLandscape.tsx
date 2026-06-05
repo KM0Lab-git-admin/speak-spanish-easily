@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import HomeHero from "./HomeHero";
 import HomeModules from "./HomeModules";
@@ -8,7 +7,6 @@ import CouponCard from "./CouponCard";
 import PointsCard from "./PointsCard";
 import GreetingBlock from "./GreetingBlock";
 import BottomTabs from "./BottomTabs";
-import LoginButton from "./LoginButton";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 import type { HomeContentProps } from "./HomeContent";
@@ -57,37 +55,33 @@ const HomeContentLandscape = ({
         inline
       />
 
-      <div className="flex-1 min-h-0 overflow-hidden flex flex-col gap-1 px-2.5 pt-1 pb-0.5 horizontal-desktop:gap-3 horizontal-desktop:px-4 horizontal-desktop:pt-2 horizontal-desktop:pb-3">
-        <div className="grid grid-cols-[minmax(0,1.05fr)_minmax(260px,0.75fr)] horizontal-desktop:grid-cols-[minmax(0,1.35fr)_minmax(360px,0.85fr)] gap-x-2.5 horizontal-desktop:gap-x-4 gap-y-1 items-start w-full">
-          <section className="grid grid-rows-[auto_auto] content-start gap-y-1 horizontal-desktop:gap-y-3 border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-0.5 horizontal-desktop:py-3">
-            <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0 flex flex-col">
+      <main className="flex-1 min-h-0 w-full grid items-start gap-3 p-3 horizontal-desktop:p-4 horizontal-desktop:gap-4 horizontal-mobile:grid-cols-[minmax(0,1.05fr)_minmax(260px,0.75fr)] horizontal-desktop:grid-cols-[minmax(0,1.35fr)_minmax(360px,0.85fr)] overflow-hidden">
+          <section className="min-w-0 overflow-hidden rounded-2xl border border-border bg-card/90 p-3 horizontal-desktop:p-4 shadow-sm grid grid-rows-[auto_auto] content-start gap-3">
+            <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0">
               <SectionHeader title={t("home.section.quick", lang)} />
               <HomeModules modules={modules} />
             </div>
-            <div className="space-y-1 horizontal-desktop:space-y-2 flex flex-col min-w-0">
+            <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0">
               <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
-              <div className="horizontal-desktop:max-h-[170px]">
-                <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
-              </div>
+              <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
             </div>
           </section>
 
-          <section className="grid grid-rows-[auto_auto] content-start gap-y-1 horizontal-desktop:gap-y-3 border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-0.5 horizontal-desktop:py-3">
-            <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0 flex flex-col">
+          <section className="min-w-0 overflow-hidden rounded-2xl border border-border bg-card/90 p-3 horizontal-desktop:p-4 shadow-sm grid grid-rows-[auto_auto] content-start gap-4">
+            <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0">
               <SectionHeader title={t("home.section.shops", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllComercios} />
               <ComercioCarousel comercios={comercios} />
             </div>
-            <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0 flex flex-col">
+            <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0">
               <SectionHeader title={t("home.section.coupons", lang)} actionLabel={t("home.action.see_all_f", lang)} onAction={onSeeAllCoupons} />
-              <div className="flex flex-col gap-1 horizontal-desktop:gap-2">
+              <div className="grid gap-3">
                 {coupons.map((c, i) => (
                   <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
                 ))}
               </div>
             </div>
           </section>
-        </div>
-      </div>
+      </main>
 
       <div className="landscape:hidden contents">
         <BottomTabs

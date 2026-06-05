@@ -66,7 +66,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
     <div className={cn("relative w-full max-w-full", className)}>
       <div
         className={cn(
-          "relative bg-km0-beige-100 rounded-t-3xl rounded-bl-[40%_24px] rounded-br-[40%_24px] px-3 opacity-100 my-0 py-0",
+          "relative bg-km0-beige-100 rounded-t-3xl rounded-bl-[40%_24px] rounded-br-[40%_24px] px-3 opacity-100 my-0 py-0 horizontal-mobile:!h-[70px] horizontal-desktop:!h-[78px] horizontal-mobile:!rounded-3xl",
         )}
       >
         {/* Patrón decorativo sutil arriba — círculos translúcidos
@@ -83,7 +83,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
 
         {/* Iconos: grid 4 columnas iguales para distribución determinista,
             independiente del ancho del label. */}
-        <div className="relative grid grid-cols-4 items-end gap-0">
+        <div className="relative grid grid-cols-4 items-end gap-0 horizontal-mobile:!h-full horizontal-mobile:!items-center">
           {modules.map((mod) => (
             <ModuleItem key={mod.id} module={mod} emphasized={false} />
           ))}

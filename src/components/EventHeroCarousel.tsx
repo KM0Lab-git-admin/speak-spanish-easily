@@ -37,7 +37,7 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
 
   return (
     <div className="w-full">
-      <div className="relative w-full rounded-2xl overflow-hidden shadow-[0_12px_28px_-14px_hsl(var(--km0-blue-900)/0.4)] aspect-[16/10] vertical-tablet:aspect-[16/9] horizontal-mobile:!aspect-[10/3] horizontal-desktop:!aspect-[4/1] min-h-[120px] horizontal-mobile:!min-h-[106px] horizontal-desktop:!min-h-[120px]">
+      <div className="relative w-full rounded-2xl overflow-hidden bg-primary shadow-[0_12px_28px_-14px_hsl(var(--km0-blue-900)/0.4)] aspect-[16/10] vertical-tablet:aspect-[16/9] min-h-[120px] horizontal-mobile:!aspect-auto horizontal-mobile:!h-[108px] horizontal-mobile:!min-h-0 horizontal-desktop:!h-[150px] horizontal-desktop:!max-h-[160px]">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={promo.id}
@@ -83,7 +83,7 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
             </div>
 
             {/* Contenido inferior izquierdo */}
-            <div className="absolute left-4 right-16 bottom-3 vertical-tablet:left-5 vertical-tablet:bottom-4 horizontal-mobile:!left-2.5 horizontal-mobile:!bottom-2 horizontal-mobile:!right-12 pointer-events-none select-none">
+            <div className="absolute left-4 right-16 bottom-3 vertical-tablet:left-5 vertical-tablet:bottom-4 horizontal-mobile:!left-3 horizontal-mobile:!bottom-3 horizontal-mobile:!right-12 horizontal-desktop:!left-4 horizontal-desktop:!bottom-4 pointer-events-none select-none">
               <h3 className="font-brand font-black text-white leading-[1.05] whitespace-pre-line text-2xl vertical-tablet:text-3xl horizontal-mobile:!text-base">
                 {promo.title}
               </h3>

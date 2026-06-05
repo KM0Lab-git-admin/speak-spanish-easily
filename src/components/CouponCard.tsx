@@ -43,7 +43,7 @@ const CouponCard = ({ coupon, onClick, delay = 0 }: CouponCardProps) => {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay }}
-      className="w-full rounded-2xl bg-km0-beige-100 border border-km0-blue-700/10 shadow-[0_4px_14px_-8px_hsl(var(--km0-blue-900)/0.2)] px-3 py-2.5 vertical-tablet:px-4 vertical-tablet:py-3 horizontal-mobile:!px-2 horizontal-mobile:!py-1.5 flex items-center gap-3 horizontal-mobile:!gap-2 active:scale-[0.99] hover:bg-km0-beige-50 transition-all text-left"
+      className="w-full rounded-2xl bg-secondary border border-border shadow-[0_4px_14px_-8px_hsl(var(--km0-blue-900)/0.2)] px-3 py-2.5 vertical-tablet:px-4 vertical-tablet:py-3 horizontal-mobile:!h-[58px] horizontal-mobile:!px-3 horizontal-mobile:!py-0 horizontal-desktop:!h-[64px] flex items-center gap-3 active:scale-[0.99] hover:bg-km0-beige-50 transition-all text-left"
     >
       <span
         className={cn(
