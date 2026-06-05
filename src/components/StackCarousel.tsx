@@ -194,6 +194,7 @@ function StackCarousel<T extends StackCarouselItem>({
                       cursor: isActive ? "default" : "pointer",
                       zIndex: isActive ? 10 : 1,
                       position: "relative",
+                      pointerEvents: "auto",
                     }}
                   >
                     {isActive && (<>
