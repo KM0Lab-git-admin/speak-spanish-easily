@@ -37,7 +37,7 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
 
   return (
     <div className="w-full">
-      <div className="relative w-full rounded-2xl overflow-hidden shadow-[0_12px_28px_-14px_hsl(var(--km0-blue-900)/0.4)] aspect-[16/10] vertical-tablet:aspect-[16/9] horizontal-mobile:!aspect-[3/1] horizontal-desktop:!aspect-[4/1] min-h-[120px]">
+      <div className="relative w-full rounded-2xl overflow-hidden shadow-[0_12px_28px_-14px_hsl(var(--km0-blue-900)/0.4)] aspect-[16/10] vertical-tablet:aspect-[16/9] horizontal-mobile:!aspect-[10/3] horizontal-desktop:!aspect-[4/1] min-h-[120px] horizontal-mobile:!min-h-[106px] horizontal-desktop:!min-h-[120px]">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={promo.id}
