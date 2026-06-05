@@ -2,21 +2,18 @@
  * chatMachine — Máquina de estados del chat KM0.
  *
  * Estados:
- *   - idle:        compositor visible, esperando input.
- *   - recording:   `VoiceRecorder` activo (Web Speech API).
- *   - sending:     petición al backend en vuelo (queryEvents).
- *   - error:       último envío falló; vuelve a `idle` al siguiente evento.
+ *   - idle / recording / sending / error
  *
- * El `context` guarda el texto pendiente y el último error legible.
- * La pantalla envía eventos (`SEND`, `START_RECORDING`, …) y el
- * `actor` resuelve transiciones + invoca `queryEvents` desde el actor
- * `sendQuery`. Las respuestas las recoge `Chat.tsx` vía `useSelector`
- * y se materializan en la lista de mensajes.
+ * El contexto guarda `lastResult` (cada respuesta exitosa) y
+ * `lastError`. La UI hace `useSelector` sobre ellos y los materializa
+ * en la lista de mensajes cuando cambian.
  */
 import { assign, fromPromise, setup } from "xstate";
 import { queryEvents, type Evento } from "@/services/eventQueryApi";
 
 export interface ChatResult {
+  /** id incremental para detectar cambios en la UI. */
+  id: number;
   text: string;
   eventos: Evento[];
 }
@@ -24,7 +21,9 @@ export interface ChatResult {
 export interface ChatContext {
   draft: string;
   postalCode: string;
-  errorMessage: string | null;
+  lastResult: ChatResult | null;
+  lastError: string | null;
+  resultCounter: number;
 }
 
 export type ChatEvent =
@@ -35,24 +34,22 @@ export type ChatEvent =
   | { type: "RETRY" }
   | { type: "DISMISS_ERROR" };
 
-export type ChatEmitted =
-  | { type: "result"; result: ChatResult }
-  | { type: "failed"; message: string };
-
 export const chatMachine = setup({
   types: {
     context: {} as ChatContext,
     events: {} as ChatEvent,
     input: {} as { postalCode: string },
-    emitted: {} as ChatEmitted,
   },
   actors: {
-    sendQuery: fromPromise<ChatResult, { text: string; postalCode: string }>(
+    sendQuery: fromPromise<{ text: string; eventos: Evento[] }, { text: string; postalCode: string }>(
       async ({ input }) => {
         const data = await queryEvents(input.text, input.postalCode);
         return { text: data.respuesta_texto, eventos: data.eventos };
       },
     ),
+  },
+  guards: {
+    hasText: ({ event }) => event.type === "SEND" && event.text.trim().length > 0,
   },
 }).createMachine({
   id: "chat",
@@ -60,15 +57,20 @@ export const chatMachine = setup({
   context: ({ input }) => ({
     draft: "",
     postalCode: input.postalCode,
-    errorMessage: null,
+    lastResult: null,
+    lastError: null,
+    resultCounter: 0,
   }),
   states: {
     idle: {
       on: {
         SEND: {
           target: "sending",
-          guard: ({ event }) => event.text.trim().length > 0,
-          actions: assign({ draft: ({ event }) => event.text.trim(), errorMessage: null }),
+          guard: "hasText",
+          actions: assign({
+            draft: ({ event }) => (event.type === "SEND" ? event.text.trim() : ""),
+            lastError: null,
+          }),
         },
         START_RECORDING: "recording",
       },
@@ -78,7 +80,9 @@ export const chatMachine = setup({
         CANCEL_RECORDING: "idle",
         TRANSCRIBED: {
           target: "idle",
-          actions: assign({ draft: ({ event }) => event.text }),
+          actions: assign({
+            draft: ({ event }) => (event.type === "TRANSCRIBED" ? event.text : ""),
+          }),
         },
       },
     },
@@ -88,18 +92,21 @@ export const chatMachine = setup({
         input: ({ context }) => ({ text: context.draft, postalCode: context.postalCode }),
         onDone: {
           target: "idle",
-          actions: [
-            assign({ draft: "" }),
-            ({ event, self }) => self.send({ type: "__noop" } as never) || undefined,
-            // emite el resultado para que la UI lo añada a la lista
-            ({ event }) => event,
-            { type: "emitResult", params: ({ event }) => event.output } as never,
-          ],
+          actions: assign(({ context, event }) => ({
+            draft: "",
+            resultCounter: context.resultCounter + 1,
+            lastResult: {
+              id: context.resultCounter + 1,
+              text: event.output.text,
+              eventos: event.output.eventos,
+            },
+          })),
         },
         onError: {
           target: "error",
           actions: assign({
-            errorMessage: () => "Lo siento, ha ocurrido un error al consultar los eventos. Inténtalo de nuevo.",
+            lastError: () =>
+              "Lo siento, ha ocurrido un error al consultar los eventos. Inténtalo de nuevo.",
           }),
         },
       },
@@ -108,11 +115,14 @@ export const chatMachine = setup({
       on: {
         SEND: {
           target: "sending",
-          guard: ({ event }) => event.text.trim().length > 0,
-          actions: assign({ draft: ({ event }) => event.text.trim(), errorMessage: null }),
+          guard: "hasText",
+          actions: assign({
+            draft: ({ event }) => (event.type === "SEND" ? event.text.trim() : ""),
+            lastError: null,
+          }),
         },
         RETRY: { target: "sending" },
-        DISMISS_ERROR: { target: "idle", actions: assign({ errorMessage: null }) },
+        DISMISS_ERROR: { target: "idle", actions: assign({ lastError: null }) },
         START_RECORDING: "recording",
       },
     },
