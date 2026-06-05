@@ -18,13 +18,21 @@ interface DeviceShellProps {
 
 const DeviceShell = ({ children }: DeviceShellProps) => {
   return (
-    <div className="min-h-[100dvh] w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100">
+    <div
+      className="min-h-[100dvh] w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100"
+      style={{
+        paddingTop: "env(safe-area-inset-top)",
+        paddingBottom: "env(safe-area-inset-bottom)",
+        paddingLeft: "env(safe-area-inset-left)",
+        paddingRight: "env(safe-area-inset-right)",
+      }}
+    >
       {/* PORTRAIT — 9:19.5 (vertical-mobile + vertical-tablet) */}
       <div
         className="landscape:hidden relative flex flex-col bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden"
         style={{
           width: "min(100vw, 420px)",
-          height: "100dvh",
+          height: "min(100dvh, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)))",
         }}
       >
         {children}
