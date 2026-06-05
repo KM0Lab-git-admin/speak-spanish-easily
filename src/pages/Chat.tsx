@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ChevronLeft, Mic, Send, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useMachine } from "@xstate/react";
 import Km0Logo from "@/components/Km0Logo";
 import DeviceShell from "@/components/DeviceShell";
 import NotificationBell from "@/components/NotificationBell";
@@ -12,7 +13,8 @@ import EventCard from "@/components/EventCard";
 import robotIcon from "@/assets/km0_robot_icon_v2.png";
 import chatLogo from "@/assets/km0_chat_blue.png";
 import xatLogo from "@/assets/km0_xat_blue.png";
-import { queryEvents, type Evento } from "@/services/eventQueryApi";
+import { type Evento } from "@/services/eventQueryApi";
+import { chatMachine } from "@/machines/chatMachine";
 
 type Lang = "ca" | "es" | "en";
 
@@ -66,8 +68,6 @@ const Chat = () => {
     { id: 1, role: "assistant", content: t.greeting(cityName) },
   ]);
   const [input, setInput] = useState("");
-  const [isRecording, setIsRecording] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRefP = useRef<HTMLDivElement>(null);
   const messagesEndRefL = useRef<HTMLDivElement>(null);
   const { notifications, hasUnread, markRead, markAllRead } = useNotifications();
@@ -76,6 +76,13 @@ const Chat = () => {
     markAllRead();
   };
   const [notifOpen, setNotifOpen] = useState(false);
+
+  // XState: máquina de estados del chat (idle / recording / sending / error)
+  const [state, send] = useMachine(chatMachine, { input: { postalCode } });
+  const isRecording = state.matches("recording");
+  const isLoading = state.matches("sending");
+  const lastResultId = state.context.lastResult?.id ?? 0;
+  const lastError = state.context.lastError;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -86,39 +93,32 @@ const Chat = () => {
     messagesEndRefL.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = async () => {
+  // Materializa cada nuevo resultado de la máquina en la lista de mensajes.
+  useEffect(() => {
+    const result = state.context.lastResult;
+    if (!result) return;
+    setMessages((prev) => [
+      ...prev,
+      { id: Date.now(), role: "assistant", content: result.text, eventos: result.eventos },
+    ]);
+  }, [lastResultId]);
+
+  // Materializa errores como mensaje del asistente y limpia el flag.
+  useEffect(() => {
+    if (!lastError) return;
+    setMessages((prev) => [
+      ...prev,
+      { id: Date.now(), role: "assistant", content: lastError },
+    ]);
+    send({ type: "DISMISS_ERROR" });
+  }, [lastError, send]);
+
+  const handleSend = () => {
     const text = input.trim();
     if (!text || isLoading) return;
-
-    const userMsg: Message = { id: Date.now(), role: "user", content: text };
-    setMessages((prev) => [...prev, userMsg]);
+    setMessages((prev) => [...prev, { id: Date.now(), role: "user", content: text }]);
     setInput("");
-    setIsLoading(true);
-
-    try {
-      const data = await queryEvents(text, postalCode);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: Date.now() + 1,
-          role: "assistant",
-          content: data.respuesta_texto,
-          eventos: data.eventos,
-        },
-      ]);
-    } catch (err) {
-      console.error("API error:", err);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: Date.now() + 1,
-          role: "assistant",
-          content: "Lo siento, ha ocurrido un error al consultar los eventos. Inténtalo de nuevo.",
-        },
-      ]);
-    } finally {
-      setIsLoading(false);
-    }
+    send({ type: "SEND", text });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
