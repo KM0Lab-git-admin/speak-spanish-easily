@@ -50,11 +50,7 @@ const CheckEmail = () => {
   const verify = async (code: string) => {
     if (verifying) return;
     setVerifying(true);
-    const { error } = await supabase.auth.verifyOtp({
-      email,
-      token: code,
-      type: "email",
-    });
+    const { error } = await verifyOtp(email, code);
     if (error) {
       toast.error(t("otp.toast_wrong", lang));
       setDigits(Array(CODE_LENGTH).fill(""));
