@@ -99,15 +99,12 @@ const Profile = () => {
     }
 
     setSaving(true);
-    const { error } = await supabase
-      .from("profiles")
-      .update({
-        first_name: form.first_name.trim() || null,
-        last_name: form.last_name.trim() || null,
-        postal_code: form.postal_code.trim() || null,
-        town: town ?? null,
-      })
-      .eq("user_id", user.id);
+    const { error } = await updateProfile(user.id, {
+      first_name: form.first_name.trim() || null,
+      last_name: form.last_name.trim() || null,
+      postal_code: form.postal_code.trim() || null,
+      town: town ?? null,
+    });
 
     setSaving(false);
     if (error) {
