@@ -162,7 +162,7 @@ function StackCarousel<T extends StackCarouselItem>({
           transition={{ duration: 0.45, delay: 0.2 }}
         >
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 pointer-events-none"
             style={{ transform: `scale(${portraitScale})`, transformOrigin: "center center" }}
           >
             <div
@@ -194,6 +194,7 @@ function StackCarousel<T extends StackCarouselItem>({
                       cursor: isActive ? "default" : "pointer",
                       zIndex: isActive ? 10 : 1,
                       position: "relative",
+                      pointerEvents: "auto",
                     }}
                   >
                     {isActive && (<>
