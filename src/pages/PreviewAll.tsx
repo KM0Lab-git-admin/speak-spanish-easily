@@ -330,7 +330,7 @@ const PreviewAll = () => {
         </p>
       </header>
 
-      <main className="w-full px-4 py-6 flex flex-col gap-10">
+      <main className="w-full px-6 sm:px-10 lg:px-16 py-6 flex flex-col gap-10">
         {screens.map((s) => {
           // La Home se renderiza SIN iframe para permitir Visual Edit.
           // El resto de pantallas sigue con iframe en esta iteración.
