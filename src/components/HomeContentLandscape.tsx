@@ -57,31 +57,29 @@ const HomeContentLandscape = ({
         inline
       />
 
-      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col gap-1 px-2.5 pt-1 pb-0.5 horizontal-desktop:gap-3 horizontal-desktop:px-3 horizontal-desktop:pt-2 horizontal-desktop:pb-3">
-
-
-        <div className="grid grid-cols-[3fr_2fr] grid-rows-[auto_auto] gap-x-2.5 horizontal-desktop:gap-x-5 gap-y-1 horizontal-desktop:gap-y-3 items-start horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:items-stretch">
-          <section className="row-span-2 grid grid-rows-subgrid gap-y-1 horizontal-desktop:gap-y-6 border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-0.5 horizontal-desktop:py-4 space-y-0 horizontal-desktop:h-full">
-            <div className="space-y-1 horizontal-desktop:space-y-3 min-w-0 flex flex-col">
+      <div className="flex-1 min-h-0 overflow-hidden flex flex-col gap-1 px-2.5 pt-1 pb-0.5 horizontal-desktop:gap-3 horizontal-desktop:px-4 horizontal-desktop:pt-2 horizontal-desktop:pb-3">
+        <div className="grid grid-cols-[minmax(0,1.05fr)_minmax(260px,0.75fr)] horizontal-desktop:grid-cols-[minmax(0,1.35fr)_minmax(360px,0.85fr)] gap-x-2.5 horizontal-desktop:gap-x-4 gap-y-1 items-start mx-auto w-full horizontal-desktop:max-w-[1180px]">
+          <section className="grid grid-rows-[auto_auto] content-start gap-y-1 horizontal-desktop:gap-y-3 border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-0.5 horizontal-desktop:py-3">
+            <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0 flex flex-col">
               <SectionHeader title={t("home.section.quick", lang)} />
               <HomeModules modules={modules} />
             </div>
-            <div className="space-y-1 horizontal-desktop:space-y-3 flex flex-col min-h-0 min-w-0 horizontal-desktop:flex-1">
+            <div className="space-y-1 horizontal-desktop:space-y-2 flex flex-col min-w-0">
               <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
-              <div className="min-h-0 horizontal-desktop:flex-1">
+              <div className="horizontal-desktop:max-h-[170px]">
                 <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
               </div>
             </div>
           </section>
 
-          <section className="row-span-2 grid grid-rows-subgrid gap-y-1 horizontal-desktop:gap-y-6 border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-0.5 horizontal-desktop:py-4 space-y-0 horizontal-desktop:h-full">
-            <div className="space-y-1 horizontal-desktop:space-y-3 min-w-0 flex flex-col">
+          <section className="grid grid-rows-[auto_auto] content-start gap-y-1 horizontal-desktop:gap-y-3 border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-0.5 horizontal-desktop:py-3">
+            <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0 flex flex-col">
               <SectionHeader title={t("home.section.shops", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllComercios} />
               <ComercioCarousel comercios={comercios} />
             </div>
-            <div className="space-y-1 horizontal-desktop:space-y-3 min-h-0 min-w-0 flex flex-col horizontal-desktop:flex-1">
+            <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0 flex flex-col">
               <SectionHeader title={t("home.section.coupons", lang)} actionLabel={t("home.action.see_all_f", lang)} onAction={onSeeAllCoupons} />
-              <div className="flex flex-col gap-0.5 horizontal-desktop:gap-3 horizontal-desktop:flex-1 horizontal-desktop:justify-around">
+              <div className="flex flex-col gap-1 horizontal-desktop:gap-2">
                 {coupons.map((c, i) => (
                   <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
                 ))}
@@ -89,10 +87,6 @@ const HomeContentLandscape = ({
             </div>
           </section>
         </div>
-
-
-
-
       </div>
 
       <div className="landscape:hidden contents">
