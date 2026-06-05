@@ -23,8 +23,8 @@ const DeviceShell = ({ children }: DeviceShellProps) => {
       <div
         className="landscape:hidden relative flex flex-col bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden"
         style={{
-          width: "min(100vw, calc(100dvh * 9 / 19.5), 420px)",
-          height: "min(100dvh, calc(100vw * 19.5 / 9), calc(420px * 19.5 / 9))",
+          width: "min(100vw, 420px)",
+          height: "100dvh",
         }}
       >
         {children}
