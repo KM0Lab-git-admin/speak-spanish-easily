@@ -60,7 +60,7 @@ const HomeContentLandscape = ({
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col gap-3 px-3 pt-2 pb-3">
 
 
-        <div className="grid grid-cols-[3fr_2fr] grid-rows-[auto_auto] gap-x-3 horizontal-desktop:gap-x-5 gap-y-4 items-start">
+        <div className="grid grid-cols-[3fr_2fr] gap-x-3 horizontal-desktop:gap-x-5 items-start">
           <section className="border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 ring-1 ring-white/60 px-[10px] min-w-0 shadow-lg rounded-md py-2 self-start space-y-2.5">
             <div className="space-y-2.5 min-w-0">
               <SectionHeader title={t("home.section.quick", lang)} />
