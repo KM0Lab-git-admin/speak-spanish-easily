@@ -38,13 +38,11 @@ const DeviceShell = ({ children }: DeviceShellProps) => {
         {children}
       </div>
 
-      {/* LANDSCAPE — 16:9 (horizontal-mobile + horizontal-desktop) */}
+      {/* LANDSCAPE — 16:9 (horizontal-mobile + horizontal-desktop)
+          Altura máxima limitada a 550px en desktop para evitar que el frame
+          crezca indefinidamente en pantallas altas (1600x900, etc). */}
       <div
-        className="hidden landscape:flex relative bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col"
-        style={{
-          width: "min(100vw, calc(100dvh * 16 / 9), 1700px)",
-          height: "min(100dvh, calc(100vw * 9 / 16), calc(1700px * 9 / 16))",
-        }}
+        className="hidden landscape:flex relative bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden flex-col w-full max-w-[1200px] h-[calc(100dvh-16px)] horizontal-desktop:h-[min(calc(100dvh-32px),550px)]"
       >
         {children}
       </div>
