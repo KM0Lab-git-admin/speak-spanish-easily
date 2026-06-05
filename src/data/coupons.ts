@@ -14,10 +14,4 @@ export const COUPONS: Coupon[] = [
     validity: "Te faltan 241 puntos",
     kind: "gift",
   },
-  {
-    id: "2x1-festa",
-    title: "2x1 entrada Festa Major",
-    validity: "Válido del 15 al 19 de julio",
-    kind: "ticket",
-  },
 ];
