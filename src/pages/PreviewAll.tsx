@@ -43,7 +43,7 @@ const screens: ScreenEntry[] = [
 └── Landscape  (hidden landscape:flex) → HomeContentLandscape
     ├── HomeHero               ← inline=true; showLogin pasa al header
     │   └── greetingSlot       → GreetingBlock + PointsCard (si auth)
-    ├── body scroll-y          → grid 2 columnas:
+    ├── body compacto          → grid 2 columnas (sin scroll en 667×375):
     │   ├── col izq  → section "Accesos rápidos" (HomeModules)
     │   │              + section "Eventos destacados" (EventHeroCarousel)
     │   └── col der  → section "Descubre lo nuestro" (ComercioCarousel)

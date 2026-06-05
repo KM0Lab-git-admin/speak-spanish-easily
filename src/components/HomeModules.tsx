@@ -120,8 +120,8 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
   // Tamaño fluido: en vertical-mobile (375px) se reduce para que los 4 módulos
   // quepan sin recortar el label "Ayuntamiento".
   const sizeClasses = emphasized
-    ? "w-[78px] h-[78px]"
-    : "w-[68px] h-[68px]";
+    ? "w-[78px] h-[78px] horizontal-mobile:!w-[66px] horizontal-mobile:!h-[66px]"
+    : "w-[68px] h-[68px] horizontal-mobile:!w-[60px] horizontal-mobile:!h-[60px]";
 
   const iconSize = emphasized ? 34 : 30;
 
@@ -165,7 +165,7 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
               aria-hidden
               className={cn(
                 "w-full h-full object-contain",
-                (isAjuntament || isComerc) && "p-2.5",
+                (isAjuntament || isComerc) && "p-2.5 horizontal-mobile:!p-2",
                 !active && "opacity-70",
               )}
             />
@@ -185,11 +185,11 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
             Ancho limitado al de la columna para no empujar a los vecinos. */}
         <span
           className={cn(
-            "relative -mt-2.5 z-10",
-            "px-1.5 py-0.5 rounded-full bg-white",
+            "relative -mt-2.5 horizontal-mobile:!-mt-2 z-10",
+            "px-1.5 horizontal-mobile:!px-1 py-0.5 rounded-full bg-white",
             "border border-km0-blue-300/60",
             "shadow-[0_2px_6px_-2px_hsl(var(--km0-blue-900)/0.25)]",
-            "font-ui font-bold text-[9px] leading-tight text-km0-blue-800",
+            "font-ui font-bold text-[9px] horizontal-mobile:!text-[8px] leading-tight text-km0-blue-800",
             "text-center whitespace-nowrap max-w-full",
           )}
         >
