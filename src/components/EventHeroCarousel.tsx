@@ -37,7 +37,7 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
 
   return (
     <div className="w-full horizontal-desktop:h-full horizontal-desktop:flex horizontal-desktop:flex-col">
-      <div className="relative w-full rounded-2xl overflow-hidden bg-primary shadow-[0_12px_28px_-14px_hsl(var(--km0-blue-900)/0.4)] aspect-[16/10] vertical-tablet:aspect-[16/9] min-h-[120px] horizontal-mobile:!aspect-auto horizontal-mobile:!h-[108px] horizontal-mobile:!min-h-0 horizontal-desktop:!aspect-auto horizontal-desktop:!h-full horizontal-desktop:!min-h-0 horizontal-desktop:!flex-1">
+      <div className="relative w-full rounded-2xl overflow-hidden bg-primary shadow-[0_12px_28px_-14px_hsl(var(--km0-blue-900)/0.4)] aspect-[16/10] vertical-tablet:aspect-[16/9] min-h-[120px] horizontal-mobile:!aspect-auto horizontal-mobile:!h-[40px] horizontal-mobile:!min-h-0 horizontal-desktop:!aspect-auto horizontal-desktop:!h-full horizontal-desktop:!min-h-0 horizontal-desktop:!flex-1">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={promo.id}
@@ -69,10 +69,10 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
             <div aria-hidden className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
 
             {/* Badge categoría (top-left) */}
-            <div className="absolute top-3 left-3 horizontal-mobile:!top-2 horizontal-mobile:!left-2">
+            <div className="absolute top-3 left-3 horizontal-mobile:!top-1.5 horizontal-mobile:!left-2">
               <span
                 className={cn(
-                  "inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-ui font-bold text-xs horizontal-mobile:!text-[10px] horizontal-mobile:!px-2 horizontal-mobile:!py-0.5 shadow-md",
+                  "inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-ui font-bold text-xs horizontal-mobile:!text-[9px] horizontal-mobile:!px-2 horizontal-mobile:!py-0.5 shadow-md",
                   promo.badge.bg,
                   promo.badge.text_color,
                 )}
@@ -83,7 +83,7 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
             </div>
 
             {/* Contenido inferior izquierdo */}
-            <div className="absolute left-4 right-16 bottom-3 vertical-tablet:left-5 vertical-tablet:bottom-4 horizontal-mobile:!left-3 horizontal-mobile:!bottom-3 horizontal-mobile:!right-12 horizontal-desktop:!left-4 horizontal-desktop:!bottom-4 pointer-events-none select-none">
+            <div className="absolute left-4 right-16 bottom-3 vertical-tablet:left-5 vertical-tablet:bottom-4 horizontal-mobile:!hidden horizontal-desktop:!left-4 horizontal-desktop:!bottom-4 pointer-events-none select-none">
               <h3 className="font-brand font-black text-white leading-[1.05] whitespace-pre-line text-2xl vertical-tablet:text-3xl horizontal-mobile:!text-base horizontal-desktop:!text-3xl">
                 {promo.title}
               </h3>

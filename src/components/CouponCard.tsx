@@ -62,7 +62,7 @@ const CouponCard = ({ coupon, onClick, delay = 0 }: CouponCardProps) => {
         <span className="font-ui font-bold text-km0-blue-800 text-sm vertical-tablet:text-base horizontal-mobile:!text-xs horizontal-desktop:!text-base leading-tight truncate">
           {coupon.title}
         </span>
-        <span className="font-body text-km0-blue-700/70 text-[11px] vertical-tablet:text-xs horizontal-mobile:!text-[10px] horizontal-desktop:!text-sm leading-tight truncate">
+        <span className="font-body text-km0-blue-700/70 text-[11px] vertical-tablet:text-xs horizontal-mobile:!hidden horizontal-desktop:!block horizontal-desktop:!text-sm leading-tight truncate">
           {coupon.validity}
         </span>
       </div>
