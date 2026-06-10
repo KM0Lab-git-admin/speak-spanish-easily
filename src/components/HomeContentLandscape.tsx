@@ -55,28 +55,28 @@ const HomeContentLandscape = ({
         inline
       />
 
-      <main className="flex-1 min-h-0 w-full grid items-stretch gap-3 p-3 horizontal-desktop:p-5 horizontal-desktop:gap-5 horizontal-mobile:grid-cols-[minmax(0,1.05fr)_minmax(260px,0.75fr)] horizontal-desktop:grid-cols-[minmax(0,1.35fr)_minmax(360px,0.85fr)] overflow-hidden">
-          <section className="min-w-0 min-h-0 overflow-hidden rounded-2xl border border-border bg-card/90 p-3 horizontal-desktop:p-5 shadow-sm grid grid-rows-[auto_1fr] gap-3 horizontal-desktop:gap-4">
+      <main className="flex-1 min-h-0 w-full grid items-start horizontal-desktop:items-stretch gap-3 p-3 horizontal-desktop:p-5 horizontal-desktop:gap-5 horizontal-mobile:grid-cols-[minmax(0,1.05fr)_minmax(260px,0.75fr)] horizontal-desktop:grid-cols-[minmax(0,1.35fr)_minmax(360px,0.85fr)] overflow-hidden">
+          <section className="min-w-0 min-h-0 overflow-hidden rounded-2xl border border-border bg-card/90 p-3 horizontal-desktop:p-5 shadow-sm grid grid-rows-[auto_auto] content-start horizontal-desktop:grid-rows-[auto_1fr] horizontal-desktop:content-stretch gap-3 horizontal-desktop:gap-4">
             <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0">
               <SectionHeader title={t("home.section.quick", lang)} />
               <HomeModules modules={modules} />
             </div>
-            <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0 min-h-0 flex flex-col">
+            <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0 min-h-0 horizontal-desktop:flex horizontal-desktop:flex-col">
               <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
-              <div className="flex-1 min-h-0 flex">
+              <div className="horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:flex">
                 <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
               </div>
             </div>
           </section>
 
-          <section className="min-w-0 min-h-0 overflow-hidden rounded-2xl border border-border bg-card/90 p-3 horizontal-desktop:p-5 shadow-sm grid grid-rows-[auto_1fr] gap-4 horizontal-desktop:gap-5">
+          <section className="min-w-0 min-h-0 overflow-hidden rounded-2xl border border-border bg-card/90 p-3 horizontal-desktop:p-5 shadow-sm grid grid-rows-[auto_auto] content-start horizontal-desktop:grid-rows-[auto_1fr] horizontal-desktop:content-stretch gap-4 horizontal-desktop:gap-5">
             <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0">
               <SectionHeader title={t("home.section.shops", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllComercios} />
               <ComercioCarousel comercios={comercios} />
             </div>
-            <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0 min-h-0 flex flex-col">
+            <div className="space-y-1 horizontal-desktop:space-y-2 min-w-0 min-h-0 horizontal-desktop:flex horizontal-desktop:flex-col">
               <SectionHeader title={t("home.section.coupons", lang)} actionLabel={t("home.action.see_all_f", lang)} onAction={onSeeAllCoupons} />
-              <div className="flex-1 min-h-0 grid gap-3 horizontal-desktop:gap-4 grid-rows-[repeat(auto-fit,minmax(0,1fr))]">
+              <div className="grid gap-3 horizontal-desktop:gap-4 horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:grid-rows-[repeat(auto-fit,minmax(0,1fr))]">
                 {coupons.map((c, i) => (
                   <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
                 ))}
