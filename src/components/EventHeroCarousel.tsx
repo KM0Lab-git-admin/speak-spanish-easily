@@ -36,8 +36,8 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
   const promo = promos[index];
 
   return (
-    <div className="w-full">
-      <div className="relative w-full rounded-2xl overflow-hidden bg-primary shadow-[0_12px_28px_-14px_hsl(var(--km0-blue-900)/0.4)] aspect-[16/10] vertical-tablet:aspect-[16/9] min-h-[120px] horizontal-mobile:!aspect-auto horizontal-mobile:!h-[108px] horizontal-mobile:!min-h-0 horizontal-desktop:!h-[150px] horizontal-desktop:!max-h-[160px]">
+    <div className="w-full horizontal-desktop:h-full horizontal-desktop:flex horizontal-desktop:flex-col">
+      <div className="relative w-full rounded-2xl overflow-hidden bg-primary shadow-[0_12px_28px_-14px_hsl(var(--km0-blue-900)/0.4)] aspect-[16/10] vertical-tablet:aspect-[16/9] min-h-[120px] horizontal-mobile:!aspect-auto horizontal-mobile:!h-[108px] horizontal-mobile:!min-h-0 horizontal-desktop:!aspect-auto horizontal-desktop:!h-full horizontal-desktop:!min-h-0 horizontal-desktop:!flex-1">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={promo.id}
@@ -84,10 +84,10 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
 
             {/* Contenido inferior izquierdo */}
             <div className="absolute left-4 right-16 bottom-3 vertical-tablet:left-5 vertical-tablet:bottom-4 horizontal-mobile:!left-3 horizontal-mobile:!bottom-3 horizontal-mobile:!right-12 horizontal-desktop:!left-4 horizontal-desktop:!bottom-4 pointer-events-none select-none">
-              <h3 className="font-brand font-black text-white leading-[1.05] whitespace-pre-line text-2xl vertical-tablet:text-3xl horizontal-mobile:!text-base">
+              <h3 className="font-brand font-black text-white leading-[1.05] whitespace-pre-line text-2xl vertical-tablet:text-3xl horizontal-mobile:!text-base horizontal-desktop:!text-3xl">
                 {promo.title}
               </h3>
-              <div className="mt-1.5 horizontal-mobile:!mt-1 flex flex-col gap-0.5 font-body text-white/95 text-xs vertical-tablet:text-sm horizontal-mobile:!text-[10px]">
+              <div className="mt-1.5 horizontal-mobile:!mt-1 flex flex-col gap-0.5 font-body text-white/95 text-xs vertical-tablet:text-sm horizontal-mobile:!text-[10px] horizontal-desktop:!text-sm">
                 <span className="flex items-center gap-1.5">
                   <CalendarDays size={13} className="shrink-0 horizontal-mobile:!w-3 horizontal-mobile:!h-3" strokeWidth={2.2} />
                   {promo.dateRange}
