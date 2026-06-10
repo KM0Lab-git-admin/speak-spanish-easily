@@ -45,7 +45,7 @@ const screens: ScreenEntry[] = [
     │   └── greetingSlot       → GreetingBlock + PointsCard (si auth)
     ├── main compacto          → grid 2 columnas, flex-1 dentro del frame común 16:9:
     │   ├── panel izq → Accesos rápidos (HomeModules, banda fija)
-    │   │              + Eventos destacados (EventHeroCarousel h 108/150)
+    │   │              + Eventos destacados (EventHeroCarousel compacto 40px / flexible desktop)
     │   └── panel der → Descubre lo nuestro (ComercioCarousel 4 cols)
     │                  + Promos para ti (CouponCard × N, juntas bajo título)
     ├── BottomTabs             (oculto en landscape vía landscape:hidden)

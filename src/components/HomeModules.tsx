@@ -66,7 +66,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
     <div className={cn("relative w-full max-w-full", className)}>
       <div
         className={cn(
-          "relative bg-km0-beige-100 rounded-t-3xl rounded-bl-[40%_24px] rounded-br-[40%_24px] px-3 opacity-100 my-0 py-0 horizontal-mobile:!h-[70px] horizontal-desktop:!h-[110px] horizontal-mobile:!rounded-3xl",
+          "relative bg-km0-beige-100 rounded-t-3xl rounded-bl-[40%_24px] rounded-br-[40%_24px] px-3 opacity-100 my-0 py-0 horizontal-mobile:!h-[62px] horizontal-desktop:!h-[110px] horizontal-mobile:!rounded-3xl",
         )}
       >
         {/* Patrón decorativo sutil arriba — círculos translúcidos
@@ -120,8 +120,8 @@ const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
   // Tamaño fluido: en vertical-mobile (375px) se reduce para que los 4 módulos
   // quepan sin recortar el label "Ayuntamiento".
   const sizeClasses = emphasized
-    ? "w-[78px] h-[78px] horizontal-mobile:!w-[66px] horizontal-mobile:!h-[66px]"
-    : "w-[68px] h-[68px] horizontal-mobile:!w-[60px] horizontal-mobile:!h-[60px]";
+    ? "w-[78px] h-[78px] horizontal-mobile:!w-[56px] horizontal-mobile:!h-[56px]"
+    : "w-[68px] h-[68px] horizontal-mobile:!w-[52px] horizontal-mobile:!h-[52px]";
 
   const iconSize = emphasized ? 34 : 30;
 
