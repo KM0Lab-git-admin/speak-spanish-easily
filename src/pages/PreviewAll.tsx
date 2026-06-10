@@ -22,7 +22,7 @@ const screens: ScreenEntry[] = [
   {
     label: "Home",
     src: "/home",
-    tree: `(NO usa BrandedFrame — DeviceShell propio: portrait móvil / landscape app-frame compacto max 1200×550)
+    tree: `(NO usa BrandedFrame — DeviceShell propio, con el MISMO tamaño de frame que BrandedFrame en cada resolución)
 │
 ├── Portrait  (landscape:hidden) → HomeContent
 │   ├── HomeHero               ← header FIJO (inline=true; showLogin={false})
@@ -43,7 +43,7 @@ const screens: ScreenEntry[] = [
 └── Landscape  (hidden landscape:flex) → HomeContentLandscape
     ├── HomeHero               ← inline=true; header fijo 92px / 78px desktop
     │   └── greetingSlot       → GreetingBlock + PointsCard (si auth)
-    ├── main compacto          → grid 2 columnas, flex-1 dentro del frame:
+    ├── main compacto          → grid 2 columnas, flex-1 dentro del frame común 16:9:
     │   ├── panel izq → Accesos rápidos (HomeModules, banda fija)
     │   │              + Eventos destacados (EventHeroCarousel h 108/150)
     │   └── panel der → Descubre lo nuestro (ComercioCarousel 4 cols)
