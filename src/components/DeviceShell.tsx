@@ -18,7 +18,7 @@ interface DeviceShellProps {
 
 const DeviceShell = ({ children }: DeviceShellProps) => {
   return (
-    <div className="min-h-[100dvh] bg-background overflow-hidden flex items-center justify-center p-0 landscape:p-2 horizontal-desktop:p-4">
+    <div className="min-h-[100dvh] w-full bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 overflow-hidden flex items-center justify-center p-0">
       {/* PORTRAIT — 9:19.5 (vertical-mobile + vertical-tablet) */}
       <div
         className="landscape:hidden relative flex flex-col bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden"
@@ -34,7 +34,13 @@ const DeviceShell = ({ children }: DeviceShellProps) => {
           Mismas dimensiones que BrandedFrame para que TODAS las pantallas
           (Home, Chat, PostalCode, Language, Onboarding…) se vean al mismo
           tamaño en una misma resolución de viewport. */}
-      <div className="hidden landscape:flex relative flex-col w-full max-w-[1200px] h-[calc(100dvh-16px)] max-h-[375px] horizontal-desktop:h-[calc(100dvh-32px)] horizontal-desktop:max-h-[550px] rounded-3xl border-2 border-primary/80 bg-background overflow-hidden shadow-xl">
+      <div
+        className="hidden landscape:flex relative flex-col bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden"
+        style={{
+          width: "min(100vw, calc(100dvh * 16 / 9), 1700px)",
+          height: "min(100dvh, calc(100vw * 9 / 16), calc(1700px * 9 / 16))",
+        }}
+      >
         {children}
       </div>
     </div>
