@@ -105,15 +105,15 @@ interface SectionHeaderProps {
 }
 
 const SectionHeader = ({ title, actionLabel, onAction }: SectionHeaderProps) => (
-  <div className="gap-2 flex items-center justify-between min-w-0 text-xs">
-    <h4 className="font-brand font-black text-km0-blue-800 truncate min-w-0 text-xs">
+  <div className="gap-2 flex items-center justify-between min-w-0 text-xs horizontal-desktop:text-base">
+    <h4 className="font-brand font-black text-km0-blue-800 truncate min-w-0 text-xs horizontal-desktop:text-lg">
       {title}
     </h4>
     {actionLabel && (
       <button
         type="button"
         onClick={onAction}
-        className="font-ui font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform underline underline-offset-4 whitespace-nowrap shrink-0 text-xs"
+        className="font-ui font-bold text-km0-coral-400 flex items-center gap-1 active:scale-95 transition-transform underline underline-offset-4 whitespace-nowrap shrink-0 text-xs horizontal-desktop:text-sm"
       >
         {actionLabel}
         <ArrowRight size={12} strokeWidth={2.4} className="horizontal-desktop:w-4 horizontal-desktop:h-4" />
