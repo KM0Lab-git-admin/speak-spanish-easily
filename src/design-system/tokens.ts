@@ -1,3 +1,5 @@
+import { VIEWPORTS, formatViewportSize } from "./viewports";
+
 /**
  * KM0 LAB Design System — Source of truth for tokens.
  * Mirrors src/index.css and tailwind.config.ts.
@@ -204,28 +206,28 @@ export const breakpoints: Breakpoint[] = [
     name: "Vertical Mobile",
     variant: "vertical-mobile:",
     media: "(orientation: portrait) and (max-width: 767px)",
-    testSize: "375 × 667",
+    testSize: formatViewportSize(VIEWPORTS.mobilePortraitBase),
     description: "Móvil en vertical. El más restrictivo en ancho.",
   },
   {
     name: "Vertical Tablet",
     variant: "vertical-tablet:",
     media: "(orientation: portrait) and (min-width: 768px)",
-    testSize: "768 × 1024",
+    testSize: formatViewportSize(VIEWPORTS.tabletPortrait),
     description: "Tablet en vertical. Más espacio, mismo layout en columna.",
   },
   {
     name: "Horizontal Mobile",
     variant: "horizontal-mobile:",
     media: "(orientation: landscape) and (max-width: 1279px)",
-    testSize: "667 × 375",
+    testSize: formatViewportSize(VIEWPORTS.mobileLandscape),
     description: "Móvil rotado. El más restrictivo en altura (375px).",
   },
   {
     name: "Horizontal Desktop",
     variant: "horizontal-desktop:",
     media: "(orientation: landscape) and (min-width: 1280px)",
-    testSize: "1280 × 550",
+    testSize: formatViewportSize(VIEWPORTS.desktopLandscape),
     description: "Pantalla wide. Layout en dos columnas dentro de la card.",
   },
 ];

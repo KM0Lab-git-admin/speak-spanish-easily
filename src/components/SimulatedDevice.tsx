@@ -1,11 +1,28 @@
 import { ReactNode } from "react";
 import { BreakpointProvider, type Breakpoint } from "@/hooks/use-breakpoint";
+import {
+  DEFAULT_PREVIEW_VIEWPORT_BY_ORIENTATION,
+  VIEWPORTS,
+  formatViewportSize,
+  type ViewportName,
+} from "@/design-system/viewports";
 
 interface SimulatedDeviceProps {
   orientation: "portrait" | "landscape";
+  viewportName?: ViewportName;
   label?: string;
   children: ReactNode;
 }
+
+const BREAKPOINT_BY_VIEWPORT: Record<ViewportName, Breakpoint> = {
+  mobilePortraitBase: "vertical-mobile",
+  mobilePortraitModern: "vertical-mobile",
+  mobileLandscape: "horizontal-mobile",
+  tabletPortrait: "vertical-tablet",
+  tabletLandscape: "horizontal-mobile",
+  desktopLandscape: "horizontal-desktop",
+  desktopWide: "horizontal-desktop",
+};
 
 /**
  * SimulatedDevice — render directo (sin iframe) de una pantalla a tamaño
@@ -26,20 +43,24 @@ interface SimulatedDeviceProps {
  *      componentes que ramifican layout en JS (Home, BrandedFrame…)
  *      eligen el mismo branch.
  *
- * Tamaños fijos:
- *   - portrait  → 375 × 667 (vertical-mobile canónico)
- *   - landscape → 667 × 375 (horizontal-mobile canónico)
+ * Tamaños fijos: usa los nombres compartidos de `src/design-system/viewports.ts`
+ * para evitar dimensiones hardcodeadas en herramientas de preview.
  */
-const SimulatedDevice = ({ orientation, label, children }: SimulatedDeviceProps) => {
-  const width  = orientation === "portrait" ? 375 : 667;
-  const height = orientation === "portrait" ? 667 : 375;
-  const bp: Breakpoint = orientation === "portrait" ? "vertical-mobile" : "horizontal-mobile";
-  const dims = `${width}×${height}`;
+const SimulatedDevice = ({
+  orientation,
+  viewportName = DEFAULT_PREVIEW_VIEWPORT_BY_ORIENTATION[orientation],
+  label,
+  children,
+}: SimulatedDeviceProps) => {
+  const viewport = VIEWPORTS[viewportName];
+  const { width, height } = viewport;
+  const bp = BREAKPOINT_BY_VIEWPORT[viewportName];
+  const dims = formatViewportSize(viewport);
 
   return (
     <div className="flex flex-col gap-2 items-start">
       <span className="font-ui text-xs text-muted-foreground">
-        {label ? `${label} · ` : ""}{dims} · {orientation}
+        {label ? `${label} · ` : ""}{viewport.label} · {dims} · {viewport.orientation}
       </span>
       <BreakpointProvider value={bp}>
         <div
