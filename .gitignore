@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Playwright (las baselines en tests/visual/__screenshots__ SÍ se versionan)
+test-results/
+playwright-report/
+blob-report/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

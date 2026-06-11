@@ -1,0 +1,70 @@
+# Regresión visual responsive con Playwright.
+#
+# - push/PR a main → ejecuta la matriz pantallas × estados × viewports y
+#   falla si alguna captura difiere de su baseline (tests/visual/__screenshots__).
+# - Ejecución manual (workflow_dispatch) con "update_baselines: true" →
+#   regenera las baselines en Linux (la plataforma canónica) y las commitea.
+#   Úsalo después de un cambio visual INTENCIONADO.
+name: visual-regression
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      update_baselines:
+        description: "Regenerar baselines y commitearlas"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: visual-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Instalar Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Regenerar baselines
+        if: github.event_name == 'workflow_dispatch' && inputs.update_baselines
+        run: npx playwright test --update-snapshots
+
+      - name: Commitear baselines actualizadas
+        if: github.event_name == 'workflow_dispatch' && inputs.update_baselines
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tests/visual/__screenshots__
+          git diff --cached --quiet || git commit -m "chore(visual): actualizar baselines de regresión visual"
+          git push
+
+      - name: Ejecutar regresión visual
+        if: github.event_name != 'workflow_dispatch' || !inputs.update_baselines
+        run: npx playwright test
+
+      - name: Publicar informe HTML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14

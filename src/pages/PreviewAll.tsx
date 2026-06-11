@@ -2,28 +2,42 @@ import { useState } from "react";
 import ScreenFrame from "@/components/ScreenFrame";
 import SimulatedDevice from "@/components/SimulatedDevice";
 import HomeSandbox, { type HomeSandboxState } from "@/components/HomeSandbox";
-import { VIEWPORTS, formatViewportSize } from "@/design-system/viewports";
+import {
+  PREVIEW_SCREENS,
+  type PreviewScreen,
+  type ScreenStatePreview,
+} from "@/design-system/preview-manifest";
+import { getViewportById, type ViewportId } from "@/design-system/viewports";
 
 /**
- * /preview-all — Catálogo visual: cada pantalla de la app renderizada en
- * sus dos viewports mínimos compartidos (mobilePortraitBase y
- * mobileLandscape) lado a lado, para QA visual rápido sin tener que cambiar
- * el viewport del navegador.
+ * /preview-all — Catálogo visual: cada pantalla registrada en
+ * `src/design-system/preview-manifest.ts` renderizada en el viewport de
+ * contrato mínimo (375×667) más un segundo viewport seleccionable
+ * (landscape smoke, tablet o desktop, escalados para caber en pantalla).
  *
- * Junto a cada pantalla mostramos el árbol de componentes que la
- * compone, para servir de documentación visual + estructural.
+ * Las pantallas con varios estados visuales (Home guest/registrado,
+ * Evento hero/ticket…) tienen tabs para alternarlos: mismos estados que
+ * valida Playwright en tests/visual/screens.spec.ts.
+ *
+ * Junto a cada pantalla se muestra su árbol de componentes (TREES) como
+ * documentación visual + estructural.
  */
-interface ScreenEntry {
-  label: string;
-  src: string;
-  tree: string;
-}
 
-const screens: ScreenEntry[] = [
-  {
-    label: "Home",
-    src: "/home",
-    tree: `(NO usa BrandedFrame — DeviceShell propio, con el MISMO tamaño de frame que BrandedFrame en cada resolución)
+/** Estados de la Home que se renderizan SIN iframe (HomeSandbox) para
+ *  permitir Visual Edit. El resto de estados/pantallas usa iframe. */
+const SANDBOX_HOME_STATES: HomeSandboxState[] = ["guest", "registered", "reward-welcome"];
+
+/** Opciones del segundo frame. El primario es siempre mobile-portrait-base. */
+const SECONDARY_VIEWPORTS: { id: ViewportId; scale: number }[] = [
+  { id: "tablet-portrait", scale: 0.5 },
+  { id: "tablet-landscape", scale: 0.5 },
+  { id: "desktop-landscape", scale: 0.5 },
+  { id: "desktop-wide", scale: 0.45 },
+  { id: "mobile-landscape-base", scale: 1 },
+];
+
+const TREES: Record<string, string> = {
+  home: `(NO usa BrandedFrame — DeviceShell propio, con el MISMO tamaño de frame que BrandedFrame en cada resolución)
 │
 ├── Portrait  (landscape:hidden) → HomeContent
 │   ├── HomeHero               ← header FIJO (inline=true; showLogin={false})
@@ -52,16 +66,20 @@ const screens: ScreenEntry[] = [
     ├── BottomTabs             (oculto en landscape vía landscape:hidden)
     └── NotificationsOverlay
 
+Estado "Notificaciones abiertas" (?notifs=open):
+└── NotificationsOverlay         ← absolute inset-0 z-50 sobre la card
+    ├── motion.div  (fade + slide-up, AnimatePresence)
+    ├── header  (<h2> "Notificaciones" + <button X>)
+    └── lista scroll-y
+        ├── empty state  "No tienes notificaciones"
+        └── notificación × N  (dot estado + título + hora + desc + link)
+
 Lógica:
   · useAuth → isAuthed → showLogin / showProfile / showPoints
-  · useNotifications → bell + overlay
+  · useNotifications → bell + overlay (markAllRead al abrir)
   · modules state (INITIAL_MODULES) con toggleModule
   · módulo "agenda" → navigate("/agenda"); resto togglea activo`,
-  },
-  {
-    label: "Language",
-    src: "/",
-    tree: `BrandedFrame                    ← wrapper de marca (logo + card + back)
+  language: `BrandedFrame                    ← wrapper de marca (logo + card + back)
 └── (decide portrait/landscape con clases tailwind)
     ├── Portrait
     │   ├── FloatingDots        ← partículas decorativas
@@ -73,11 +91,7 @@ Lógica:
         ├── FloatingDots + mascota (columna izquierda)
         ├── divisor vertical
         └── LanguageCard × 3    ← columna derecha`,
-  },
-  {
-    label: "Onboarding",
-    src: "/onboarding",
-    tree: `BrandedFrame                    ← wrapper de marca (logo + card + back)
+  onboarding: `BrandedFrame                    ← wrapper de marca (logo + card + back)
 └── StackCarousel               ← carrusel reutilizable (stack 3D + drag + flechas)
     │   props: items, index, onIndexChange, skipLabel, finishLabel,
     │          onFinish, renderSlideContent, renderThumbnail?
@@ -99,11 +113,7 @@ Lógica:
         │   └── sliding track → slide × N → OnboardingCard
         ├── ChevronLeft / ChevronRight
         └── footer (contador + thumbs × N + dots + SKIP/START)`,
-  },
-  {
-    label: "PostalCode",
-    src: "/postal-code",
-    tree: `BrandedFrame                    ← wrapper de marca (logo + card + back)
+  "postal-code": `BrandedFrame                    ← wrapper de marca (logo + card + back)
 └── (decide portrait/landscape con clases tailwind)
     │
     ├── Portrait  (landscape:hidden)
@@ -129,11 +139,7 @@ Lógica:
   · lookupTown(cp)  → src/lib/postalCodes.ts (Supabase \`postal_codes\`)
   · estados: idle / validating / found / not_found / error (no numérico)
   · al continuar: sessionStorage (km0_postal_code + km0_town) y navega /home`,
-  },
-  {
-    label: "Login",
-    src: "/login",
-    tree: `BrandedFrame                    ← wrapper de marca (logo + card + back)
+  login: `BrandedFrame                    ← wrapper de marca (logo + card + back)
 └── motion.div  contenedor (fade-in + y)
     ├── header
     │   ├── <h1> "Entra o regístrate"
@@ -153,11 +159,7 @@ Lógica:
   · supabase.auth.signInWithOtp({ shouldCreateUser: true })
   · recupera km0_postal_code + km0_town de sessionStorage → data
   · al éxito: navega a /check-email con state {email, mode:"login"}`,
-  },
-  {
-    label: "CheckEmail",
-    src: "/check-email?email=preview%40km0lab.com",
-    tree: `BrandedFrame                    ← wrapper de marca (logo + card + back)
+  "check-email": `BrandedFrame                    ← wrapper de marca (logo + card + back)
 └── motion.div  contenedor (fade-in + y, items-center)
     ├── icon circle  (Mail dentro de círculo amarillo)
     ├── bloque texto
@@ -169,14 +171,10 @@ Lógica:
     └── <p> footer  "¿No lo encuentras? Mira en spam..."
 
 Lógica:
-  · state.email obligatorio → si falta: <Navigate to="/login">
+  · state.email (o ?email=) obligatorio → si falta: <Navigate to="/login">
   · cooldown decreciente (setTimeout 1s) deshabilita el botón
   · resend → supabase.auth.signInWithOtp(email)`,
-  },
-  {
-    label: "Chat",
-    src: "/chat",
-    tree: `(fullbleed — NO usa BrandedFrame; layout fixed inset-0)
+  chat: `(fullbleed — NO usa BrandedFrame; layout fixed inset-0)
 │
 ├── Portrait  (landscape:hidden, ancho mobilePortraitModern compartido)
 │   ├── motion.header        ← HeaderContent
@@ -208,34 +206,7 @@ Lógica:
   · handleSend → queryEvents(text, postalCode) (eventQueryApi)
   · voz: VoiceRecorder (Web Speech API) → setInput + setIsRecording(false)
   · auto-scroll a messagesEndRef en cada nuevo mensaje`,
-  },
-  {
-    label: "Home · NotificationsOverlay",
-    src: "/home?notifs=open",
-    tree: `Home (?notifs=open → notifOpen=true al montar)
-└── NotificationsOverlay         ← absolute inset-0 z-50 sobre la card
-    ├── motion.div  (fade + slide-up, AnimatePresence)
-    ├── header
-    │   ├── <h2> "Notificaciones"
-    │   └── <button X> cerrar
-    └── lista scroll-y
-        ├── empty state  "No tienes notificaciones"
-        └── notificación × N  (button)
-            ├── dot estado (coral=unread / beige=read)
-            ├── título + hora
-            ├── descripción
-            └── linkLabel + ArrowRight  → navigate(n.link)
-
-Lógica:
-  · open desde HomeHero → NotificationBell onClick
-  · markAllRead() al abrir; markRead(id) al pulsar una individual
-  · al pulsar: cierra overlay + navega a n.link
-  · datos: useNotifications() → src/data/notifications.ts`,
-  },
-  {
-    label: "Agenda",
-    src: "/agenda",
-    tree: `BrandedFrame  (hideHeader, contentClassName overflow-hidden)
+  agenda: `BrandedFrame  (hideHeader, contentClassName overflow-hidden)
 └── content (flex-col h-full)
     ├── HomeHero               ← reutilizado del Home
     │   └── greetingSlot: ScreenTitle "Agenda"
@@ -256,13 +227,9 @@ Lógica:
   · queryEvents(hintCategoría, CP=08380, limit=50) en cada cambio de categoría
   · filtros locales: rango temporal (rangeFor), categoría (matches[]), precio
   · agrupación por startOfDay → Map<isoDate, items[]>`,
-  },
-  {
-    label: "Evento",
-    src: "/evento",
-    tree: `BrandedFrame  (hideHeader, contentClassName overflow-hidden)
+  evento: `BrandedFrame  (hideHeader, contentClassName overflow-hidden)
 └── content (flex-col h-full)
-    ├── selector POC  (toggle v1 "Hero" / v3 "Ticket")
+    ├── selector POC  (toggle v1 "Hero" / v3 "Ticket"; inicial vía ?variant=)
     └── AnimatePresence  (slide horizontal entre variantes)
         │
         ├── VariantHero  (v1)
@@ -288,11 +255,7 @@ Lógica:
   · CtaPrincipal: prefiere link_inscripcion ("Ticket") sobre link_noticia
     ("ExternalLink"); muestra hostname del link como label
   · ImageCarousel: chevrons + dots, AnimatePresence fade entre imágenes`,
-  },
-  {
-    label: "Profile",
-    src: "/profile",
-    tree: `BrandedFrame                    ← wrapper de marca (logo + card + back)
+  profile: `BrandedFrame                    ← wrapper de marca (logo + card + back)
 └── motion.div  contenedor (fade-in + y, overflow-y-auto en landscape)
     ├── header
     │   ├── <h1> "Mi perfil"
@@ -312,93 +275,171 @@ Lógica:
 
 Lógica:
   · useAuth → user (si no hay, formulario vacío modo testing)
-  · carga inicial: supabase.from("profiles").select(...).eq(user_id)
   · validación: zod schema (first_name, last_name, postal_code regex 5d)
-  · town se resuelve async vía lookupTown(postal_code) (Supabase postal_codes)
+  · town se resuelve async vía lookupTown(postal_code)
   · signOut → toast + navigate("/home")`,
-  },
-];
+};
 
-const HOME_STATES: { id: HomeSandboxState; label: string }[] = [
-  { id: "guest", label: "No registrado" },
-  { id: "registered", label: "Registrado" },
-  { id: "reward-welcome", label: "Bienvenida (+500 pts)" },
-];
+const StateTabs = ({
+  states,
+  activeId,
+  onChange,
+  screenLabel,
+}: {
+  states: ScreenStatePreview[];
+  activeId: string;
+  onChange: (id: string) => void;
+  screenLabel: string;
+}) => (
+  <div
+    role="tablist"
+    aria-label={`Estado de ${screenLabel}`}
+    className="inline-flex rounded-full border-2 border-km0-blue-700/20 bg-white p-1 shadow-sm"
+  >
+    {states.map((st) => {
+      const active = activeId === st.id;
+      return (
+        <button
+          key={st.id}
+          type="button"
+          role="tab"
+          aria-selected={active}
+          title={st.notes}
+          onClick={() => onChange(st.id)}
+          className={`px-3 py-1 rounded-full font-ui text-xs transition-colors ${
+            active
+              ? "bg-km0-blue-700 text-white"
+              : "text-km0-blue-700 hover:bg-km0-blue-700/10"
+          }`}
+        >
+          {st.label}
+        </button>
+      );
+    })}
+  </div>
+);
+
+const ScreenSection = ({
+  screen,
+  secondary,
+}: {
+  screen: PreviewScreen;
+  secondary: { id: ViewportId; scale: number };
+}) => {
+  const [stateId, setStateId] = useState(screen.states[0].id);
+  const state = screen.states.find((s) => s.id === stateId) ?? screen.states[0];
+
+  // La Home se renderiza SIN iframe (HomeSandbox) en los estados que el
+  // sandbox soporta, para permitir Visual Edit. El resto vía iframe.
+  const useSandbox =
+    screen.id === "home" && (SANDBOX_HOME_STATES as string[]).includes(state.id);
+  const sandboxState = state.id as HomeSandboxState;
+
+  // Estados que requieren sesión sembrada: el iframe comparte localStorage
+  // con la app real, así que aquí se ve la sesión REAL del navegador.
+  // El estado exacto lo valida Playwright sembrando PREVIEW_SESSION.
+  const sessionWarning =
+    state.seedSession && !useSandbox
+      ? "⚠ Este estado depende de la sesión real del navegador. Playwright lo valida sembrando la sesión simulada."
+      : null;
+
+  const renderFrame = (viewportId: ViewportId, scale: number) =>
+    useSandbox ? (
+      <SimulatedDevice viewportId={viewportId} scale={scale} label={screen.label}>
+        <HomeSandbox state={sandboxState} />
+      </SimulatedDevice>
+    ) : (
+      <ScreenFrame
+        src={state.src ?? screen.path}
+        viewportId={viewportId}
+        scale={scale}
+        label={screen.label}
+      />
+    );
+
+  return (
+    <section className="flex flex-col gap-4 w-full">
+      <div className="flex flex-wrap items-center gap-3">
+        <h2 className="font-ui text-lg text-km0-blue-700">{screen.label}</h2>
+        {screen.states.length > 1 && (
+          <StateTabs
+            states={screen.states}
+            activeId={stateId}
+            onChange={setStateId}
+            screenLabel={screen.label}
+          />
+        )}
+        {screen.dynamicContent && (
+          <span className="font-ui text-[10px] uppercase tracking-wide rounded-full bg-km0-coral-100 text-km0-coral-700 px-2 py-1">
+            contenido dinámico · sin captura px
+          </span>
+        )}
+      </div>
+      {sessionWarning && (
+        <p className="font-body text-xs text-km0-coral-700">{sessionWarning}</p>
+      )}
+      <div className="flex flex-wrap items-start gap-6 w-full">
+        {renderFrame("mobile-portrait-base", 1)}
+        <div className="flex flex-col gap-4 flex-1 min-w-[320px]">
+          {renderFrame(secondary.id, secondary.scale)}
+          {TREES[screen.id] && (
+            <pre className="w-full overflow-auto rounded-xl border-2 border-km0-blue-700/20 bg-white p-4 font-mono text-xs leading-relaxed text-km0-blue-700 shadow-[0_8px_24px_-16px_hsl(var(--km0-blue-700)/0.35)] whitespace-pre">
+              {TREES[screen.id]}
+            </pre>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const PreviewAll = () => {
-  const [homeState, setHomeState] = useState<HomeSandboxState>("guest");
+  const [secondaryId, setSecondaryId] = useState<ViewportId>("tablet-portrait");
+  const secondary =
+    SECONDARY_VIEWPORTS.find((v) => v.id === secondaryId) ?? SECONDARY_VIEWPORTS[0];
 
   return (
     <div className="min-h-screen w-screen bg-km0-beige-50">
-      <header className="sticky top-0 z-10 bg-km0-blue-700 text-white px-4 py-3 shadow-md">
-        <h1 className="font-brand text-xl">Preview · todas las pantallas</h1>
-        <p className="font-body text-sm opacity-80">
-          Resoluciones mínimas: {VIEWPORTS.mobilePortraitBase.label} ({formatViewportSize(VIEWPORTS.mobilePortraitBase)}) y{" "}
-          {VIEWPORTS.mobileLandscape.label} ({formatViewportSize(VIEWPORTS.mobileLandscape)})
-        </p>
+      <header className="sticky top-0 z-10 bg-km0-blue-700 text-white px-4 py-3 shadow-md flex flex-wrap items-center gap-x-6 gap-y-2">
+        <div>
+          <h1 className="font-brand text-xl">Preview · todas las pantallas</h1>
+          <p className="font-body text-sm opacity-80">
+            Frame fijo: {getViewportById("mobile-portrait-base").label} (375×667, contrato
+            mínimo) · Segundo frame seleccionable
+          </p>
+        </div>
+        <div
+          role="tablist"
+          aria-label="Segundo viewport"
+          className="inline-flex flex-wrap rounded-full bg-white/10 p-1"
+        >
+          {SECONDARY_VIEWPORTS.map((v) => {
+            const vp = getViewportById(v.id);
+            const active = secondaryId === v.id;
+            return (
+              <button
+                key={v.id}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                title={vp.purpose}
+                onClick={() => setSecondaryId(v.id)}
+                className={`px-3 py-1 rounded-full font-ui text-xs transition-colors ${
+                  active ? "bg-white text-km0-blue-700" : "text-white hover:bg-white/15"
+                }`}
+              >
+                {vp.label}
+                {vp.tier === "smoke" ? " · smoke" : ""}
+              </button>
+            );
+          })}
+        </div>
       </header>
 
       <main className="w-full px-6 sm:px-10 lg:px-16 py-6 flex flex-col gap-10">
-        {screens.map((s) => {
-          // La Home se renderiza SIN iframe para permitir Visual Edit.
-          // El resto de pantallas sigue con iframe en esta iteración.
-          const isHome = s.label === "Home";
-          return (
-            <section key={s.label} className="flex flex-col gap-4 w-full">
-              <div className="flex flex-wrap items-center gap-3">
-                <h2 className="font-ui text-lg text-km0-blue-700">{s.label}</h2>
-                {isHome && (
-                  <div
-                    role="tablist"
-                    aria-label="Estado de la Home"
-                    className="inline-flex rounded-full border-2 border-km0-blue-700/20 bg-white p-1 shadow-sm"
-                  >
-                    {HOME_STATES.map((st) => {
-                      const active = homeState === st.id;
-                      return (
-                        <button
-                          key={st.id}
-                          type="button"
-                          role="tab"
-                          aria-selected={active}
-                          onClick={() => setHomeState(st.id)}
-                          className={`px-3 py-1 rounded-full font-ui text-xs transition-colors ${
-                            active
-                              ? "bg-km0-blue-700 text-white"
-                              : "text-km0-blue-700 hover:bg-km0-blue-700/10"
-                          }`}
-                        >
-                          {st.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-              <div className="flex flex-wrap items-start gap-6 w-full">
-                {isHome ? (
-                  <SimulatedDevice orientation="portrait" label={s.label}>
-                    <HomeSandbox state={homeState} />
-                  </SimulatedDevice>
-                ) : (
-                  <ScreenFrame src={s.src} orientation="portrait" label={s.label} />
-                )}
-                <div className="flex flex-col gap-4 flex-1 min-w-[320px]">
-                  {isHome ? (
-                    <SimulatedDevice orientation="landscape" label={s.label}>
-                      <HomeSandbox state={homeState} />
-                    </SimulatedDevice>
-                  ) : (
-                    <ScreenFrame src={s.src} orientation="landscape" label={s.label} />
-                  )}
-                  <pre className="w-full overflow-auto rounded-xl border-2 border-km0-blue-700/20 bg-white p-4 font-mono text-xs leading-relaxed text-km0-blue-700 shadow-[0_8px_24px_-16px_hsl(var(--km0-blue-700)/0.35)] whitespace-pre">
-{s.tree}
-                  </pre>
-                </div>
-              </div>
-            </section>
-          );
-        })}
+        {PREVIEW_SCREENS.map((screen) => (
+          <ScreenSection key={screen.id} screen={screen} secondary={secondary} />
+        ))}
       </main>
     </div>
   );

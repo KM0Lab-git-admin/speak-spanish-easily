@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft,
@@ -437,7 +437,11 @@ const VariantTicket = ({ ev, onBack }: { ev: EventoMuestra; onBack: () => void }
 /* ─── Página con selector de variantes ──────────────────────── */
 const Evento = () => {
   const navigate = useNavigate();
-  const [variant, setVariant] = useState<Variant>("v1");
+  // Variante inicial direccionable por URL (?variant=ticket|hero) para
+  // /preview-all y Playwright (ver src/design-system/preview-manifest.ts).
+  const [searchParams] = useSearchParams();
+  const initialVariant: Variant = searchParams.get("variant") === "ticket" ? "v3" : "v1";
+  const [variant, setVariant] = useState<Variant>(initialVariant);
 
   const variants: { key: Variant; label: string }[] = [
     { key: "v1", label: "Hero" },

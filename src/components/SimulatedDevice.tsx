@@ -11,18 +11,13 @@ interface SimulatedDeviceProps {
   orientation?: ResponsiveOrientation;
   viewportId?: ViewportId;
   label?: string;
+  /** Escala visual (0–1). El contenido se renderiza al tamaño REAL del
+   *  viewport y se reduce con transform, así las media queries y los
+   *  breakpoints forzados no cambian. Útil para tablet/desktop en
+   *  /preview-all sin ocupar 1280px reales. Default: 1. */
+  scale?: number;
   children: ReactNode;
 }
-
-const BREAKPOINT_BY_VIEWPORT: Record<ViewportName, Breakpoint> = {
-  mobilePortraitBase: "vertical-mobile",
-  mobilePortraitModern: "vertical-mobile",
-  mobileLandscape: "horizontal-mobile",
-  tabletPortrait: "vertical-tablet",
-  tabletLandscape: "horizontal-mobile",
-  desktopLandscape: "horizontal-desktop",
-  desktopWide: "horizontal-desktop",
-};
 
 /**
  * SimulatedDevice — render directo (sin iframe) de una pantalla a tamaño
@@ -45,7 +40,7 @@ const BREAKPOINT_BY_VIEWPORT: Record<ViewportName, Breakpoint> = {
  *
  * Los tamaños oficiales viven en `src/design-system/viewports.ts`.
  */
-const SimulatedDevice = ({ orientation = "portrait", viewportId, label, children }: SimulatedDeviceProps) => {
+const SimulatedDevice = ({ orientation = "portrait", viewportId, label, scale = 1, children }: SimulatedDeviceProps) => {
   const viewport = viewportId ? getViewportById(viewportId) : getDefaultViewport(orientation);
   const { width, height, orientation: activeOrientation, breakpoint: bp } = viewport;
   const dims = `${width}×${height}`;
@@ -54,16 +49,19 @@ const SimulatedDevice = ({ orientation = "portrait", viewportId, label, children
     <div className="flex flex-col gap-2 items-start">
       <span className="font-ui text-xs text-muted-foreground">
         {label ? `${label} · ` : ""}{dims} · {activeOrientation}
+        {scale !== 1 ? ` · ${Math.round(scale * 100)}%` : ""}
       </span>
-      <BreakpointProvider value={bp}>
-        <div
-          data-bp={bp}
-          className="relative overflow-hidden rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] bg-km0-beige-50 flex flex-col"
-          style={{ width, height }}
-        >
-          {children}
-        </div>
-      </BreakpointProvider>
+      <div style={{ width: width * scale, height: height * scale }}>
+        <BreakpointProvider value={bp}>
+          <div
+            data-bp={bp}
+            className="relative overflow-hidden rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] bg-km0-beige-50 flex flex-col"
+            style={{ width, height, transform: `scale(${scale})`, transformOrigin: "top left" }}
+          >
+            {children}
+          </div>
+        </BreakpointProvider>
+      </div>
     </div>
   );
 };
