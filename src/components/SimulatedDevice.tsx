@@ -14,6 +14,16 @@ interface SimulatedDeviceProps {
   children: ReactNode;
 }
 
+const BREAKPOINT_BY_VIEWPORT: Record<ViewportName, Breakpoint> = {
+  mobilePortraitBase: "vertical-mobile",
+  mobilePortraitModern: "vertical-mobile",
+  mobileLandscape: "horizontal-mobile",
+  tabletPortrait: "vertical-tablet",
+  tabletLandscape: "horizontal-mobile",
+  desktopLandscape: "horizontal-desktop",
+  desktopWide: "horizontal-desktop",
+};
+
 /**
  * SimulatedDevice — render directo (sin iframe) de una pantalla a tamaño
  * fijo de teléfono, equivalente a `<ScreenFrame />` pero accesible para
