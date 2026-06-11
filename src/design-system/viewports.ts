@@ -1,96 +1,114 @@
-export type ViewportOrientation = "portrait" | "landscape";
+import type { Breakpoint } from "@/hooks/use-breakpoint";
 
-export type ViewportName =
-  | "mobilePortraitBase"
-  | "mobilePortraitModern"
-  | "mobileLandscape"
-  | "tabletPortrait"
-  | "tabletLandscape"
-  | "desktopLandscape"
-  | "desktopWide";
+export type ResponsiveOrientation = "portrait" | "landscape";
 
-export interface ViewportDefinition {
-  name: ViewportName;
+export type ViewportId =
+  | "mobile-portrait-base"
+  | "mobile-portrait-modern"
+  | "mobile-landscape-base"
+  | "tablet-portrait"
+  | "tablet-landscape"
+  | "desktop-landscape"
+  | "desktop-wide";
+
+export interface ResponsiveViewport {
+  id: ViewportId;
   label: string;
   width: number;
   height: number;
-  orientation: ViewportOrientation;
+  orientation: ResponsiveOrientation;
+  breakpoint: Breakpoint;
   purpose: string;
 }
 
 /**
- * Tamaños objetivo compartidos para previews, QA visual y herramientas internas.
+ * Matriz oficial de viewports para validar maquetación responsive.
  *
- * Mantener aquí cualquier nuevo viewport evita que componentes de preview como
- * `ScreenFrame` o `SimulatedDevice` acumulen dimensiones hardcodeadas.
+ * Mantén esta lista sincronizada con:
+ * - `tailwind.config.ts` (variantes vertical/horizontal)
+ * - `src/hooks/use-breakpoint.tsx` (detección JS)
+ * - `docs/responsive-layout-process.md` (proceso de QA)
  */
-export const VIEWPORTS: Record<ViewportName, ViewportDefinition> = {
-  mobilePortraitBase: {
-    name: "mobilePortraitBase",
+export const RESPONSIVE_VIEWPORTS: ResponsiveViewport[] = [
+  {
+    id: "mobile-portrait-base",
     label: "Mobile portrait base",
     width: 375,
     height: 667,
     orientation: "portrait",
-    purpose: "Base móvil vertical mínima; valida el ancho más restrictivo del layout principal.",
+    breakpoint: "vertical-mobile",
+    purpose: "Contrato mínimo: toda pantalla debe ser usable sin desbordes laterales.",
   },
-  mobilePortraitModern: {
-    name: "mobilePortraitModern",
+  {
+    id: "mobile-portrait-modern",
     label: "Mobile portrait moderno",
     width: 390,
     height: 844,
     orientation: "portrait",
-    purpose: "Móvil vertical actual; referencia para previews de componentes compactos modernos.",
+    breakpoint: "vertical-mobile",
+    purpose: "Comprueba que el aire extra no rompe proporciones ni jerarquía visual.",
   },
-  mobileLandscape: {
-    name: "mobileLandscape",
-    label: "Mobile landscape",
+  {
+    id: "mobile-landscape-base",
+    label: "Mobile landscape base",
     width: 667,
     height: 375,
     orientation: "landscape",
-    purpose: "Móvil rotado; valida la altura más restrictiva en layouts horizontales.",
+    breakpoint: "horizontal-mobile",
+    purpose: "Contrato compacto horizontal: evita alturas rígidas y contenido cortado.",
   },
-  tabletPortrait: {
-    name: "tabletPortrait",
+  {
+    id: "tablet-portrait",
     label: "Tablet portrait",
     width: 768,
     height: 1024,
     orientation: "portrait",
-    purpose: "Tablet vertical; comprueba el salto a layouts con más espacio en columna.",
+    breakpoint: "vertical-tablet",
+    purpose: "Valida escalado vertical sin convertir tarjetas en bloques demasiado anchos.",
   },
-  tabletLandscape: {
-    name: "tabletLandscape",
+  {
+    id: "tablet-landscape",
     label: "Tablet landscape",
     width: 1024,
     height: 768,
     orientation: "landscape",
-    purpose: "Tablet horizontal; revisa layouts intermedios antes del desktop amplio.",
+    breakpoint: "horizontal-mobile",
+    purpose: "Cubre landscape amplio antes del salto a layout desktop.",
   },
-  desktopLandscape: {
-    name: "desktopLandscape",
+  {
+    id: "desktop-landscape",
     label: "Desktop landscape",
     width: 1280,
     height: 720,
     orientation: "landscape",
-    purpose: "Desktop 16:9 base; valida pantallas horizontales estándar.",
+    breakpoint: "horizontal-desktop",
+    purpose: "Primer tamaño desktop: valida columnas, densidad y composición 16:9.",
   },
-  desktopWide: {
-    name: "desktopWide",
+  {
+    id: "desktop-wide",
     label: "Desktop amplio",
     width: 1440,
     height: 900,
     orientation: "landscape",
-    purpose: "Desktop amplio; comprueba composición y respiración en pantallas grandes.",
+    breakpoint: "horizontal-desktop",
+    purpose: "Asegura que el layout no se estira de forma incómoda en pantallas grandes.",
   },
+];
+
+export const DEFAULT_VIEWPORT_BY_ORIENTATION: Record<ResponsiveOrientation, ResponsiveViewport> = {
+  portrait: RESPONSIVE_VIEWPORTS[0],
+  landscape: RESPONSIVE_VIEWPORTS[2],
 };
 
-export const TARGET_VIEWPORTS = Object.values(VIEWPORTS);
+export const getViewportById = (id: ViewportId): ResponsiveViewport => {
+  const viewport = RESPONSIVE_VIEWPORTS.find((item) => item.id === id);
 
-export const DEFAULT_PREVIEW_VIEWPORT_BY_ORIENTATION: Record<ViewportOrientation, ViewportName> = {
-  portrait: "mobilePortraitBase",
-  landscape: "mobileLandscape",
+  if (!viewport) {
+    throw new Error(`Viewport responsive no encontrado: ${id}`);
+  }
+
+  return viewport;
 };
 
-export const COMPONENT_PREVIEW_VIEWPORT = VIEWPORTS.mobilePortraitModern;
-
-export const formatViewportSize = ({ width, height }: Pick<ViewportDefinition, "width" | "height">) =>
-  `${width}×${height}`;
+export const getDefaultViewport = (orientation: ResponsiveOrientation): ResponsiveViewport =>
+  DEFAULT_VIEWPORT_BY_ORIENTATION[orientation];

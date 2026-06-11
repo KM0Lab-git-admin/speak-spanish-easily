@@ -1,15 +1,15 @@
 import { ReactNode } from "react";
-import { BreakpointProvider, type Breakpoint } from "@/hooks/use-breakpoint";
+import { BreakpointProvider } from "@/hooks/use-breakpoint";
 import {
-  DEFAULT_PREVIEW_VIEWPORT_BY_ORIENTATION,
-  VIEWPORTS,
-  formatViewportSize,
-  type ViewportName,
+  getDefaultViewport,
+  getViewportById,
+  type ResponsiveOrientation,
+  type ViewportId,
 } from "@/design-system/viewports";
 
 interface SimulatedDeviceProps {
-  orientation: "portrait" | "landscape";
-  viewportName?: ViewportName;
+  orientation?: ResponsiveOrientation;
+  viewportId?: ViewportId;
   label?: string;
   children: ReactNode;
 }
@@ -29,24 +29,31 @@ const BREAKPOINT_BY_VIEWPORT: Record<ViewportName, Breakpoint> = {
  * fijo de teléfono, equivalente a `<ScreenFrame />` pero accesible para
  * Visual Edit (los iframes bloquean la selección de elementos).
  *
- * Tamaños fijos: usa los nombres compartidos de `src/design-system/viewports.ts`
- * para evitar dimensiones hardcodeadas en herramientas de preview.
+ * Truco para que los breakpoints `vertical-mobile` / `horizontal-mobile`
+ * se evalúen correctamente aunque el viewport real del navegador sea
+ * `horizontal-desktop`:
+ *
+ *   1. Atributo `data-bp="<bp>"` en el wrapper → las variantes de
+ *      tailwind aceptan también el selector `[data-bp~='X'] &` (ver
+ *      `tailwind.config.ts`). El selector basado en atributo tiene mayor
+ *      especificidad que la media-query, así que GANA el override
+ *      forzado sobre el real.
+ *   2. `<BreakpointProvider value="<bp>" />` → el hook `useBreakpoint()`
+ *      devuelve el breakpoint forzado dentro de este subárbol, así los
+ *      componentes que ramifican layout en JS (Home, BrandedFrame…)
+ *      eligen el mismo branch.
+ *
+ * Los tamaños oficiales viven en `src/design-system/viewports.ts`.
  */
-const SimulatedDevice = ({
-  orientation,
-  viewportName = DEFAULT_PREVIEW_VIEWPORT_BY_ORIENTATION[orientation],
-  label,
-  children,
-}: SimulatedDeviceProps) => {
-  const viewport = VIEWPORTS[viewportName];
-  const { width, height } = viewport;
-  const bp = BREAKPOINT_BY_VIEWPORT[viewportName];
-  const dims = formatViewportSize(viewport);
+const SimulatedDevice = ({ orientation = "portrait", viewportId, label, children }: SimulatedDeviceProps) => {
+  const viewport = viewportId ? getViewportById(viewportId) : getDefaultViewport(orientation);
+  const { width, height, orientation: activeOrientation, breakpoint: bp } = viewport;
+  const dims = `${width}×${height}`;
 
   return (
     <div className="flex flex-col gap-2 items-start">
       <span className="font-ui text-xs text-muted-foreground">
-        {label ? `${label} · ` : ""}{viewport.label} · {dims} · {viewport.orientation}
+        {label ? `${label} · ` : ""}{dims} · {activeOrientation}
       </span>
       <BreakpointProvider value={bp}>
         <div
