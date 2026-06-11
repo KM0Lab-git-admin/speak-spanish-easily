@@ -1,12 +1,22 @@
+import {
+  getDefaultViewport,
+  getViewportById,
+  type ResponsiveOrientation,
+  type ViewportId,
+} from "@/design-system/viewports";
+
 interface ScreenFrameProps {
   src: string;
-  orientation: "portrait" | "landscape";
+  orientation?: ResponsiveOrientation;
+  viewportId?: ViewportId;
   label?: string;
 }
 
 /**
  * ScreenFrame — Embebe una ruta de la app en un iframe del tamaño EXACTO
- * de las resoluciones mínimas oficiales de testing:
+ * de una resolución oficial de testing definida en
+ * `src/design-system/viewports.ts`. Por defecto mantiene los dos
+ * tamaños mínimos históricos:
  *   - portrait  → 375 × 667 (vertical-mobile)
  *   - landscape → 667 × 375 (horizontal-mobile)
  *
@@ -14,9 +24,9 @@ interface ScreenFrameProps {
  * propio viewport y los breakpoints `vertical-mobile`/`horizontal-mobile`
  * (basados en media queries) se evalúen correctamente.
  */
-const ScreenFrame = ({ src, orientation, label }: ScreenFrameProps) => {
-  const width = orientation === "portrait" ? 375 : 667;
-  const height = orientation === "portrait" ? 667 : 375;
+const ScreenFrame = ({ src, orientation = "portrait", viewportId, label }: ScreenFrameProps) => {
+  const viewport = viewportId ? getViewportById(viewportId) : getDefaultViewport(orientation);
+  const { width, height } = viewport;
   const dims = `${width}×${height}`;
 
   return (
