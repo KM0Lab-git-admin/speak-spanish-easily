@@ -2,12 +2,13 @@ import { useState } from "react";
 import ScreenFrame from "@/components/ScreenFrame";
 import SimulatedDevice from "@/components/SimulatedDevice";
 import HomeSandbox, { type HomeSandboxState } from "@/components/HomeSandbox";
+import { VIEWPORTS, formatViewportSize } from "@/design-system/viewports";
 
 /**
  * /preview-all — Catálogo visual: cada pantalla de la app renderizada en
- * sus dos resoluciones mínimas (vertical-mobile 375×667 y horizontal-mobile
- * 667×375) lado a lado, para QA visual rápido sin tener que cambiar el
- * viewport del navegador.
+ * sus dos viewports mínimos compartidos (mobilePortraitBase y
+ * mobileLandscape) lado a lado, para QA visual rápido sin tener que cambiar
+ * el viewport del navegador.
  *
  * Junto a cada pantalla mostramos el árbol de componentes que la
  * compone, para servir de documentación visual + estructural.
@@ -177,7 +178,7 @@ Lógica:
     src: "/chat",
     tree: `(fullbleed — NO usa BrandedFrame; layout fixed inset-0)
 │
-├── Portrait  (landscape:hidden, max-w-[390px])
+├── Portrait  (landscape:hidden, ancho mobilePortraitModern compartido)
 │   ├── motion.header        ← HeaderContent
 │   │   ├── back button (chevron amarillo dashed)
 │   │   ├── título: {cityName} + logo KM0 CHAT/XAT
@@ -332,7 +333,8 @@ const PreviewAll = () => {
       <header className="sticky top-0 z-10 bg-km0-blue-700 text-white px-4 py-3 shadow-md">
         <h1 className="font-brand text-xl">Preview · todas las pantallas</h1>
         <p className="font-body text-sm opacity-80">
-          Resoluciones mínimas: vertical-mobile (375×667) y horizontal-mobile (667×375)
+          Resoluciones mínimas: {VIEWPORTS.mobilePortraitBase.label} ({formatViewportSize(VIEWPORTS.mobilePortraitBase)}) y{" "}
+          {VIEWPORTS.mobileLandscape.label} ({formatViewportSize(VIEWPORTS.mobileLandscape)})
         </p>
       </header>
 

@@ -9,6 +9,7 @@ import {
   type ComponentCategory,
 } from "@/design-system/componentsCatalog";
 import { generateComponentsContext } from "@/design-system/aiContext";
+import { COMPONENT_PREVIEW_VIEWPORT } from "@/design-system/viewports";
 
 /* ── Previews reales ───────────────────────────────── */
 import BrandedFrame from "@/components/BrandedFrame";
@@ -63,7 +64,7 @@ const MOCK_EVENTO: Evento = {
   nivel_coincidencia: "alto",
 };
 
-/** Wrapper "mini-móvil" para previsualizar componentes pensados para ~390px de ancho. */
+/** Wrapper mini-móvil para previsualizar componentes con el viewport mobilePortraitModern compartido. */
 const PhoneFrame = ({
   children,
   height = 480,
@@ -72,8 +73,8 @@ const PhoneFrame = ({
   height?: number;
 }) => (
   <div
-    className="max-w-[390px] mx-auto rounded-3xl border-2 border-km0-blue-700/40 bg-km0-beige-50 overflow-hidden relative"
-    style={{ height }}
+    className="mx-auto rounded-3xl border-2 border-km0-blue-700/40 bg-km0-beige-50 overflow-hidden relative"
+    style={{ width: "100%", maxWidth: COMPONENT_PREVIEW_VIEWPORT.width, height }}
   >
     {children}
   </div>
@@ -111,7 +112,10 @@ const previews: Record<string, ReactNode> = {
     </div>
   ),
   "bottom-tabs": (
-    <div className="max-w-[390px] mx-auto rounded-2xl overflow-hidden border border-km0-beige-200">
+    <div
+      className="mx-auto rounded-2xl overflow-hidden border border-km0-beige-200"
+      style={{ maxWidth: COMPONENT_PREVIEW_VIEWPORT.width }}
+    >
       <BottomTabsPreview />
     </div>
   ),
@@ -160,19 +164,28 @@ const previews: Record<string, ReactNode> = {
     </PhoneFrame>
   ),
   "user-greeting": (
-    <div className="max-w-[390px] mx-auto bg-white/55 px-2 py-2 rounded-xl">
+    <div
+      className="mx-auto bg-white/55 px-2 py-2 rounded-xl"
+      style={{ maxWidth: COMPONENT_PREVIEW_VIEWPORT.width }}
+    >
       <UserGreeting name="Albert" points={1259} nextLevel={3000} />
     </div>
   ),
   "screen-title": (
     <div className="space-y-3">
-      <div className="max-w-[390px] mx-auto bg-white/55 px-2 py-2 rounded-xl">
+      <div
+        className="mx-auto bg-white/55 px-2 py-2 rounded-xl"
+        style={{ maxWidth: COMPONENT_PREVIEW_VIEWPORT.width }}
+      >
         <ScreenTitle title="Agenda" />
       </div>
       <p className="font-body text-xs text-km0-blue-800/60 text-center">
         Mismo slot, fecha personalizada:
       </p>
-      <div className="max-w-[390px] mx-auto bg-white/55 px-2 py-2 rounded-xl">
+      <div
+        className="mx-auto bg-white/55 px-2 py-2 rounded-xl"
+        style={{ maxWidth: COMPONENT_PREVIEW_VIEWPORT.width }}
+      >
         <ScreenTitle title="Chat" date={new Date("2026-12-25")} />
       </div>
     </div>
