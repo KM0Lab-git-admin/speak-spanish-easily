@@ -189,7 +189,7 @@ export default {
       //   vertical-mobile     → portrait + ≤767px   (canónica 375×667)
       //   vertical-tablet     → portrait + ≥768px   (canónica 768×1024)
       //   horizontal-mobile   → landscape + ≤1279px (canónica 667×375)
-      //   horizontal-desktop  → landscape + ≥1280px (canónica 1280×550)
+      //   horizontal-desktop  → landscape + ≥1280px (canónica 1280×720)
       //
       // NO MODIFICAR sin sincronizar también apps/km0lab/tailwind.config.js
       // del repo de producción (km0lab) y AGENTS.md / docs/CONVENTIONS.md.
