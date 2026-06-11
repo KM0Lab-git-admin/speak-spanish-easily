@@ -10,6 +10,17 @@ import {
 interface SimulatedDeviceProps {
   orientation: "portrait" | "landscape";
   viewportName?: ViewportName;
+import { BreakpointProvider } from "@/hooks/use-breakpoint";
+import {
+  getDefaultViewport,
+  getViewportById,
+  type ResponsiveOrientation,
+  type ViewportId,
+} from "@/design-system/viewports";
+
+interface SimulatedDeviceProps {
+  orientation?: ResponsiveOrientation;
+  viewportId?: ViewportId;
   label?: string;
   children: ReactNode;
 }
@@ -56,6 +67,12 @@ const SimulatedDevice = ({
   const { width, height } = viewport;
   const bp = BREAKPOINT_BY_VIEWPORT[viewportName];
   const dims = formatViewportSize(viewport);
+ * Los tamaños oficiales viven en `src/design-system/viewports.ts`.
+ */
+const SimulatedDevice = ({ orientation = "portrait", viewportId, label, children }: SimulatedDeviceProps) => {
+  const viewport = viewportId ? getViewportById(viewportId) : getDefaultViewport(orientation);
+  const { width, height, breakpoint: bp } = viewport;
+  const dims = `${width}×${height}`;
 
   return (
     <div className="flex flex-col gap-2 items-start">
