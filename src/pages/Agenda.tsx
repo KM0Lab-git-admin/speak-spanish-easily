@@ -362,6 +362,9 @@ const Agenda = () => {
         />
       </div>
 
+      {/* ── Contenido no-hero: relative z-10 para pintarse SOBRE el
+           HomeHero decorativo (que en landscape es absolute inset-0). ─── */}
+      <div className="relative z-10 flex-1 min-h-0 flex flex-col gap-3">
       {/* ── Selector de rango temporal ─── */}
       <div className="shrink-0">
         <WhenTabs value={when} onChange={setWhen} />
@@ -458,6 +461,7 @@ const Agenda = () => {
           ))}
         </AnimatePresence>
       </section>
+      </div>
     </div>
   );
 

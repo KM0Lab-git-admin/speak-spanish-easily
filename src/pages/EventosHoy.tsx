@@ -245,7 +245,7 @@ const EventosHoy = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className={cn(
-              "flex-1 min-h-0 overflow-y-auto overflow-x-hidden touch-pan-y overscroll-contain -mx-4 px-4 pb-4",
+              "relative z-10 flex-1 min-h-0 overflow-y-auto overflow-x-hidden touch-pan-y overscroll-contain -mx-4 px-4 pb-4",
               "grid grid-cols-1 vertical-tablet:grid-cols-2 horizontal-desktop:grid-cols-3 gap-3 auto-rows-max",
             )}
             style={{ WebkitOverflowScrolling: "touch" }}
