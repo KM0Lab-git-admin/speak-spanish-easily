@@ -272,6 +272,23 @@ Lógica:
   · Datos: @/data/fixtures/news.json → newsListResponseSchema.parse → adaptNoticia
   · i18n de títulos/resumen/tags con useLang → noticia.titulo[lang]
   · Estados forzables por query: ?state=loading|empty|error, ?id=<id> para detalle`,
+  hoy: `DeviceShell (frame estándar)
+└── content (flex-col h-full)
+    ├── HomeHero  (showGreeting=false, greetingSlot: ScreenTitle "Hoy")
+    └── section grid  (1/2/3 cols responsive, única zona scroll-y)
+        ├── SkeletonCard × 3          (?state=loading)
+        ├── error card + Reintentar    (?state=error)
+        ├── empty state (CalendarDays) (?state=empty)
+        └── EventoHoyCard × N          (happy)
+            ├── img (imagen_url o principal de imagenes, prefijo IMG_BASE)
+            ├── título según lang (titulo_cat|titulo_es)
+            ├── lugar (MapPin) + horas (Clock, HH:mm–HH:mm)
+            └── badge precio: "Gratuït/Gratis" si es_gratuito||precio===0, EUR si no
+
+Lógica:
+  · Datos: @/data/fixtures/events-today.json → todayResponseSchema.parse
+  · Al tocar tarjeta → navigate("/evento?id=<id>")
+  · Estados forzables por query: ?state=loading|empty|error`,
   profile: `BrandedFrame                    ← wrapper de marca (logo + card + back)
 └── motion.div  contenedor (fade-in + y, overflow-y-auto en landscape)
     ├── header
