@@ -234,6 +234,39 @@ const D = {
     en: "Signed out",
   } as Dict,
   "profile.language": { ca: "Idioma", es: "Idioma", en: "Language" } as Dict,
+
+  // ── Noticias ─────────────────────────────────────────────
+  "news.title": { ca: "Notícies", es: "Noticias", en: "News" } as Dict,
+  "news.empty.title": {
+    ca: "Encara no hi ha notícies",
+    es: "Todavía no hay noticias",
+    en: "No news yet",
+  } as Dict,
+  "news.empty.subtitle": {
+    ca: "Torna a mirar més tard.",
+    es: "Vuelve a mirar más tarde.",
+    en: "Check back later.",
+  } as Dict,
+  "news.error.title": {
+    ca: "No s'han pogut carregar les notícies",
+    es: "No se han podido cargar las noticias",
+    en: "Couldn't load the news",
+  } as Dict,
+  "news.error.subtitle": {
+    ca: "Comprova la connexió i torna-ho a provar.",
+    es: "Comprueba la conexión e inténtalo de nuevo.",
+    en: "Check your connection and try again.",
+  } as Dict,
+  "news.error.retry": {
+    ca: "Tornar a provar",
+    es: "Reintentar",
+    en: "Retry",
+  } as Dict,
+  "news.detail.source": {
+    ca: "Font original",
+    es: "Fuente original",
+    en: "Original source",
+  } as Dict,
 } as const;
 
 export type TKey = keyof typeof D;
