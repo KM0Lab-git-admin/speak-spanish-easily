@@ -169,7 +169,7 @@ function StackCarousel<T extends StackCarouselItem>({
               <div
                 className="absolute top-1/2 left-1/2 flex items-start"
                 style={{
-                  transform: `translateX(${trackX + dragOffset / portraitScale}px) translateY(-58%)`,
+                  transform: `translateX(${trackX + dragOffset / portraitScale}px) translateY(-50%)`,
                   transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
                   width: `${total * SLOT}px`,
                 }}
