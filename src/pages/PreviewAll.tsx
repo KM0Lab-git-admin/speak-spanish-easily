@@ -255,6 +255,23 @@ Lógica:
   · CtaPrincipal: prefiere link_inscripcion ("Ticket") sobre link_noticia
     ("ExternalLink"); muestra hostname del link como label
   · ImageCarousel: chevrons + dots, AnimatePresence fade entre imágenes`,
+  noticias: `DeviceShell (frame estándar)
+└── content (flex-col h-full)
+    ├── HomeHero  (showGreeting=false, greetingSlot: ScreenTitle "Noticias")
+    └── AnimatePresence
+        ├── list  (grid 1/2/3 cols responsive, única zona scroll-y)
+        │   ├── SkeletonCard × 3          (?state=loading)
+        │   ├── error card + Reintentar    (?state=error)
+        │   ├── empty state (Newspaper)   (?state=empty)
+        │   └── NoticiaCard × N            (happy)
+        └── NoticiaDetail                  (?id=<id>)
+            ├── back button
+            └── section scroll-y (imagen, fecha, título, tags, cuerpo, fuente)
+
+Lógica:
+  · Datos: @/data/fixtures/news.json → newsListResponseSchema.parse → adaptNoticia
+  · i18n de títulos/resumen/tags con useLang → noticia.titulo[lang]
+  · Estados forzables por query: ?state=loading|empty|error, ?id=<id> para detalle`,
   profile: `BrandedFrame                    ← wrapper de marca (logo + card + back)
 └── motion.div  contenedor (fade-in + y, overflow-y-auto en landscape)
     ├── header
