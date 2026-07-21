@@ -4,12 +4,9 @@ export type ResponsiveOrientation = "portrait" | "landscape";
 
 export type ViewportId =
   | "mobile-portrait-base"
-  | "mobile-portrait-modern"
   | "mobile-landscape-base"
   | "tablet-portrait"
-  | "tablet-landscape"
-  | "desktop-landscape"
-  | "desktop-wide";
+  | "desktop-landscape";
 
 /**
  * Nivel de exigencia de cada viewport:
@@ -35,6 +32,12 @@ export interface ResponsiveViewport {
 /**
  * Matriz oficial de viewports para validar maquetación responsive.
  *
+ * Son las 4 resoluciones canónicas del monorepo de producción (AGENTS.md
+ * de km0lab): un punto por rama CSS (vertical-mobile, vertical-tablet,
+ * horizontal-mobile, horizontal-desktop). Cualquier otra resolución cae
+ * en una de estas ramas, así que añadir más puntos revisa el mismo CSS
+ * dos veces. No añadir viewports sin decisión humana explícita.
+ *
  * Mantén esta lista sincronizada con:
  * - `tailwind.config.ts` (variantes vertical/horizontal)
  * - `src/hooks/use-breakpoint.tsx` (detección JS)
@@ -51,16 +54,6 @@ export const RESPONSIVE_VIEWPORTS: ResponsiveViewport[] = [
     breakpoint: "vertical-mobile",
     tier: "contract",
     purpose: "Contrato mínimo: toda pantalla debe ser usable sin desbordes laterales.",
-  },
-  {
-    id: "mobile-portrait-modern",
-    label: "Mobile portrait moderno",
-    width: 390,
-    height: 844,
-    orientation: "portrait",
-    breakpoint: "vertical-mobile",
-    tier: "contract",
-    purpose: "Comprueba que el aire extra no rompe proporciones ni jerarquía visual.",
   },
   {
     id: "mobile-landscape-base",
@@ -84,40 +77,21 @@ export const RESPONSIVE_VIEWPORTS: ResponsiveViewport[] = [
     purpose: "Valida escalado vertical sin convertir tarjetas en bloques demasiado anchos.",
   },
   {
-    id: "tablet-landscape",
-    label: "Tablet landscape",
-    width: 1024,
-    height: 768,
-    orientation: "landscape",
-    breakpoint: "horizontal-mobile",
-    tier: "contract",
-    purpose: "Cubre landscape amplio antes del salto a layout desktop.",
-  },
-  {
     id: "desktop-landscape",
     label: "Desktop landscape",
     width: 1280,
-    height: 720,
+    height: 550,
     orientation: "landscape",
     breakpoint: "horizontal-desktop",
     tier: "contract",
-    purpose: "Primer tamaño desktop: valida columnas, densidad y composición 16:9.",
-  },
-  {
-    id: "desktop-wide",
-    label: "Desktop amplio",
-    width: 1440,
-    height: 900,
-    orientation: "landscape",
-    breakpoint: "horizontal-desktop",
-    tier: "contract",
-    purpose: "Asegura que el layout no se estira de forma incómoda en pantallas grandes.",
+    purpose:
+      "Punto canónico horizontal-desktop (alineado con producción): valida columnas y densidad.",
   },
 ];
 
 export const DEFAULT_VIEWPORT_BY_ORIENTATION: Record<ResponsiveOrientation, ResponsiveViewport> = {
   portrait: RESPONSIVE_VIEWPORTS[0],
-  landscape: RESPONSIVE_VIEWPORTS[2],
+  landscape: RESPONSIVE_VIEWPORTS[1],
 };
 
 /**
@@ -127,12 +101,9 @@ export const DEFAULT_VIEWPORT_BY_ORIENTATION: Record<ResponsiveOrientation, Resp
  */
 export const VIEWPORTS = {
   mobilePortraitBase: RESPONSIVE_VIEWPORTS[0],
-  mobilePortraitModern: RESPONSIVE_VIEWPORTS[1],
-  mobileLandscape: RESPONSIVE_VIEWPORTS[2],
-  tabletPortrait: RESPONSIVE_VIEWPORTS[3],
-  tabletLandscape: RESPONSIVE_VIEWPORTS[4],
-  desktopLandscape: RESPONSIVE_VIEWPORTS[5],
-  desktopWide: RESPONSIVE_VIEWPORTS[6],
+  mobileLandscape: RESPONSIVE_VIEWPORTS[1],
+  tabletPortrait: RESPONSIVE_VIEWPORTS[2],
+  desktopLandscape: RESPONSIVE_VIEWPORTS[3],
 } as const satisfies Record<string, ResponsiveViewport>;
 
 export type ViewportName = keyof typeof VIEWPORTS;

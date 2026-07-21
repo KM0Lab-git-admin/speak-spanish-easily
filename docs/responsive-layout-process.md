@@ -15,15 +15,23 @@ tiene un **tier**:
 - **smoke** → la pantalla solo debe NO ROMPERSE: sin overflow lateral ni
   contenido inaccesible. No se invierte tiempo de diseño aquí.
 
+La matriz son las **4 resoluciones canónicas** compartidas con producción
+(AGENTS.md de km0lab): un punto por rama CSS. Cualquier otra resolución cae
+en una de estas 4 ramas, así que añadir más puntos es revisar el mismo CSS
+dos veces. No se añaden viewports sin decisión humana explícita.
+
 | Viewport | Tamaño | Breakpoint | Tier | Uso |
 | --- | ---: | --- | --- | --- |
-| Mobile portrait base | 375×667 | `vertical-mobile` | contract | Contrato mínimo de usabilidad. |
-| Mobile portrait moderno | 390×844 | `vertical-mobile` | contract | Comprueba aire vertical extra. |
+| Mobile portrait base | 375×667 | `vertical-mobile` | contract | Contrato mínimo: toda pantalla y todo estado se validan aquí. |
 | Mobile landscape base | 667×375 | `horizontal-mobile` | **smoke** | Solo no-rotura (ver decisión abajo). |
-| Tablet portrait | 768×1024 | `vertical-tablet` | contract | Valida escalado vertical. |
-| Tablet landscape | 1024×768 | `horizontal-mobile` | contract | Landscape amplio antes de desktop. |
-| Desktop landscape | 1280×720 | `horizontal-desktop` | contract | Primer contrato desktop. |
-| Desktop amplio | 1440×900 | `horizontal-desktop` | contract | Evita layouts demasiado estirados. |
+| Tablet portrait | 768×1024 | `vertical-tablet` | contract | Valida escalado vertical (solo estado feliz). |
+| Desktop landscape | 1280×550 | `horizontal-desktop` | contract | Punto canónico desktop, alineado con producción (solo estado feliz). |
+
+**Estados**: loading/empty/error y variantes de sesión se validan SOLO a
+375×667 — los estados cambian contenido, no ramas de layout. El estado
+feliz (o la variante estructuralmente más compleja) es el único que pasa
+por los 4 puntos. Excepción: un estado que cambie la estructura del
+layout se trata como estado feliz.
 
 > **Decisión de producto (2026-06): el móvil en landscape NO es un requisito.**
 > Basta con que no haya overflow horizontal y todo el contenido sea accesible
@@ -46,10 +54,9 @@ tiene un **tier**:
 ## Orden obligatorio para cambios visuales
 
 1. Identificar el bloque objetivo y qué nivel de la jerarquía controla el problema.
-2. Mantener estable el contrato base portrait (`375×667`) y comprobar `390×844`.
-3. Revisar tablet portrait (`768×1024`) y tablet landscape (`1024×768`).
-4. Ajustar desktop (`1280×720`, `1440×900`) solo cuando los tamaños pequeños
-   sean estables.
+2. Mantener estable el contrato base portrait (`375×667`), estados incluidos.
+3. Revisar tablet portrait (`768×1024`), solo estado feliz.
+4. Ajustar desktop (`1280×550`) solo cuando los tamaños pequeños sean estables.
 5. Smoke final en móvil landscape (`667×375`): sin overflow, contenido
    accesible. Nada más.
 6. Evitar "parches cruzados": si una variante necesita un override, documentar por qué.

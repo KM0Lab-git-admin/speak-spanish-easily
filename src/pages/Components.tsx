@@ -64,7 +64,7 @@ const MOCK_EVENTO: Evento = {
   nivel_coincidencia: "alto",
 };
 
-/** Wrapper mini-móvil para previsualizar componentes con el viewport mobilePortraitModern compartido. */
+/** Wrapper mini-móvil para previsualizar componentes con COMPONENT_PREVIEW_VIEWPORT compartido. */
 const PhoneFrame = ({
   children,
   height = 480,

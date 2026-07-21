@@ -30,9 +30,7 @@ const SANDBOX_HOME_STATES: HomeSandboxState[] = ["guest", "registered", "reward-
 /** Opciones del segundo frame. El primario es siempre mobile-portrait-base. */
 const SECONDARY_VIEWPORTS: { id: ViewportId; scale: number }[] = [
   { id: "tablet-portrait", scale: 0.5 },
-  { id: "tablet-landscape", scale: 0.5 },
   { id: "desktop-landscape", scale: 0.5 },
-  { id: "desktop-wide", scale: 0.45 },
   { id: "mobile-landscape-base", scale: 1 },
 ];
 
