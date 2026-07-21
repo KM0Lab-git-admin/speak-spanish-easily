@@ -174,6 +174,18 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     ],
   },
   {
+    id: "noticias",
+    label: "Noticias",
+    path: "/noticias",
+    states: [
+      { id: "happy", label: "Feliz", src: "/noticias" },
+      { id: "loading", label: "Loading", src: "/noticias?state=loading" },
+      { id: "empty", label: "Vacío", src: "/noticias?state=empty" },
+      { id: "error", label: "Error", src: "/noticias?state=error" },
+      { id: "detail", label: "Detalle", src: "/noticias?id=not_a1b2c3d4e5f6" },
+    ],
+  },
+  {
     id: "profile",
     label: "Profile",
     path: "/profile",
