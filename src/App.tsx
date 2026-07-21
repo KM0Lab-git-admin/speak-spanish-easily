@@ -42,6 +42,7 @@ const App = () => (
             <Route path="/home" element={<Home />} />
             <Route path="/agenda" element={<Agenda />} />
             <Route path="/evento" element={<Evento />} />
+            <Route path="/noticias" element={<Noticias />} />
             {/* Perfil accesible sin auth para testing — Profile gestiona el estado sin user. */}
             <Route path="/profile" element={<Profile />} />
             <Route path="/design-system" element={<DesignSystem />} />
