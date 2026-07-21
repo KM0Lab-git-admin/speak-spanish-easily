@@ -267,6 +267,35 @@ const D = {
     es: "Fuente original",
     en: "Original source",
   } as Dict,
+
+  // ── Eventos de hoy ───────────────────────────────────────
+  "today.title": { ca: "Avui", es: "Hoy", en: "Today" } as Dict,
+  "today.free": { ca: "Gratuït", es: "Gratis", en: "Free" } as Dict,
+  "today.empty.title": {
+    ca: "Avui no hi ha esdeveniments",
+    es: "Hoy no hay eventos",
+    en: "No events today",
+  } as Dict,
+  "today.empty.subtitle": {
+    ca: "Torna a mirar l'agenda més tard.",
+    es: "Vuelve a mirar la agenda más tarde.",
+    en: "Check the agenda again later.",
+  } as Dict,
+  "today.error.title": {
+    ca: "No s'han pogut carregar els esdeveniments",
+    es: "No se han podido cargar los eventos",
+    en: "Couldn't load events",
+  } as Dict,
+  "today.error.subtitle": {
+    ca: "Comprova la connexió i torna-ho a provar.",
+    es: "Comprueba la conexión e inténtalo de nuevo.",
+    en: "Check your connection and try again.",
+  } as Dict,
+  "today.error.retry": {
+    ca: "Tornar a provar",
+    es: "Reintentar",
+    en: "Retry",
+  } as Dict,
 } as const;
 
 export type TKey = keyof typeof D;
