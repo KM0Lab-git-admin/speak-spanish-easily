@@ -161,94 +161,95 @@ function StackCarousel<T extends StackCarouselItem>({
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.45, delay: 0.2 }}
         >
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{ transform: `scale(${portraitScale})`, transformOrigin: "center center" }}
-          >
+          <div className="relative w-full h-full">
             <div
-              className="absolute top-1/2 left-1/2 flex items-start"
-              style={{
-                transform: `translateX(${trackX + dragOffset / portraitScale}px) translateY(-58%)`,
-                transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
-                width: `${total * SLOT}px`,
-              }}
+              className="absolute inset-0 pointer-events-none"
+              style={{ transform: `scale(${portraitScale})`, transformOrigin: "center center" }}
             >
-              {items.map((item, i) => {
-                const dist = Math.abs(i - current);
-                const isActive = i === current;
-                const scale = isActive ? 1 : dist === 1 ? 0.92 : 0.76;
-                const opacity = isActive ? 1 : dist === 1 ? 0.85 : 0.45;
-                const topOffset = isActive ? 0 : dist === 1 ? 12 : 32;
-                return (
-                  <div
-                    key={item.id}
-                    onClick={() => !isActive && goTo(i)}
-                    style={{
-                      width: `${SLOT}px`,
-                      paddingLeft: "5px",
-                      paddingRight: "5px",
-                      transform: `scale(${scale}) translateY(${topOffset}px)`,
-                      opacity,
-                      transition: "transform 420ms cubic-bezier(0.4,0,0.2,1), opacity 420ms ease",
-                      transformOrigin: "top center",
-                      cursor: isActive ? "default" : "pointer",
-                      zIndex: isActive ? 10 : 1,
-                      position: "relative",
-                      pointerEvents: "auto",
-                    }}
-                  >
-                    {isActive && (<>
-                      <div style={{
-                        position: "absolute", bottom: -10, left: 22, right: 22,
-                        height: 28, background: "rgba(255,255,255,0.55)",
-                        borderRadius: 20, zIndex: -1,
-                        boxShadow: "0 8px 24px -4px rgba(0,0,0,0.10)",
-                      }} />
-                      <div style={{
-                        position: "absolute", bottom: -18, left: 38, right: 38,
-                        height: 28, background: "rgba(255,255,255,0.30)",
-                        borderRadius: 20, zIndex: -2,
-                        boxShadow: "0 8px 24px -4px rgba(0,0,0,0.06)",
-                      }} />
-                    </>)}
-                    <div className={`bg-white rounded-3xl overflow-hidden ${isActive ? "shadow-2xl" : "shadow-none"}`}>
-                      {renderSlideContent(item, { isActive, index: i })}
+              <div
+                className="absolute top-1/2 left-1/2 flex items-start"
+                style={{
+                  transform: `translateX(${trackX + dragOffset / portraitScale}px) translateY(-58%)`,
+                  transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
+                  width: `${total * SLOT}px`,
+                }}
+              >
+                {items.map((item, i) => {
+                  const dist = Math.abs(i - current);
+                  const isActive = i === current;
+                  const scale = isActive ? 1 : dist === 1 ? 0.92 : 0.76;
+                  const opacity = isActive ? 1 : dist === 1 ? 0.85 : 0.45;
+                  const topOffset = isActive ? 0 : dist === 1 ? 12 : 32;
+                  return (
+                    <div
+                      key={item.id}
+                      onClick={() => !isActive && goTo(i)}
+                      style={{
+                        width: `${SLOT}px`,
+                        paddingLeft: "5px",
+                        paddingRight: "5px",
+                        transform: `scale(${scale}) translateY(${topOffset}px)`,
+                        opacity,
+                        transition: "transform 420ms cubic-bezier(0.4,0,0.2,1), opacity 420ms ease",
+                        transformOrigin: "top center",
+                        cursor: isActive ? "default" : "pointer",
+                        zIndex: isActive ? 10 : 1,
+                        position: "relative",
+                        pointerEvents: "auto",
+                      }}
+                    >
+                      {isActive && (<>
+                        <div style={{
+                          position: "absolute", bottom: -10, left: 22, right: 22,
+                          height: 28, background: "rgba(255,255,255,0.55)",
+                          borderRadius: 20, zIndex: -1,
+                          boxShadow: "0 8px 24px -4px rgba(0,0,0,0.10)",
+                        }} />
+                        <div style={{
+                          position: "absolute", bottom: -18, left: 38, right: 38,
+                          height: 28, background: "rgba(255,255,255,0.30)",
+                          borderRadius: 20, zIndex: -2,
+                          boxShadow: "0 8px 24px -4px rgba(0,0,0,0.06)",
+                        }} />
+                      </>)}
+                      <div className={`bg-white rounded-3xl overflow-hidden ${isActive ? "shadow-2xl" : "shadow-none"}`}>
+                        {renderSlideContent(item, { isActive, index: i })}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
+
+            <button
+              onClick={prev}
+              onPointerDown={(e) => e.stopPropagation()}
+              disabled={isFirst}
+              className={cn(
+                "absolute left-1 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+                isFirst
+                  ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
+                  : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
+              )}
+              aria-label="Previous"
+            >
+              <ChevronLeft size={18} strokeWidth={2.5} />
+            </button>
+            <button
+              onClick={next}
+              onPointerDown={(e) => e.stopPropagation()}
+              disabled={isLast}
+              className={cn(
+                "absolute right-1 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+                isLast
+                  ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
+                  : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
+              )}
+              aria-label="Next"
+            >
+              <ChevronRight size={18} strokeWidth={2.5} />
+            </button>
           </div>
-
-          <button
-            onClick={prev}
-            onPointerDown={(e) => e.stopPropagation()}
-            disabled={isFirst}
-            className={cn(
-              "absolute left-1 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
-              isFirst
-                ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
-                : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
-            )}
-            aria-label="Previous"
-          >
-            <ChevronLeft size={18} strokeWidth={2.5} />
-          </button>
-          <button
-            onClick={next}
-            onPointerDown={(e) => e.stopPropagation()}
-            disabled={isLast}
-            className={cn(
-              "absolute right-1 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
-              isLast
-                ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
-                : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
-            )}
-            aria-label="Next"
-          >
-            <ChevronRight size={18} strokeWidth={2.5} />
-          </button>
-
         </motion.div>
 
         {/* Thumbnails */}
