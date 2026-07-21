@@ -225,7 +225,7 @@ function StackCarousel<T extends StackCarouselItem>({
             onPointerDown={(e) => e.stopPropagation()}
             disabled={isFirst}
             className={cn(
-              "absolute left-1 top-[clamp(70px,16vh,120px)] w-9 h-9 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
+              "absolute left-1 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white border-[2px] flex items-center justify-center shadow-lg transition-all duration-200 z-20",
               isFirst
                 ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
                 : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
