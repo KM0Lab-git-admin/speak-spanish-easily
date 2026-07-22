@@ -50,6 +50,11 @@ interface AppState {
   // pending OTP (entre `requestOtp` y `verifyOtp`)
   pendingOtp: { email: string; postal_code?: string; town?: string } | null;
 
+  // Notificaciones: timestamp ISO de la última vez que el usuario abrió
+  // el panel de notificaciones. Se usa para comparar contra
+  // `fecha_publicacion` de cada noticia y decidir si hay no leídas.
+  notificationsLastSeenAt: string | null;
+
   // ─── actions ───────────────────────────────
   setLang: (l: Lang) => void;
   setLocation: (postalCode: string | null, town: string | null) => void;
@@ -59,6 +64,8 @@ interface AppState {
 
   upsertProfile: (userId: string, patch: Partial<AppProfile>) => void;
   getProfile: (userId: string) => AppProfile | null;
+
+  markNotificationsSeen: () => void;
 
   signOut: () => void;
 }
