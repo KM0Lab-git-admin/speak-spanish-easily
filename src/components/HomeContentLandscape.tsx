@@ -5,8 +5,8 @@ import EventHeroCarousel from "./EventHeroCarousel";
 import ComercioCarousel from "./ComercioCarousel";
 import CouponCard from "./CouponCard";
 import PointsCard from "./PointsCard";
+import JoinCard from "./JoinCard";
 import GreetingBlock from "./GreetingBlock";
-import LoginButton from "./LoginButton";
 import BottomTabs from "./BottomTabs";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
@@ -17,6 +17,7 @@ const HomeContentLandscape = ({
   hasAlerts,
   onToggleAlerts,
   greeting,
+  subtitle,
   points,
   nextLevel,
   modules,
@@ -36,7 +37,6 @@ const HomeContentLandscape = ({
   onOpenEvent,
 }: HomeContentProps) => {
   const { lang } = useLang();
-  const subtitle = t("home.greeting_subtitle", lang);
 
   return (
     <>
@@ -48,18 +48,13 @@ const HomeContentLandscape = ({
         greetingSlot={
           <div className="gap-1.5 px-3 pb-1 horizontal-mobile:gap-0 horizontal-mobile:px-2.5 horizontal-mobile:pb-0 flex-col flex items-center justify-start">
             <GreetingBlock greeting={greeting} subtitle={subtitle} />
-            {showLogin && (
-              <LoginButton
-                onClick={onLogin}
-                size="md"
-                className="w-full max-w-[280px] min-h-10"
-              />
-            )}
+            {showLogin && <JoinCard onCreateAccount={onLogin} />}
             {showPoints && <PointsCard points={points} nextLevel={nextLevel} />}
           </div>
         }
         inline
       />
+
 
       <main className="flex-1 min-h-0 w-full grid items-start horizontal-desktop:items-stretch gap-3 p-3 horizontal-mobile:!gap-2 horizontal-mobile:!p-2.5 horizontal-desktop:p-5 horizontal-desktop:gap-5 horizontal-mobile:grid-cols-[minmax(0,1.05fr)_minmax(260px,0.75fr)] horizontal-desktop:grid-cols-[minmax(0,1.35fr)_minmax(360px,0.85fr)] overflow-hidden">
           <section className="min-w-0 min-h-0 overflow-hidden rounded-2xl border border-border bg-card/90 p-3 horizontal-mobile:!p-2.5 horizontal-desktop:p-5 shadow-sm grid grid-rows-[auto_auto] content-start horizontal-desktop:grid-rows-[auto_1fr] horizontal-desktop:content-stretch gap-3 horizontal-mobile:!gap-2 horizontal-desktop:gap-4">
