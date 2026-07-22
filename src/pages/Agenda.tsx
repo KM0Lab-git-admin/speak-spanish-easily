@@ -21,6 +21,8 @@ import HomeHero from "@/components/HomeHero";
 import ScreenTitle from "@/components/ScreenTitle";
 import WhenTabs, { type WhenKey } from "@/components/WhenTabs";
 import { useNotifications } from "@/hooks/useNotifications";
+import { useLang } from "@/contexts/LangContext";
+import { t, type Lang, type TKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { listEvents, type AgendaEvent as Evento } from "@/services/eventsApi";
 
