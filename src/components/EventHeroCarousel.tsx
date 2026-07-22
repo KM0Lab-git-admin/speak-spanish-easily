@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, MapPin, CalendarDays } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -7,14 +7,13 @@ import type { Promo } from "@/types/promo";
 /**
  * EventHeroCarousel — hero de "Eventos destacados".
  *
- * Cada slide se compone como en el mockup de la nueva home:
- *  - Fondo: gradiente decorativo + "fuegos artificiales" sutiles.
- *  - Top-left: badge pill (categoría) con emoji + texto.
- *  - Bottom-left: título grande (2 líneas), fecha y ubicación.
- *  - Bottom-right: círculo blanco con chevron (call to action).
- *  - Debajo: dots de paginación.
+ * Cada slide está compuesto por:
+ *  - Zona superior: carrusel de imágenes del evento (dots internos).
+ *  - Zona inferior: panel con título, fecha, ubicación y CTA circular.
  *
- * Swipe horizontal con framer-motion; dots clicables.
+ * Swipe horizontal sobre la card = cambia de evento.
+ * Dots inferiores del panel = cambian de evento (paginación externa).
+ * Dots sobre la imagen = cambian de imagen dentro del mismo evento.
  */
 export interface EventHeroCarouselProps {
   promos: Promo[];
@@ -24,7 +23,14 @@ export interface EventHeroCarouselProps {
 const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
+  const [imgIndex, setImgIndex] = useState(0);
   const total = promos.length;
+
+  // Al cambiar de evento, reiniciamos la imagen visible.
+  useEffect(() => {
+    setImgIndex(0);
+  }, [index]);
+
   if (total === 0) return null;
 
   const goTo = (next: number) => {
@@ -34,10 +40,13 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
   };
 
   const promo = promos[index];
+  const images = promo.images ?? [];
+  const hasImages = images.length > 0;
+  const currentImage = hasImages ? images[imgIndex % images.length] : null;
 
   return (
-    <div className="w-full horizontal-desktop:h-full horizontal-desktop:flex horizontal-desktop:flex-col">
-      <div className="relative w-full rounded-2xl overflow-hidden bg-primary shadow-[0_12px_28px_-14px_hsl(var(--km0-blue-900)/0.4)] aspect-[16/10] vertical-tablet:aspect-[16/9] min-h-[120px] horizontal-mobile:!aspect-auto horizontal-mobile:!h-[40px] horizontal-mobile:!min-h-0 horizontal-desktop:!aspect-auto horizontal-desktop:!h-full horizontal-desktop:!min-h-0 horizontal-desktop:!flex-1">
+    <div className="w-full">
+      <div className="relative w-full rounded-2xl overflow-hidden bg-card shadow-[0_12px_28px_-14px_hsl(var(--km0-blue-900)/0.35)] ring-1 ring-km0-beige-200">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={promo.id}
@@ -53,61 +62,100 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
               if (info.offset.x < -50) goTo(index + 1);
               else if (info.offset.x > 50) goTo(index - 1);
             }}
-            className={cn(
-              "absolute inset-0 bg-gradient-to-br cursor-grab active:cursor-grabbing",
-              promo.gradient,
-            )}
+            className="flex flex-col cursor-grab active:cursor-grabbing"
           >
-            {/* Decoración: motas de "fuegos artificiales" */}
-            <div aria-hidden className="absolute top-4 left-6 w-1.5 h-1.5 rounded-full bg-km0-yellow-300 shadow-[0_0_12px_hsl(var(--km0-yellow-400))]" />
-            <div aria-hidden className="absolute top-8 left-16 w-1 h-1 rounded-full bg-white/70" />
-            <div aria-hidden className="absolute top-5 right-20 w-2 h-2 rounded-full bg-km0-coral-300 shadow-[0_0_14px_hsl(var(--km0-coral-400))]" />
-            <div aria-hidden className="absolute top-12 right-10 w-1 h-1 rounded-full bg-white/80" />
-            <div aria-hidden className="absolute top-2 right-32 w-1.5 h-1.5 rounded-full bg-km0-yellow-200/80" />
+            {/* --- Zona imagen --- */}
+            <div
+              className={cn(
+                "relative w-full aspect-[16/10] bg-gradient-to-br overflow-hidden",
+                promo.gradient,
+              )}
+            >
+              {currentImage && (
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={currentImage}
+                    src={currentImage}
+                    alt={promo.title.replace(/\n/g, " ")}
+                    initial={{ opacity: 0, scale: 1.03 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    draggable={false}
+                  />
+                </AnimatePresence>
+              )}
 
-            {/* Overlay sutil para que el texto contraste bien */}
-            <div aria-hidden className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
+              {/* Overlay inferior para lecturabilidad si algún día ponemos texto encima */}
+              <div
+                aria-hidden
+                className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/25 to-transparent"
+              />
 
-
-            {/* Contenido inferior izquierdo */}
-            <div className="absolute left-4 right-16 bottom-3 vertical-tablet:left-5 vertical-tablet:right-20 vertical-tablet:bottom-5 horizontal-mobile:!hidden horizontal-desktop:!left-4 horizontal-desktop:!bottom-4 pointer-events-none select-none">
-              <h3 className="font-brand font-black text-white leading-[1.05] whitespace-pre-line text-2xl vertical-tablet:text-[26px] horizontal-mobile:!text-base horizontal-desktop:!text-3xl">
-                {promo.title}
-              </h3>
-              <div className="mt-1.5 vertical-tablet:mt-2.5 horizontal-mobile:!mt-1 flex flex-col gap-0.5 vertical-tablet:gap-1 font-body text-white/95 text-xs vertical-tablet:text-sm horizontal-mobile:!text-[10px] horizontal-desktop:!text-sm">
-                <span className="flex items-center gap-1.5">
-                  <CalendarDays size={13} className="shrink-0 horizontal-mobile:!w-3 horizontal-mobile:!h-3" strokeWidth={2.2} />
-                  {promo.dateRange}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <MapPin size={13} className="shrink-0 horizontal-mobile:!w-3 horizontal-mobile:!h-3" strokeWidth={2.2} />
-                  {promo.location}
-                </span>
-              </div>
+              {/* Dots internos de imagen */}
+              {images.length > 1 && (
+                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-1.5 rounded-full bg-black/35 backdrop-blur-sm px-2 py-1">
+                  {images.map((_, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setImgIndex(i);
+                      }}
+                      aria-label={`Imatge ${i + 1}`}
+                      className={cn(
+                        "rounded-full transition-all",
+                        i === imgIndex % images.length
+                          ? "w-4 h-1.5 bg-white"
+                          : "w-1.5 h-1.5 bg-white/55 hover:bg-white/80",
+                      )}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
 
+            {/* --- Panel de texto --- */}
+            <div className="relative flex items-end gap-3 px-4 pt-3 pb-4 vertical-tablet:px-5 vertical-tablet:pt-4 vertical-tablet:pb-5">
+              <div className="flex-1 min-w-0 select-none">
+                <h3 className="font-brand font-black text-km0-blue-800 leading-[1.05] whitespace-pre-line text-xl vertical-tablet:text-2xl">
+                  {promo.title}
+                </h3>
+                <div className="mt-2 flex flex-col gap-1 font-body text-km0-blue-700/85 text-xs vertical-tablet:text-sm">
+                  <span className="flex items-center gap-1.5">
+                    <CalendarDays size={14} className="shrink-0" strokeWidth={2.2} />
+                    {promo.dateRange}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <MapPin size={14} className="shrink-0" strokeWidth={2.2} />
+                    {promo.location}
+                  </span>
+                </div>
+              </div>
 
-            {/* CTA chevron circle */}
-            <button
-              type="button"
-              onClick={() => goTo(index + 1)}
-              aria-label="Siguiente evento"
-              className="absolute bottom-3 right-3 horizontal-mobile:!bottom-2 horizontal-mobile:!right-2 w-10 h-10 horizontal-mobile:!w-8 horizontal-mobile:!h-8 rounded-full bg-white shadow-[0_4px_14px_-2px_hsl(var(--km0-blue-900)/0.5)] flex items-center justify-center active:scale-95 hover:scale-105 transition-transform z-10"
-            >
-              <ChevronRight size={20} strokeWidth={2.5} className="text-km0-blue-700 horizontal-mobile:!w-4 horizontal-mobile:!h-4" />
-            </button>
+              <button
+                type="button"
+                onClick={() => onOpen?.(promo.id)}
+                aria-label="Obrir esdeveniment"
+                className="shrink-0 w-11 h-11 rounded-full bg-km0-blue-700 text-white shadow-[0_6px_14px_-4px_hsl(var(--km0-blue-900)/0.55)] flex items-center justify-center active:scale-95 hover:scale-105 transition-transform"
+              >
+                <ChevronRight size={22} strokeWidth={2.5} />
+              </button>
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Dots */}
-      <div className="flex items-center justify-center gap-1.5 mt-2.5 horizontal-mobile:mt-1 landscape:hidden">
+      {/* Dots externos: paginación entre eventos */}
+      <div className="flex items-center justify-center gap-1.5 mt-2.5">
         {promos.map((_, i) => (
           <button
             key={i}
             type="button"
             onClick={() => goTo(i)}
-            aria-label={`Ir al evento ${i + 1}`}
+            aria-label={`Anar a l'esdeveniment ${i + 1}`}
             className={cn(
               "rounded-full transition-all",
               i === index
