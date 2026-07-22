@@ -70,8 +70,6 @@ const HomeContent = ({
 }: HomeContentProps) => {
   const { lang } = useLang();
 
-  const subtitle = t("home.greeting_subtitle", lang);
-
   return (
     <>
       <HomeHero
@@ -82,13 +80,7 @@ const HomeContent = ({
         greetingSlot={
           <div className="my-0 flex flex-col gap-3 horizontal-mobile:!gap-2 px-2 py-0">
             <GreetingBlock greeting={greeting} subtitle={subtitle} />
-            {showLogin && (
-              <LoginButton
-                onClick={onLogin}
-                size="md"
-                className="w-full max-w-[280px] mx-auto min-h-10 vertical-tablet:min-h-11"
-              />
-            )}
+            {showLogin && <JoinCard onCreateAccount={onLogin} />}
             {showPoints && <PointsCard points={points} nextLevel={nextLevel} />}
           </div>
         }
@@ -113,15 +105,22 @@ const HomeContent = ({
           </section>
 
           <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-6 py-6 space-y-3">
-            <SectionHeader title={t("home.section.coupons", lang)} actionLabel={t("home.action.see_all_f", lang)} onAction={onSeeAllCoupons} />
-            <div className="flex flex-col gap-2">
-              {coupons.map((c, i) => (
-                <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
-              ))}
-            </div>
+            <SectionHeader title={t("home.redeem.title", lang)} actionLabel={showLogin ? undefined : t("home.action.see_all_m", lang)} onAction={onSeeAllCoupons} />
+            {showLogin ? (
+              <p className="font-body text-km0-blue-700/70 text-sm horizontal-mobile:!text-xs">
+                {t("home.redeem.guest", lang)}
+              </p>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {coupons.map((c, i) => (
+                  <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
+                ))}
+              </div>
+            )}
           </section>
         </div>
       </div>
+
 
       <BottomTabs
         activeTab={activeTab}
