@@ -13,7 +13,7 @@ export const SCREEN_TREES: Record<string, string> = {
 │   │   ├── skyline malgrat    (bg absoluto, object-top, opacity-25)
 │   │   └── fila header        (escudo + ciudad + KM0 + bell)
 │   ├── body scroll-y
-│   │   ├── section greeting              → GreetingBlock + JoinCard/PointsCard
+│   │   ├── section JoinCard (guest) / PointsCard (auth)
 │   │   ├── section "Accesos rápidos"     → HomeModules
 │   │   ├── section "Eventos destacados"  → EventHeroCarousel
 │   │   ├── section "Descubre lo nuestro" → ComercioCarousel
