@@ -40,8 +40,9 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const showProfile = isAuthed;
   const showPoints = isAuthed;
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [notifOpen, setNotifOpen] = useState(searchParams.get("notifs") === "open");
+  const [rewardOpen, setRewardOpen] = useState(searchParams.get("welcome") === "1");
   const [moduleSeeds, setModuleSeeds] = useState<HomeModuleSeed[]>(INITIAL_MODULES);
   const [activeTab, setActiveTab] = useState<HomeTab>("home");
   const { promos: apiPromos } = useFeaturedPromos(4);
