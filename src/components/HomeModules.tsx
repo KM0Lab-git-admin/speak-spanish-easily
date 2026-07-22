@@ -1,4 +1,3 @@
-import { Trophy, Ticket, Store, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import chatMascot from "@/assets/chat-mascot.png";
 import agendaIcon from "@/assets/agenda-icon.png";
@@ -6,27 +5,11 @@ import cityHallIcon from "@/assets/cityhall-icon.png";
 import shopIcon from "@/assets/shop-icon.png";
 
 /**
- * HomeModules — accesos rápidos estilo Glovo, recoloreado a marca KM0.
+ * HomeModules — accesos rápidos de la Home.
  *
- * Lectura de Glovo aplicada a nuestra paleta:
- *  - Banda monocromática vibrante (Glovo: naranja → KM0: azul institucional)
- *    como FONDO de la sección, no como card. Identidad de marca clara.
- *  - Curva orgánica inferior — la banda se "derrama" suavemente sobre el
- *    fondo beige de la pantalla, no es un rectángulo cerrado.
- *  - Círculos BLANCOS PUROS (no de color) → los iconos coloridos resaltan
- *    máximo sobre la banda azul saturada.
- *  - Borde fino del círculo en el mismo azul de la banda → el círculo
- *    "respira" con la banda.
- *  - Sombra suave PROYECTADA BAJO el círculo (no glow alrededor) → da
- *    elevación física como si los círculos flotaran sobre la banda.
- *  - Cada icono usa un color distinto del DS (azul, amarillo, coral) para
- *    crear ritmo cromático sin perder coherencia.
- *  - Label en pill blanco flotando sobre el borde inferior del círculo,
- *    altura reservada para 2 líneas → iconos siempre alineados.
- *  - Círculo central ligeramente más grande → rompe la monotonía y crea
- *    jerarquía focal en el módulo principal (KM0 CHAT cuando está en medio).
- *
- *  Solo soporta exactamente 3 módulos (3 al centro).
+ * Banda beige con grid de N módulos. Cada módulo es un círculo blanco con
+ * icono ilustrado (PNG) y un pill blanco con el label flotando sobre el
+ * borde inferior. Todos los módulos tienen el mismo tamaño (sin destacado).
  */
 
 export type HomeModuleId = "chat" | "agenda" | "ajuntament" | "punts" | "cupons" | "comerc";
@@ -38,20 +21,17 @@ export interface HomeModule {
   onClick?: () => void;
 }
 
-const ICONS: Record<Exclude<HomeModuleId, "chat" | "agenda" | "ajuntament" | "comerc">, LucideIcon> = {
-  punts: Trophy,
-  cupons: Ticket,
+const IMAGE_SRC: Partial<Record<HomeModuleId, string>> = {
+  chat: chatMascot,
+  agenda: agendaIcon,
+  ajuntament: cityHallIcon,
+  comerc: shopIcon,
 };
 
-/** Color del icono dentro del círculo blanco. Pensado como ritmo cromático
- *  — cada módulo "vibra" con un acento distinto del DS sobre fondo blanco. */
-const ICON_COLOR: Record<HomeModuleId, string> = {
-  chat:        "text-km0-blue-700",
-  agenda:      "text-km0-teal-600",
-  ajuntament:  "text-km0-blue-700",
-  punts:       "text-km0-yellow-600",
-  cupons:      "text-km0-coral-400",
-  comerc:      "text-km0-blue-700",
+/** Padding interno de la imagen dentro del círculo, por id. */
+const IMAGE_PADDING: Partial<Record<HomeModuleId, string>> = {
+  ajuntament: "p-2.5 horizontal-mobile:!p-2",
+  comerc: "p-2.5 horizontal-mobile:!p-2",
 };
 
 interface HomeModulesProps {
@@ -66,26 +46,21 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
     <div className={cn("relative w-full max-w-full", className)}>
       <div
         className={cn(
-          "relative bg-km0-beige-100 rounded-t-3xl rounded-bl-[40%_24px] rounded-br-[40%_24px] px-3 opacity-100 my-0 py-0 horizontal-mobile:!h-[62px] horizontal-desktop:!h-[110px] horizontal-mobile:!rounded-3xl",
+          "relative bg-km0-beige-100 rounded-3xl px-3 py-0 my-0",
+          "horizontal-mobile:!h-[62px] horizontal-desktop:!h-[110px]",
         )}
       >
-        {/* Patrón decorativo sutil arriba — círculos translúcidos
-            que dan textura sin distraer (Glovo lo usa con su ilustración).
-            Aquí lo mantenemos minimalista. */}
+        {/* Grid de columnas iguales: distribución determinista independiente
+            del ancho del label. */}
         <div
-          aria-hidden
-          className="absolute top-3 right-4 w-12 h-12 rounded-full bg-white/5"
-        />
-        <div
-          aria-hidden
-          className="absolute -top-1 left-8 w-6 h-6 rounded-full bg-white/5"
-        />
-
-        {/* Iconos: grid 4 columnas iguales para distribución determinista,
-            independiente del ancho del label. */}
-        <div className="relative grid grid-cols-4 items-end gap-0 horizontal-mobile:!h-full horizontal-mobile:!items-center">
+          className={cn(
+            "relative grid items-end gap-0",
+            "horizontal-mobile:!h-full horizontal-mobile:!items-center",
+          )}
+          style={{ gridTemplateColumns: `repeat(${modules.length}, minmax(0, 1fr))` }}
+        >
           {modules.map((mod) => (
-            <ModuleItem key={mod.id} module={mod} emphasized={false} />
+            <ModuleItem key={mod.id} module={mod} />
           ))}
         </div>
       </div>
@@ -96,100 +71,61 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
 /* ─── Item individual ────────────────────────────────────────── */
 interface ModuleItemProps {
   module: HomeModule;
-  emphasized?: boolean;
 }
 
-const ModuleItem = ({ module, emphasized = false }: ModuleItemProps) => {
-  const isChat = module.id.startsWith("chat");
-  const isAgenda = module.id === "agenda";
-  const isAjuntament = module.id === "ajuntament";
-  const isComerc = module.id === "comerc";
-  const isImage = isChat || isAgenda || isAjuntament || isComerc;
-  const Icon = isImage ? null : ICONS[module.id as Exclude<HomeModuleId, "chat" | "agenda" | "ajuntament" | "comerc">];
-  const iconColor = ICON_COLOR[module.id];
-  const imageSrc = isChat
-    ? chatMascot
-    : isAgenda
-      ? agendaIcon
-      : isAjuntament
-        ? cityHallIcon
-        : shopIcon;
-  const { active, label, onClick } = module;
-
-  // El módulo central (emphasized) crece un poco para crear jerarquía.
-  // Tamaño fluido: en vertical-mobile (375px) se reduce para que los 4 módulos
-  // quepan sin recortar el label "Ayuntamiento".
-  const sizeClasses = emphasized
-    ? "w-[78px] h-[78px] horizontal-mobile:!w-[56px] horizontal-mobile:!h-[56px]"
-    : "w-[68px] h-[68px] horizontal-mobile:!w-[52px] horizontal-mobile:!h-[52px]";
-
-  const iconSize = emphasized ? 34 : 30;
+const ModuleItem = ({ module }: ModuleItemProps) => {
+  const { id, active, label, onClick } = module;
+  const imageSrc = IMAGE_SRC[id];
+  const imagePadding = IMAGE_PADDING[id];
 
   return (
     <button
       type="button"
       onClick={onClick}
-      aria-pressed={active}
-      aria-label={label}
+      disabled={!active}
+      aria-disabled={!active}
       className={cn(
-        "group relative flex flex-col items-center justify-self-center w-full min-w-0 transition-transform cursor-pointer active:scale-95",
-        !active && "opacity-50 grayscale-[0.4]",
+        "group relative flex flex-col items-center justify-self-center w-full min-w-0 min-h-11",
+        "transition-transform cursor-pointer active:scale-95",
+        "rounded-2xl focus-visible:outline-2 focus-visible:outline-km0-blue-500 focus-visible:outline-offset-2",
+        !active && "opacity-50 grayscale-[0.4] cursor-not-allowed",
       )}
     >
-      {/* Wrapper con la sombra proyectada DEBAJO del círculo (no alrededor).
-          Esto se consigue con una sombra muy desplazada hacia abajo y muy
-          difuminada — el círculo parece flotar sobre la banda. */}
       <div className="relative flex flex-col items-center">
-        {/* Sombra elíptica bajo el círculo (suelo del icono) */}
+        {/* Sombra elíptica bajo el círculo — sensación de flotación */}
         <span
           aria-hidden
-          className={cn(
-            "absolute left-1/2 -translate-x-1/2 rounded-[50%] bg-km0-blue-900/30 blur-md",
-            emphasized ? "w-14 h-2 -bottom-1" : "w-12 h-1.5 -bottom-0.5",
-          )}
+          className="absolute left-1/2 -translate-x-1/2 -bottom-0.5 w-12 h-1.5 rounded-[50%] bg-km0-blue-900/30 blur-md"
         />
 
-        {/* Círculo blanco con borde fino azul */}
+        {/* Círculo blanco con borde fino */}
         <span
           className={cn(
-            "relative flex items-center justify-center rounded-full bg-white shrink-0",
-            "border-2",
-            isImage ? "border-km0-blue-400" : "border-km0-blue-300/60",
-            sizeClasses,
+            "relative flex items-center justify-center rounded-full bg-white shrink-0 border-2 border-km0-blue-400",
+            "w-[68px] h-[68px]",
+            "vertical-tablet:w-[84px] vertical-tablet:h-[84px]",
+            "horizontal-mobile:!w-[52px] horizontal-mobile:!h-[52px]",
           )}
         >
-          {isImage ? (
+          {imageSrc && (
             <img
               src={imageSrc}
               alt=""
               aria-hidden
-              className={cn(
-                "w-full h-full object-contain",
-                (isAjuntament || isComerc) && "p-2.5 horizontal-mobile:!p-2",
-                !active && "opacity-70",
-              )}
+              className={cn("w-full h-full object-contain", imagePadding, !active && "opacity-70")}
             />
-          ) : (
-            Icon && (
-              <Icon
-                size={iconSize}
-                strokeWidth={2.2}
-                className={cn(iconColor, !active && "opacity-70")}
-              />
-            )
           )}
         </span>
 
-        {/* Pill del label — flota sobre el borde inferior del círculo,
-            blanco con borde azul para que destaque sobre la banda azul.
-            Ancho limitado al de la columna para no empujar a los vecinos. */}
+        {/* Pill del label */}
         <span
           className={cn(
             "relative -mt-2.5 horizontal-mobile:!-mt-2 z-10",
-            "px-1.5 horizontal-mobile:!px-1 py-0.5 rounded-full bg-white",
-            "border border-km0-blue-300/60",
+            "px-1.5 py-0.5 vertical-tablet:px-2 horizontal-mobile:!px-1",
+            "rounded-full bg-white border border-km0-blue-300/60",
             "shadow-[0_2px_6px_-2px_hsl(var(--km0-blue-900)/0.25)]",
-            "font-ui font-bold text-[9px] horizontal-mobile:!text-[8px] leading-tight text-km0-blue-800",
+            "font-ui font-bold leading-tight text-km0-blue-800",
+            "text-[9px] vertical-tablet:text-[11px] horizontal-mobile:!text-[8px]",
             "text-center whitespace-nowrap max-w-full",
           )}
         >
