@@ -1,41 +1,40 @@
-## Pantalla de Evento (portrait) con datos reales
+# Notificaciones basadas en noticias
 
-### 1. Schema + servicio
-`src/services/apiSchemas.ts`
-- Añadir `eventoDetailSchema` matching el JSON subido: `id`, `familia`, `titulo_es/cat`, `descripcion_es/cat`, `descripcion_corta_es/cat`, `cp`, `poblacion`, `lugar`, `direccion`, `tipo_organizador`, `organizador`, `organizador_web`, `fuente_url_original`, `es_gratuito`, `precio`, `imagen_url`, `tags_es/cat`, `fecha_inicio/fin`, `hora_inicio/fin`, `es_recurrente`, `recurrencia`, `horarios[]` (`{fecha_inicio, fecha_fin, hora_inicio, hora_fin, es_recurrente, recurrencia}`), `categorias_slugs/es/cat`, `es_familia`, `actividades[]`, `imagenes[]` (reuso `eventImagenSchema`).
-- Wrapper: `eventoDetailResponseSchema` con `{ eventos, total, limit, offset, has_more, filtros_aplicados }`.
+## Comportamiento
 
-`src/services/eventsApi.ts`
-- Nueva `getEvento(id, lang)` → GET `/api/v1/eventos?id=<id>&limit=1&offset=0`.
-- Devuelve un `EventoDetalle` adaptado (título/descr/tags/categoría según `lang`, imágenes con URL absoluta vía `toAbsoluteImage`).
+- La campana de la Home lista las últimas noticias de la API (`GET /api/v1/news?city=…&limit=20`) como notificaciones.
+- Se guarda en `useAppStore` un timestamp `notificationsLastSeenAt` por usuario (persistido en localStorage).
+- Una noticia se considera **no leída** si su `fecha_publicacion` es posterior a `notificationsLastSeenAt` (o si nunca se ha abierto el panel).
+- Al **abrir** el drawer, se actualiza `notificationsLastSeenAt = now()` → todas quedan marcadas como leídas.
+- Al **cerrar** el drawer no pasa nada extra. Si al día siguiente entra una noticia nueva, la campana vuelve a ámbar.
 
-### 2. Navegación desde Agenda
-`src/pages/Agenda.tsx`
-- Envolver `<EventListCard />` en `<button>`/`<Link>` que navega a `/evento?id=<id_unico_evento>`.
+## Estados de la campana (`NotificationBell`)
 
-### 3. Rediseño de `/evento` — solo portrait, todos los datos
-`src/pages/Evento.tsx` (reescritura)
-- Carga vía `getEvento(id)` con id de `useSearchParams`. Estados loading / error / not-found.
-- Elimino selector de variantes POC y datos mock: dejo una sola variante portrait.
-- Estructura de la ficha (scroll vertical interno, sin scroll horizontal):
-  1. **Hero carrusel** de `imagenes[]` (aspect ~4/3 en móvil, más alto en tablet), con back + share flotantes y overlay con gradiente.
-  2. **Card flotante** superpuesta: chips de `categorias_nombres` + badges (`GRATIS`/`precio €`, `Familiar` si `es_familia`).
-  3. **Título grande** (`titulo`).
-  4. **Bloque "Cuándo"**: si `horarios.length > 1`, lista todas las franjas (fecha inicio–fin, hora si hay); si no, muestra `fecha_inicio` (+ `fecha_fin` si distinto) y `hora_inicio–hora_fin`. Icono calendar/clock.
-  5. **Bloque "Dónde"**: `lugar`, `direccion`, `poblacion` (`cp`). Icono MapPin.
-  6. **Descripción completa** (`descripcion_es` con `whitespace-pre-line` para respetar los saltos).
-  7. **Organiza**: `organizador` (+ link a `organizador_web` si existe). Icono Building2.
-  8. **Tags**: chips con `tags_es`.
-  9. **Fuente**: link a `fuente_url_original` con `ExternalLink`.
-- **CTA sticky abajo**: "Ver publicación original" (fuente_url_original) + botón share. Si no hay fuente, oculto.
+- **Ámbar** (`bg-km0-coral-400`) → hay al menos una noticia con fecha > `lastSeenAt`.
+- **Amarillo** (`bg-km0-yellow-400`) → todas leídas.
+- Se elimina el estado "beige" actual: siempre uno de los dos.
 
-### 4. Registro
-`src/design-system/preview-manifest.ts` y `src/pages/PreviewAll.tsx`: actualizar el `tree` de Evento (una sola variante, ya no hero/ticket).
+## Panel lateral (drawer)
 
-### Copy / i18n
-Etiquetas nuevas ("Cuándo", "Dónde", "Organiza", "Etiquetas", "Ver publicación original") van a `src/lib/i18n.ts` (ca/es/en).
+- Reutilizo `NotificationsOverlay.tsx` reconvertido a **drawer lateral derecho** con animación slide-in (Framer Motion, `x: 100% → 0`).
+- Ancho: `w-full vertical-tablet:max-w-[420px]`, ocupa altura completa del contenedor de la Home.
+- Cabecera "Notificacions" (i18n ca/es/en) + botón cerrar.
+- Cada item: imagen miniatura de la noticia, título, fecha relativa, dot ámbar si no leída. Tap → navega a `/noticias/:id` y cierra el drawer.
+- Estados: loading (skeletons), error (mensaje + retry), vacío ("Encara no tens notificacions").
 
-### Notas
-- El endpoint devuelve array `eventos`, cojo `eventos[0]`.
-- No toco `services/apiClient.ts` (ya enruta por el proxy).
-- Solo portrait como pediste; en landscape reutilizo el mismo layout centrado con `max-w-[430px]` (mismo patrón que Home/Agenda).
+## Cambios técnicos
+
+1. **`src/stores/useAppStore.ts`**: añadir `notificationsLastSeenAt: string | null` y acción `markNotificationsSeen()`. Persistido.
+2. **`src/hooks/useNotifications.ts`**: reescribir para consumir `useNewsList()` (o llamada equivalente vía `newsApi`) y derivar `unreadCount` comparando `fecha_publicacion` con `notificationsLastSeenAt`. Devuelve `{ items, hasUnread, loading, error, markAllSeen }`.
+3. **`src/data/notifications.ts`**: eliminar mocks `INITIAL_NOTIFICATIONS` (ya no se usan) o vaciar tipos si están referenciados en otro sitio.
+4. **`src/components/NotificationBell.tsx`**: prop `state: "unread" | "read"` (o mantener `hasAlerts`) y aplicar amarillo/ámbar al dot.
+5. **`src/components/NotificationsOverlay.tsx`** → renombrar mentalmente a drawer: cambiar animación (`x` en lugar de `y`), layout lateral, y renderizar items de noticia (imagen + título + fecha).
+6. **`src/pages/Home.tsx` / `HomeHero.tsx`**: al abrir → `markAllSeen()` antes de mostrar; pasar el nuevo estado al bell.
+7. **`src/lib/i18n.ts`**: claves `notifications.title`, `notifications.empty.*`, `notifications.error.*`, `notifications.loading`.
+8. **`preview-manifest.ts`**: actualizar estado del bell y del drawer.
+
+## Fuera de scope
+
+- Notificaciones push del navegador.
+- Marcar noticias individuales como leídas (el criterio es global por timestamp).
+- Otros orígenes de notificación (eventos, cupones): solo noticias por ahora.

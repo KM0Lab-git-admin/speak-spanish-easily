@@ -520,13 +520,16 @@ export const componentsCatalog: ComponentSpec[] = [
     category: "overlay",
     importPath: "@/components/NotificationsOverlay",
     description:
-      "Overlay deslizante que cubre el frame actual (absolute inset-0, z-50) con la lista de notificaciones. Cada item con dot de estado, título, descripción, tiempo y CTA. Pulsar item navega al link y marca como leído.",
+      "Drawer lateral derecho (absolute top-0 right-0, z-50) que lista las últimas noticias municipales como notificaciones. Cada item con miniatura, título, resumen, fecha y dot ámbar si no leído. Al abrir se marca todo como visto vía useAppStore.notificationsLastSeenAt.",
     usedIn: ["Home"],
     props: [
       { name: "open", type: "boolean", required: true, description: "Controla la visibilidad (con AnimatePresence)." },
-      { name: "notifications", type: "AppNotification[]", required: true, description: "Lista a mostrar (orden = orden visual)." },
-      { name: "onClose", type: "() => void", required: true, description: "Cerrar overlay." },
-      { name: "onMarkRead", type: "(id: string) => void", required: true, description: "Marcar una notificación como leída." },
+      { name: "items", type: "NotificationItem[]", required: true, description: "Noticias adaptadas a notificaciones (con flag read)." },
+      { name: "loading", type: "boolean", required: true, description: "Skeleton/spinner mientras carga." },
+      { name: "error", type: "string | null", required: true, description: "Mensaje de error o null." },
+      { name: "lang", type: "Lang", required: true, description: "Idioma activo para textos y formato de fecha." },
+      { name: "onClose", type: "() => void", required: true, description: "Cerrar drawer." },
+      { name: "onReload", type: "() => void", required: true, description: "Reintentar carga tras error." },
     ],
     responsive: [
       { breakpoint: "vertical-mobile", behavior: "Cubre el frame del Home (rounded-3xl heredado)." },

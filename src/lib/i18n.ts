@@ -485,6 +485,28 @@ const D = {
   "agenda.day.today": { ca: "Avui", es: "Hoy", en: "Today" } as Dict,
   "agenda.day.tomorrow": { ca: "Demà", es: "Mañana", en: "Tomorrow" } as Dict,
   "agenda.badge.free": { ca: "Gratuït", es: "Gratis", en: "Free" } as Dict,
+
+  // ── Notifications ────────────────────────────────────────
+  "notifications.title": { ca: "Notificacions", es: "Notificaciones", en: "Notifications" } as Dict,
+  "notifications.close": { ca: "Tancar notificacions", es: "Cerrar notificaciones", en: "Close notifications" } as Dict,
+  "notifications.loading": { ca: "Carregant notícies…", es: "Cargando noticias…", en: "Loading news…" } as Dict,
+  "notifications.error.title": {
+    ca: "No s'han pogut carregar les notificacions.",
+    es: "No se han podido cargar las notificaciones.",
+    en: "Couldn't load notifications.",
+  } as Dict,
+  "notifications.error.retry": { ca: "Torna-ho a provar", es: "Reintentar", en: "Retry" } as Dict,
+  "notifications.empty.title": {
+    ca: "Encara no tens notificacions",
+    es: "Aún no tienes notificaciones",
+    en: "No notifications yet",
+  } as Dict,
+  "notifications.empty.hint": {
+    ca: "T'avisarem quan hi hagi noves notícies.",
+    es: "Te avisaremos cuando lleguen nuevas noticias.",
+    en: "We'll let you know when there's news.",
+  } as Dict,
+  "notifications.item.cta": { ca: "Llegir", es: "Leer", en: "Read" } as Dict,
 } as const;
 
 export type TKey = keyof typeof D;

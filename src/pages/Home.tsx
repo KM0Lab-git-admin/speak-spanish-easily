@@ -26,7 +26,7 @@ type HomeProps = {
 };
 
 const Home = ({ forceAuthState }: HomeProps = {}) => {
-  const { notifications, hasUnread, markRead, markAllRead } = useNotifications();
+  const { items: notifications, hasUnread, loading: notifLoading, error: notifError, reload: reloadNotifs, markAllSeen } = useNotifications();
   const { user, loading: authLoading } = useAuth();
   const { profile } = useProfile();
   const { lang } = useLang();
@@ -75,7 +75,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
 
   const openNotifications = () => {
     setNotifOpen(true);
-    markAllRead();
+    markAllSeen();
   };
 
   const goToProfile = () => navigate("/profile");
@@ -139,9 +139,12 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
           <HomeContent {...sharedProps} />
           <NotificationsOverlay
             open={notifOpen}
-            notifications={notifications}
+            items={notifications}
+            loading={notifLoading}
+            error={notifError}
+            lang={lang}
             onClose={() => setNotifOpen(false)}
-            onMarkRead={markRead}
+            onReload={reloadNotifs}
           />
           {rewardOpen && isAuthed && (
             <PointsRewardOverlay
