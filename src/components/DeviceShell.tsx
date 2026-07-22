@@ -3,11 +3,12 @@ import { ReactNode } from "react";
 /**
  * DeviceShell — Marco "teléfono" reutilizable SIN header de marca.
  *
- * Aplica las MISMAS dimensiones/chrome que BrandedFrame (card centrada,
- * ratio 9:19.5 en portrait y 16:9 en landscape, mismo borde/sombra) para
- * que TODAS las pantallas de la app (incluidas Home y Chat, que no usan
- * BrandedFrame porque ya tienen su propio header) se visualicen dentro
- * de un contenedor que simula un dispositivo móvil.
+ * KM0 LAB es una app mobile-first (Capacitor). En todas las anchuras se
+ * presenta como un teléfono en vertical, centrado sobre el fondo de la
+ * página: en móvil ocupa la pantalla; en tablet/landscape/desktop queda
+ * como un teléfono centrado con el fondo alrededor. NO hay layout de
+ * escritorio propio (decisión: desktop es superficie secundaria; ver
+ * docs/KNOWLEDGE.md §3, regla de layout portrait-first).
  *
  * El contenido recibe 100% del alto/ancho del frame y gestiona su propio
  * scroll interno si lo necesita.
@@ -19,26 +20,14 @@ interface DeviceShellProps {
 const DeviceShell = ({ children }: DeviceShellProps) => {
   return (
     <div className="min-h-[100dvh] w-full bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 overflow-hidden flex items-center justify-center p-0">
-      {/* PORTRAIT — 9:19.5 (vertical-mobile + vertical-tablet) */}
+      {/* Teléfono en vertical, centrado en cualquier anchura. En móvil
+          llena la pantalla; en pantallas anchas queda centrado. */}
       <div
-        className="landscape:hidden relative flex flex-col bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden"
+        className="relative flex flex-col bg-km0-beige-50 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden"
         style={{
           width: "min(100vw, 420px)",
-          height: "min(100dvh, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)))",
-        }}
-      >
-        {children}
-      </div>
-
-      {/* LANDSCAPE — 16:9 (horizontal-mobile + horizontal-desktop)
-          Mismas dimensiones que BrandedFrame para que TODAS las pantallas
-          (Home, Chat, PostalCode, Language, Onboarding…) se vean al mismo
-          tamaño en una misma resolución de viewport. */}
-      <div
-        className="hidden landscape:flex relative flex-col bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 rounded-3xl border-2 border-km0-blue-700/80 shadow-[0_24px_60px_-20px_hsl(var(--km0-blue-700)/0.3)] overflow-hidden"
-        style={{
-          width: "min(100vw, calc(100dvh * 16 / 9), 1700px)",
-          height: "min(100dvh, calc(100vw * 9 / 16), calc(1700px * 9 / 16))",
+          height:
+            "min(calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)), 920px)",
         }}
       >
         {children}

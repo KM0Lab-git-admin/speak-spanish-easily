@@ -25,11 +25,18 @@ import { getViewportById, type ViewportId } from "@/design-system/viewports";
 
 /** Estados de la Home que se renderizan SIN iframe (HomeSandbox) para
  *  permitir Visual Edit. El resto de estados/pantallas usa iframe. */
-const SANDBOX_HOME_STATES: HomeSandboxState[] = ["guest", "registered", "reward-welcome"];
+const SANDBOX_HOME_STATES: HomeSandboxState[] = [
+  "guest",
+  "registered",
+  "reward-welcome",
+];
 
-/** Opciones del segundo frame. El primario es siempre mobile-portrait-base. */
+/** Opciones del segundo frame. El primario es siempre mobile-portrait-base.
+ *  Con el patrón "teléfono centrado en cualquier anchura" (DeviceShell),
+ *  tablet/desktop/landscape muestran la MISMA columna portrait centrada;
+ *  basta un frame ancho (confirmar el encuadre en pantalla grande) y el
+ *  smoke de landscape móvil (no-rotura). */
 const SECONDARY_VIEWPORTS: { id: ViewportId; scale: number }[] = [
-  { id: "tablet-portrait", scale: 0.5 },
   { id: "desktop-landscape", scale: 0.5 },
   { id: "mobile-landscape-base", scale: 1 },
 ];
@@ -351,7 +358,8 @@ const ScreenSection = ({
   // La Home se renderiza SIN iframe (HomeSandbox) en los estados que el
   // sandbox soporta, para permitir Visual Edit. El resto vía iframe.
   const useSandbox =
-    screen.id === "home" && (SANDBOX_HOME_STATES as string[]).includes(state.id);
+    screen.id === "home" &&
+    (SANDBOX_HOME_STATES as string[]).includes(state.id);
   const sandboxState = state.id as HomeSandboxState;
 
   // Estados que requieren sesión sembrada: el iframe comparte localStorage
@@ -364,7 +372,11 @@ const ScreenSection = ({
 
   const renderFrame = (viewportId: ViewportId, scale: number) =>
     useSandbox ? (
-      <SimulatedDevice viewportId={viewportId} scale={scale} label={screen.label}>
+      <SimulatedDevice
+        viewportId={viewportId}
+        scale={scale}
+        label={screen.label}
+      >
         <HomeSandbox state={sandboxState} />
       </SimulatedDevice>
     ) : (
@@ -415,7 +427,8 @@ const ScreenSection = ({
 const PreviewAll = () => {
   const [secondaryId, setSecondaryId] = useState<ViewportId>("tablet-portrait");
   const secondary =
-    SECONDARY_VIEWPORTS.find((v) => v.id === secondaryId) ?? SECONDARY_VIEWPORTS[0];
+    SECONDARY_VIEWPORTS.find((v) => v.id === secondaryId) ??
+    SECONDARY_VIEWPORTS[0];
 
   return (
     <div className="min-h-screen w-screen bg-km0-beige-50">
@@ -423,8 +436,8 @@ const PreviewAll = () => {
         <div>
           <h1 className="font-brand text-xl">Preview · todas las pantallas</h1>
           <p className="font-body text-sm opacity-80">
-            Frame fijo: {getViewportById("mobile-portrait-base").label} (375×667, contrato
-            mínimo) · Segundo frame seleccionable
+            Frame fijo: {getViewportById("mobile-portrait-base").label}{" "}
+            (375×667, contrato mínimo) · Segundo frame seleccionable
           </p>
         </div>
         <div
@@ -444,7 +457,9 @@ const PreviewAll = () => {
                 title={vp.purpose}
                 onClick={() => setSecondaryId(v.id)}
                 className={`px-3 py-1 rounded-full font-ui text-xs transition-colors ${
-                  active ? "bg-white text-km0-blue-700" : "text-white hover:bg-white/15"
+                  active
+                    ? "bg-white text-km0-blue-700"
+                    : "text-white hover:bg-white/15"
                 }`}
               >
                 {vp.label}
@@ -457,7 +472,11 @@ const PreviewAll = () => {
 
       <main className="w-full px-6 sm:px-10 lg:px-16 py-6 flex flex-col gap-10">
         {PREVIEW_SCREENS.map((screen) => (
-          <ScreenSection key={screen.id} screen={screen} secondary={secondary} />
+          <ScreenSection
+            key={screen.id}
+            screen={screen}
+            secondary={secondary}
+          />
         ))}
       </main>
     </div>
