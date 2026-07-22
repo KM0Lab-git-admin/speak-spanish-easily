@@ -42,7 +42,7 @@ const HomeHero = ({
 }: HomeHeroProps) => {
   return (
     <motion.section
-      className="relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-0 vertical-tablet:aspect-[1920/716] w-full shadow-[0_10px_28px_-10px_hsl(var(--foreground)/0.22)]"
+      className="relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-0 aspect-[1920/716] w-full shadow-[0_10px_28px_-10px_hsl(var(--foreground)/0.22)]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
