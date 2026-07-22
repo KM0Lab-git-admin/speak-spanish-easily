@@ -21,6 +21,8 @@ import HomeHero from "@/components/HomeHero";
 import ScreenTitle from "@/components/ScreenTitle";
 import WhenTabs, { type WhenKey } from "@/components/WhenTabs";
 import { useNotifications } from "@/hooks/useNotifications";
+import { useLang } from "@/contexts/LangContext";
+import { t, type Lang, type TKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { listEvents, type AgendaEvent as Evento } from "@/services/eventsApi";
 
@@ -50,15 +52,12 @@ type Price = "todos" | "gratis" | "pago";
 
 interface CatDef {
   key: Category;
-  label: string;
-  matches: string[];
-  /** slug de categoría de la API events-query (undefined = sin filtro) */
   slug?: string;
+  labelKey: TKey;
+  matches: string[];
   Icon: typeof Music2;
-  /** color de fondo cuando está activa */
   activeBg: string;
   activeText: string;
-  /** color de fondo cuando inactiva */
   idleBg: string;
   idleText: string;
 }
@@ -67,7 +66,7 @@ const CATEGORIES: CatDef[] = [
   {
     key: "musica",
     slug: "musica",
-    label: "Música",
+    labelKey: "agenda.cat.musica",
     matches: ["música", "musica", "concierto"],
     Icon: Music2,
     activeBg: "bg-km0-blue-900",
@@ -78,7 +77,7 @@ const CATEGORIES: CatDef[] = [
   {
     key: "cultura",
     slug: "cultura",
-    label: "Cultura",
+    labelKey: "agenda.cat.cultura",
     matches: ["cultura", "exposición", "teatro", "cine"],
     Icon: Palette,
     activeBg: "bg-km0-yellow-500",
@@ -89,7 +88,7 @@ const CATEGORIES: CatDef[] = [
   {
     key: "infantil",
     slug: "infantil",
-    label: "Infantil",
+    labelKey: "agenda.cat.infantil",
     matches: ["infantil", "niños", "familia"],
     Icon: Baby,
     activeBg: "bg-white",
@@ -100,7 +99,7 @@ const CATEGORIES: CatDef[] = [
   {
     key: "deporte",
     slug: "deportes",
-    label: "Deporte",
+    labelKey: "agenda.cat.deporte",
     matches: ["deporte", "deport"],
     Icon: Trophy,
     activeBg: "bg-km0-teal-500",
@@ -111,7 +110,7 @@ const CATEGORIES: CatDef[] = [
   {
     key: "talleres",
     slug: "formacion",
-    label: "Talleres",
+    labelKey: "agenda.cat.talleres",
     matches: ["taller", "workshop", "curso"],
     Icon: Hammer,
     activeBg: "bg-km0-coral-500",
@@ -122,7 +121,7 @@ const CATEGORIES: CatDef[] = [
   {
     key: "fiestas",
     slug: "fiestas-mayores",
-    label: "Fiestas",
+    labelKey: "agenda.cat.fiestas",
     matches: ["fiesta", "festa", "festival"],
     Icon: PartyPopper,
     activeBg: "bg-km0-blue-700",
@@ -133,7 +132,7 @@ const CATEGORIES: CatDef[] = [
   {
     key: "gastronomia",
     slug: "gastronomia",
-    label: "Gastro",
+    labelKey: "agenda.cat.gastronomia",
     matches: ["gastro", "comida", "cocina", "vino"],
     Icon: UtensilsCrossed,
     activeBg: "bg-km0-coral-600",
@@ -143,7 +142,7 @@ const CATEGORIES: CatDef[] = [
   },
   {
     key: "todos",
-    label: "Todos",
+    labelKey: "agenda.cat.todos",
     matches: [],
     Icon: Sparkles,
     activeBg: "bg-km0-teal-600",
@@ -213,18 +212,21 @@ const MONTHS_SHORT = [
   "DIC",
 ];
 
-const formatDayHeader = (d: Date) => {
+const LOCALE_FOR: Record<Lang, string> = { ca: "ca-ES", es: "es-ES", en: "en-GB" };
+
+const formatDayHeader = (d: Date, lang: Lang) => {
   const today = startOfDay(new Date());
   const tomorrow = addDays(today, 1);
   const target = startOfDay(d);
-  const base = d.toLocaleDateString("es-ES", {
+  const base = d.toLocaleDateString(LOCALE_FOR[lang], {
     weekday: "long",
     day: "numeric",
     month: "long",
   });
-  if (target.getTime() === today.getTime()) return `Hoy, ${base}`;
-  if (target.getTime() === tomorrow.getTime()) return `Mañana, ${base}`;
-  return base.charAt(0).toUpperCase() + base.slice(1);
+  const cap = base.charAt(0).toUpperCase() + base.slice(1);
+  if (target.getTime() === today.getTime()) return `${t("agenda.day.today", lang)}, ${base}`;
+  if (target.getTime() === tomorrow.getTime()) return `${t("agenda.day.tomorrow", lang)}, ${base}`;
+  return cap;
 };
 
 const formatTime = (t?: string) => (t ? t.slice(0, 5) : "");
@@ -237,6 +239,7 @@ const EventListCard = ({
   evento: Evento;
   onOpen: (id: string) => void;
 }) => {
+  const { lang } = useLang();
   const time = formatTime(evento.hora_inicio);
   const timeEnd = formatTime(evento.hora_fin);
   const cat = evento.categorias?.[0];
@@ -278,7 +281,7 @@ const EventListCard = ({
       <div className="flex flex-wrap items-center gap-1">
         {evento.es_gratuito ? (
           <span className="px-1.5 py-0.5 rounded-full text-[10px] font-ui font-bold bg-km0-teal-100 text-km0-teal-700">
-            Gratis
+            {t("agenda.badge.free", lang)}
           </span>
         ) : evento.precio_euros != null ? (
           <span className="px-1.5 py-0.5 rounded-full text-[10px] font-ui font-bold bg-km0-yellow-100 text-km0-yellow-800">
@@ -307,6 +310,7 @@ const SkeletonCard = () => (
 const Agenda = () => {
   const navigate = useNavigate();
   const { hasUnread, markAllRead } = useNotifications();
+  const { lang } = useLang();
   const [when, setWhen] = useState<WhenKey>("semana");
   const [category, setCategory] = useState<Category>("todos");
   const [price, setPrice] = useState<Price>("todos");
@@ -383,9 +387,9 @@ const Agenda = () => {
           hasAlerts={hasUnread}
           onToggleAlerts={markAllRead}
           onBack={() => navigate("/home")}
-          backAriaLabel="Ir al inicio"
+          backAriaLabel={t("agenda.back", lang)}
           showGreeting={false}
-          greetingSlot={<ScreenTitle title="Agenda" />}
+          greetingSlot={<ScreenTitle title={t("agenda.title", lang)} />}
         />
       </div>
 
@@ -420,7 +424,7 @@ const Agenda = () => {
                   strokeWidth={2.5}
                   className="shrink-0 hidden vertical-tablet:block"
                 />
-                <span className="truncate">{c.label}</span>
+                <span className="truncate">{t(c.labelKey, lang)}</span>
               </button>
             );
           })}
@@ -431,14 +435,16 @@ const Agenda = () => {
           {loading ? (
             <span className="inline-flex items-center gap-1">
               <Loader2 size={11} className="animate-spin" />
-              Buscando…
+              {t("agenda.searching", lang)}
             </span>
           ) : (
             <>
               <span className="font-bold text-km0-blue-900">
                 {filtered.length}
               </span>{" "}
-              {filtered.length === 1 ? "evento" : "eventos"}
+              {filtered.length === 1
+                ? t("agenda.count.one", lang)
+                : t("agenda.count.many", lang)}
             </>
           )}
         </div>
@@ -458,7 +464,7 @@ const Agenda = () => {
 
           {!loading && error && (
             <div className="bg-km0-coral-50 border border-km0-coral-200 rounded-2xl p-4 text-xs font-ui text-km0-coral-700">
-              No se han podido cargar los eventos. {error}
+              {t("agenda.error", lang)} {error}
             </div>
           )}
 
@@ -469,10 +475,10 @@ const Agenda = () => {
                 className="mx-auto text-km0-blue-700/50 mb-2"
               />
               <p className="font-brand text-sm text-km0-blue-900 mb-1">
-                No hemos encontrado eventos
+                {t("agenda.empty.title", lang)}
               </p>
               <p className="text-[11px] font-ui text-km0-blue-700/70">
-                Prueba cambiando la fecha o la categoría.
+                {t("agenda.empty.hint", lang)}
               </p>
             </div>
           )}
@@ -488,7 +494,7 @@ const Agenda = () => {
                 className="space-y-2"
               >
                 <h3 className="font-brand text-xs text-km0-blue-900/80 sticky top-0 bg-km0-beige-50/95 backdrop-blur-sm py-1 -mx-1 px-1 z-10">
-                  {formatDayHeader(g.date)}
+                  {formatDayHeader(g.date, lang)}
                 </h3>
                 {g.items.map((e) => (
                   <EventListCard

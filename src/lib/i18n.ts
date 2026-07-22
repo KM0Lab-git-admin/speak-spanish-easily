@@ -447,6 +447,44 @@ const D = {
     es: "No se ha podido cargar el evento",
     en: "Couldn't load the event",
   } as Dict,
+
+
+
+  // ── Agenda ───────────────────────────────────────────────
+  "agenda.title": { ca: "Agenda", es: "Agenda", en: "Agenda" } as Dict,
+  "agenda.back": { ca: "Anar a l'inici", es: "Ir al inicio", en: "Go home" } as Dict,
+  "agenda.when.week": { ca: "Aquesta setmana", es: "Esta semana", en: "This week" } as Dict,
+  "agenda.when.month": { ca: "Pròxims 30 dies", es: "Próximos 30 días", en: "Next 30 days" } as Dict,
+  "agenda.when.aria": { ca: "Rang temporal", es: "Rango temporal", en: "Time range" } as Dict,
+  "agenda.cat.musica": { ca: "Música", es: "Música", en: "Music" } as Dict,
+  "agenda.cat.cultura": { ca: "Cultura", es: "Cultura", en: "Culture" } as Dict,
+  "agenda.cat.infantil": { ca: "Infantil", es: "Infantil", en: "Kids" } as Dict,
+  "agenda.cat.deporte": { ca: "Esport", es: "Deporte", en: "Sports" } as Dict,
+  "agenda.cat.talleres": { ca: "Tallers", es: "Talleres", en: "Workshops" } as Dict,
+  "agenda.cat.fiestas": { ca: "Festes", es: "Fiestas", en: "Parties" } as Dict,
+  "agenda.cat.gastronomia": { ca: "Gastro", es: "Gastro", en: "Food" } as Dict,
+  "agenda.cat.todos": { ca: "Tots", es: "Todos", en: "All" } as Dict,
+  "agenda.searching": { ca: "Cercant…", es: "Buscando…", en: "Searching…" } as Dict,
+  "agenda.count.one": { ca: "esdeveniment", es: "evento", en: "event" } as Dict,
+  "agenda.count.many": { ca: "esdeveniments", es: "eventos", en: "events" } as Dict,
+  "agenda.error": {
+    ca: "No s'han pogut carregar els esdeveniments.",
+    es: "No se han podido cargar los eventos.",
+    en: "Couldn't load events.",
+  } as Dict,
+  "agenda.empty.title": {
+    ca: "No hem trobat esdeveniments",
+    es: "No hemos encontrado eventos",
+    en: "No events found",
+  } as Dict,
+  "agenda.empty.hint": {
+    ca: "Prova canviant la data o la categoria.",
+    es: "Prueba cambiando la fecha o la categoría.",
+    en: "Try changing the date or category.",
+  } as Dict,
+  "agenda.day.today": { ca: "Avui", es: "Hoy", en: "Today" } as Dict,
+  "agenda.day.tomorrow": { ca: "Demà", es: "Mañana", en: "Tomorrow" } as Dict,
+  "agenda.badge.free": { ca: "Gratuït", es: "Gratis", en: "Free" } as Dict,
 } as const;
 
 export type TKey = keyof typeof D;

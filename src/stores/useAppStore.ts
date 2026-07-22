@@ -77,7 +77,7 @@ export const useAppStore = create<AppState>()(
     (set, get) => ({
       session: null,
       profiles: {},
-      lang: "es",
+      lang: "ca",
       postalCode: null,
       town: null,
       pendingOtp: null,
