@@ -9,14 +9,11 @@ export const SCREEN_TREES: Record<string, string> = {
   home: `(NO usa BrandedFrame — DeviceShell propio, con el MISMO tamaño de frame que BrandedFrame en cada resolución)
 │
 ├── Portrait  (landscape:hidden) → HomeContent
-│   ├── HomeHero               ← header FIJO (inline=true; showLogin={!user})
+│   ├── HomeHero               ← header FIJO (inline=true; sin greetingSlot)
 │   │   ├── skyline malgrat    (bg absoluto, object-top, opacity-25)
-│   │   ├── fila header        (escudo + ciudad + KM0 + bell + LoginButton si !user)
-│   │   └── greetingSlot
-│   │       ├── GreetingBlock  ← "👋 ¡Hola, {name}!" + subtítulo
-│   │       ├── JoinCard       (solo si !user — CTA "Crea el teu compte")
-│   │       └── PointsCard     (solo si showPoints — usuario auth)
+│   │   └── fila header        (escudo + ciudad + KM0 + bell)
 │   ├── body scroll-y
+│   │   ├── section greeting              → GreetingBlock + JoinCard/PointsCard
 │   │   ├── section "Accesos rápidos"     → HomeModules
 │   │   ├── section "Eventos destacados"  → EventHeroCarousel
 │   │   ├── section "Descubre lo nuestro" → ComercioCarousel
