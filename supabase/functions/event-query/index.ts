@@ -24,6 +24,7 @@ serve(async (req) => {
     if (!subpath || subpath === "/") subpath = "/api/v1/query";
 
     const target = `${UPSTREAM}${subpath}${url.search}`;
+    console.log("proxy", req.method, url.pathname, "->", target);
 
     const hasBody = req.method !== "GET" && req.method !== "HEAD";
     const body = hasBody ? await req.text() : undefined;
