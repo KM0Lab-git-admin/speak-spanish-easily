@@ -184,17 +184,6 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     ],
   },
   {
-    id: "hoy",
-    label: "Eventos de hoy",
-    path: "/hoy",
-    states: [
-      { id: "happy", label: "Feliz", src: "/hoy" },
-      { id: "loading", label: "Loading", src: "/hoy?state=loading" },
-      { id: "empty", label: "Vacío", src: "/hoy?state=empty" },
-      { id: "error", label: "Error", src: "/hoy?state=error" },
-    ],
-  },
-  {
     id: "profile",
     label: "Profile",
     path: "/profile",
