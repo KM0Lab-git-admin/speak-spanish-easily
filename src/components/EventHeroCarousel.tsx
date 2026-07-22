@@ -64,10 +64,13 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
             }}
             className="flex flex-col cursor-grab active:cursor-grabbing"
           >
-            {/* --- Zona imagen --- */}
-            <div
+            {/* --- Zona imagen (clic = abrir detalle) --- */}
+            <button
+              type="button"
+              onClick={() => onOpen?.(promo.id)}
+              aria-label={`Obrir ${promo.title.replace(/\n/g, " ")}`}
               className={cn(
-                "relative w-full aspect-[16/10] bg-gradient-to-br overflow-hidden",
+                "relative w-full aspect-[16/10] bg-gradient-to-br overflow-hidden text-left",
                 promo.gradient,
               )}
             >
@@ -115,11 +118,16 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
                   ))}
                 </div>
               )}
-            </div>
+            </button>
 
-            {/* --- Panel de texto --- */}
+            {/* --- Panel de texto (clic = abrir detalle) --- */}
             <div className="relative flex items-end gap-3 px-4 pt-3 pb-4 vertical-tablet:px-5 vertical-tablet:pt-4 vertical-tablet:pb-5">
-              <div className="flex-1 min-w-0 select-none">
+              <button
+                type="button"
+                onClick={() => onOpen?.(promo.id)}
+                aria-label={`Obrir ${promo.title.replace(/\n/g, " ")}`}
+                className="flex-1 min-w-0 select-none text-left"
+              >
                 <h3 className="font-brand font-black text-km0-blue-800 leading-[1.05] whitespace-pre-line text-xl vertical-tablet:text-2xl">
                   {promo.title}
                 </h3>
@@ -133,17 +141,21 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
                     {promo.location}
                   </span>
                 </div>
-              </div>
+              </button>
 
               <button
                 type="button"
-                onClick={() => onOpen?.(promo.id)}
-                aria-label="Obrir esdeveniment"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  goTo(index + 1);
+                }}
+                aria-label="Següent esdeveniment"
                 className="shrink-0 w-11 h-11 rounded-full bg-km0-blue-700 text-white shadow-[0_6px_14px_-4px_hsl(var(--km0-blue-900)/0.55)] flex items-center justify-center active:scale-95 hover:scale-105 transition-transform"
               >
                 <ChevronRight size={22} strokeWidth={2.5} />
               </button>
             </div>
+
           </motion.div>
         </AnimatePresence>
       </div>
