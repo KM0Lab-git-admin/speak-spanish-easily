@@ -66,7 +66,7 @@ const HomeHero = ({
       />
 
       {/* Fila header: escudo + nombre + KM0 + bell */}
-      <div className="relative z-10 flex items-center justify-between gap-3 pl-4 pr-5 pt-3 pb-2 vertical-mobile:!pt-1 vertical-mobile:!pb-1 vertical-tablet:pt-6 vertical-tablet:pb-3 vertical-tablet:gap-2 vertical-tablet:items-center horizontal-mobile:pointer-events-auto horizontal-mobile:pt-1 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto">
+      <div className="relative z-10 flex items-center justify-between gap-3 pl-4 pr-5 pt-3 pb-2 vertical-mobile:!pt-4 vertical-mobile:!pb-1 vertical-tablet:pt-6 vertical-tablet:pb-3 vertical-tablet:gap-2 vertical-tablet:items-center horizontal-mobile:pointer-events-auto horizontal-mobile:pt-1 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto">
         <div className="flex items-center gap-2 min-w-0 vertical-tablet:gap-1.5 vertical-tablet:items-center">
           {onBack && (
             <button
