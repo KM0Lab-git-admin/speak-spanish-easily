@@ -302,7 +302,7 @@ const Noticias = () => {
           cityName="Malgrat de Mar"
           hasAlerts={hasUnread}
           onToggleAlerts={markAllRead}
-          onBack={() => (opened ? closeDetail() : navigate(-1))}
+          onBack={() => navigate("/home")}
           backAriaLabel={t("common.back", lang)}
           showGreeting={false}
           greetingSlot={<ScreenTitle title={t("news.title", lang)} />}
