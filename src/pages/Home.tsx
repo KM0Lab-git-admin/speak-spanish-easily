@@ -75,11 +75,13 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   // Nombre: solo si el usuario está registrado Y ha guardado un first_name.
   const firstName = showProfile ? profile?.first_name?.trim() || null : null;
 
-  // Saludo localizado.
+  // Saludo localizado. Solo mostramos saludo si hay sesión.
   const hello = t("home.hello", lang);
-  const greeting = lang === "en"
-    ? (firstName ? `${hello}, ${firstName}!` : `${hello}!`)
-    : (firstName ? `¡${hello}, ${firstName}!` : `¡${hello}!`);
+  const greeting = showLogin
+    ? ""
+    : lang === "en"
+      ? (firstName ? `${hello}, ${firstName}!` : `${hello}!`)
+      : (firstName ? `¡${hello}, ${firstName}!` : `¡${hello}!`);
 
   // Ciudad: prioriza perfil → localStorage → fallback.
   const storedTown = (() => {
