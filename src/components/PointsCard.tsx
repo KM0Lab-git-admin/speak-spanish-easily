@@ -1,87 +1,103 @@
-import { Star } from "lucide-react";
+import { Star, Gift } from "lucide-react";
 import { motion } from "framer-motion";
+import { useLang } from "@/contexts/LangContext";
+import { t } from "@/lib/i18n";
 
 /**
- * PointsCard — tarjeta prominente con puntos del usuario y barra de
- * progreso al siguiente nivel. Inspirada en el mockup de la nueva home:
+ * PointsCard — tarjeta de progreso del usuario registrado.
  *
+ * Diseño inspirado en el mockup proporcionado:
  *  ┌─────────────────────────────────────────────┐
- *  │  ★   1259           Nivel Local              │
- *  │     puntos         1259/3000 p               │
- *  │                    ██████░░░░░░░             │
+ *  │  1.240 punts              NIVELL 4   ★      │
+ *  │  ░░░░░░░░░░░░░░░░░░░░░░░░                   │
+ *  │  🎁  A 260 punts de la propera recompensa…  │
  *  └─────────────────────────────────────────────┘
  *
- * Mantiene tokens KM0 (sin colores hex), tipografía de marca y la
- * barra de progreso en teal.
+ * Fondo azul marino, barra de progreso amarillo→teal,
+ * tipografía de marca y estrella decorativa de fondo.
  */
 export interface PointsCardProps {
   points: number;
   nextLevel: number;
-  levelName?: string;
+  /** Nombre del siguiente regalo/recompensa (ej: "Val de 5€ al Forn Rovira"). */
+  nextReward?: string;
+  /** Nivel actual (ej: 4). Si no se pasa, se usa "Local". */
+  level?: number;
 }
 
 const PointsCard = ({
   points,
   nextLevel,
-  levelName = "Nivel Local",
+  nextReward,
+  level,
 }: PointsCardProps) => {
+  const { lang } = useLang();
   const safePoints = Math.max(0, points);
   const safeNext = Math.max(safePoints + 1, nextLevel);
   const pct = Math.min(100, Math.round((safePoints / safeNext) * 100));
+  const pointsToNext = Math.max(0, safeNext - safePoints);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
-      className="w-full max-w-[600px] rounded-2xl bg-white border border-km0-blue-700/10 shadow-[0_8px_24px_-12px_hsl(var(--km0-blue-900)/0.18)] px-4 py-3 vertical-tablet:px-5 vertical-tablet:py-4 horizontal-mobile:!px-3 horizontal-mobile:!py-1.5 gap-4 horizontal-mobile:!gap-2.5 flex items-center justify-center"
+      className="relative w-full max-w-[600px] overflow-hidden rounded-2xl vertical-tablet:rounded-3xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 px-4 py-3.5 vertical-tablet:px-5 vertical-tablet:py-5 horizontal-mobile:!px-3 horizontal-mobile:!py-2 shadow-[0_12px_28px_-12px_hsl(var(--km0-blue-900)/0.45)]"
     >
-      {/* Estrella + puntos */}
-      <div className="flex items-center gap-2.5 shrink-0">
-        <span className="w-10 h-10 vertical-tablet:w-12 vertical-tablet:h-12 horizontal-mobile:!w-7 horizontal-mobile:!h-7 rounded-full bg-km0-yellow-100 flex items-center justify-center">
-          <Star
-            className="w-5 h-5 vertical-tablet:w-6 vertical-tablet:h-6 horizontal-mobile:!w-3.5 horizontal-mobile:!h-3.5 text-km0-yellow-500 fill-km0-yellow-400"
-            strokeWidth={2}
-          />
-        </span>
-        <div className="flex flex-col leading-tight">
-          <span className="font-brand font-black text-km0-blue-800 text-2xl vertical-tablet:text-3xl horizontal-mobile:!text-lg">
+      {/* Estrella decorativa de fondo */}
+      <Star
+        className="absolute -bottom-3 -right-3 w-24 h-24 vertical-tablet:w-32 vertical-tablet:h-32 horizontal-mobile:!w-16 horizontal-mobile:!h-16 text-white/5 rotate-12 pointer-events-none"
+        strokeWidth={1}
+        fill="currentColor"
+      />
+
+      {/* Fila superior: puntos + nivel */}
+      <div className="relative z-10 flex items-center justify-between gap-3">
+        <div className="flex items-baseline gap-1.5">
+          <span className="font-brand font-black text-white text-2xl vertical-tablet:text-3xl horizontal-mobile:!text-xl">
             {safePoints.toLocaleString("es-ES")}
           </span>
-          <span className="font-body text-km0-blue-700/70 text-xs vertical-tablet:text-sm horizontal-mobile:!text-[9px] -mt-0.5">
-            puntos
+          <span className="font-body text-white/70 text-sm vertical-tablet:text-base horizontal-mobile:!text-xs">
+            {t("common.points", lang)}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-1.5 rounded-full bg-km0-yellow-400/20 px-2.5 py-1 vertical-tablet:px-3 vertical-tablet:py-1.5 horizontal-mobile:!px-2 horizontal-mobile:!py-0.5">
+          <span className="font-ui font-bold text-km0-yellow-100 text-xs vertical-tablet:text-sm horizontal-mobile:!text-[10px] uppercase tracking-wide">
+            {level ? t("home.points.level", lang).replace("{n}", String(level)) : t("home.points.level", lang).replace("{n}", "1")}
           </span>
         </div>
       </div>
 
-      {/* Separador vertical sutil */}
-      <span aria-hidden className="w-px self-stretch bg-km0-blue-700/10" />
-
-      {/* Nivel + barra */}
-      <div className="flex-1 min-w-0 flex flex-col gap-1.5 horizontal-mobile:!gap-0.5">
-        <div className="flex items-baseline justify-between gap-2">
-          <span className="font-ui font-bold text-km0-blue-800 text-xs vertical-tablet:text-sm horizontal-mobile:!text-[10px]">
-            {levelName}
-          </span>
-          <span className="font-body text-km0-blue-700/70 text-[11px] vertical-tablet:text-xs horizontal-mobile:!text-[9px] whitespace-nowrap">
-            {safePoints.toLocaleString("es-ES")}/{safeNext.toLocaleString("es-ES")} p
-          </span>
-        </div>
-        <div
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={safeNext}
-          aria-valuenow={safePoints}
-          className="h-2 vertical-tablet:h-2.5 horizontal-mobile:!h-1.5 w-full rounded-full bg-km0-beige-200 overflow-hidden"
-        >
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${pct}%` }}
-            transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
-            className="h-full rounded-full bg-gradient-to-r from-km0-teal-500 to-km0-teal-600"
-          />
-        </div>
+      {/* Barra de progreso */}
+      <div
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={safeNext}
+        aria-valuenow={safePoints}
+        className="relative z-10 mt-3 vertical-tablet:mt-4 horizontal-mobile:!mt-2 h-2.5 vertical-tablet:h-3 horizontal-mobile:!h-2 w-full rounded-full bg-white/20 overflow-hidden"
+      >
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${pct}%` }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
+          className="h-full rounded-full bg-gradient-to-r from-km0-yellow-400 to-km0-teal-400"
+        />
       </div>
+
+      {/* Fila inferior: regalo + recompensa */}
+      {nextReward && (
+        <div className="relative z-10 mt-3 vertical-tablet:mt-4 horizontal-mobile:!mt-2 flex items-start gap-2.5">
+          <span className="shrink-0 w-7 h-7 vertical-tablet:w-8 vertical-tablet:h-8 horizontal-mobile:!w-6 horizontal-mobile:!h-6 rounded-full bg-white/15 flex items-center justify-center">
+            <Gift className="w-3.5 h-3.5 vertical-tablet:w-4 vertical-tablet:h-4 horizontal-mobile:!w-3 horizontal-mobile:!h-3 text-km0-yellow-100" />
+          </span>
+          <p className="font-body text-xs vertical-tablet:text-sm horizontal-mobile:!text-[11px] text-white/90 leading-snug">
+            {t("home.points.toReward", lang)
+              .replace("{n}", pointsToNext.toLocaleString("es-ES"))
+              .replace("{reward}", nextReward)}
+          </p>
+        </div>
+      )}
     </motion.div>
   );
 };
