@@ -168,6 +168,103 @@ const D = {
     en: "Sign in",
   } as Dict,
 
+  // ── Home · Missió del barri (spec-home-c) ───────────────
+  "home.greeting.registered": {
+    ca: "Bon dia, {name} 👋",
+    es: "¡Buenos días, {name}! 👋",
+    en: "Good morning, {name} 👋",
+  } as Dict,
+  "home.greeting.guest": {
+    ca: "Hola! 👋",
+    es: "¡Hola! 👋",
+    en: "Hi! 👋",
+  } as Dict,
+  "home.subtitle.registered": {
+    ca: "El teu barri, més a prop",
+    es: "Tu barrio, más cerca",
+    en: "Your neighborhood, closer",
+  } as Dict,
+  "home.subtitle.guest": {
+    ca: "Descobreix i comença a guanyar punts",
+    es: "Descubre y empieza a ganar puntos",
+    en: "Discover and start earning points",
+  } as Dict,
+  "home.points.level": {
+    ca: "Nivell {n}",
+    es: "Nivel {n}",
+    en: "Level {n}",
+  } as Dict,
+  "home.points.toReward": {
+    ca: "A {n} punts de la propera recompensa: {reward}",
+    es: "A {n} puntos de la próxima recompensa: {reward}",
+    en: "{n} points to your next reward: {reward}",
+  } as Dict,
+  "home.welcome.title": {
+    ca: "Benvingut/da a KM0 LAB! 🎉",
+    es: "¡Bienvenido/a a KM0 LAB! 🎉",
+    en: "Welcome to KM0 LAB! 🎉",
+  } as Dict,
+  "home.welcome.points": {
+    ca: "Has guanyat 100 punts de benvinguda",
+    es: "Has ganado 100 puntos de bienvenida",
+    en: "You earned 100 welcome points",
+  } as Dict,
+  "home.join.title": {
+    ca: "Registra't i comença a guanyar 🎁",
+    es: "Regístrate y empieza a ganar 🎁",
+    en: "Sign up and start earning 🎁",
+  } as Dict,
+  "home.join.body": {
+    ca: "Acumula punts als comerços del poble i bescanvia'ls per vals i descomptes.",
+    es: "Acumula puntos en los comercios del pueblo y canjéalos por vales y descuentos.",
+    en: "Earn points at local shops and redeem them for vouchers and discounts.",
+  } as Dict,
+  "home.join.cta": {
+    ca: "Crea el teu compte",
+    es: "Crea tu cuenta",
+    en: "Create your account",
+  } as Dict,
+  "home.join.mini": {
+    ca: "Només et cal un correu · 30 segons",
+    es: "Solo necesitas un email · 30 segundos",
+    en: "Just your email · 30 seconds",
+  } as Dict,
+  "home.earn.title": {
+    ca: "Com guanyar punts",
+    es: "Cómo ganar puntos",
+    en: "How to earn points",
+  } as Dict,
+  "home.earn.qr": {
+    ca: "Escaneja el QR als comerços adherits",
+    es: "Escanea el QR en los comercios adheridos",
+    en: "Scan the QR at partner shops",
+  } as Dict,
+  "home.earn.scanCta": {
+    ca: "Escaneja un QR",
+    es: "Escanea un QR",
+    en: "Scan a QR",
+  } as Dict,
+  "home.earn.soon": {
+    ca: "Ben aviat, més formes de guanyar punts",
+    es: "Muy pronto, más formas de ganar puntos",
+    en: "More ways to earn points coming soon",
+  } as Dict,
+  "home.redeem.title": {
+    ca: "Bescanvia amb punts",
+    es: "Canjea con puntos",
+    en: "Redeem with points",
+  } as Dict,
+  "home.redeem.cost": {
+    ca: "{n} pts",
+    es: "{n} pts",
+    en: "{n} pts",
+  } as Dict,
+  "home.redeem.guest": {
+    ca: "Registra't per bescanviar punts",
+    es: "Regístrate para canjear puntos",
+    en: "Sign up to redeem points",
+  } as Dict,
+
   // ── BottomTabs ───────────────────────────────────────────
   "tabs.home": { ca: "Inici", es: "Inicio", en: "Home" } as Dict,
   "tabs.info": { ca: "Informació", es: "Información", en: "Info" } as Dict,
