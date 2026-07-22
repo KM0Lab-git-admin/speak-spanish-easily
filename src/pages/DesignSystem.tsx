@@ -316,20 +316,6 @@ const DesignSystem = () => {
             </div>
           </section>
 
-          {/* Components — moved to its own page */}
-          <section id="components">
-            <h2 className="font-brand text-3xl text-km0-blue-700 mb-3">Componentes</h2>
-            <p className="font-body text-km0-blue-800/80 max-w-2xl leading-relaxed mb-6">
-              El catálogo de componentes del proyecto (props, previews y comportamiento responsive)
-              vive en una página dedicada para no saturar el Design System.
-            </p>
-            <Link
-              to="/components"
-              className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-primary text-primary-foreground font-ui font-semibold hover:bg-km0-blue-600 transition-colors"
-            >
-              Ir al catálogo de componentes →
-            </Link>
-          </section>
 
           {/* Screens */}
           <section id="screens">
@@ -340,7 +326,7 @@ const DesignSystem = () => {
                 { path: "/", name: "Index / Language", desc: "Selección de idioma. Usa BrandedFrame." },
                 { path: "/onboarding", name: "Onboarding", desc: "Carrusel 3D con slides. Usa BrandedFrame." },
                 { path: "/postal-code", name: "PostalCode", desc: "Validación de CP con estados idle/encontrado/error." },
-                { path: "/chat", name: "Chat", desc: "Layout fullbleed (NO usa BrandedFrame). fixed inset-0." },
+                
               ].map(s => (
                 <Link
                   key={s.path}

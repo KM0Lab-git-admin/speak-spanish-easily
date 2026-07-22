@@ -118,13 +118,6 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     ],
   },
   {
-    id: "chat",
-    label: "Chat",
-    path: "/chat",
-    dynamicContent: true, // banner con la fecha actual
-    states: [{ id: "default", label: "Por defecto", src: "/chat" }],
-  },
-  {
     id: "home",
     label: "Home",
     path: "/home",
@@ -188,17 +181,6 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
       { id: "empty", label: "Vacío", src: "/noticias?state=empty" },
       { id: "error", label: "Error", src: "/noticias?state=error" },
       { id: "detail", label: "Detalle", src: "/noticias?id=not_a1b2c3d4e5f6" },
-    ],
-  },
-  {
-    id: "hoy",
-    label: "Eventos de hoy",
-    path: "/hoy",
-    states: [
-      { id: "happy", label: "Feliz", src: "/hoy" },
-      { id: "loading", label: "Loading", src: "/hoy?state=loading" },
-      { id: "empty", label: "Vacío", src: "/hoy?state=empty" },
-      { id: "error", label: "Error", src: "/hoy?state=error" },
     ],
   },
   {
