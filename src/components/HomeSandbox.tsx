@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import HomeContent from "@/components/HomeContent";
-import HomeContentLandscape from "@/components/HomeContentLandscape";
 import PointsRewardOverlay from "@/components/PointsRewardOverlay";
-import { useBreakpoint } from "@/hooks/use-breakpoint";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 import { INITIAL_MODULES, type HomeModuleSeed } from "@/data/homeModules";
@@ -28,10 +26,7 @@ const HomeSandbox = ({ state = "guest" }: HomeSandboxProps) => {
   const [seeds, setSeeds] = useState<HomeModuleSeed[]>(INITIAL_MODULES);
   const [activeTab, setActiveTab] = useState<HomeTab>("home");
   const [showReward, setShowReward] = useState(state === "reward-welcome");
-  const bp = useBreakpoint();
   const { lang } = useLang();
-  const isLandscape = bp === "horizontal-mobile" || bp === "horizontal-desktop";
-  const Layout = isLandscape ? HomeContentLandscape : HomeContent;
 
   // Reabrir overlay cuando se cambia el estado a reward-welcome.
   useEffect(() => {
@@ -57,8 +52,9 @@ const HomeSandbox = ({ state = "guest" }: HomeSandboxProps) => {
     : t("home.subtitle.guest", lang);
 
   return (
-    <div className="relative w-full h-full flex flex-col overflow-hidden">
-      <Layout
+    <div className="relative w-full h-full bg-km0-beige-50 overflow-hidden flex justify-center">
+      <div className="relative w-full max-w-[430px] h-full flex flex-col overflow-hidden bg-km0-beige-50">
+      <HomeContent
         cityName="Malgrat de Mar"
         hasAlerts={false}
         onToggleAlerts={noop}
@@ -90,6 +86,7 @@ const HomeSandbox = ({ state = "guest" }: HomeSandboxProps) => {
           contained
         />
       )}
+      </div>
     </div>
   );
 };

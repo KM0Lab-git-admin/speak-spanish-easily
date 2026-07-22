@@ -6,29 +6,21 @@
  * pantalla; si cambias la estructura, actualiza también su árbol aquí.
  */
 export const SCREEN_TREES: Record<string, string> = {
-  home: `(NO usa BrandedFrame — DeviceShell propio, con el MISMO tamaño de frame que BrandedFrame en cada resolución)
-│
-├── Portrait  (landscape:hidden) → HomeContent
-│   ├── HomeHero               ← header FIJO (inline=true; sin greetingSlot)
-│   │   ├── skyline malgrat    (bg absoluto, object-top, opacity-25)
-│   │   └── fila header        (escudo + ciudad + KM0 + bell)
-│   ├── body scroll-y
-│   │   ├── section JoinCard (guest) / PointsCard (auth)
-│   │   ├── section "Accesos rápidos"     → HomeModules
-│   │   ├── section "Eventos destacados"  → EventHeroCarousel
-│   │   ├── section "Descubre lo nuestro" → ComercioCarousel
-│   │   └── section "Bescanvia amb punts" → CouponCard × N (guest: locked)
-│   ├── BottomTabs             ← fijo abajo (showProfile si auth)
-│   └── NotificationsOverlay
-│
-└── Landscape  (hidden landscape:flex) → HomeContentLandscape
-    ├── HomeHero               ← inline=true; header fijo 92px / 78px desktop
-    │   └── greetingSlot       → GreetingBlock + JoinCard/PointsCard según sesión
-    ├── main compacto          → grid 2 columnas, flex-1 dentro del frame común 16:9
-    │   ├── panel izq → Accesos rápidos + Eventos destacados
-    │   └── panel der → Descubre lo nuestro + Bescanvia amb punts
-    ├── BottomTabs             (oculto en landscape vía landscape:hidden)
-    └── NotificationsOverlay
+  home: `(NO usa BrandedFrame — DeviceShell propio; layout único centrado y limitado (~430px), bg beige rellena laterales en viewports anchos)
+
+DeviceShell → contenedor centrado → HomeContent
+├── HomeHero               ← header FIJO (inline=true; sin greetingSlot)
+│   ├── skyline malgrat    (bg absoluto, object-top, opacity-25)
+│   └── fila header        (escudo + ciudad + KM0 + bell)
+├── body scroll-y
+│   ├── section JoinCard (guest) / PointsCard (auth)
+│   ├── section "Accesos rápidos"     → HomeModules
+│   ├── section "Eventos destacados"  → EventHeroCarousel
+│   ├── section "Descubre lo nuestro" → ComercioCarousel
+│   ├── section "Bescanvia amb punts" → CouponCard × N (guest: locked)
+│   └── section "Com guanyar punts"   → EarnPointsCard (guest)
+├── BottomTabs             ← fijo abajo (showProfile si auth)
+└── NotificationsOverlay
 
 Lógica:
   · useAuth → isAuthed → showLogin / showProfile / showPoints
