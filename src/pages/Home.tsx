@@ -7,7 +7,7 @@ import { useNotifications } from "@/hooks/useNotifications";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 import HomeContent from "@/components/HomeContent";
-import HomeContentLandscape from "@/components/HomeContentLandscape";
+
 import NotificationsOverlay from "@/components/NotificationsOverlay";
 import DeviceShell from "@/components/DeviceShell";
 import { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
@@ -124,24 +124,16 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
 
   return (
     <DeviceShell>
-      <div className="landscape:hidden flex flex-col bg-km0-beige-50 overflow-hidden relative w-full h-full">
-        <HomeContent {...sharedProps} />
-        <NotificationsOverlay
-          open={notifOpen}
-          notifications={notifications}
-          onClose={() => setNotifOpen(false)}
-          onMarkRead={markRead}
-        />
-      </div>
-
-      <div className="hidden landscape:flex bg-km0-beige-50 overflow-hidden flex-col relative w-full h-full">
-        <HomeContentLandscape {...sharedProps} />
-        <NotificationsOverlay
-          open={notifOpen}
-          notifications={notifications}
-          onClose={() => setNotifOpen(false)}
-          onMarkRead={markRead}
-        />
+      <div className="w-full h-full bg-km0-beige-50 overflow-hidden flex justify-center">
+        <div className="relative w-full max-w-[430px] h-full flex flex-col overflow-hidden bg-km0-beige-50">
+          <HomeContent {...sharedProps} />
+          <NotificationsOverlay
+            open={notifOpen}
+            notifications={notifications}
+            onClose={() => setNotifOpen(false)}
+            onMarkRead={markRead}
+          />
+        </div>
       </div>
     </DeviceShell>
   );

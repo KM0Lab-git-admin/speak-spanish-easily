@@ -1,22 +1,15 @@
-# HomeHero skyline as absolute background
+He leído `docs/KNOWLEDGE.md` §3: el layout canónico ya es "columna portrait, centrada y limitada" (~430px) con fondo rellenando laterales, sin bespoke por orientación. La Home viola esta regla con `HomeContentLandscape`.
 
-## Goal
-Ensure the Malgrat skyline reads as a full, absolute background behind the town crest / name / KM0 LAB logo in the HomeHero, while keeping the hero tall enough to show the complete skyline image without making it small.
+**Plan (3-4 pasos):**
 
-## Current state
-- `HomeHero` is rendered in `inline` mode on Home (`showGreeting={false}`).
-- In vertical-tablet the hero is already set to `h-[220px]`.
-- The skyline image (`skylineMalgrat.png`) is already `absolute inset-0 z-0` and the header row is `relative z-10`.
-- The skyline uses `object-contain object-bottom` so the full image is visible.
+1. **`src/pages/Home.tsx`**: eliminar la rama `hidden landscape:flex` con `HomeContentLandscape` y `NotificationsOverlay` duplicado. Quitar el `landscape:hidden` de la rama única para que `HomeContent` se renderice en TODAS las orientaciones. Quitar el import.
 
-## Planned changes
-1. Keep the `vertical-tablet:h-[220px]` height on the inline hero so the skyline is large enough to be fully visible.
-2. Confirm the skyline stays as an absolute background layer: `absolute inset-0 z-0`.
-3. Confirm the header row stays above it: `relative z-10`.
-4. Scope the change only to `vertical-tablet`; do not touch mobile portrait or landscape heights.
-5. Verify the skyline sits behind the logo/city name rather than appearing as a separate block below it.
+2. **`src/components/HomeContent.tsx`**: envolver el contenido en un contenedor centrado y limitado (`mx-auto w-full max-w-[430px]`) sobre fondo `bg-km0-beige-50` que ocupa todo el ancho del shell. Verificar que carruseles (`EventHeroCarousel`, `ComercioCarousel`, `CouponCarousel`) hacen scroll-x dentro de su contenedor y no fuerzan overflow del body.
 
-## No-go
-- Do not reduce the hero height (user wants the skyline complete).
-- Do not change other breakpoints without explicit instruction.
-- Do not move the skyline in front of the header text.
+3. **Limpieza**: borrar `src/components/HomeContentLandscape.tsx` y su uso en `src/components/HomeSandbox.tsx` (siempre `HomeContent`). Actualizar `src/pages/PreviewAll.tsx` y `src/design-system/screen-trees.ts` quitando la rama Landscape del tree de Home.
+
+**Intocable**: composición interna de `HomeContent` (aprobada), i18n, tokens, contrato de API, primitivos `ui/`, breakpoints.
+
+**Validación (sin PNG automático salvo que lo pidas)**: revisar visualmente 375×667 (idéntico), 768×1024, 667×375 y 1280×550 mostrando la misma columna centrada sobre fondo beige, sin scroll horizontal ni 2 columnas.
+
+¿OK para ejecutar?
