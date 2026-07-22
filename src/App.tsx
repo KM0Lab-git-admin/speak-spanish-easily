@@ -37,7 +37,7 @@ const App = () => (
             <Route path="/postal-code" element={<PostalCode />} />
             <Route path="/login" element={<Login />} />
             <Route path="/check-email" element={<CheckEmail />} />
-            <Route path="/chat" element={<NotFound />} />
+            
             <Route path="/home" element={<Home />} />
             <Route path="/home-registrado" element={<Home forceAuthState="authed" />} />
             <Route path="/agenda" element={<Agenda />} />
