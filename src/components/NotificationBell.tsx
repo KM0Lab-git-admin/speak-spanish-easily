@@ -19,9 +19,9 @@ const NotificationBell = ({
       onClick={onClick}
       aria-label={ariaLabel}
       aria-pressed={onClick ? hasAlerts : undefined}
-      className={`relative w-10 h-10 horizontal-mobile:!w-8 horizontal-mobile:!h-8 flex items-center justify-center rounded-xl ${
+      className={`relative w-10 h-10 horizontal-mobile:!w-8 horizontal-mobile:!h-8 flex items-center justify-center rounded-full bg-white shadow-sm ${
         onClick
-          ? "transition-all duration-200 hover:bg-km0-beige-100 active:scale-95 cursor-pointer"
+          ? "transition-all duration-200 hover:bg-km0-beige-50 active:scale-95 cursor-pointer"
           : ""
       } ${className}`}
     >
