@@ -17,6 +17,7 @@ import { PROMOS } from "@/data/promos";
 import { COMERCIOS } from "@/data/comercios";
 import { REDEEM_COUPONS } from "@/data/redeemCoupons";
 import { INITIAL_MODULES, type HomeModuleSeed } from "@/data/homeModules";
+import { useFeaturedPromos } from "@/hooks/useFeaturedPromos";
 
 type HomeProps = {
   /** Forzar estado para previews (`/home-registrado`, `/home-no-registrado`). */
@@ -42,6 +43,8 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const [notifOpen, setNotifOpen] = useState(searchParams.get("notifs") === "open");
   const [moduleSeeds, setModuleSeeds] = useState<HomeModuleSeed[]>(INITIAL_MODULES);
   const [activeTab, setActiveTab] = useState<HomeTab>("home");
+  const { promos: apiPromos } = useFeaturedPromos(4);
+  const promos = apiPromos.length > 0 ? apiPromos : PROMOS;
 
   const toggleModule = (id: HomeModuleId) => {
     setModuleSeeds((prev) => prev.map((m) => (m.id === id ? { ...m, active: !m.active } : m)));
@@ -106,7 +109,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     nextReward,
     level,
     modules: modulesWithHandlers,
-    promos: PROMOS,
+    promos,
     comercios: COMERCIOS,
     coupons: REDEEM_COUPONS,
     activeTab,
