@@ -39,8 +39,6 @@ const HomeHero = ({
   cityName,
   hasAlerts,
   onToggleAlerts,
-  showLogin,
-  onLogin,
   onBack,
   backAriaLabel = "Volver",
   showGreeting = true,
