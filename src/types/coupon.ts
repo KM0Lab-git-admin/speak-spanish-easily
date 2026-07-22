@@ -12,4 +12,6 @@ export interface Coupon {
   validity: string;
   /** Tipo visual del icono: porcentaje (default), regalo o ticket. */
   kind?: "percent" | "gift" | "ticket";
+  /** Coste en puntos para bescanviar (spec Home "Missió del barri"). */
+  costPoints?: number;
 }

@@ -9,7 +9,7 @@ import { INITIAL_MODULES, type HomeModuleSeed } from "@/data/homeModules";
 import type { HomeModule, HomeModuleId } from "@/components/HomeModules";
 import { PROMOS } from "@/data/promos";
 import { COMERCIOS } from "@/data/comercios";
-import { COUPONS } from "@/data/coupons";
+import { REDEEM_COUPONS } from "@/data/redeemCoupons";
 import { type HomeTab } from "@/components/BottomTabs";
 
 export type HomeSandboxState = "guest" | "registered" | "reward-welcome";
@@ -49,6 +49,12 @@ const HomeSandbox = ({ state = "guest" }: HomeSandboxProps) => {
   const noop = () => {};
   // reward-welcome se comporta como registered.
   const isRegistered = state === "registered" || state === "reward-welcome";
+  const greeting = isRegistered
+    ? t("home.greeting.registered", lang).replace("{name}", "Aina")
+    : t("home.greeting.guest", lang);
+  const subtitle = isRegistered
+    ? t("home.subtitle.registered", lang)
+    : t("home.subtitle.guest", lang);
 
   return (
     <div className="relative w-full h-full flex flex-col overflow-hidden">
@@ -56,13 +62,14 @@ const HomeSandbox = ({ state = "guest" }: HomeSandboxProps) => {
         cityName="Malgrat de Mar"
         hasAlerts={false}
         onToggleAlerts={noop}
-        greeting={lang === "en" ? "Hi, Aina!" : "¡Hola, Aina!"}
-        points={1259}
-        nextLevel={3000}
+        greeting={greeting}
+        subtitle={subtitle}
+        points={isRegistered ? 100 : 0}
+        nextLevel={500}
         modules={modulesWithHandlers}
         promos={PROMOS}
         comercios={COMERCIOS}
-        coupons={COUPONS}
+        coupons={REDEEM_COUPONS}
         activeTab={activeTab}
         onTabChange={setActiveTab}
         showLogin={!isRegistered}
