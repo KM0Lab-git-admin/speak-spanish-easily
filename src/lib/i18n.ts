@@ -280,11 +280,6 @@ const D = {
     es: "{n} pts",
     en: "{n} pts",
   } as Dict,
-  "home.redeem.guest": {
-    ca: "Registra't per bescanviar punts",
-    es: "Regístrate para canjear puntos",
-    en: "Sign up to redeem points",
-  } as Dict,
   "home.redeem.locked": {
     ca: "Registra't per bescanviar",
     es: "Regístrate para canjear",
