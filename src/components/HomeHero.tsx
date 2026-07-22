@@ -71,8 +71,8 @@ const HomeHero = ({
       />
 
       {/* Fila header: escudo + nombre + KM0 + login + bell */}
-      <div className="relative z-10 flex items-center justify-between gap-3 pl-2 pr-4 pt-2 vertical-mobile:!pt-1 vertical-mobile:!pb-1 horizontal-mobile:pointer-events-auto horizontal-mobile:pt-1 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto px-0 py-0">
-        <div className="flex items-center gap-2 min-w-0">
+      <div className="relative z-10 flex items-center justify-between gap-3 pl-2 pr-4 pt-2 vertical-mobile:!pt-1 vertical-mobile:!pb-1 vertical-tablet:items-center horizontal-mobile:pointer-events-auto horizontal-mobile:pt-1 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto px-0 py-0">
+        <div className="flex items-center gap-2 min-w-0 vertical-tablet:items-center">
           {onBack && (
             <button
               type="button"
@@ -88,7 +88,7 @@ const HomeHero = ({
             alt={`Escudo de ${cityName}`}
             className="w-12 h-12 vertical-tablet:w-14 vertical-tablet:h-14 horizontal-mobile:!w-7 horizontal-mobile:!h-7 object-contain shrink-0 drop-shadow-[0_2px_4px_hsl(0_0%_100%/0.5)]"
           />
-          <div className="flex flex-row items-center gap-2 leading-[0.95] min-w-0">
+          <div className="flex flex-row items-center gap-2 leading-none min-w-0 vertical-tablet:items-center">
             <h1 className="font-brand font-black text-km0-blue-700 whitespace-nowrap text-left border-0 text-lg horizontal-mobile:!text-sm vertical-tablet:text-lg">
               {cityName}
             </h1>
@@ -98,7 +98,7 @@ const HomeHero = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0 horizontal-mobile:gap-1.5">
+        <div className="flex items-center gap-2 shrink-0 horizontal-mobile:gap-1.5 vertical-tablet:items-center">
           {showLogin && (
             <LoginButton
               onClick={onLogin}
