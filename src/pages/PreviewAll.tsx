@@ -31,12 +31,15 @@ const SANDBOX_HOME_STATES: HomeSandboxState[] = [
   "reward-welcome",
 ];
 
-/** Opciones del segundo frame. El primario es siempre mobile-portrait-base.
- *  Con el patrón "teléfono centrado en cualquier anchura" (DeviceShell),
- *  tablet/desktop/landscape muestran la MISMA columna portrait centrada;
- *  basta un frame ancho (confirmar el encuadre en pantalla grande) y el
- *  smoke de landscape móvil (no-rotura). */
+/** Opciones del segundo frame. El primario es siempre mobile-portrait-base
+ *  (375×667, el más bajo). El segundo por defecto es el portrait ALTO
+ *  (390×844): validar en horquilla (bajo + alto) es lo que garantiza que
+ *  todo portrait intermedio se vea bien — los gaps por altura extra solo
+ *  aparecen en el alto. Con "teléfono centrado" (DeviceShell),
+ *  desktop/landscape son la misma columna centrada, así que basta un frame
+ *  ancho (encuadre) y el smoke de landscape móvil (no-rotura). */
 const SECONDARY_VIEWPORTS: { id: ViewportId; scale: number }[] = [
+  { id: "mobile-portrait-tall", scale: 1 },
   { id: "desktop-landscape", scale: 0.5 },
   { id: "mobile-landscape-base", scale: 1 },
 ];

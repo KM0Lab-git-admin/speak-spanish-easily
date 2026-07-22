@@ -4,6 +4,7 @@ export type ResponsiveOrientation = "portrait" | "landscape";
 
 export type ViewportId =
   | "mobile-portrait-base"
+  | "mobile-portrait-tall"
   | "mobile-landscape-base"
   | "tablet-portrait"
   | "desktop-landscape";
@@ -32,11 +33,14 @@ export interface ResponsiveViewport {
 /**
  * Matriz oficial de viewports para validar maquetación responsive.
  *
- * Son las 4 resoluciones canónicas del monorepo de producción (AGENTS.md
- * de km0lab): un punto por rama CSS (vertical-mobile, vertical-tablet,
- * horizontal-mobile, horizontal-desktop). Cualquier otra resolución cae
- * en una de estas ramas, así que añadir más puntos revisa el mismo CSS
- * dos veces. No añadir viewports sin decisión humana explícita.
+ * Un punto por rama CSS (vertical-mobile, vertical-tablet,
+ * horizontal-mobile, horizontal-desktop) MÁS un segundo punto portrait
+ * ALTO (390×844). Motivo: dentro de una misma rama CSS, la ALTURA del
+ * viewport varía, y hay bugs (gaps, espacios que se estiran) que solo
+ * aparecen con más altura de la que se diseñó. Por eso portrait se
+ * valida "en horquilla": el más bajo (375×667) y uno alto (390×844). Si
+ * se ve bien en ambos, cualquier portrait intermedio es seguro. No
+ * añadir más viewports sin decisión humana explícita.
  *
  * Mantén esta lista sincronizada con:
  * - `tailwind.config.ts` (variantes vertical/horizontal)
@@ -53,7 +57,19 @@ export const RESPONSIVE_VIEWPORTS: ResponsiveViewport[] = [
     orientation: "portrait",
     breakpoint: "vertical-mobile",
     tier: "contract",
-    purpose: "Contrato mínimo: toda pantalla debe ser usable sin desbordes laterales.",
+    purpose:
+      "Contrato mínimo: toda pantalla debe ser usable sin desbordes laterales.",
+  },
+  {
+    id: "mobile-portrait-tall",
+    label: "Mobile portrait alto",
+    width: 390,
+    height: 844,
+    orientation: "portrait",
+    breakpoint: "vertical-mobile",
+    tier: "contract",
+    purpose:
+      "Techo de altura portrait: con ~180px más de alto que 375×667, revela gaps y espacios estirados que el punto bajo no muestra. Si se ve bien aquí y en 375×667, todo portrait intermedio es seguro.",
   },
   {
     id: "mobile-landscape-base",
@@ -74,7 +90,8 @@ export const RESPONSIVE_VIEWPORTS: ResponsiveViewport[] = [
     orientation: "portrait",
     breakpoint: "vertical-tablet",
     tier: "contract",
-    purpose: "Valida escalado vertical sin convertir tarjetas en bloques demasiado anchos.",
+    purpose:
+      "Valida escalado vertical sin convertir tarjetas en bloques demasiado anchos.",
   },
   {
     id: "desktop-landscape",
@@ -89,9 +106,12 @@ export const RESPONSIVE_VIEWPORTS: ResponsiveViewport[] = [
   },
 ];
 
-export const DEFAULT_VIEWPORT_BY_ORIENTATION: Record<ResponsiveOrientation, ResponsiveViewport> = {
+export const DEFAULT_VIEWPORT_BY_ORIENTATION: Record<
+  ResponsiveOrientation,
+  ResponsiveViewport
+> = {
   portrait: RESPONSIVE_VIEWPORTS[0],
-  landscape: RESPONSIVE_VIEWPORTS[1],
+  landscape: RESPONSIVE_VIEWPORTS[2],
 };
 
 /**
@@ -101,9 +121,10 @@ export const DEFAULT_VIEWPORT_BY_ORIENTATION: Record<ResponsiveOrientation, Resp
  */
 export const VIEWPORTS = {
   mobilePortraitBase: RESPONSIVE_VIEWPORTS[0],
-  mobileLandscape: RESPONSIVE_VIEWPORTS[1],
-  tabletPortrait: RESPONSIVE_VIEWPORTS[2],
-  desktopLandscape: RESPONSIVE_VIEWPORTS[3],
+  mobilePortraitTall: RESPONSIVE_VIEWPORTS[1],
+  mobileLandscape: RESPONSIVE_VIEWPORTS[2],
+  tabletPortrait: RESPONSIVE_VIEWPORTS[3],
+  desktopLandscape: RESPONSIVE_VIEWPORTS[4],
 } as const satisfies Record<string, ResponsiveViewport>;
 
 export type ViewportName = keyof typeof VIEWPORTS;
@@ -124,5 +145,6 @@ export const getViewportById = (id: ViewportId): ResponsiveViewport => {
   return viewport;
 };
 
-export const getDefaultViewport = (orientation: ResponsiveOrientation): ResponsiveViewport =>
-  DEFAULT_VIEWPORT_BY_ORIENTATION[orientation];
+export const getDefaultViewport = (
+  orientation: ResponsiveOrientation,
+): ResponsiveViewport => DEFAULT_VIEWPORT_BY_ORIENTATION[orientation];
