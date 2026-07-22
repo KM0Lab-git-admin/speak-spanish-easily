@@ -14,9 +14,16 @@
  */
 import { z } from "zod";
 
+// Todas las llamadas se enrutan por la edge function `event-query`, que actúa
+// como proxy CORS hacia https://eventquery.km0lab.com. El upstream no permite
+// llamadas directas desde *.lovable.app.
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as
+  | string
+  | undefined;
 const BASE_URL: string =
   (import.meta.env.VITE_EVENTS_API_URL as string | undefined) ??
-  "https://eventquery.km0lab.com";
+  (SUPABASE_URL ? `${SUPABASE_URL}/functions/v1/event-query` : "");
 
 export class ApiError extends Error {
   constructor(
@@ -47,9 +54,16 @@ export async function apiFetch<T>(
   schema: z.ZodType<T>,
   init?: RequestInit
 ): Promise<T> {
+  const authHeaders: Record<string, string> = SUPABASE_KEY
+    ? { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+    : {};
   const res = await fetch(`${BASE_URL}${path}`, {
     ...init,
-    headers: { "Content-Type": "application/json", ...init?.headers },
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders,
+      ...init?.headers,
+    },
   });
   if (!res.ok) {
     throw new ApiError(res.status, `API ${path} respondió ${res.status}`);
