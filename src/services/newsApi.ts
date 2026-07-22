@@ -56,7 +56,7 @@ export function adaptNoticia(item: NewsItem): Noticia {
       en: item.tags_es,
     },
     fechaPublicacion: item.fecha_publicacion ?? null,
-    imagenUrl: item.imagen_principal_url ?? null,
+    imagenUrl: absolutizeImageUrl(item.imagen_principal_url),
     fuenteUrl: item.fuente_url_original ?? null,
   };
 }
