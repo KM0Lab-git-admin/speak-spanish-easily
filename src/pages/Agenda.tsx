@@ -239,6 +239,7 @@ const EventListCard = ({
   evento: Evento;
   onOpen: (id: string) => void;
 }) => {
+  const { lang } = useLang();
   const time = formatTime(evento.hora_inicio);
   const timeEnd = formatTime(evento.hora_fin);
   const cat = evento.categorias?.[0];
@@ -280,7 +281,7 @@ const EventListCard = ({
       <div className="flex flex-wrap items-center gap-1">
         {evento.es_gratuito ? (
           <span className="px-1.5 py-0.5 rounded-full text-[10px] font-ui font-bold bg-km0-teal-100 text-km0-teal-700">
-            Gratis
+            {t("agenda.badge.free", lang)}
           </span>
         ) : evento.precio_euros != null ? (
           <span className="px-1.5 py-0.5 rounded-full text-[10px] font-ui font-bold bg-km0-yellow-100 text-km0-yellow-800">
