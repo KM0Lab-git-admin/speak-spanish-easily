@@ -15,7 +15,7 @@ import {
   todayResponseSchema,
   categoriesResponseSchema,
   eventsListResponseSchema,
-  eventoDetailResponseSchema,
+  eventoDetailSchema,
   type QueryResponse,
   type TodayResponse,
   type Category,
