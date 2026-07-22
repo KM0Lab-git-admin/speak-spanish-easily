@@ -139,6 +139,21 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
             onClose={() => setNotifOpen(false)}
             onMarkRead={markRead}
           />
+          {rewardOpen && isAuthed && (
+            <PointsRewardOverlay
+              points={100}
+              message="Per registrar-te a KM0 LAB"
+              contained
+              onClose={() => {
+                setRewardOpen(false);
+                if (searchParams.get("welcome")) {
+                  const next = new URLSearchParams(searchParams);
+                  next.delete("welcome");
+                  setSearchParams(next, { replace: true });
+                }
+              }}
+            />
+          )}
         </div>
       </div>
     </DeviceShell>
