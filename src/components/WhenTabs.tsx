@@ -21,8 +21,7 @@ export interface WhenTabOption {
 
 export const WHEN_TABS: WhenTabOption[] = [
   { key: "semana", label: "Esta semana" },
-  { key: "mes", label: "Este mes" },
-  { key: "trimestre", label: "3 meses" },
+  { key: "mes", label: "Próximos 30 días" },
 ];
 
 interface WhenTabsProps {
@@ -37,7 +36,7 @@ const WhenTabs = ({ value, onChange, className = "" }: WhenTabsProps) => {
       role="tablist"
       aria-label="Rango temporal"
       className={cn(
-        "grid grid-cols-3 gap-1.5 bg-km0-beige-50 border border-km0-blue-700/20 rounded-2xl p-1.5",
+        "grid grid-cols-2 gap-1.5 bg-km0-beige-50 border border-km0-blue-700/20 rounded-2xl p-1.5",
         className,
       )}
     >

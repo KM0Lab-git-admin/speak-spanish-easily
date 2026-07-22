@@ -193,12 +193,7 @@ const rangeFor = (key: WhenKey): [Date, Date] => {
       return [start, endOfDay(addDays(start, 6))];
     }
     case "mes": {
-      const last = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-      return [today, endOfDay(last)];
-    }
-    case "trimestre": {
-      const last = new Date(today.getFullYear(), today.getMonth() + 3, 0);
-      return [today, endOfDay(last)];
+      return [today, endOfDay(addDays(today, 30))];
     }
   }
 };
