@@ -118,13 +118,6 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     ],
   },
   {
-    id: "chat",
-    label: "Chat",
-    path: "/chat",
-    dynamicContent: true, // banner con la fecha actual
-    states: [{ id: "default", label: "Por defecto", src: "/chat" }],
-  },
-  {
     id: "home",
     label: "Home",
     path: "/home",
