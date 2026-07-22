@@ -134,7 +134,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         id: "guest",
         label: "No registrado",
         src: "/home",
-        notes: "Muestra LoginButton; oculta PointsCard y tab Perfil.",
+        notes: "LoginButton en el header; oculta PointsCard y tab Perfil.",
       },
       {
         id: "registered",
