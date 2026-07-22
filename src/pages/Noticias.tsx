@@ -301,8 +301,6 @@ const Noticias = () => {
           cityName="Malgrat de Mar"
           hasAlerts={hasUnread}
           onToggleAlerts={markAllRead}
-          showLogin={false}
-          onLogin={() => navigate("/login")}
           onBack={() => (opened ? closeDetail() : navigate(-1))}
           backAriaLabel={t("common.back", lang)}
           showGreeting={false}
