@@ -169,38 +169,6 @@ Lógica:
   · state.email (o ?email=) obligatorio → si falta: <Navigate to="/login">
   · cooldown decreciente (setTimeout 1s) deshabilita el botón
   · resend → supabase.auth.signInWithOtp(email)`,
-  chat: `(fullbleed — NO usa BrandedFrame; layout fixed inset-0)
-│
-├── Portrait  (landscape:hidden, ancho mobilePortraitModern compartido)
-│   ├── motion.header        ← HeaderContent
-│   │   ├── back button (chevron amarillo dashed)
-│   │   ├── título: {cityName} + logo KM0 CHAT/XAT
-│   │   └── NotificationBell
-│   ├── date banner          (amarillo · "AGENDA · {fecha}")
-│   ├── messages scroll
-│   │   └── MessagesList     ← burbujas + EventCard × N + loader
-│   ├── motion.div input
-│   │   └── InputBar         ← AnimatePresence (VoiceRecorder | input+mic+send)
-│   └── NotificationsOverlay
-│
-└── Landscape  (hidden landscape:flex, 16:9 frame)
-    ├── motion.header (HeaderContent compact, edge-to-edge)
-    ├── date banner   (edge-to-edge)
-    ├── messages scroll (max-w-[720px] centrado)
-    │   └── MessagesList
-    ├── motion.div input (max-w-[720px] centrado)
-    │   └── InputBar compact
-    └── NotificationsOverlay
-
-Componentes auxiliares (definidos en Chat.tsx, candidatos a extraer):
-  · HeaderContent({compact})  · InputBar({compact})  · MessagesList({endRef})
-
-Lógica:
-  · state: lang ("ca"|"es"|"en"), cityName, postalCode
-  · i18n local (greeting + placeholder + dateLabel)
-  · handleSend → queryEvents(text, postalCode) (eventQueryApi)
-  · voz: VoiceRecorder (Web Speech API) → setInput + setIsRecording(false)
-  · auto-scroll a messagesEndRef en cada nuevo mensaje`,
   agenda: `BrandedFrame  (hideHeader, contentClassName overflow-hidden)
 └── content (flex-col h-full)
     ├── HomeHero               ← reutilizado del Home
