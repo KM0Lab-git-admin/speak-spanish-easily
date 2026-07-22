@@ -46,16 +46,18 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
     <div className={cn("relative w-full max-w-full", className)}>
       <div
         className={cn(
-          "relative bg-km0-beige-100 rounded-3xl px-3 py-0 my-0",
+          "relative bg-km0-beige-100 rounded-3xl px-3 py-2 vertical-tablet:py-3 my-0",
           "horizontal-mobile:!h-[62px] horizontal-desktop:!h-[110px]",
+          "horizontal-mobile:!py-0 horizontal-desktop:!py-0",
         )}
       >
         {/* Grid de columnas iguales: distribución determinista independiente
             del ancho del label. */}
         <div
           className={cn(
-            "relative grid items-center gap-0",
+            "relative grid items-center gap-2 vertical-tablet:gap-4",
             "horizontal-mobile:!h-full horizontal-mobile:!items-center",
+            "horizontal-mobile:!gap-1 horizontal-desktop:!gap-3",
           )}
           style={{ gridTemplateColumns: `repeat(${modules.length}, minmax(0, 1fr))` }}
         >
