@@ -43,6 +43,8 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const [notifOpen, setNotifOpen] = useState(searchParams.get("notifs") === "open");
   const [moduleSeeds, setModuleSeeds] = useState<HomeModuleSeed[]>(INITIAL_MODULES);
   const [activeTab, setActiveTab] = useState<HomeTab>("home");
+  const { promos: apiPromos } = useFeaturedPromos(4);
+  const promos = apiPromos.length > 0 ? apiPromos : PROMOS;
 
   const toggleModule = (id: HomeModuleId) => {
     setModuleSeeds((prev) => prev.map((m) => (m.id === id ? { ...m, active: !m.active } : m)));
