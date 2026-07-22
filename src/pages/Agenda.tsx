@@ -59,8 +59,14 @@ interface CatDef {
   Icon: typeof Music2;
   /** color de fondo cuando está activa */
   activeBg: string;
+interface CatDef {
+  key: Category;
+  slug?: string;
+  labelKey: TKey;
+  matches: string[];
+  Icon: React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }>;
+  activeBg: string;
   activeText: string;
-  /** color de fondo cuando inactiva */
   idleBg: string;
   idleText: string;
 }
