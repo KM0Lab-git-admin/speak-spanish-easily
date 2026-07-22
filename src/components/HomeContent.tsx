@@ -86,17 +86,6 @@ const HomeContent = ({
 
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col">
         <div className="relative z-10 flex flex-col gap-5 vertical-tablet:gap-6 horizontal-mobile:!gap-3 horizontal-desktop:!gap-5 px-2 pt-4 pb-6 horizontal-mobile:!pt-2 horizontal-mobile:!pb-3">
-          {showLogin && (
-            <motion.div
-              className="flex justify-center"
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: 0.05 }}
-            >
-              <LoginButton onClick={onLogin} size="sm" label={t("home.login_cta", lang)} />
-            </motion.div>
-          )}
-
           <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 space-y-3 px-[10px] py-[10px]">
             <SectionHeader title={t("home.section.quick", lang)} />
             <HomeModules modules={modules} />
