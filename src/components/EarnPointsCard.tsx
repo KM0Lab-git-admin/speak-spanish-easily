@@ -21,7 +21,6 @@ export interface EarnAction {
 
 export interface EarnPointsCardProps {
   actions?: EarnAction[];
-  onUnlock?: () => void;
   className?: string;
 }
 
@@ -45,7 +44,7 @@ const DEFAULT_ACTIONS: EarnAction[] = [
   { id: "event", icon: "event", titleKey: "home.earn.action.event.title", subtitleKey: "home.earn.action.event.subtitle" },
 ];
 
-const EarnPointsCard = ({ actions = DEFAULT_ACTIONS, onUnlock, className }: EarnPointsCardProps) => {
+const EarnPointsCard = ({ actions = DEFAULT_ACTIONS, className }: EarnPointsCardProps) => {
   const { lang } = useLang();
 
   return (
@@ -104,15 +103,6 @@ const EarnPointsCard = ({ actions = DEFAULT_ACTIONS, onUnlock, className }: Earn
         })}
       </div>
 
-      {onUnlock && (
-        <button
-          type="button"
-          onClick={onUnlock}
-          className="w-full rounded-xl bg-km0-yellow-400 hover:bg-km0-yellow-500 active:scale-[0.99] transition-all font-ui font-bold text-km0-blue-900 text-sm vertical-tablet:text-base horizontal-mobile:!text-xs py-2.5 horizontal-mobile:!py-1.5"
-        >
-          {t("home.earn.cta", lang)}
-        </button>
-      )}
     </motion.section>
   );
 };
