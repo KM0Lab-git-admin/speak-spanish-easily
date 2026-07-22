@@ -42,11 +42,12 @@ const TREES: Record<string, string> = {
 │   │   ├── skyline malgrat    (bg absoluto, object-top, opacity-25)
 │   │   └── fila header        (escudo + ciudad + KM0 + bell + LoginButton si !user)
 │   ├── body scroll-y
-│   │   ├── section greeting    → GreetingBlock + JoinCard (guest) / PointsCard (auth) + EarnPointsCard (guest)
+│   │   ├── section greeting    → GreetingBlock + JoinCard (guest) / PointsCard (auth)
 │   │   ├── section "Accesos rápidos"     → HomeModules
 │   │   ├── section "Eventos destacados"  → EventHeroCarousel
 │   │   ├── section "Descubre lo nuestro" → ComercioCarousel
-│   │   └── section "Bescanvia amb punts" → CouponCard × N
+│   │   ├── section "Bescanvia amb punts" → CouponCard × N
+│   │   └── section "Com guanyar punts"   → EarnPointsCard (guest)
 │   ├── BottomTabs             ← fijo abajo (showProfile si auth)
 │   └── NotificationsOverlay
 │
