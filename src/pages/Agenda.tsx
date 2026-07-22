@@ -357,7 +357,6 @@ const Agenda = () => {
           backAriaLabel="Volver"
           showGreeting={false}
           greetingSlot={<ScreenTitle title="Agenda" />}
-          inline
         />
       </div>
 
