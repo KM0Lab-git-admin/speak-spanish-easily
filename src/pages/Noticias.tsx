@@ -10,9 +10,7 @@ import { useNotifications } from "@/hooks/useNotifications";
 import { useLang } from "@/contexts/LangContext";
 import { t, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { adaptNoticia, type Noticia } from "@/services/newsApi";
-import { newsListResponseSchema } from "@/services/apiSchemas";
-import newsFixture from "@/data/fixtures/news.json";
+import { listNews, type Noticia } from "@/services/newsApi";
 
 /* ─────────────────────────────────────────────────────────────
  * Noticias — Listado + detalle de noticias municipales.
