@@ -19,6 +19,7 @@ import NotFound from "./pages/NotFound";
 import DesignSystem from "./pages/DesignSystem";
 import Components from "./pages/Components";
 import PreviewAll from "./pages/PreviewAll";
+import InspectHome from "./pages/InspectHome";
 import TopLoadingBar from "./components/TopLoadingBar";
 import RequireAuth from "./components/RequireAuth";
 import { LangProvider } from "./contexts/LangContext";
@@ -52,6 +53,7 @@ const App = () => (
             <Route path="/design-system" element={<DesignSystem />} />
             <Route path="/components" element={<Components />} />
             <Route path="/preview-all" element={<PreviewAll />} />
+            <Route path="/inspect/home" element={<InspectHome />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
