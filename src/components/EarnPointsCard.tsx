@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ShoppingBag, CalendarDays, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/contexts/LangContext";
-import { t } from "@/lib/i18n";
+import { t, type TranslationKey } from "@/lib/i18n";
 
 /**
  * EarnPointsCard — módulo guest que muestra las acciones disponibles para
