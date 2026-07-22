@@ -1,21 +1,15 @@
 /**
  * Promo — entrada del carrusel "Eventos destacados".
  *
- * Cada promo ahora se renderiza como una event-card con:
- *  - badge de categoría (pill superior izquierdo)
- *  - título grande en 1-2 líneas
- *  - fecha (rango legible) y ubicación
- *  - fondo: gradiente decorativo (sin imagen externa) que mantiene
- *    la identidad KM0 sin depender de assets nuevos.
+ * Cada slide muestra:
+ *  - Un carrusel de imágenes propio del evento (parte superior).
+ *  - Título, fecha y ubicación específica (parte inferior).
+ *  - Un CTA circular para abrir el detalle.
  */
 export interface PromoBadge {
-  /** Texto del badge (p.ej. "Fiesta"). */
   text: string;
-  /** Clases Tailwind del fondo del badge (p.ej. "bg-km0-coral-400"). */
   bg: string;
-  /** Clases Tailwind del color del texto del badge. */
   text_color: string;
-  /** Emoji opcional a la izquierda del texto (p.ej. "🎉"). */
   emoji?: string;
 }
 
@@ -25,10 +19,12 @@ export interface Promo {
   title: string;
   /** Rango de fechas legible (ej.: "Del 15 al 19 de julio"). */
   dateRange: string;
-  /** Ubicación corta (ej.: "Malgrat de Mar"). */
+  /** Ubicación concreta del evento (ej.: "Plaça de la Vila"). No repetir la ciudad. */
   location: string;
-  /** Badge de categoría que aparece arriba a la izquierda. */
+  /** Badge de categoría (aún se conserva por compatibilidad; no siempre se muestra). */
   badge: PromoBadge;
-  /** Clases Tailwind del gradiente de fondo. */
+  /** Gradiente decorativo (fallback si faltan imágenes). */
   gradient: string;
+  /** Galería de imágenes del evento (1..n). Se muestra como carrusel interno. */
+  images: string[];
 }
