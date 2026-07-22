@@ -6,6 +6,7 @@ import ComercioCarousel from "./ComercioCarousel";
 import CouponCard from "./CouponCard";
 import PointsCard from "./PointsCard";
 import GreetingBlock from "./GreetingBlock";
+import LoginButton from "./LoginButton";
 import BottomTabs from "./BottomTabs";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
@@ -43,12 +44,17 @@ const HomeContentLandscape = ({
         cityName={cityName}
         hasAlerts={hasAlerts}
         onToggleAlerts={onToggleAlerts}
-        showLogin={showLogin}
-        onLogin={onLogin}
         showGreeting={false}
         greetingSlot={
           <div className="gap-1.5 px-3 pb-1 horizontal-mobile:gap-0 horizontal-mobile:px-2.5 horizontal-mobile:pb-0 flex-col flex items-center justify-start">
             <GreetingBlock greeting={greeting} subtitle={subtitle} />
+            {showLogin && (
+              <LoginButton
+                onClick={onLogin}
+                size="md"
+                className="w-full max-w-[280px] min-h-10"
+              />
+            )}
             {showPoints && <PointsCard points={points} nextLevel={nextLevel} />}
           </div>
         }

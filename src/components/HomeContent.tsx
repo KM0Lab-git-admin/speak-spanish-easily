@@ -5,6 +5,7 @@ import CouponCard from "./CouponCard";
 import PointsCard from "./PointsCard";
 import GreetingBlock from "./GreetingBlock";
 import ComercioCarousel from "./ComercioCarousel";
+import LoginButton from "./LoginButton";
 import BottomTabs, { type HomeTab } from "./BottomTabs";
 import { ArrowRight } from "lucide-react";
 import { useLang } from "@/contexts/LangContext";
@@ -72,12 +73,17 @@ const HomeContent = ({
         cityName={cityName}
         hasAlerts={hasAlerts}
         onToggleAlerts={onToggleAlerts}
-        showLogin={showLogin}
-        onLogin={onLogin}
         showGreeting={false}
         greetingSlot={
           <div className="my-0 flex flex-col gap-3 horizontal-mobile:!gap-2 px-2 py-0">
             <GreetingBlock greeting={greeting} subtitle={subtitle} />
+            {showLogin && (
+              <LoginButton
+                onClick={onLogin}
+                size="md"
+                className="w-full max-w-[280px] mx-auto min-h-10 vertical-tablet:min-h-11"
+              />
+            )}
             {showPoints && <PointsCard points={points} nextLevel={nextLevel} />}
           </div>
         }

@@ -158,8 +158,6 @@ const previews: Record<string, ReactNode> = {
         cityName="Malgrat de Mar"
         hasAlerts
         onToggleAlerts={() => {}}
-        showLogin
-        onLogin={() => {}}
       />
     </PhoneFrame>
   ),

@@ -353,8 +353,6 @@ const Agenda = () => {
           cityName="Malgrat de Mar"
           hasAlerts={hasUnread}
           onToggleAlerts={markAllRead}
-          showLogin={false}
-          onLogin={() => navigate("/login")}
           onBack={() => navigate(-1)}
           backAriaLabel="Volver"
           showGreeting={false}

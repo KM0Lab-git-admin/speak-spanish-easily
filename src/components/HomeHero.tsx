@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 import Km0Logo from "./Km0Logo";
 import NotificationBell from "./NotificationBell";
-import LoginButton from "./LoginButton";
 import UserGreeting from "./UserGreeting";
 import skylineMalgrat from "@/assets/skyline-malgrat.png";
 import coatMalgrat from "@/assets/coat-malgrat.png";
@@ -23,8 +22,6 @@ export interface HomeHeroProps {
   cityName: string;
   hasAlerts: boolean;
   onToggleAlerts: () => void;
-  showLogin: boolean;
-  onLogin: () => void;
   /** Si se pasa, muestra el botón Back a la izquierda (pantallas interiores: agenda, chat…). */
   onBack?: () => void;
   backAriaLabel?: string;
@@ -42,8 +39,6 @@ const HomeHero = ({
   cityName,
   hasAlerts,
   onToggleAlerts,
-  showLogin,
-  onLogin,
   onBack,
   backAriaLabel = "Volver",
   showGreeting = true,
@@ -70,9 +65,9 @@ const HomeHero = ({
         className="pointer-events-none absolute inset-0 w-full h-full object-cover object-top z-0 select-none opacity-25 landscape:object-contain landscape:object-bottom"
       />
 
-      {/* Fila header: escudo + nombre + KM0 + login + bell */}
-      <div className="relative z-10 flex items-center justify-between gap-3 pl-2 pr-4 pt-2 vertical-mobile:!pt-1 vertical-mobile:!pb-1 vertical-tablet:items-center horizontal-mobile:pointer-events-auto horizontal-mobile:pt-1 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto">
-        <div className="flex items-center gap-2 min-w-0 vertical-tablet:items-center">
+      {/* Fila header: escudo + nombre + KM0 + bell */}
+      <div className="relative z-10 flex items-center justify-between gap-3 pl-2 pr-4 pt-2 vertical-mobile:!pt-1 vertical-mobile:!pb-1 vertical-tablet:gap-2 vertical-tablet:items-center horizontal-mobile:pointer-events-auto horizontal-mobile:pt-1 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto">
+        <div className="flex items-center gap-2 min-w-0 vertical-tablet:gap-1.5 vertical-tablet:items-center">
           {onBack && (
             <button
               type="button"
@@ -86,26 +81,19 @@ const HomeHero = ({
           <img
             src={coatMalgrat}
             alt={`Escudo de ${cityName}`}
-            className="w-12 h-12 vertical-tablet:w-14 vertical-tablet:h-14 horizontal-mobile:!w-7 horizontal-mobile:!h-7 object-contain shrink-0 drop-shadow-[0_2px_4px_hsl(0_0%_100%/0.5)]"
+            className="w-12 h-12 vertical-tablet:w-12 vertical-tablet:h-12 horizontal-mobile:!w-7 horizontal-mobile:!h-7 object-contain shrink-0 drop-shadow-[0_2px_4px_hsl(0_0%_100%/0.5)]"
           />
-          <div className="flex flex-row items-center gap-2 leading-none min-w-0 vertical-tablet:items-center">
-            <h1 className="font-brand font-black text-km0-blue-700 whitespace-nowrap text-left border-0 text-lg horizontal-mobile:!text-sm vertical-tablet:text-lg">
+          <div className="flex flex-row items-center gap-2 leading-none min-w-0 vertical-tablet:gap-1.5 vertical-tablet:items-center">
+            <h1 className="font-brand font-black text-km0-blue-700 whitespace-nowrap text-left border-0 text-lg horizontal-mobile:!text-sm vertical-tablet:text-base">
               {cityName}
             </h1>
-            <div className="flex items-center">
-              <Km0Logo className="h-4 vertical-tablet:h-5 horizontal-mobile:!h-3 w-auto" />
+            <div className="flex items-center shrink-0">
+              <Km0Logo className="h-4 vertical-tablet:h-3.5 horizontal-mobile:!h-3 w-auto" />
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0 horizontal-mobile:gap-1.5 vertical-tablet:items-center">
-          {showLogin && (
-            <LoginButton
-              onClick={onLogin}
-              size="md"
-              className="inline-flex min-h-9 vertical-tablet:min-h-10 horizontal-mobile:!text-[11px] horizontal-mobile:!px-2.5 horizontal-mobile:!py-1"
-            />
-          )}
+        <div className="flex items-center gap-2 shrink-0 horizontal-mobile:gap-1.5 vertical-tablet:gap-1.5 vertical-tablet:items-center">
           <NotificationBell
             hasAlerts={hasAlerts}
             onClick={onToggleAlerts}
