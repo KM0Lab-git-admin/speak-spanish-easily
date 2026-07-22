@@ -49,7 +49,7 @@ const HomeHero = ({
     <motion.section
       className={
         inline
-          ? "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-0 horizontal-mobile:h-[92px] horizontal-desktop:h-[140px] w-full"
+          ? "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-0 horizontal-mobile:h-[92px] vertical-tablet:h-[220px] horizontal-desktop:h-[140px] w-full"
           : "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-0 horizontal-mobile:absolute horizontal-mobile:inset-0 horizontal-mobile:pointer-events-none horizontal-mobile:pb-0 horizontal-desktop:absolute horizontal-desktop:inset-0 horizontal-desktop:pointer-events-none horizontal-desktop:pb-0"
       }
       initial={{ opacity: 0 }}
