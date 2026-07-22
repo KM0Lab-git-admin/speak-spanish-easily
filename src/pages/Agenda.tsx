@@ -52,19 +52,10 @@ type Price = "todos" | "gratis" | "pago";
 
 interface CatDef {
   key: Category;
-  label: string;
-  matches: string[];
-  /** slug de categoría de la API events-query (undefined = sin filtro) */
-  slug?: string;
-  Icon: typeof Music2;
-  /** color de fondo cuando está activa */
-  activeBg: string;
-interface CatDef {
-  key: Category;
   slug?: string;
   labelKey: TKey;
   matches: string[];
-  Icon: React.ComponentType<{ size?: number; strokeWidth?: number; className?: string }>;
+  Icon: typeof Music2;
   activeBg: string;
   activeText: string;
   idleBg: string;
@@ -75,7 +66,7 @@ const CATEGORIES: CatDef[] = [
   {
     key: "musica",
     slug: "musica",
-    label: "Música",
+    labelKey: "agenda.cat.musica",
     matches: ["música", "musica", "concierto"],
     Icon: Music2,
     activeBg: "bg-km0-blue-900",
@@ -86,7 +77,7 @@ const CATEGORIES: CatDef[] = [
   {
     key: "cultura",
     slug: "cultura",
-    label: "Cultura",
+    labelKey: "agenda.cat.cultura",
     matches: ["cultura", "exposición", "teatro", "cine"],
     Icon: Palette,
     activeBg: "bg-km0-yellow-500",
@@ -97,7 +88,7 @@ const CATEGORIES: CatDef[] = [
   {
     key: "infantil",
     slug: "infantil",
-    label: "Infantil",
+    labelKey: "agenda.cat.infantil",
     matches: ["infantil", "niños", "familia"],
     Icon: Baby,
     activeBg: "bg-white",
@@ -108,7 +99,7 @@ const CATEGORIES: CatDef[] = [
   {
     key: "deporte",
     slug: "deportes",
-    label: "Deporte",
+    labelKey: "agenda.cat.deporte",
     matches: ["deporte", "deport"],
     Icon: Trophy,
     activeBg: "bg-km0-teal-500",
@@ -119,7 +110,7 @@ const CATEGORIES: CatDef[] = [
   {
     key: "talleres",
     slug: "formacion",
-    label: "Talleres",
+    labelKey: "agenda.cat.talleres",
     matches: ["taller", "workshop", "curso"],
     Icon: Hammer,
     activeBg: "bg-km0-coral-500",
@@ -130,7 +121,7 @@ const CATEGORIES: CatDef[] = [
   {
     key: "fiestas",
     slug: "fiestas-mayores",
-    label: "Fiestas",
+    labelKey: "agenda.cat.fiestas",
     matches: ["fiesta", "festa", "festival"],
     Icon: PartyPopper,
     activeBg: "bg-km0-blue-700",
@@ -141,7 +132,7 @@ const CATEGORIES: CatDef[] = [
   {
     key: "gastronomia",
     slug: "gastronomia",
-    label: "Gastro",
+    labelKey: "agenda.cat.gastronomia",
     matches: ["gastro", "comida", "cocina", "vino"],
     Icon: UtensilsCrossed,
     activeBg: "bg-km0-coral-600",
@@ -151,7 +142,7 @@ const CATEGORIES: CatDef[] = [
   },
   {
     key: "todos",
-    label: "Todos",
+    labelKey: "agenda.cat.todos",
     matches: [],
     Icon: Sparkles,
     activeBg: "bg-km0-teal-600",
