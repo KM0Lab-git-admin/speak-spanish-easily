@@ -94,10 +94,11 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   })();
   const cityName = profile?.town || storedTown || "Malgrat de Mar";
 
-  // Puntos mock: registrado tiene mínimo 100 pts de bienvenida.
-  const points = isAuthed ? 1240 : 0;
-  const level = isAuthed ? 4 : 1;
-  const nextLevel = 1500;
+  // Puntos mock: registrado empieza con 100 pts de bienvenida (nivel 1,
+  // barra de progreso al 10% hacia el nivel 2 en 1.000 pts).
+  const points = isAuthed ? 100 : 0;
+  const level = isAuthed ? 1 : 1;
+  const nextLevel = 1000;
   const nextReward = isAuthed ? "Val de 5€ al Forn Rovira" : undefined;
 
   const sharedProps = {
