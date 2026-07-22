@@ -416,6 +416,35 @@ const D = {
     es: "Reintentar",
     en: "Retry",
   } as Dict,
+
+  // ── Evento (detalle) ─────────────────────────────────────
+  "event.when": { ca: "Quan", es: "Cuándo", en: "When" } as Dict,
+  "event.where": { ca: "On", es: "Dónde", en: "Where" } as Dict,
+  "event.organizer": { ca: "Organitza", es: "Organiza", en: "Organized by" } as Dict,
+  "event.tags": { ca: "Etiquetes", es: "Etiquetas", en: "Tags" } as Dict,
+  "event.description": { ca: "Descripció", es: "Descripción", en: "Description" } as Dict,
+  "event.source": {
+    ca: "Veure publicació original",
+    es: "Ver publicación original",
+    en: "View original post",
+  } as Dict,
+  "event.free": { ca: "Gratuït", es: "Gratis", en: "Free" } as Dict,
+  "event.family": { ca: "Familiar", es: "Familiar", en: "Family" } as Dict,
+  "event.notfound.title": {
+    ca: "No hem trobat l'esdeveniment",
+    es: "No hemos encontrado el evento",
+    en: "Event not found",
+  } as Dict,
+  "event.notfound.subtitle": {
+    ca: "Torna a l'agenda i tria un altre.",
+    es: "Vuelve a la agenda y elige otro.",
+    en: "Go back to the agenda and pick another one.",
+  } as Dict,
+  "event.error.title": {
+    ca: "No s'ha pogut carregar l'esdeveniment",
+    es: "No se ha podido cargar el evento",
+    en: "Couldn't load the event",
+  } as Dict,
 } as const;
 
 export type TKey = keyof typeof D;
