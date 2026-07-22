@@ -63,7 +63,7 @@ const PostalCode = () => {
   return (
     <BrandedFrame onBack={() => navigate(-1)} backAriaLabel={t("common.back", lang)}>
       {/* ── PORTRAIT ─────────────────────────────────────── */}
-      <div className="w-full max-w-[390px] sm:max-w-[460px] mx-auto flex flex-col gap-6 vertical-mobile:gap-7 landscape:hidden flex-1 min-h-0 py-2">
+      <div className="w-full max-w-[390px] sm:max-w-[460px] mx-auto flex flex-col gap-6 vertical-mobile:gap-7 vertical-tablet:justify-between vertical-tablet:gap-0 landscape:hidden flex-1 min-h-0 py-2 vertical-tablet:py-5">
         <motion.div
           className="rounded-3xl overflow-hidden shadow-lg"
           initial={{ opacity: 0, scale: 0.95 }}
