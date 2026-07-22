@@ -16,15 +16,20 @@ serve(async (req) => {
 
   try {
     const url = new URL(req.url);
-    // Path after the function name; supports both the legacy POST /event-query
-    // (empty subpath → default to /api/v1/query) and the generic proxy.
     const marker = "/event-query";
     const idx = url.pathname.indexOf(marker);
-    let subpath = idx >= 0 ? url.pathname.slice(idx + marker.length) : "";
+    let rawPath = idx >= 0 ? url.pathname.slice(idx + marker.length) : "";
+    // The Supabase gateway sometimes URL-encodes the entire subpath, turning
+    // `?` into `%3F`. Decode so we can properly split path from query string.
+    rawPath = decodeURIComponent(rawPath);
+    const qIdx = rawPath.indexOf("?");
+    let subpath = qIdx >= 0 ? rawPath.slice(0, qIdx) : rawPath;
+    const inlineSearch = qIdx >= 0 ? rawPath.slice(qIdx) : "";
     if (!subpath || subpath === "/") subpath = "/api/v1/query";
+    const search = url.search || inlineSearch;
 
-    const target = `${UPSTREAM}${subpath}${url.search}`;
-    console.log("proxy", req.method, url.pathname, "->", target);
+    const target = `${UPSTREAM}${subpath}${search}`;
+    console.log("proxy", req.method, url.pathname, url.search, "->", target);
 
     const hasBody = req.method !== "GET" && req.method !== "HEAD";
     const body = hasBody ? await req.text() : undefined;
