@@ -57,7 +57,7 @@ const HomeHero = ({
       transition={{ duration: 0.4 }}
     >
 
-      {/* Skyline como capa de fondo del hero: recortada por la parte inferior (object-top conserva la silueta arriba) */}
+      {/* Skyline como capa de fondo absoluta del hero, detrás de escudo/nombre/logo */}
       <img
         src={skylineMalgrat}
         alt=""
