@@ -18,7 +18,12 @@ import { COMERCIOS } from "@/data/comercios";
 import { COUPONS } from "@/data/coupons";
 import { INITIAL_MODULES, type HomeModuleSeed } from "@/data/homeModules";
 
-const Home = () => {
+type HomeProps = {
+  /** Forzar estado para previews (`/home-registrado`, `/home-no-registrado`). */
+  forceAuthState?: "authed" | "guest";
+};
+
+const Home = ({ forceAuthState }: HomeProps = {}) => {
   const { notifications, hasUnread, markRead, markAllRead } = useNotifications();
   const { user, loading: authLoading } = useAuth();
   const { profile } = useProfile();
@@ -27,7 +32,8 @@ const Home = () => {
 
   // Estado real según sesión: sin user → mostrar CTA de login y ocultar
   // puntos / acceso a perfil. Con user → al revés.
-  const isAuthed = !!user;
+  // Las rutas de preview pueden forzar el estado con `forceAuthState`.
+  const isAuthed = forceAuthState ? forceAuthState === "authed" : !!user;
   const showLogin = !isAuthed;
   const showProfile = isAuthed;
   const showPoints = isAuthed;
