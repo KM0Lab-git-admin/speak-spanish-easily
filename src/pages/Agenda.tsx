@@ -491,7 +491,11 @@ const Agenda = () => {
                   {formatDayHeader(g.date)}
                 </h3>
                 {g.items.map((e) => (
-                  <EventListCard key={e.id_unico_evento} evento={e} />
+                  <EventListCard
+                    key={e.id_unico_evento}
+                    evento={e}
+                    onOpen={(id) => navigate(`/evento?id=${encodeURIComponent(id)}`)}
+                  />
                 ))}
               </motion.div>
             ))}

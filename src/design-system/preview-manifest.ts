@@ -168,9 +168,14 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     id: "evento",
     label: "Evento",
     path: "/evento",
+    dynamicContent: true,
     states: [
-      { id: "hero", label: "Variante Hero", src: "/evento" },
-      { id: "ticket", label: "Variante Ticket", src: "/evento?variant=ticket" },
+      { id: "notfound", label: "Sin id", src: "/evento" },
+      {
+        id: "detail",
+        label: "Detalle",
+        src: "/evento?id=d981284158e506fe00adc07973b5c3645d10a9e169ab69c6acd985eb3a887359",
+      },
     ],
   },
   {
