@@ -17,6 +17,7 @@ import { PROMOS } from "@/data/promos";
 import { COMERCIOS } from "@/data/comercios";
 import { REDEEM_COUPONS } from "@/data/redeemCoupons";
 import { INITIAL_MODULES, type HomeModuleSeed } from "@/data/homeModules";
+import { useFeaturedPromos } from "@/hooks/useFeaturedPromos";
 
 type HomeProps = {
   /** Forzar estado para previews (`/home-registrado`, `/home-no-registrado`). */
