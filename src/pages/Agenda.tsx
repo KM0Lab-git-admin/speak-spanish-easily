@@ -367,8 +367,8 @@ const Agenda = () => {
           cityName="Malgrat de Mar"
           hasAlerts={hasUnread}
           onToggleAlerts={markAllRead}
-          onBack={() => navigate(-1)}
-          backAriaLabel="Volver"
+          onBack={() => navigate("/home")}
+          backAriaLabel="Ir al inicio"
           showGreeting={false}
           greetingSlot={<ScreenTitle title="Agenda" />}
         />
