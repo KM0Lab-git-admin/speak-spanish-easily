@@ -41,6 +41,8 @@ const App = () => (
             <Route path="/check-email" element={<CheckEmail />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/home-registrado" element={<Home forceAuthState="authed" />} />
+            <Route path="/home-no-registrado" element={<Home forceAuthState="guest" />} />
             <Route path="/agenda" element={<Agenda />} />
             <Route path="/evento" element={<Evento />} />
             <Route path="/noticias" element={<Noticias />} />
