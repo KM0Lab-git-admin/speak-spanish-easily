@@ -60,7 +60,7 @@ const ScreenTitle = ({ title, date, className = "" }: ScreenTitleProps) => {
         <p className="font-body text-km0-blue-800 whitespace-nowrap leading-tight text-sm vertical-tablet:text-base">
           Hoy
         </p>
-        <p className="font-brand text-km0-yellow-500 whitespace-nowrap leading-tight mt-0.5 text-2xl vertical-tablet:text-4xl">
+        <p className="font-brand text-km0-blue-700 whitespace-nowrap leading-tight mt-0.5 text-2xl vertical-tablet:text-4xl">
           {dayNum} {monthName}
         </p>
       </div>
