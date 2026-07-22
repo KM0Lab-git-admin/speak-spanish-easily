@@ -195,37 +195,6 @@ const EventoDetalle = ({
           imagenes={ev.imagenes}
           alt={ev.titulo}
           className="w-full aspect-[4/3] vertical-tablet:aspect-[16/10]"
-          overlay={
-            <>
-              <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-km0-blue-900 via-km0-blue-900/80 to-transparent pointer-events-none" />
-              <div className="absolute bottom-0 left-0 right-0 z-[5] pointer-events-none px-3 pt-4 pb-3 space-y-1.5">
-                <div className="flex flex-wrap items-center gap-1.5">
-                  {ev.categoria && (
-                    <span className="inline-block px-2 py-0.5 rounded-full bg-km0-yellow-400 text-km0-blue-900 text-[10px] font-ui font-bold">
-                      {ev.categoria}
-                    </span>
-                  )}
-                  {ev.esGratuito ? (
-                    <span className="inline-block px-2 py-0.5 rounded-full bg-km0-teal-500 text-white text-[10px] font-ui font-bold">
-                      {t("event.free", lang)}
-                    </span>
-                  ) : ev.precio != null ? (
-                    <span className="inline-block px-2 py-0.5 rounded-full bg-white text-km0-blue-900 text-[10px] font-ui font-bold">
-                      {ev.precio.toFixed(2)} €
-                    </span>
-                  ) : null}
-                  {ev.esFamilia && (
-                    <span className="inline-block px-2 py-0.5 rounded-full bg-km0-coral-500 text-white text-[10px] font-ui font-bold">
-                      {t("event.family", lang)}
-                    </span>
-                  )}
-                </div>
-                <h1 className="font-brand text-xl vertical-tablet:text-2xl text-white leading-tight [text-shadow:0_2px_8px_rgba(0,0,0,0.6)]">
-                  {ev.titulo}
-                </h1>
-              </div>
-            </>
-          }
         />
         <button
           onClick={onBack}
