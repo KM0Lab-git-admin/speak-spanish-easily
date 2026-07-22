@@ -5,6 +5,7 @@ import CouponCard from "./CouponCard";
 import PointsCard from "./PointsCard";
 import GreetingBlock from "./GreetingBlock";
 import ComercioCarousel from "./ComercioCarousel";
+import LoginButton from "./LoginButton";
 import BottomTabs, { type HomeTab } from "./BottomTabs";
 import { ArrowRight } from "lucide-react";
 import { useLang } from "@/contexts/LangContext";
