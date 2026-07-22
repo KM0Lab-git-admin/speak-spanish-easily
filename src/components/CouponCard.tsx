@@ -2,6 +2,9 @@ import { ChevronRight, Percent, Gift, Ticket } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import type { Coupon } from "@/types/coupon";
+import { useLang } from "@/contexts/LangContext";
+import { t } from "@/lib/i18n";
+
 
 /**
  * CouponCard — tarjeta horizontal para "Promos para ti".
@@ -33,8 +36,13 @@ const STYLE_BY_KIND = {
 } as const;
 
 const CouponCard = ({ coupon, onClick, delay = 0 }: CouponCardProps) => {
+  const { lang } = useLang();
   const Icon = ICON_BY_KIND[coupon.kind ?? "percent"];
   const style = STYLE_BY_KIND[coupon.kind ?? "percent"];
+  const costLabel =
+    coupon.costPoints != null
+      ? t("home.redeem.cost", lang).replace("{n}", coupon.costPoints.toLocaleString("es-ES"))
+      : null;
 
   return (
     <motion.button
@@ -67,13 +75,20 @@ const CouponCard = ({ coupon, onClick, delay = 0 }: CouponCardProps) => {
         </span>
       </div>
 
-      <ChevronRight
-        size={18}
-        strokeWidth={2.4}
-        className="shrink-0 text-km0-blue-700/60 horizontal-mobile:!w-4 horizontal-mobile:!h-4"
-      />
+      {costLabel ? (
+        <span className="shrink-0 rounded-full bg-km0-yellow-100 text-km0-yellow-700 font-ui font-bold text-[11px] vertical-tablet:text-xs horizontal-mobile:!text-[10px] horizontal-desktop:!text-sm px-2.5 py-1 horizontal-mobile:!px-2 horizontal-mobile:!py-0.5 whitespace-nowrap">
+          {costLabel}
+        </span>
+      ) : (
+        <ChevronRight
+          size={18}
+          strokeWidth={2.4}
+          className="shrink-0 text-km0-blue-700/60 horizontal-mobile:!w-4 horizontal-mobile:!h-4"
+        />
+      )}
     </motion.button>
   );
 };
+
 
 export default CouponCard;

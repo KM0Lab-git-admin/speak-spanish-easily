@@ -3,13 +3,14 @@ import HomeHero from "./HomeHero";
 import EventHeroCarousel from "./EventHeroCarousel";
 import CouponCard from "./CouponCard";
 import PointsCard from "./PointsCard";
+import JoinCard from "./JoinCard";
 import GreetingBlock from "./GreetingBlock";
 import ComercioCarousel from "./ComercioCarousel";
-import LoginButton from "./LoginButton";
 import BottomTabs, { type HomeTab } from "./BottomTabs";
 import { ArrowRight } from "lucide-react";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
+
 
 import type { Promo } from "@/types/promo";
 import type { Comercio } from "@/types/comercio";
@@ -19,8 +20,10 @@ export interface HomeContentProps {
   cityName: string;
   hasAlerts: boolean;
   onToggleAlerts: () => void;
-  /** Saludo ya localizado (e.g. "¡Hola, Aina!" o "¡Hola!"). */
+  /** Saludo ya localizado (e.g. "Bon dia, Aina 👋" o "Hola! 👋"). */
   greeting: string;
+  /** Subtítulo ya localizado según estado (guest vs registered). */
+  subtitle: string;
   points: number;
   nextLevel: number;
   modules: HomeModule[];
@@ -46,6 +49,7 @@ const HomeContent = ({
   hasAlerts,
   onToggleAlerts,
   greeting,
+  subtitle,
   points,
   nextLevel,
   modules,
@@ -65,6 +69,7 @@ const HomeContent = ({
   onOpenEvent,
 }: HomeContentProps) => {
   const { lang } = useLang();
+
   const subtitle = t("home.greeting_subtitle", lang);
 
   return (
