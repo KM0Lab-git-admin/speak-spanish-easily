@@ -83,12 +83,12 @@ const HomeHero = ({
             alt={`Escudo de ${cityName}`}
             className="w-12 h-12 vertical-tablet:w-12 vertical-tablet:h-12 horizontal-mobile:!w-7 horizontal-mobile:!h-7 object-contain shrink-0 drop-shadow-[0_2px_4px_hsl(0_0%_100%/0.5)]"
           />
-          <div className="flex flex-row items-center gap-2 leading-none min-w-0 vertical-tablet:gap-1.5 vertical-tablet:items-center">
+          <div className="flex flex-col items-start justify-center gap-0.5 leading-none min-w-0 vertical-tablet:gap-0.5">
             <h1 className="font-brand font-black text-km0-blue-700 whitespace-nowrap text-left border-0 text-lg horizontal-mobile:!text-sm vertical-tablet:text-base">
               {cityName}
             </h1>
             <div className="flex items-center shrink-0">
-              <Km0Logo className="h-4 vertical-tablet:h-3.5 horizontal-mobile:!h-3 w-auto" />
+              <Km0Logo className="h-5 vertical-tablet:h-4 horizontal-mobile:!h-3.5 w-auto" />
             </div>
           </div>
         </div>
