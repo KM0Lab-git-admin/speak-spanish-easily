@@ -109,7 +109,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     nextReward,
     level,
     modules: modulesWithHandlers,
-    promos: PROMOS,
+    promos,
     comercios: COMERCIOS,
     coupons: REDEEM_COUPONS,
     activeTab,
