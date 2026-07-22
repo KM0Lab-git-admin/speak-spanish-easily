@@ -5,8 +5,6 @@ import CouponCard from "./CouponCard";
 import PointsCard from "./PointsCard";
 import JoinCard from "./JoinCard";
 import EarnPointsCard from "./EarnPointsCard";
-
-
 import ComercioCarousel from "./ComercioCarousel";
 import BottomTabs, { type HomeTab } from "./BottomTabs";
 import { ArrowRight } from "lucide-react";
