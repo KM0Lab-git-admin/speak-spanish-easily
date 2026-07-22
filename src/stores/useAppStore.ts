@@ -88,6 +88,7 @@ export const useAppStore = create<AppState>()(
       postalCode: null,
       town: null,
       pendingOtp: null,
+      notificationsLastSeenAt: null,
 
       setLang: (l) => {
         if (!(LANGS as string[]).includes(l)) return;
@@ -105,6 +106,9 @@ export const useAppStore = create<AppState>()(
         }),
       getProfile: (userId) => get().profiles[userId] ?? null,
 
+      markNotificationsSeen: () =>
+        set({ notificationsLastSeenAt: new Date().toISOString() }),
+
       signOut: () => set({ session: null, pendingOtp: null }),
     }),
     {
@@ -117,6 +121,7 @@ export const useAppStore = create<AppState>()(
         lang: s.lang,
         postalCode: s.postalCode,
         town: s.town,
+        notificationsLastSeenAt: s.notificationsLastSeenAt,
       }),
     },
   ),
