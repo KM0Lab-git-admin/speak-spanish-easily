@@ -20,6 +20,8 @@ const HomeContentLandscape = ({
   subtitle,
   points,
   nextLevel,
+  nextReward,
+  level,
   modules,
   promos,
   comercios,
@@ -49,7 +51,7 @@ const HomeContentLandscape = ({
           <div className="gap-1.5 px-3 pb-1 horizontal-mobile:gap-0 horizontal-mobile:px-2.5 horizontal-mobile:pb-0 flex-col flex items-center justify-start">
             <GreetingBlock greeting={greeting} subtitle={subtitle} />
             {showLogin && <JoinCard onCreateAccount={onLogin} />}
-            {showPoints && <PointsCard points={points} nextLevel={nextLevel} />}
+            {showPoints && <PointsCard points={points} nextLevel={nextLevel} nextReward={nextReward} level={level} />}
           </div>
         }
         inline
