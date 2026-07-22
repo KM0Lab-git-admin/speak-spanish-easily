@@ -143,3 +143,108 @@ export async function listEvents(
     total: res.total,
   };
 }
+
+/* ── Detalle de evento ─────────────────────────────────────────── */
+
+export interface EventoDetalleAdaptado {
+  id: string;
+  titulo: string;
+  descripcion: string;
+  descripcionCorta: string;
+  categoria: string;
+  categoriasSlugs: string[];
+  tags: string[];
+  cp: string | null;
+  poblacion: string | null;
+  lugar: string | null;
+  direccion: string | null;
+  organizador: string | null;
+  organizadorWeb: string | null;
+  fuenteUrl: string | null;
+  esGratuito: boolean;
+  precio: number | null;
+  esFamilia: boolean;
+  fechaInicio: string | null;
+  fechaFin: string | null;
+  horaInicio: string | null;
+  horaFin: string | null;
+  horarios: {
+    fechaInicio: string | null;
+    fechaFin: string | null;
+    horaInicio: string | null;
+    horaFin: string | null;
+  }[];
+  imagenes: string[];
+  raw: EventoDetail;
+}
+
+function pickLang(
+  es: string | null | undefined,
+  ca: string | null | undefined,
+  lang: "es" | "ca",
+): string {
+  return (lang === "ca" ? (ca ?? es) : (es ?? ca)) ?? "";
+}
+
+function adaptImagenes(raw: EventoDetail): string[] {
+  const list = (raw.imagenes ?? [])
+    .slice()
+    .sort((a, b) => (a.orden ?? 0) - (b.orden ?? 0))
+    .map((im: EventImagen) => toAbsoluteImage(im.url))
+    .filter((u): u is string => !!u);
+  if (list.length > 0) return list;
+  const single = toAbsoluteImage(raw.imagen_url);
+  return single ? [single] : [];
+}
+
+export async function getEvento(
+  id: string,
+  lang: "es" | "ca" = "es",
+): Promise<EventoDetalleAdaptado | null> {
+  const search = new URLSearchParams({ id, limit: "1", offset: "0" });
+  const res = await apiFetch(
+    `/api/v1/eventos?${search.toString()}`,
+    eventoDetailResponseSchema,
+  );
+  const raw = res.eventos?.[0];
+  if (!raw) return null;
+  return {
+    id: raw.id,
+    titulo: pickLang(raw.titulo_es, raw.titulo_cat, lang),
+    descripcion: pickLang(raw.descripcion_es, raw.descripcion_cat, lang),
+    descripcionCorta: pickLang(
+      raw.descripcion_corta_es,
+      raw.descripcion_corta_cat,
+      lang,
+    ),
+    categoria:
+      (lang === "ca" ? raw.categorias_cat : raw.categorias_es)?.[0] ??
+      raw.categorias_es?.[0] ??
+      raw.categorias_slugs?.[0] ??
+      "",
+    categoriasSlugs: raw.categorias_slugs ?? [],
+    tags: (lang === "ca" ? raw.tags_cat : raw.tags_es) ?? [],
+    cp: raw.cp ?? null,
+    poblacion: raw.poblacion ?? null,
+    lugar: raw.lugar ?? null,
+    direccion: raw.direccion ?? null,
+    organizador: raw.organizador ?? null,
+    organizadorWeb: raw.organizador_web ?? null,
+    fuenteUrl: raw.fuente_url_original ?? null,
+    esGratuito: raw.es_gratuito ?? false,
+    precio: raw.precio ?? null,
+    esFamilia: raw.es_familia ?? false,
+    fechaInicio: raw.fecha_inicio ?? null,
+    fechaFin: raw.fecha_fin ?? null,
+    horaInicio: raw.hora_inicio ?? null,
+    horaFin: raw.hora_fin ?? null,
+    horarios: (raw.horarios ?? []).map((h) => ({
+      fechaInicio: h.fecha_inicio ?? null,
+      fechaFin: h.fecha_fin ?? null,
+      horaInicio: h.hora_inicio ?? null,
+      horaFin: h.hora_fin ?? null,
+    })),
+    imagenes: adaptImagenes(raw),
+    raw,
+  };
+}
