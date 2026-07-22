@@ -110,6 +110,11 @@ const HomeHero = ({
           {greetingSlot ?? <UserGreeting name="Albert" points={1259} nextLevel={3000} />}
         </div>
       )}
+
+      {/* Feather transition: suaviza el borde inferior del hero con el body scroll-y */}
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-12 vertical-tablet:h-16 horizontal-desktop:h-12 z-10 bg-gradient-to-t from-km0-beige-50 via-km0-beige-50/60 to-transparent">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/4 h-px bg-gradient-to-r from-transparent via-km0-beige-200 to-transparent" />
+      </div>
     </motion.section>
   );
 };
