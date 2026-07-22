@@ -4,7 +4,7 @@ import EventHeroCarousel from "./EventHeroCarousel";
 import CouponCard from "./CouponCard";
 import PointsCard from "./PointsCard";
 import JoinCard from "./JoinCard";
-import GreetingBlock from "./GreetingBlock";
+
 import ComercioCarousel from "./ComercioCarousel";
 import BottomTabs, { type HomeTab } from "./BottomTabs";
 import { ArrowRight } from "lucide-react";
