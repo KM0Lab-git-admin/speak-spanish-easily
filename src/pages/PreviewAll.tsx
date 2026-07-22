@@ -38,14 +38,13 @@ const TREES: Record<string, string> = {
   home: `(NO usa BrandedFrame — DeviceShell propio, con el MISMO tamaño de frame que BrandedFrame en cada resolución)
 │
 ├── Portrait  (landscape:hidden) → HomeContent
-│   ├── HomeHero               ← header FIJO (inline=true; showLogin={false})
+│   ├── HomeHero               ← header FIJO (inline=true; showLogin={!user})
 │   │   ├── skyline malgrat    (bg absoluto, object-top, opacity-25)
-│   │   ├── fila header        (escudo + ciudad + KM0 + bell)
+│   │   ├── fila header        (escudo + ciudad + KM0 + bell + LoginButton si !user)
 │   │   └── greetingSlot
 │   │       ├── GreetingBlock  ← "👋 ¡Hola, {name}!" + subtítulo
 │   │       └── PointsCard     (solo si showPoints — usuario auth)
 │   ├── body scroll-y
-│   │   ├── LoginButton        (solo si !user, centrado)
 │   │   ├── section "Accesos rápidos"     → HomeModules
 │   │   ├── section "Eventos destacados"  → EventHeroCarousel
 │   │   ├── section "Descubre lo nuestro" → ComercioCarousel
