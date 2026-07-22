@@ -63,6 +63,10 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
             navigate("/agenda");
             return;
           }
+          if (m.id === "noticias") {
+            navigate("/noticias");
+            return;
+          }
           toggleModule(m.id);
         },
       })),

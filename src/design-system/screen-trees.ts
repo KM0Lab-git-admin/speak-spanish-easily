@@ -14,7 +14,7 @@ DeviceShell → contenedor centrado → HomeContent
 │   └── fila header        (escudo + ciudad + KM0 + bell)
 ├── body scroll-y
 │   ├── section JoinCard (guest) / PointsCard (auth)
-│   ├── section "Accesos rápidos"     → HomeModules
+│   ├── section "Accesos rápidos"     → HomeModules (6 módulos: 2 filas × 3 cols)
 │   ├── section "Eventos destacados"  → EventHeroCarousel
 │   ├── section "Descubre lo nuestro" → ComercioCarousel
 │   ├── section "Bescanvia amb punts" → CouponCard × N (guest: locked)
@@ -26,5 +26,6 @@ Lógica:
   · useAuth → isAuthed → showLogin / showProfile / showPoints
   · useNotifications → bell + overlay (markAllRead al abrir)
   · modules state (INITIAL_MODULES) con toggleModule
-  · módulo "agenda" → navigate("/agenda"); resto togglea activo`,
+  · módulo "agenda" → navigate("/agenda")
+  · módulo "noticias" → navigate("/noticias"); resto togglea activo`,
 };

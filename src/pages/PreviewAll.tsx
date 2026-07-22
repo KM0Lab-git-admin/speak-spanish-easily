@@ -53,7 +53,7 @@ DeviceShell → contenedor centrado (max-w-[430px], bg beige a los lados) → Ho
 │   └── fila header        (escudo + ciudad + KM0 + bell + LoginButton si !user)
 ├── body scroll-y
 │   ├── section JoinCard (guest) / PointsCard (auth)
-│   ├── section "Accesos rápidos"     → HomeModules
+│   ├── section "Accesos rápidos"     → HomeModules (6 módulos: 2 filas × 3 cols)
 │   ├── section "Eventos destacados"  → EventHeroCarousel
 │   ├── section "Descubre lo nuestro" → ComercioCarousel
 │   ├── section "Bescanvia amb punts" → CouponCard × N
@@ -73,7 +73,8 @@ Lógica:
   · useAuth → isAuthed → showLogin / showProfile / showPoints
   · useNotifications → bell + overlay (markAllRead al abrir)
   · modules state (INITIAL_MODULES) con toggleModule
-  · módulo "agenda" → navigate("/agenda"); resto togglea activo`,
+  · módulo "agenda" → navigate("/agenda")
+  · módulo "noticias" → navigate("/noticias"); resto togglea activo`,
   language: `BrandedFrame                    ← wrapper de marca (logo + card + back)
 └── (decide portrait/landscape con clases tailwind)
     ├── Portrait

@@ -305,6 +305,8 @@ const D = {
   "module.comerc": { ca: "Comerços", es: "Comercios", en: "Shops" } as Dict,
   "module.punts": { ca: "Punts", es: "Puntos", en: "Points" } as Dict,
   "module.cupons": { ca: "Cupons", es: "Cupones", en: "Coupons" } as Dict,
+  "module.noticias": { ca: "Notícies", es: "Noticias", en: "News" } as Dict,
+  "module.servicios": { ca: "Serveis", es: "Servicios", en: "Services" } as Dict,
 
   // ── Profile ──────────────────────────────────────────────
   "profile.title": { ca: "El meu perfil", es: "Mi perfil", en: "My profile" } as Dict,
