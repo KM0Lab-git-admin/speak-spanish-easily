@@ -348,7 +348,7 @@ const Agenda = () => {
   const content = (
     <div className="flex flex-col gap-3 w-full h-full min-h-0">
       {/* ── Hero superior reutilizado del Home ─── */}
-      <div className="-mx-4 -mt-2 shrink-0">
+      <div className="-mx-4 horizontal-desktop:-mx-6 -mt-5 landscape:-mt-3 horizontal-desktop:-mt-5 shrink-0">
         <HomeHero
           cityName="Malgrat de Mar"
           hasAlerts={hasUnread}
