@@ -29,10 +29,6 @@ export interface HomeHeroProps {
   showGreeting?: boolean;
   /** Si se pasa, sustituye al UserGreeting manteniendo el mismo contenedor (misma altura/fondo). */
   greetingSlot?: ReactNode;
-  /** Si true, fuerza al hero a fluir en el flujo normal (no absolute) en todos los breakpoints.
-   *  Necesario para el nuevo HomeContent con scroll vertical, donde el hero ya no actúa como
-   *  fondo del cuerpo sino como cabecera apilada. */
-  inline?: boolean;
 }
 
 const HomeHero = ({
@@ -43,15 +39,10 @@ const HomeHero = ({
   backAriaLabel = "Volver",
   showGreeting = true,
   greetingSlot,
-  inline = false,
 }: HomeHeroProps) => {
   return (
     <motion.section
-      className={
-        inline
-          ? "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-0 vertical-tablet:aspect-[1920/716] w-full shadow-[0_10px_28px_-10px_hsl(var(--foreground)/0.22)]"
-          : "relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-0 horizontal-mobile:absolute horizontal-mobile:inset-0 horizontal-mobile:pointer-events-none horizontal-mobile:pb-0 horizontal-desktop:absolute horizontal-desktop:inset-0 horizontal-desktop:pointer-events-none horizontal-desktop:pb-0"
-      }
+      className="relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-0 vertical-tablet:aspect-[1920/716] w-full shadow-[0_10px_28px_-10px_hsl(var(--foreground)/0.22)]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
