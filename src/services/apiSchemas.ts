@@ -132,6 +132,41 @@ export const newsDetailResponseSchema = z.object({
   data: newsItemSchema,
 });
 
+/* ── GET /api/v1/events (lista paginada con filtros) ─────────────── */
+/* Verificado contra la API real (eventquery.km0lab.com) 2026-07-22. */
+
+export const eventsListItemSchema = z.object({
+  id: z.string(),
+  titulo_es: z.string().nullish(),
+  titulo_cat: z.string().nullish(),
+  descripcion_corta_es: z.string().nullish(),
+  descripcion_corta_cat: z.string().nullish(),
+  cp: z.string().nullish(),
+  poblacion: z.string().nullish(),
+  lugar: z.string().nullish(),
+  es_gratuito: z.boolean().nullish(),
+  precio: z.number().nullish(),
+  imagen_url: z.string().nullish(),
+  fecha_inicio: z.string().nullish(),
+  fecha_fin: z.string().nullish(),
+  hora_inicio: z.string().nullish(),
+  categorias: z.array(z.string()).default([]),
+  categorias_nombres: z.array(z.string()).default([]),
+  es_familia: z.boolean().nullish(),
+  actividades: z.array(z.unknown()).nullish(),
+  imagenes: z.array(eventImagenSchema).default([]),
+});
+
+export const eventsListResponseSchema = z.object({
+  data: z.array(eventsListItemSchema),
+  total: z.number(),
+  page: z.number(),
+  page_size: z.number(),
+  total_pages: z.number(),
+  has_next: z.boolean().nullish(),
+  has_prev: z.boolean().nullish(),
+});
+
 /* ── Tipos inferidos (contrato compartido con producción) ────────── */
 
 export type Evento = z.infer<typeof eventoSchema>;
@@ -142,3 +177,5 @@ export type TodayResponse = z.infer<typeof todayResponseSchema>;
 export type Category = z.infer<typeof categorySchema>;
 export type NewsItem = z.infer<typeof newsItemSchema>;
 export type NewsListResponse = z.infer<typeof newsListResponseSchema>;
+export type EventsListItem = z.infer<typeof eventsListItemSchema>;
+export type EventsListResponse = z.infer<typeof eventsListResponseSchema>;

@@ -22,7 +22,7 @@ import ScreenTitle from "@/components/ScreenTitle";
 import WhenTabs, { type WhenKey } from "@/components/WhenTabs";
 import { useNotifications } from "@/hooks/useNotifications";
 import { cn } from "@/lib/utils";
-import { queryEvents, type Evento } from "@/services/eventQueryApi";
+import { listEvents, type AgendaEvent as Evento } from "@/services/eventsApi";
 
 /* ──────────────────────────────────────────────────────────────
  * Agenda — diseño "Bold" (mockup aprobado).
@@ -48,11 +48,12 @@ type Category =
   | "gastronomia";
 type Price = "todos" | "gratis" | "pago";
 
-
 interface CatDef {
   key: Category;
   label: string;
   matches: string[];
+  /** slug de categoría de la API events-query (undefined = sin filtro) */
+  slug?: string;
   Icon: typeof Music2;
   /** color de fondo cuando está activa */
   activeBg: string;
@@ -65,6 +66,7 @@ interface CatDef {
 const CATEGORIES: CatDef[] = [
   {
     key: "musica",
+    slug: "musica",
     label: "Música",
     matches: ["música", "musica", "concierto"],
     Icon: Music2,
@@ -75,6 +77,7 @@ const CATEGORIES: CatDef[] = [
   },
   {
     key: "cultura",
+    slug: "cultura",
     label: "Cultura",
     matches: ["cultura", "exposición", "teatro", "cine"],
     Icon: Palette,
@@ -85,6 +88,7 @@ const CATEGORIES: CatDef[] = [
   },
   {
     key: "infantil",
+    slug: "infantil",
     label: "Infantil",
     matches: ["infantil", "niños", "familia"],
     Icon: Baby,
@@ -95,6 +99,7 @@ const CATEGORIES: CatDef[] = [
   },
   {
     key: "deporte",
+    slug: "deportes",
     label: "Deporte",
     matches: ["deporte", "deport"],
     Icon: Trophy,
@@ -105,6 +110,7 @@ const CATEGORIES: CatDef[] = [
   },
   {
     key: "talleres",
+    slug: "formacion",
     label: "Talleres",
     matches: ["taller", "workshop", "curso"],
     Icon: Hammer,
@@ -115,6 +121,7 @@ const CATEGORIES: CatDef[] = [
   },
   {
     key: "fiestas",
+    slug: "fiestas-mayores",
     label: "Fiestas",
     matches: ["fiesta", "festa", "festival"],
     Icon: PartyPopper,
@@ -125,6 +132,7 @@ const CATEGORIES: CatDef[] = [
   },
   {
     key: "gastronomia",
+    slug: "gastronomia",
     label: "Gastro",
     matches: ["gastro", "comida", "cocina", "vino"],
     Icon: UtensilsCrossed,
@@ -145,8 +153,6 @@ const CATEGORIES: CatDef[] = [
   },
 ];
 
-const DEFAULT_CP = "08380"; // Malgrat de Mar
-
 /* ─── Helpers de fecha ──────────────────────────────────────── */
 const startOfDay = (d: Date) => {
   const x = new Date(d);
@@ -162,6 +168,12 @@ const addDays = (d: Date, n: number) => {
   const x = new Date(d);
   x.setDate(x.getDate() + n);
   return x;
+};
+const toISODate = (d: Date) => {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 };
 
 const rangeFor = (key: WhenKey): [Date, Date] => {
@@ -192,8 +204,18 @@ const rangeFor = (key: WhenKey): [Date, Date] => {
 };
 
 const MONTHS_SHORT = [
-  "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
-  "JUL", "AGO", "SEP", "OCT", "NOV", "DIC",
+  "ENE",
+  "FEB",
+  "MAR",
+  "ABR",
+  "MAY",
+  "JUN",
+  "JUL",
+  "AGO",
+  "SEP",
+  "OCT",
+  "NOV",
+  "DIC",
 ];
 
 const formatDayHeader = (d: Date) => {
@@ -283,15 +305,22 @@ const Agenda = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch — categoría como hint semántico al backend.
+  // Fetch — filtros estructurados al endpoint de lista /api/v1/events
+  // (mismo que usa la web de eventquery): categoría (slug) + rango de
+  // fechas del selector temporal + población.
   useEffect(() => {
     const cat = CATEGORIES.find((c) => c.key === category);
-    const hint = cat && cat.key !== "todos" ? cat.label : "";
-    const pregunta = [hint, "eventos próximos"].filter(Boolean).join(" ");
+    const [from, to] = rangeFor(when);
     let cancelled = false;
     setLoading(true);
     setError(null);
-    queryEvents(pregunta, DEFAULT_CP, 50)
+    listEvents({
+      categoria: cat?.slug,
+      poblacion: "Malgrat de Mar",
+      fechaDesde: toISODate(from),
+      fechaHasta: toISODate(to),
+      pageSize: 50,
+    })
       .then((res) => {
         if (!cancelled) setEventos(res.eventos ?? []);
       })
@@ -304,27 +333,17 @@ const Agenda = () => {
     return () => {
       cancelled = true;
     };
-  }, [category]);
+  }, [category, when]);
 
+  // Categoría, fechas y población ya las filtra el servidor; aquí solo el
+  // precio (Gratis / Pago), que no se envía a la API.
   const filtered = useMemo(() => {
-    const cat = CATEGORIES.find((c) => c.key === category);
-    const range = rangeFor(when);
     return eventos.filter((e) => {
-      if (range && e.fecha_inicio) {
-        const d = new Date(e.fecha_inicio);
-        if (d < range[0] || d > range[1]) return false;
-      }
-      if (cat && cat.matches.length > 0) {
-        const hay = [...(e.categorias ?? []), ...(e.tags ?? [])]
-          .join(" ")
-          .toLowerCase();
-        if (!cat.matches.some((m) => hay.includes(m))) return false;
-      }
       if (price === "gratis" && !e.es_gratuito) return false;
       if (price === "pago" && e.es_gratuito) return false;
       return true;
     });
-  }, [eventos, when, category, price]);
+  }, [eventos, price]);
 
   const grouped = useMemo(() => {
     const map = new Map<string, { date: Date; items: Evento[] }>();
@@ -363,102 +382,111 @@ const Agenda = () => {
       {/* ── Contenido no-hero: relative z-10 para pintarse SOBRE el
            HomeHero decorativo (que en landscape es absolute inset-0). ─── */}
       <div className="relative z-10 flex-1 min-h-0 flex flex-col gap-3">
-      {/* ── Selector de rango temporal ─── */}
-      <div className="shrink-0">
-        <WhenTabs value={when} onChange={setWhen} />
-      </div>
+        {/* ── Selector de rango temporal ─── */}
+        <div className="shrink-0">
+          <WhenTabs value={when} onChange={setWhen} />
+        </div>
 
-      {/* ── Categorías (grid 4×2, sin scroll horizontal) ─── */}
-      <div className="grid grid-cols-4 gap-1 vertical-tablet:gap-1.5 my-0 shrink-0">
-        {CATEGORIES.map((c) => {
-          const active = category === c.key;
-          const Icon = c.Icon;
-          return (
-            <button
-              key={c.key}
-              type="button"
-              onClick={() => setCategory(c.key)}
-              className={cn(
-                "h-9 rounded-full inline-flex items-center justify-center gap-0.5 vertical-tablet:gap-1 px-0.5 vertical-tablet:px-1 font-ui text-[10px] vertical-tablet:text-[10.5px] font-bold transition-all active:scale-95 border",
-                active
-                  ? `${c.activeBg} ${c.activeText} border-km0-blue-900 ring-2 ring-km0-blue-900/20 shadow-sm`
-                  : `${c.idleBg} ${c.idleText} border-transparent opacity-90 hover:opacity-100`,
-                c.key === "infantil" && "border-km0-blue-200",
-              )}
-            >
-              <Icon size={10} strokeWidth={2.5} className="shrink-0 hidden vertical-tablet:block" />
-              <span className="truncate">{c.label}</span>
-            </button>
-          );
-        })}
-      </div>
+        {/* ── Categorías (grid 4×2, sin scroll horizontal) ─── */}
+        <div className="grid grid-cols-4 gap-1 vertical-tablet:gap-1.5 my-0 shrink-0">
+          {CATEGORIES.map((c) => {
+            const active = category === c.key;
+            const Icon = c.Icon;
+            return (
+              <button
+                key={c.key}
+                type="button"
+                onClick={() => setCategory(c.key)}
+                className={cn(
+                  "h-9 rounded-full inline-flex items-center justify-center gap-0.5 vertical-tablet:gap-1 px-0.5 vertical-tablet:px-1 font-ui text-[10px] vertical-tablet:text-[10.5px] font-bold transition-all active:scale-95 border",
+                  active
+                    ? `${c.activeBg} ${c.activeText} border-km0-blue-900 ring-2 ring-km0-blue-900/20 shadow-sm`
+                    : `${c.idleBg} ${c.idleText} border-transparent opacity-90 hover:opacity-100`,
+                  c.key === "infantil" && "border-km0-blue-200",
+                )}
+              >
+                <Icon
+                  size={10}
+                  strokeWidth={2.5}
+                  className="shrink-0 hidden vertical-tablet:block"
+                />
+                <span className="truncate">{c.label}</span>
+              </button>
+            );
+          })}
+        </div>
 
-      {/* ── Contador ─── */}
-      <div className="text-[11px] font-ui text-km0-blue-700/80 px-0.5 shrink-0">
-        {loading ? (
-          <span className="inline-flex items-center gap-1">
-            <Loader2 size={11} className="animate-spin" />
-            Buscando…
-          </span>
-        ) : (
-          <>
-            <span className="font-bold text-km0-blue-900">{filtered.length}</span>{" "}
-            {filtered.length === 1 ? "evento" : "eventos"}
-          </>
-        )}
-      </div>
+        {/* ── Contador ─── */}
+        <div className="text-[11px] font-ui text-km0-blue-700/80 px-0.5 shrink-0">
+          {loading ? (
+            <span className="inline-flex items-center gap-1">
+              <Loader2 size={11} className="animate-spin" />
+              Buscando…
+            </span>
+          ) : (
+            <>
+              <span className="font-bold text-km0-blue-900">
+                {filtered.length}
+              </span>{" "}
+              {filtered.length === 1 ? "evento" : "eventos"}
+            </>
+          )}
+        </div>
 
-      {/* ── Resultados (única zona scrollable, touch nativo móvil) ─── */}
-      <section
-        className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden touch-pan-y overscroll-contain space-y-3 -mx-4 px-4 pb-4"
-        style={{ WebkitOverflowScrolling: "touch" }}
-      >
-        {loading && eventos.length === 0 && (
-          <>
-            <SkeletonCard />
-            <SkeletonCard />
-            <SkeletonCard />
-          </>
-        )}
+        {/* ── Resultados (única zona scrollable, touch nativo móvil) ─── */}
+        <section
+          className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden touch-pan-y overscroll-contain space-y-3 -mx-4 px-4 pb-4"
+          style={{ WebkitOverflowScrolling: "touch" }}
+        >
+          {loading && eventos.length === 0 && (
+            <>
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+            </>
+          )}
 
-        {!loading && error && (
-          <div className="bg-km0-coral-50 border border-km0-coral-200 rounded-2xl p-4 text-xs font-ui text-km0-coral-700">
-            No se han podido cargar los eventos. {error}
-          </div>
-        )}
+          {!loading && error && (
+            <div className="bg-km0-coral-50 border border-km0-coral-200 rounded-2xl p-4 text-xs font-ui text-km0-coral-700">
+              No se han podido cargar los eventos. {error}
+            </div>
+          )}
 
-        {!loading && !error && grouped.length === 0 && (
-          <div className="bg-white border border-km0-blue-100 rounded-2xl p-5 text-center">
-            <CalendarIcon size={28} className="mx-auto text-km0-blue-700/50 mb-2" />
-            <p className="font-brand text-sm text-km0-blue-900 mb-1">
-              No hemos encontrado eventos
-            </p>
-            <p className="text-[11px] font-ui text-km0-blue-700/70">
-              Prueba cambiando la fecha o la categoría.
-            </p>
-          </div>
-        )}
+          {!loading && !error && grouped.length === 0 && (
+            <div className="bg-white border border-km0-blue-100 rounded-2xl p-5 text-center">
+              <CalendarIcon
+                size={28}
+                className="mx-auto text-km0-blue-700/50 mb-2"
+              />
+              <p className="font-brand text-sm text-km0-blue-900 mb-1">
+                No hemos encontrado eventos
+              </p>
+              <p className="text-[11px] font-ui text-km0-blue-700/70">
+                Prueba cambiando la fecha o la categoría.
+              </p>
+            </div>
+          )}
 
-        <AnimatePresence initial={false}>
-          {grouped.map((g) => (
-            <motion.div
-              key={g.date.toISOString()}
-              layout
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="space-y-2"
-            >
-              <h3 className="font-brand text-xs text-km0-blue-900/80 sticky top-0 bg-km0-beige-50/95 backdrop-blur-sm py-1 -mx-1 px-1 z-10">
-                {formatDayHeader(g.date)}
-              </h3>
-              {g.items.map((e) => (
-                <EventListCard key={e.id_unico_evento} evento={e} />
-              ))}
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </section>
+          <AnimatePresence initial={false}>
+            {grouped.map((g) => (
+              <motion.div
+                key={g.date.toISOString()}
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="space-y-2"
+              >
+                <h3 className="font-brand text-xs text-km0-blue-900/80 sticky top-0 bg-km0-beige-50/95 backdrop-blur-sm py-1 -mx-1 px-1 z-10">
+                  {formatDayHeader(g.date)}
+                </h3>
+                {g.items.map((e) => (
+                  <EventListCard key={e.id_unico_evento} evento={e} />
+                ))}
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </section>
       </div>
     </div>
   );
