@@ -20,6 +20,7 @@ const D = {
   "common.back": { ca: "Enrere", es: "Volver", en: "Back" } as Dict,
   "common.continue": { ca: "CONTINUAR", es: "CONTINUAR", en: "CONTINUE" } as Dict,
   "common.loading": { ca: "Carregant…", es: "Cargando…", en: "Loading…" } as Dict,
+  "common.points": { ca: "punts", es: "puntos", en: "points" } as Dict,
 
   // ── Language screen ──────────────────────────────────────
   "language.title": { ca: "Tria el teu idioma", es: "Escoge tu idioma", en: "Choose your language" } as Dict,
