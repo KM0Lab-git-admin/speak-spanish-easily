@@ -81,7 +81,7 @@ const HomeContent = ({
       />
 
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col">
-        <div className="relative z-10 flex flex-col gap-5 vertical-tablet:gap-6 horizontal-mobile:!gap-3 horizontal-desktop:!gap-5 px-2 pt-4 pb-6 horizontal-mobile:!pt-2 horizontal-mobile:!pb-3 vertical-tablet:pt-0">
+        <div className="relative z-10 flex flex-col gap-5 vertical-tablet:gap-6 horizontal-mobile:!gap-3 horizontal-desktop:!gap-5 px-2 pt-4 pb-6 horizontal-mobile:!pt-2 horizontal-mobile:!pb-3 vertical-tablet:pt-0 vertical-tablet:mt-4">
           <section className="flex flex-col gap-3 px-2">
             {showLogin && <JoinCard onCreateAccount={onLogin} />}
             {showPoints && <PointsCard points={points} nextLevel={nextLevel} />}
