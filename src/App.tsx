@@ -37,18 +37,15 @@ const App = () => (
             <Route path="/postal-code" element={<PostalCode />} />
             <Route path="/login" element={<Login />} />
             <Route path="/check-email" element={<CheckEmail />} />
-            <Route path="/chat" element={<Chat />} />
+            <Route path="/chat" element={<NotFound />} />
             <Route path="/home" element={<Home />} />
             <Route path="/home-registrado" element={<Home forceAuthState="authed" />} />
-            <Route path="/home-no-registrado" element={<Home forceAuthState="guest" />} />
             <Route path="/agenda" element={<Agenda />} />
             <Route path="/evento" element={<Evento />} />
             <Route path="/noticias" element={<Noticias />} />
-            <Route path="/hoy" element={<EventosHoy />} />
             {/* Perfil accesible sin auth para testing — Profile gestiona el estado sin user. */}
             <Route path="/profile" element={<Profile />} />
             <Route path="/design-system" element={<DesignSystem />} />
-            <Route path="/components" element={<Components />} />
             <Route path="/preview-all" element={<PreviewAll />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
