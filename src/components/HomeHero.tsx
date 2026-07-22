@@ -71,7 +71,7 @@ const HomeHero = ({
       />
 
       {/* Fila header: escudo + nombre + KM0 + login + bell */}
-      <div className="relative z-10 flex items-center justify-between gap-3 pl-2 pr-4 pt-2 vertical-mobile:!pt-1 vertical-mobile:!pb-1 vertical-tablet:items-center horizontal-mobile:pointer-events-auto horizontal-mobile:pt-1 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto px-0 py-0">
+      <div className="relative z-10 flex items-center justify-between gap-3 pl-2 pr-4 pt-2 vertical-mobile:!pt-1 vertical-mobile:!pb-1 vertical-tablet:items-center horizontal-mobile:pointer-events-auto horizontal-mobile:pt-1 horizontal-mobile:pl-3 horizontal-mobile:pr-3 horizontal-desktop:pointer-events-auto">
         <div className="flex items-center gap-2 min-w-0 vertical-tablet:items-center">
           {onBack && (
             <button
@@ -103,7 +103,7 @@ const HomeHero = ({
             <LoginButton
               onClick={onLogin}
               size="md"
-              className="hidden landscape:inline-flex horizontal-mobile:!text-[11px] horizontal-mobile:!px-2.5 horizontal-mobile:!py-1"
+              className="inline-flex min-h-9 vertical-tablet:min-h-10 horizontal-mobile:!text-[11px] horizontal-mobile:!px-2.5 horizontal-mobile:!py-1"
             />
           )}
           <NotificationBell
