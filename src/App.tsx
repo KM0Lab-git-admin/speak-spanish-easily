@@ -6,18 +6,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Onboarding from "./pages/Onboarding";
 import PostalCode from "./pages/PostalCode";
-import Chat from "./pages/Chat";
 import Home from "./pages/Home";
 import Agenda from "./pages/Agenda";
 import Evento from "./pages/Evento";
 import Noticias from "./pages/Noticias";
-import EventosHoy from "./pages/EventosHoy";
 import Login from "./pages/Login";
 import CheckEmail from "./pages/CheckEmail";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import DesignSystem from "./pages/DesignSystem";
-import Components from "./pages/Components";
 import PreviewAll from "./pages/PreviewAll";
 
 import TopLoadingBar from "./components/TopLoadingBar";
