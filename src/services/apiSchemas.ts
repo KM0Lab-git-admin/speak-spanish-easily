@@ -167,6 +167,65 @@ export const eventsListResponseSchema = z.object({
   has_prev: z.boolean().nullish(),
 });
 
+/* ── GET /api/v1/eventos?id=<id>&limit=1 (detalle rico) ─────────── */
+/* Shape verificada 2026-07-22: incluye descripcion completa, horarios[],
+ * organizador, tags, fuente_url_original, imagenes[]. */
+
+export const horarioSchema = z.object({
+  fecha_inicio: z.string().nullish(),
+  fecha_fin: z.string().nullish(),
+  hora_inicio: z.string().nullish(),
+  hora_fin: z.string().nullish(),
+  es_recurrente: z.boolean().nullish(),
+  recurrencia: z.unknown().nullish(),
+});
+
+export const eventoDetailSchema = z.object({
+  id: z.string(),
+  familia: z.string().nullish(),
+  titulo_es: z.string().nullish(),
+  titulo_cat: z.string().nullish(),
+  descripcion_es: z.string().nullish(),
+  descripcion_cat: z.string().nullish(),
+  descripcion_corta_es: z.string().nullish(),
+  descripcion_corta_cat: z.string().nullish(),
+  cp: z.string().nullish(),
+  poblacion: z.string().nullish(),
+  lugar: z.string().nullish(),
+  direccion: z.string().nullish(),
+  tipo_organizador: z.string().nullish(),
+  organizador: z.string().nullish(),
+  organizador_web: z.string().nullish(),
+  fuente_url_original: z.string().nullish(),
+  es_gratuito: z.boolean().nullish(),
+  precio: z.number().nullish(),
+  imagen_url: z.string().nullish(),
+  tags_es: z.array(z.string()).default([]),
+  tags_cat: z.array(z.string()).default([]),
+  fecha_inicio: z.string().nullish(),
+  fecha_fin: z.string().nullish(),
+  hora_inicio: z.string().nullish(),
+  hora_fin: z.string().nullish(),
+  es_recurrente: z.boolean().nullish(),
+  recurrencia: z.unknown().nullish(),
+  horarios: z.array(horarioSchema).default([]),
+  categorias_slugs: z.array(z.string()).default([]),
+  categorias_es: z.array(z.string()).default([]),
+  categorias_cat: z.array(z.string()).default([]),
+  es_familia: z.boolean().nullish(),
+  actividades: z.array(z.unknown()).default([]),
+  imagenes: z.array(eventImagenSchema).default([]),
+});
+
+export const eventoDetailResponseSchema = z.object({
+  eventos: z.array(eventoDetailSchema),
+  total: z.number().nullish(),
+  limit: z.number().nullish(),
+  offset: z.number().nullish(),
+  has_more: z.boolean().nullish(),
+  filtros_aplicados: z.unknown().nullish(),
+});
+
 /* ── Tipos inferidos (contrato compartido con producción) ────────── */
 
 export type Evento = z.infer<typeof eventoSchema>;
