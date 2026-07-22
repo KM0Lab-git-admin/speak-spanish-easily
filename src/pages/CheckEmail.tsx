@@ -59,7 +59,7 @@ const CheckEmail = () => {
       return;
     }
     toast.success(t("otp.welcome", lang));
-    navigate("/home", { replace: true });
+    navigate("/home?welcome=1", { replace: true });
   };
 
   const handleChange = (idx: number, value: string) => {
