@@ -22,8 +22,6 @@ export interface HomeHeroProps {
   cityName: string;
   hasAlerts: boolean;
   onToggleAlerts: () => void;
-  showLogin: boolean;
-  onLogin: () => void;
   /** Si se pasa, muestra el botón Back a la izquierda (pantallas interiores: agenda, chat…). */
   onBack?: () => void;
   backAriaLabel?: string;
