@@ -249,6 +249,32 @@ const D = {
     es: "Muy pronto, más formas de ganar puntos",
     en: "More ways to earn points coming soon",
   } as Dict,
+  "home.earn.today": { ca: "avui", es: "hoy", en: "today" } as Dict,
+  "home.earn.action.shop.title": {
+    ca: "Visita un comerç adherit",
+    es: "Visita un comercio adherido",
+    en: "Visit a partner shop",
+  } as Dict,
+  "home.earn.action.shop.subtitle": {
+    ca: "Registra't per desbloquejar",
+    es: "Regístrate para desbloquear",
+    en: "Sign up to unlock",
+  } as Dict,
+  "home.earn.action.event.title": {
+    ca: "Apunta't a un esdeveniment",
+    es: "Apúntate a un evento",
+    en: "Join an event",
+  } as Dict,
+  "home.earn.action.event.subtitle": {
+    ca: "Registra't per desbloquejar",
+    es: "Regístrate para desbloquear",
+    en: "Sign up to unlock",
+  } as Dict,
+  "home.earn.cta": {
+    ca: "Crea el teu compte i desbloqueja-ho",
+    es: "Crea tu cuenta y desbloquéalo",
+    en: "Create your account and unlock",
+  } as Dict,
   "home.redeem.title": {
     ca: "Bescanvia amb punts",
     es: "Canjea con puntos",
