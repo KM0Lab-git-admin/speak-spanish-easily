@@ -68,19 +68,6 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
             {/* Overlay sutil para que el texto contraste bien */}
             <div aria-hidden className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
 
-            {/* Badge categoría (top-left) */}
-            <div className="absolute top-3 left-3 vertical-tablet:top-4 vertical-tablet:left-4 horizontal-mobile:!top-1.5 horizontal-mobile:!left-2 z-10">
-              <span
-                className={cn(
-                  "inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-ui font-bold text-xs vertical-tablet:text-sm vertical-tablet:px-3.5 vertical-tablet:py-1 horizontal-mobile:!text-[9px] horizontal-mobile:!px-2 horizontal-mobile:!py-0.5 shadow-md",
-                  promo.badge.bg,
-                  promo.badge.text_color,
-                )}
-              >
-                {promo.badge.emoji && <span aria-hidden>{promo.badge.emoji}</span>}
-                {promo.badge.text}
-              </span>
-            </div>
 
             {/* Contenido inferior izquierdo */}
             <div className="absolute left-4 right-16 bottom-3 vertical-tablet:left-5 vertical-tablet:right-20 vertical-tablet:bottom-5 horizontal-mobile:!hidden horizontal-desktop:!left-4 horizontal-desktop:!bottom-4 pointer-events-none select-none">
