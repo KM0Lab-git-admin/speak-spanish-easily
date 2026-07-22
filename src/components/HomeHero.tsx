@@ -88,7 +88,7 @@ const HomeHero = ({
               {cityName}
             </h1>
             <div className="flex items-center shrink-0">
-              <Km0Logo className="h-5 vertical-tablet:h-4 horizontal-mobile:!h-3.5 w-auto" />
+              <Km0Logo className="h-6 vertical-tablet:h-5 horizontal-mobile:!h-4 w-auto" />
             </div>
           </div>
         </div>
