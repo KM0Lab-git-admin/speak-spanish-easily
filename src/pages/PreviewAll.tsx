@@ -42,7 +42,7 @@ const TREES: Record<string, string> = {
 │   │   ├── skyline malgrat    (bg absoluto, object-top, opacity-25)
 │   │   └── fila header        (escudo + ciudad + KM0 + bell + LoginButton si !user)
 │   ├── body scroll-y
-│   │   ├── section greeting    → GreetingBlock + JoinCard (guest) / PointsCard (auth)
+│   │   ├── section JoinCard (guest) / PointsCard (auth)
 │   │   ├── section "Accesos rápidos"     → HomeModules
 │   │   ├── section "Eventos destacados"  → EventHeroCarousel
 │   │   ├── section "Descubre lo nuestro" → ComercioCarousel
