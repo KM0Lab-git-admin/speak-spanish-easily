@@ -6,6 +6,7 @@ import ComercioCarousel from "./ComercioCarousel";
 import CouponCard from "./CouponCard";
 import PointsCard from "./PointsCard";
 import GreetingBlock from "./GreetingBlock";
+import LoginButton from "./LoginButton";
 import BottomTabs from "./BottomTabs";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
