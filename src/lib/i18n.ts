@@ -270,11 +270,6 @@ const D = {
     es: "Regístrate para desbloquear",
     en: "Sign up to unlock",
   } as Dict,
-  "home.earn.cta": {
-    ca: "Crea el teu compte i desbloqueja-ho",
-    es: "Crea tu cuenta y desbloquéalo",
-    en: "Create your account and unlock",
-  } as Dict,
   "home.redeem.title": {
     ca: "Bescanvia amb punts",
     es: "Canjea con puntos",
