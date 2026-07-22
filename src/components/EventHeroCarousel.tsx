@@ -69,10 +69,10 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
             <div aria-hidden className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
 
             {/* Badge categoría (top-left) */}
-            <div className="absolute top-3 left-3 horizontal-mobile:!top-1.5 horizontal-mobile:!left-2">
+            <div className="absolute top-3 left-3 vertical-tablet:top-4 vertical-tablet:left-4 horizontal-mobile:!top-1.5 horizontal-mobile:!left-2 z-10">
               <span
                 className={cn(
-                  "inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-ui font-bold text-xs horizontal-mobile:!text-[9px] horizontal-mobile:!px-2 horizontal-mobile:!py-0.5 shadow-md",
+                  "inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-ui font-bold text-xs vertical-tablet:text-sm vertical-tablet:px-3.5 vertical-tablet:py-1 horizontal-mobile:!text-[9px] horizontal-mobile:!px-2 horizontal-mobile:!py-0.5 shadow-md",
                   promo.badge.bg,
                   promo.badge.text_color,
                 )}
@@ -83,11 +83,11 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
             </div>
 
             {/* Contenido inferior izquierdo */}
-            <div className="absolute left-4 right-16 bottom-3 vertical-tablet:left-5 vertical-tablet:bottom-4 horizontal-mobile:!hidden horizontal-desktop:!left-4 horizontal-desktop:!bottom-4 pointer-events-none select-none">
-              <h3 className="font-brand font-black text-white leading-[1.05] whitespace-pre-line text-2xl vertical-tablet:text-3xl horizontal-mobile:!text-base horizontal-desktop:!text-3xl">
+            <div className="absolute left-4 right-16 bottom-3 vertical-tablet:left-5 vertical-tablet:right-20 vertical-tablet:bottom-5 horizontal-mobile:!hidden horizontal-desktop:!left-4 horizontal-desktop:!bottom-4 pointer-events-none select-none">
+              <h3 className="font-brand font-black text-white leading-[1.05] whitespace-pre-line text-2xl vertical-tablet:text-[26px] horizontal-mobile:!text-base horizontal-desktop:!text-3xl">
                 {promo.title}
               </h3>
-              <div className="mt-1.5 horizontal-mobile:!mt-1 flex flex-col gap-0.5 font-body text-white/95 text-xs vertical-tablet:text-sm horizontal-mobile:!text-[10px] horizontal-desktop:!text-sm">
+              <div className="mt-1.5 vertical-tablet:mt-2.5 horizontal-mobile:!mt-1 flex flex-col gap-0.5 vertical-tablet:gap-1 font-body text-white/95 text-xs vertical-tablet:text-sm horizontal-mobile:!text-[10px] horizontal-desktop:!text-sm">
                 <span className="flex items-center gap-1.5">
                   <CalendarDays size={13} className="shrink-0 horizontal-mobile:!w-3 horizontal-mobile:!h-3" strokeWidth={2.2} />
                   {promo.dateRange}
@@ -98,6 +98,7 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
                 </span>
               </div>
             </div>
+
 
             {/* CTA chevron circle */}
             <button
