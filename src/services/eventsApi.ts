@@ -15,10 +15,13 @@ import {
   todayResponseSchema,
   categoriesResponseSchema,
   eventsListResponseSchema,
+  eventoDetailResponseSchema,
   type QueryResponse,
   type TodayResponse,
   type Category,
   type EventsListItem,
+  type EventoDetail,
+  type EventImagen,
 } from "@/services/apiSchemas";
 
 const EVENTS_BASE: string =
