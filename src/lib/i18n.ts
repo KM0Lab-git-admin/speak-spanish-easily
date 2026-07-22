@@ -447,11 +447,8 @@ const D = {
     es: "No se ha podido cargar el evento",
     en: "Couldn't load the event",
   } as Dict,
-  "event.error.title": {
-    ca: "No s'ha pogut carregar l'esdeveniment",
-    es: "No se ha podido cargar el evento",
-    en: "Couldn't load the event",
-  } as Dict,
+
+
 
   // ── Agenda ───────────────────────────────────────────────
   "agenda.title": { ca: "Agenda", es: "Agenda", en: "Agenda" } as Dict,
