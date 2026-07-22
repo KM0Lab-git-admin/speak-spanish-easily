@@ -223,33 +223,27 @@ Lógica:
   · filtros locales: rango temporal (rangeFor), categoría (matches[]), precio
   · agrupación por startOfDay → Map<isoDate, items[]>`,
   evento: `BrandedFrame  (hideHeader, contentClassName overflow-hidden)
-└── content (flex-col h-full)
-    ├── selector POC  (toggle v1 "Hero" / v3 "Ticket"; inicial vía ?variant=)
-    └── AnimatePresence  (slide horizontal entre variantes)
-        │
-        ├── VariantHero  (v1)
-        │   ├── ImageCarousel (h-48, overlay categoría + título + back/share)
-        │   ├── card flotante datos (fecha · hora · lugar · gratis)
-        │   ├── descripción (scroll-y interno) + organizador
-        │   └── CTAs sticky  (CtaPrincipal + share circular)
-        │
-        └── VariantTicket  (v3)
-            ├── header  (back · "TU ENTRADA" · share)
-            ├── motion.div ticket
-            │   ├── ImageCarousel aspect-[3/4] (póster + categoría + GRATIS)
-            │   ├── perforaciones (línea dashed + huecos laterales)
-            │   ├── stub  (fecha · hora · lugar en 3 columnas)
-            │   └── descripción + dirección
-            └── CTA amarillo + share circular
-
-Componentes auxiliares (en Evento.tsx, candidatos a extraer):
-  · ImageCarousel  · CtaPrincipal  · VariantHero  · VariantTicket
+└── Estados (loading / error / notFound / detalle) según ?id=<id>
+    │
+    ├── loading  (spinner centrado)
+    ├── error    (AlertTriangle + mensaje)
+    ├── notFound (Calendar + "No hemos encontrado el evento")
+    └── EventoDetalle
+        ├── Hero  (ImageCarousel aspect 4/3 → 16/10, back + share flotantes)
+        │   └── overlay: chips (categoría · gratis/precio · familiar) + título
+        ├── section scroll-y
+        │   ├── Cuándo   (horarios[]: fecha larga + hora HH:mm–HH:mm)
+        │   ├── Dónde    (lugar · dirección · población · cp)
+        │   ├── Descripción (whitespace-pre-line)
+        │   ├── Organiza (nombre + link organizador_web)
+        │   └── Tags (#tag chips)
+        └── CTA sticky "Ver publicación original" (fuente_url_original) + share
 
 Lógica:
-  · EVENTO mock (POC)
-  · CtaPrincipal: prefiere link_inscripcion ("Ticket") sobre link_noticia
-    ("ExternalLink"); muestra hostname del link como label
-  · ImageCarousel: chevrons + dots, AnimatePresence fade entre imágenes`,
+  · Datos: getEvento(id, lang) → /api/v1/eventos?id=<id>&limit=1
+  · i18n titulo/descripcion/tags/categorias según useLang (es|ca)
+  · Fallback horarios: si vacío, usa fecha_inicio/hora_inicio top-level
+  · CTA solo si hay fuente_url_original`,
   noticias: `DeviceShell (frame estándar)
 └── content (flex-col h-full)
     ├── HomeHero  (showGreeting=false, greetingSlot: ScreenTitle "Noticias")

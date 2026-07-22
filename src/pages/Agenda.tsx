@@ -230,7 +230,13 @@ const formatDayHeader = (d: Date) => {
 const formatTime = (t?: string) => (t ? t.slice(0, 5) : "");
 
 /* ─── Tarjeta de evento ─────────────────────────────────────── */
-const EventListCard = ({ evento }: { evento: Evento }) => {
+const EventListCard = ({
+  evento,
+  onOpen,
+}: {
+  evento: Evento;
+  onOpen: (id: string) => void;
+}) => {
   const time = formatTime(evento.hora_inicio);
   const timeEnd = formatTime(evento.hora_fin);
   const cat = evento.categorias?.[0];
@@ -239,7 +245,16 @@ const EventListCard = ({ evento }: { evento: Evento }) => {
       layout
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white border border-km0-blue-100 rounded-2xl p-3 shadow-sm hover:border-km0-blue-300 transition-colors"
+      onClick={() => onOpen(evento.id_unico_evento)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onOpen(evento.id_unico_evento);
+        }
+      }}
+      className="bg-white border border-km0-blue-100 rounded-2xl p-3 shadow-sm hover:border-km0-blue-300 hover:shadow-md active:scale-[0.99] transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-km0-blue-500"
     >
       <h4 className="font-brand text-sm leading-tight text-km0-blue-900 mb-1">
         {evento.titulo}
@@ -476,7 +491,11 @@ const Agenda = () => {
                   {formatDayHeader(g.date)}
                 </h3>
                 {g.items.map((e) => (
-                  <EventListCard key={e.id_unico_evento} evento={e} />
+                  <EventListCard
+                    key={e.id_unico_evento}
+                    evento={e}
+                    onOpen={(id) => navigate(`/evento?id=${encodeURIComponent(id)}`)}
+                  />
                 ))}
               </motion.div>
             ))}
