@@ -54,7 +54,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
             del ancho del label. */}
         <div
           className={cn(
-            "relative grid items-end gap-0",
+            "relative grid items-center gap-0",
             "horizontal-mobile:!h-full horizontal-mobile:!items-center",
           )}
           style={{ gridTemplateColumns: `repeat(${modules.length}, minmax(0, 1fr))` }}
