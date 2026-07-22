@@ -326,7 +326,7 @@ const DesignSystem = () => {
                 { path: "/", name: "Index / Language", desc: "Selección de idioma. Usa BrandedFrame." },
                 { path: "/onboarding", name: "Onboarding", desc: "Carrusel 3D con slides. Usa BrandedFrame." },
                 { path: "/postal-code", name: "PostalCode", desc: "Validación de CP con estados idle/encontrado/error." },
-                { path: "/chat", name: "Chat", desc: "Layout fullbleed (NO usa BrandedFrame). fixed inset-0." },
+                
               ].map(s => (
                 <Link
                   key={s.path}
