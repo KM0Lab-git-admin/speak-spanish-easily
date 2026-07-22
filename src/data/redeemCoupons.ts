@@ -1,30 +1,33 @@
 import type { Coupon } from "@/types/coupon";
 
 /**
- * Cupones mock para la sección "Bescanvia amb punts" del Home
- * (spec docs/spec-home-c.md). Solo visual/aspiracional — el canje real
- * no está implementado.
+ * Cupones mock para la sección "Bescanvia amb punts" del Home.
+ * Muestran recompensas reales (descuentos %, euros, regalos) que se
+ * desbloquean registrándose o canjeando puntos.
  */
 export const REDEEM_COUPONS: Coupon[] = [
   {
-    id: "cafe-local-200",
-    title: "Cafè gratis a Ca l'Antoni",
-    validity: "Comerç adherit al centre",
-    kind: "gift",
-    costPoints: 200,
-  },
-  {
-    id: "10pct-forn-500",
-    title: "-10% al Forn del poble",
-    validity: "Vàlid en tota la botiga",
+    id: "forn-rovira-20pct",
+    title: "Forn Rovira",
+    validity: "Descompte en productes de forn",
     kind: "percent",
-    costPoints: 500,
+    costPoints: 400,
+    value: "-20%",
   },
   {
-    id: "entrada-teatre-1200",
-    title: "Entrada per al Teatre Principal",
-    validity: "Una funció a triar",
-    kind: "ticket",
-    costPoints: 1200,
+    id: "floristeria-maria-5eur",
+    title: "Floristeria Maria",
+    validity: "Descompte en rams i plantes",
+    kind: "gift",
+    costPoints: 600,
+    value: "-5€",
+  },
+  {
+    id: "llibreria-pages-10pct",
+    title: "Llibres i Més",
+    validity: "Vàlid en llibres de tota la botiga",
+    kind: "percent",
+    costPoints: 350,
+    value: "-10%",
   },
 ];

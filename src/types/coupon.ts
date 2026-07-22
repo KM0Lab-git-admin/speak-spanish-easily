@@ -14,4 +14,8 @@ export interface Coupon {
   kind?: "percent" | "gift" | "ticket";
   /** Coste en puntos para bescanviar (spec Home "Missió del barri"). */
   costPoints?: number;
+  /** Si es true, el cupón se muestra bloqueado (invitado o sin puntos suficientes). */
+  locked?: boolean;
+  /** Valor del descuento/recompensa mostrado en el icono (ej.: "-20%", "5€"). */
+  value?: string;
 }

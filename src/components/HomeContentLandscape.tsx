@@ -77,17 +77,11 @@ const HomeContentLandscape = ({
             </div>
             <div className="space-y-1 horizontal-mobile:!space-y-0.5 horizontal-desktop:space-y-2 min-w-0 min-h-0 horizontal-desktop:flex horizontal-desktop:flex-col">
               <SectionHeader title={t("home.redeem.title", lang)} actionLabel={showLogin ? undefined : t("home.action.see_all_m", lang)} onAction={onSeeAllCoupons} />
-              {showLogin ? (
-                <p className="font-body text-km0-blue-700/70 text-xs horizontal-desktop:text-sm">
-                  {t("home.redeem.guest", lang)}
-                </p>
-              ) : (
-                <div className="grid gap-3 horizontal-mobile:!gap-1.5 horizontal-desktop:gap-4 horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:grid-rows-[repeat(auto-fit,minmax(0,1fr))]">
-                  {coupons.map((c, i) => (
-                    <CouponCard key={c.id} coupon={c} delay={i * 0.05} />
-                  ))}
-                </div>
-              )}
+              <div className="grid gap-3 horizontal-mobile:!gap-1.5 horizontal-desktop:gap-4 horizontal-desktop:flex-1 horizontal-desktop:min-h-0 horizontal-desktop:grid-rows-[repeat(auto-fit,minmax(0,1fr))]">
+                {coupons.map((c, i) => (
+                  <CouponCard key={c.id} coupon={{ ...c, locked: showLogin }} delay={i * 0.05} />
+                ))}
+              </div>
             </div>
           </section>
       </main>

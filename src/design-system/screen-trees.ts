@@ -17,7 +17,7 @@ export const SCREEN_TREES: Record<string, string> = {
 │   │   ├── section "Accesos rápidos"     → HomeModules
 │   │   ├── section "Eventos destacados"  → EventHeroCarousel
 │   │   ├── section "Descubre lo nuestro" → ComercioCarousel
-│   │   └── section "Bescanvia amb punts" → CouponCard × N (guest: aviso corto)
+│   │   └── section "Bescanvia amb punts" → CouponCard × N (guest: locked)
 │   ├── BottomTabs             ← fijo abajo (showProfile si auth)
 │   └── NotificationsOverlay
 │

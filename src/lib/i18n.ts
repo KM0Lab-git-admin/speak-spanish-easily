@@ -280,11 +280,12 @@ const D = {
     es: "{n} pts",
     en: "{n} pts",
   } as Dict,
-  "home.redeem.guest": {
-    ca: "Registra't per bescanviar punts",
-    es: "Regístrate para canjear puntos",
-    en: "Sign up to redeem points",
+  "home.redeem.locked": {
+    ca: "Registra't per bescanviar",
+    es: "Regístrate para canjear",
+    en: "Sign up to redeem",
   } as Dict,
+
 
   // ── BottomTabs ───────────────────────────────────────────
   "tabs.home": { ca: "Inici", es: "Inicio", en: "Home" } as Dict,
