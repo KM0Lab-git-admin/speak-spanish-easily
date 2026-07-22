@@ -89,7 +89,7 @@ const HomeHero = ({
             className="w-12 h-12 vertical-tablet:w-14 vertical-tablet:h-14 horizontal-mobile:!w-7 horizontal-mobile:!h-7 object-contain shrink-0 drop-shadow-[0_2px_4px_hsl(0_0%_100%/0.5)]"
           />
           <div className="flex flex-row items-center gap-2 leading-[0.95] min-w-0">
-            <h1 className="font-brand font-black text-km0-blue-700 whitespace-nowrap text-left border-0 text-lg horizontal-mobile:!text-sm vertical-tablet:text-xl">
+            <h1 className="font-brand font-black text-km0-blue-700 whitespace-nowrap text-left border-0 text-lg horizontal-mobile:!text-sm vertical-tablet:text-lg">
               {cityName}
             </h1>
             <div className="flex items-center">
