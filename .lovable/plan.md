@@ -1,32 +1,25 @@
-Situación actual
-- El sandbox está en la rama `edit/edt-907117ad-16a3-4849-9067-e75a36e7ceb4`.
-- `HEAD` y `main` local apuntan ambos al commit `577e667` (`feat(services): api real de eventos y noticias`).
-- El remote visible en el sandbox es el mirror interno de Lovable, no `github.com` directamente.
-- Lovable gestiona el estado git internamente; el sandbox no puede ejecutar `git pull`/`git push` directamente contra GitHub.
+## Objetivo
+En la Home (`vertical-mobile`, 375×667, usuario registrado), poner en una única fila horizontal: escudo de Malgrat + "Malgrat de Mar" + logo KM0 LAB + campana de notificaciones.
 
-Objetivo
-Traer a Lovable cualquier cambio nuevo que exista en la rama `main` del repositorio de GitHub conectado.
+## Estado actual
+En `src/components/HomeHero.tsx`, el bloque `flex flex-col leading-[0.95] ...` apila verticalmente el nombre de la ciudad y el logo KM0 en portrait. Solo en `horizontal-mobile` se fuerza `flex-row` con `!flex-row items-center gap-2`. La campana ya está en la misma row (flex principal).
 
-Plan
+## Cambio
+Scoped a `vertical-mobile` (sin tocar tablet portrait ni landscapes):
 
-1. Verificar conectividad y estado del sync de GitHub
-   - Revisar en Lovable UI: menú Plus (+) → GitHub → estado de sincronización.
-   - Confirmar que el repositorio conectado sigue siendo `KM0Lab-git-admin/speak-spanish-easily` y que la rama por defecto es `main`.
+- Aplicar `flex-row items-center gap-2` como base del contenedor del nombre + logo, en vez de `flex-col`.
+- Reset del margin-top del logo en base (`mt-0`) porque ya no está apilado.
+- Ajustar tamaños si el logo KM0 queda demasiado grande junto al título (probablemente `h-4` sirve; si desborda, bajar a `h-3.5` solo en vertical-mobile).
+- Verificar que `vertical-tablet` sigue apilado como hasta ahora (mantener overrides `vertical-tablet:flex-col vertical-tablet:items-start vertical-tablet:gap-0` si es necesario para no romper esa resolución).
 
-2. Forzar la sincronización desde GitHub hacia Lovable
-   - Opción A (Lovable UI): en el panel de GitHub de Lovable, usar la opción de sincronización/pull si está disponible.
-   - Opción B (GitHub → Lovable automático): si hay commits nuevos en `main`, la sincronización bidireccional de Lovable debería traerlos automáticamente en cuanto el sistema detecte el cambio. Si no se refleja, hacer un commit vacío o de cualquier archivo en GitHub `main` puede reactivar el webhook.
-   - Opción C (si el sync está roto): reconectar el repositorio desde Lovable (Plus + → GitHub → reconectar con la URL actual del repo).
+## Archivo
+- `src/components/HomeHero.tsx` (línea del contenedor `flex flex-col leading-[0.95] min-w-0 horizontal-mobile:!flex-row ...` y sus hijos `h1` + wrapper del `Km0Logo`).
 
-3. Verificar en el sandbox tras el sync
-   - Una vez que Lovable haya absorbido los cambios, el sandbox debería reflejar el nuevo HEAD.
-   - Comandos de solo lectura permitidos para confirmar:
-     - `git log --oneline -5`
-     - `git rev-parse main`
-   - Comprobar que el hash de `main` local coincida con el último commit de GitHub `main`.
+## Fuera de alcance
+- No se toca `HomeContent`, `PointsCard`, ni el resto del Home.
+- No se cambia landscape (`horizontal-mobile` / `horizontal-desktop`) ni `vertical-tablet`.
 
-4. Resolver conflictos si los hubiera
-   - Si Lovable reporta un conflicto de merge, se resuelve en la UI de Lovable (o, si el usuario prefiere, en GitHub directamente) antes de continuar con cualquier otro cambio.
-
-Nota técnica
-No ejecutaré `git pull`, `git fetch`, `git push`, `git merge`, `git checkout` ni `git rebase` desde el sandbox porque Lovable gestiona el estado git internamente. Cualquier intento directo puede desincronizar el mirror o ser ignorado por el sistema.
+## Validación
+Playwright screenshots del Home en las 4 resoluciones canónicas (375×667, 768×1024, 667×375, 1280×550) para confirmar que:
+- 375×667: escudo, "Malgrat de Mar", KM0 LAB y campana en la misma row.
+- Resto de resoluciones sin cambios visibles.
