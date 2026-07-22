@@ -89,7 +89,6 @@ const HomeContent = ({
               <GreetingBlock greeting={greeting} subtitle={subtitle} />
             )}
             {showLogin && <JoinCard onCreateAccount={onLogin} />}
-            {showLogin && <EarnPointsCard />}
             {showPoints && <PointsCard points={points} nextLevel={nextLevel} />}
           </section>
 
@@ -122,6 +121,8 @@ const HomeContent = ({
               </div>
             )}
           </section>
+
+          {showLogin && <EarnPointsCard />}
         </div>
       </div>
 
