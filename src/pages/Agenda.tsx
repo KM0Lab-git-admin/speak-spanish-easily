@@ -387,9 +387,9 @@ const Agenda = () => {
           hasAlerts={hasUnread}
           onToggleAlerts={markAllRead}
           onBack={() => navigate("/home")}
-          backAriaLabel="Ir al inicio"
+          backAriaLabel={t("agenda.back", lang)}
           showGreeting={false}
-          greetingSlot={<ScreenTitle title="Agenda" />}
+          greetingSlot={<ScreenTitle title={t("agenda.title", lang)} />}
         />
       </div>
 
@@ -424,7 +424,7 @@ const Agenda = () => {
                   strokeWidth={2.5}
                   className="shrink-0 hidden vertical-tablet:block"
                 />
-                <span className="truncate">{c.label}</span>
+                <span className="truncate">{t(c.labelKey, lang)}</span>
               </button>
             );
           })}
@@ -435,14 +435,16 @@ const Agenda = () => {
           {loading ? (
             <span className="inline-flex items-center gap-1">
               <Loader2 size={11} className="animate-spin" />
-              Buscando…
+              {t("agenda.searching", lang)}
             </span>
           ) : (
             <>
               <span className="font-bold text-km0-blue-900">
                 {filtered.length}
               </span>{" "}
-              {filtered.length === 1 ? "evento" : "eventos"}
+              {filtered.length === 1
+                ? t("agenda.count.one", lang)
+                : t("agenda.count.many", lang)}
             </>
           )}
         </div>
@@ -462,7 +464,7 @@ const Agenda = () => {
 
           {!loading && error && (
             <div className="bg-km0-coral-50 border border-km0-coral-200 rounded-2xl p-4 text-xs font-ui text-km0-coral-700">
-              No se han podido cargar los eventos. {error}
+              {t("agenda.error", lang)} {error}
             </div>
           )}
 
@@ -473,10 +475,10 @@ const Agenda = () => {
                 className="mx-auto text-km0-blue-700/50 mb-2"
               />
               <p className="font-brand text-sm text-km0-blue-900 mb-1">
-                No hemos encontrado eventos
+                {t("agenda.empty.title", lang)}
               </p>
               <p className="text-[11px] font-ui text-km0-blue-700/70">
-                Prueba cambiando la fecha o la categoría.
+                {t("agenda.empty.hint", lang)}
               </p>
             </div>
           )}
@@ -492,7 +494,7 @@ const Agenda = () => {
                 className="space-y-2"
               >
                 <h3 className="font-brand text-xs text-km0-blue-900/80 sticky top-0 bg-km0-beige-50/95 backdrop-blur-sm py-1 -mx-1 px-1 z-10">
-                  {formatDayHeader(g.date)}
+                  {formatDayHeader(g.date, lang)}
                 </h3>
                 {g.items.map((e) => (
                   <EventListCard
