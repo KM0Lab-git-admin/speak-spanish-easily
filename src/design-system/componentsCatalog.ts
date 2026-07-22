@@ -375,10 +375,10 @@ export const componentsCatalog: ComponentSpec[] = [
     category: "home",
     importPath: "@/components/HomeModules",
     description:
-      "Grid de accesos rápidos estilo Glovo recoloreado a marca KM0: banda azul con curva orgánica + círculos blancos con icono coloreado + pill de label flotando bajo el círculo. Cada módulo es togglable (active/inactive).",
+      "Grid de 6 accesos rápidos (2 filas × 3 columnas) estilo Glovo recoloreado a marca KM0: banda azul con curva orgánica + círculos blancos con icono coloreado + pill de label flotando bajo el círculo. Cada módulo es togglable (active/inactive).",
     usedIn: ["Home (vía HomeContent)"],
     props: [
-      { name: "modules", type: "HomeModule[]", required: true, description: "Lista de módulos. Ids soportados: chat · agenda · ajuntament · punts · cupons · comerc." },
+      { name: "modules", type: "HomeModule[]", required: true, description: "Lista de módulos. Ids soportados: chat · agenda · ajuntament · punts · cupons · comerc · noticias · servicios." },
       { name: "className", type: "string", description: "Clases extra del wrapper." },
     ],
     responsive: [],
