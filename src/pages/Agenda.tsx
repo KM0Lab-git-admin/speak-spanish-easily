@@ -212,18 +212,21 @@ const MONTHS_SHORT = [
   "DIC",
 ];
 
-const formatDayHeader = (d: Date) => {
+const LOCALE_FOR: Record<Lang, string> = { ca: "ca-ES", es: "es-ES", en: "en-GB" };
+
+const formatDayHeader = (d: Date, lang: Lang) => {
   const today = startOfDay(new Date());
   const tomorrow = addDays(today, 1);
   const target = startOfDay(d);
-  const base = d.toLocaleDateString("es-ES", {
+  const base = d.toLocaleDateString(LOCALE_FOR[lang], {
     weekday: "long",
     day: "numeric",
     month: "long",
   });
-  if (target.getTime() === today.getTime()) return `Hoy, ${base}`;
-  if (target.getTime() === tomorrow.getTime()) return `Mañana, ${base}`;
-  return base.charAt(0).toUpperCase() + base.slice(1);
+  const cap = base.charAt(0).toUpperCase() + base.slice(1);
+  if (target.getTime() === today.getTime()) return `${t("agenda.day.today", lang)}, ${base}`;
+  if (target.getTime() === tomorrow.getTime()) return `${t("agenda.day.tomorrow", lang)}, ${base}`;
+  return cap;
 };
 
 const formatTime = (t?: string) => (t ? t.slice(0, 5) : "");
