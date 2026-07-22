@@ -9,6 +9,7 @@ import { t } from "@/lib/i18n";
 import HomeContent from "@/components/HomeContent";
 
 import NotificationsOverlay from "@/components/NotificationsOverlay";
+import PointsRewardOverlay from "@/components/PointsRewardOverlay";
 import DeviceShell from "@/components/DeviceShell";
 import { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
 import { type HomeTab } from "@/components/BottomTabs";
@@ -39,8 +40,9 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const showProfile = isAuthed;
   const showPoints = isAuthed;
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [notifOpen, setNotifOpen] = useState(searchParams.get("notifs") === "open");
+  const [rewardOpen, setRewardOpen] = useState(searchParams.get("welcome") === "1");
   const [moduleSeeds, setModuleSeeds] = useState<HomeModuleSeed[]>(INITIAL_MODULES);
   const [activeTab, setActiveTab] = useState<HomeTab>("home");
   const { promos: apiPromos } = useFeaturedPromos(4);
@@ -92,10 +94,11 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   })();
   const cityName = profile?.town || storedTown || "Malgrat de Mar";
 
-  // Puntos mock: registrado tiene mínimo 100 pts de bienvenida.
-  const points = isAuthed ? 1240 : 0;
-  const level = isAuthed ? 4 : 1;
-  const nextLevel = 1500;
+  // Puntos mock: registrado empieza con 100 pts de bienvenida (nivel 1,
+  // barra de progreso al 10% hacia el nivel 2 en 1.000 pts).
+  const points = isAuthed ? 100 : 0;
+  const level = isAuthed ? 1 : 1;
+  const nextLevel = 1000;
   const nextReward = isAuthed ? "Val de 5€ al Forn Rovira" : undefined;
 
   const sharedProps = {
@@ -136,6 +139,21 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
             onClose={() => setNotifOpen(false)}
             onMarkRead={markRead}
           />
+          {rewardOpen && isAuthed && (
+            <PointsRewardOverlay
+              points={100}
+              message="Per registrar-te a KM0 LAB"
+              contained
+              onClose={() => {
+                setRewardOpen(false);
+                if (searchParams.get("welcome")) {
+                  const next = new URLSearchParams(searchParams);
+                  next.delete("welcome");
+                  setSearchParams(next, { replace: true });
+                }
+              }}
+            />
+          )}
         </div>
       </div>
     </DeviceShell>
