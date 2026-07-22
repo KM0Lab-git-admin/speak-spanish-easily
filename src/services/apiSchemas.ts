@@ -238,3 +238,5 @@ export type NewsItem = z.infer<typeof newsItemSchema>;
 export type NewsListResponse = z.infer<typeof newsListResponseSchema>;
 export type EventsListItem = z.infer<typeof eventsListItemSchema>;
 export type EventsListResponse = z.infer<typeof eventsListResponseSchema>;
+export type EventoDetail = z.infer<typeof eventoDetailSchema>;
+export type EventoHorario = z.infer<typeof horarioSchema>;
