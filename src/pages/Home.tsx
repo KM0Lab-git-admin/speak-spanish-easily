@@ -15,7 +15,7 @@ import { type HomeTab } from "@/components/BottomTabs";
 
 import { PROMOS } from "@/data/promos";
 import { COMERCIOS } from "@/data/comercios";
-import { COUPONS } from "@/data/coupons";
+import { REDEEM_COUPONS } from "@/data/redeemCoupons";
 import { INITIAL_MODULES, type HomeModuleSeed } from "@/data/homeModules";
 
 type HomeProps = {
@@ -75,13 +75,13 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   // Nombre: solo si el usuario está registrado Y ha guardado un first_name.
   const firstName = showProfile ? profile?.first_name?.trim() || null : null;
 
-  // Saludo localizado. Solo mostramos saludo si hay sesión.
-  const hello = t("home.hello", lang);
+  // Saludo + subtítulo localizados según estado.
   const greeting = showLogin
-    ? ""
-    : lang === "en"
-      ? (firstName ? `${hello}, ${firstName}!` : `${hello}!`)
-      : (firstName ? `¡${hello}, ${firstName}!` : `¡${hello}!`);
+    ? t("home.greeting.guest", lang)
+    : t("home.greeting.registered", lang).replace("{name}", firstName ?? "");
+  const subtitle = showLogin
+    ? t("home.subtitle.guest", lang)
+    : t("home.subtitle.registered", lang);
 
   // Ciudad: prioriza perfil → localStorage → fallback.
   const storedTown = (() => {
@@ -89,17 +89,21 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   })();
   const cityName = profile?.town || storedTown || "Malgrat de Mar";
 
+  // Puntos mock: registrado tiene mínimo 100 pts de bienvenida.
+  const points = isAuthed ? 100 : 0;
+
   const sharedProps = {
     cityName,
     hasAlerts: hasUnread,
     onToggleAlerts: openNotifications,
     greeting,
-    points: 1259,
-    nextLevel: 3000,
+    subtitle,
+    points,
+    nextLevel: 500,
     modules: modulesWithHandlers,
     promos: PROMOS,
     comercios: COMERCIOS,
-    coupons: COUPONS,
+    coupons: REDEEM_COUPONS,
     activeTab,
     onTabChange: setActiveTab,
     showLogin,
