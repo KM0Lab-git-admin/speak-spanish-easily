@@ -5,7 +5,7 @@ import CouponCard from "./CouponCard";
 import PointsCard from "./PointsCard";
 import JoinCard from "./JoinCard";
 import EarnPointsCard from "./EarnPointsCard";
-import GreetingBlock from "./GreetingBlock";
+
 
 import ComercioCarousel from "./ComercioCarousel";
 import BottomTabs, { type HomeTab } from "./BottomTabs";
