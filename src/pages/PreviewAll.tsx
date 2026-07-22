@@ -40,26 +40,24 @@ const TREES: Record<string, string> = {
 ├── Portrait  (landscape:hidden) → HomeContent
 │   ├── HomeHero               ← header FIJO (inline=true; showLogin={!user})
 │   │   ├── skyline malgrat    (bg absoluto, object-top, opacity-25)
-│   │   ├── fila header        (escudo + ciudad + KM0 + bell + LoginButton si !user)
-│   │   └── greetingSlot
-│   │       ├── GreetingBlock  ← "👋 ¡Hola, {name}!" + subtítulo
-│   │       └── PointsCard     (solo si showPoints — usuario auth)
+│   │   └── fila header        (escudo + ciudad + KM0 + bell + LoginButton si !user)
 │   ├── body scroll-y
+│   │   ├── section greeting    → GreetingBlock + JoinCard (guest) / PointsCard (auth) + EarnPointsCard (guest)
 │   │   ├── section "Accesos rápidos"     → HomeModules
 │   │   ├── section "Eventos destacados"  → EventHeroCarousel
 │   │   ├── section "Descubre lo nuestro" → ComercioCarousel
-│   │   └── section "Promos para ti"      → CouponCard × N
+│   │   └── section "Bescanvia amb punts" → CouponCard × N
 │   ├── BottomTabs             ← fijo abajo (showProfile si auth)
 │   └── NotificationsOverlay
 │
 └── Landscape  (hidden landscape:flex) → HomeContentLandscape
     ├── HomeHero               ← inline=true; header fijo 92px / 78px desktop
-    │   └── greetingSlot       → GreetingBlock + PointsCard (si auth)
+    │   └── greetingSlot       → GreetingBlock + JoinCard (guest) / PointsCard (auth)
     ├── main compacto          → grid 2 columnas, flex-1 dentro del frame común 16:9:
     │   ├── panel izq → Accesos rápidos (HomeModules, banda fija)
     │   │              + Eventos destacados (EventHeroCarousel compacto 40px / flexible desktop)
     │   └── panel der → Descubre lo nuestro (ComercioCarousel 4 cols)
-    │                  + Promos para ti (CouponCard × N, juntas bajo título)
+    │                  + Bescanvia amb punts (CouponCard × N, juntas bajo título)
     ├── BottomTabs             (oculto en landscape vía landscape:hidden)
     └── NotificationsOverlay
 
