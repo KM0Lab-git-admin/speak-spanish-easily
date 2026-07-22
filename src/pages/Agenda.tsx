@@ -310,6 +310,7 @@ const SkeletonCard = () => (
 const Agenda = () => {
   const navigate = useNavigate();
   const { hasUnread, markAllRead } = useNotifications();
+  const { lang } = useLang();
   const [when, setWhen] = useState<WhenKey>("semana");
   const [category, setCategory] = useState<Category>("todos");
   const [price, setPrice] = useState<Price>("todos");
