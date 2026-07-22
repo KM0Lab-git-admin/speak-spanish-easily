@@ -9,6 +9,7 @@ import { t } from "@/lib/i18n";
 import HomeContent from "@/components/HomeContent";
 
 import NotificationsOverlay from "@/components/NotificationsOverlay";
+import PointsRewardOverlay from "@/components/PointsRewardOverlay";
 import DeviceShell from "@/components/DeviceShell";
 import { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
 import { type HomeTab } from "@/components/BottomTabs";
