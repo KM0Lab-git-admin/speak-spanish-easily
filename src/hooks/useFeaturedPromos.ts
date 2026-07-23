@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { listEvents, type AgendaEvent } from "@/services/eventsApi";
 import type { Promo } from "@/types/promo";
-import { useLang } from "@/contexts/LangContext";
+import { useAppStore } from "@/stores/useAppStore";
 
 /**
  * useFeaturedPromos — obtiene los N primeros eventos de la API y los
@@ -64,7 +64,7 @@ export function useFeaturedPromos(limit = 4): {
   loading: boolean;
   error: string | null;
 } {
-  const { lang } = useLang();
+  const lang = useAppStore((s) => s.lang);
   const [promos, setPromos] = useState<Promo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
