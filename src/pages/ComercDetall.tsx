@@ -169,8 +169,9 @@ const InfoRow = ({
 /* ─── Promo card ────────────────────────────────────────────── */
 const PromoRow = ({ p, lang }: { p: PromocioInfo; lang: Lang }) => {
   const k = langKey(lang);
+  const pill = p.condicio?.[k] ?? "Info";
   return (
-    <li className="flex items-start gap-3 py-3">
+    <li className="flex items-center gap-3 py-3">
       <span className="shrink-0 min-w-[46px] h-10 px-2 rounded-lg bg-km0-yellow-400 text-km0-blue-900 flex items-center justify-center font-brand font-black text-xs">
         {p.etiqueta}
       </span>
@@ -181,12 +182,10 @@ const PromoRow = ({ p, lang }: { p: PromocioInfo; lang: Lang }) => {
         <p className="font-ui text-xs text-km0-blue-700/80 mt-0.5">
           {p.detall[k]}
         </p>
-        {p.condicio && (
-          <p className="font-ui text-[11px] text-km0-blue-700/60 mt-0.5">
-            · {p.condicio[k]}
-          </p>
-        )}
       </div>
+      <span className="shrink-0 px-2.5 py-1 rounded-full bg-km0-coral-100 text-km0-coral-500 font-ui text-[11px] font-bold">
+        {pill}
+      </span>
     </li>
   );
 };
