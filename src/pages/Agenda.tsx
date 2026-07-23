@@ -194,6 +194,9 @@ const rangeFor = (key: WhenKey): [Date, Date] => {
     case "mes": {
       return [today, endOfDay(addDays(today, 30))];
     }
+    case "trimestre": {
+      return [today, endOfDay(addDays(today, 90))];
+    }
   }
 };
 
@@ -240,8 +243,8 @@ const EventListCard = ({
   onOpen: (id: string) => void;
 }) => {
   const { lang } = useLang();
-  const time = formatTime(evento.hora_inicio);
-  const timeEnd = formatTime(evento.hora_fin);
+  const time = formatTime(evento.hora_inicio ?? undefined);
+  const timeEnd = formatTime(evento.hora_fin ?? undefined);
   const cat = evento.categorias?.[0];
   return (
     <motion.article
@@ -363,9 +366,11 @@ const Agenda = () => {
     const map = new Map<string, { date: Date; items: Evento[] }>();
     filtered
       .slice()
-      .sort((a, b) => +new Date(a.fecha_inicio) - +new Date(b.fecha_inicio))
+      .sort(
+        (a, b) => +new Date(a.fecha_inicio ?? 0) - +new Date(b.fecha_inicio ?? 0),
+      )
       .forEach((e) => {
-        const d = startOfDay(new Date(e.fecha_inicio));
+        const d = startOfDay(new Date(e.fecha_inicio ?? 0));
         const k = d.toISOString();
         if (!map.has(k)) map.set(k, { date: d, items: [] });
         map.get(k)!.items.push(e);

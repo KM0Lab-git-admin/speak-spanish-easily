@@ -134,7 +134,9 @@ const CheckEmail = () => {
           {digits.map((d, i) => (
             <input
               key={i}
-              ref={(el) => (inputsRef.current[i] = el)}
+              ref={(el) => {
+                inputsRef.current[i] = el;
+              }}
               type="text"
               inputMode="numeric"
               autoComplete={i === 0 ? "one-time-code" : "off"}

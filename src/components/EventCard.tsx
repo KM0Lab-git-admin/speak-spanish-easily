@@ -31,10 +31,12 @@ const EventCard = ({ evento, index }: EventCardProps) => {
       </p>
 
       <div className="flex flex-wrap gap-2 text-xs text-muted-foreground font-ui">
-        <span className="flex items-center gap-1">
-          <Calendar size={12} className="text-accent" />
-          {formatDate(evento.fecha_inicio)}
-        </span>
+        {evento.fecha_inicio && (
+          <span className="flex items-center gap-1">
+            <Calendar size={12} className="text-accent" />
+            {formatDate(evento.fecha_inicio)}
+          </span>
+        )}
         {evento.hora_inicio && (
           <span className="flex items-center gap-1">
             <Clock size={12} className="text-accent" />
