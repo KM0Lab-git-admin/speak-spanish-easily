@@ -102,16 +102,23 @@ const PointsCard = ({
     );
   }
   return (
-    <div className="rounded-2xl border border-km0-coral-100 bg-white p-4 shadow-sm">
-      <div className="flex items-start gap-3">
-        <span className="shrink-0 w-10 h-10 rounded-full bg-km0-coral-500 text-white flex items-center justify-center">
+    <div className="relative overflow-hidden rounded-2xl bg-km0-blue-800 p-4 shadow-md">
+      {/* Estrella decorativa */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute -right-3 -bottom-3 text-km0-blue-700/60 text-[110px] leading-none select-none"
+      >
+        ★
+      </span>
+      <div className="relative flex items-start gap-3">
+        <span className="shrink-0 w-10 h-10 rounded-xl bg-km0-blue-700 text-white flex items-center justify-center">
           <ScanLine size={20} strokeWidth={2.4} />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="font-brand text-sm text-km0-blue-900 leading-tight">
+          <p className="font-brand text-base text-white leading-tight">
             {interpolate(t("merchant.points.earn_title", lang), { n: c.punts })}
           </p>
-          <p className="font-ui text-xs text-km0-blue-700/80 mt-1">
+          <p className="font-ui text-xs text-white/80 mt-1">
             {t("merchant.points.earn_subtitle", lang)}
           </p>
         </div>
@@ -119,11 +126,14 @@ const PointsCard = ({
       <button
         type="button"
         onClick={onScan}
-        className="mt-3 w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-km0-coral-500 text-white font-ui text-sm font-bold active:scale-[0.98] transition-transform"
+        className="relative mt-3 w-full inline-flex items-center justify-center gap-2 px-3 py-3 rounded-xl bg-km0-yellow-400 text-km0-blue-900 font-ui text-sm font-bold active:scale-[0.98] transition-transform"
       >
         <ScanLine size={16} strokeWidth={2.4} />
         {t("merchant.points.scan_cta", lang)}
       </button>
+      <p className="relative mt-2 text-center font-ui text-[11px] text-white/70">
+        {t("merchant.points.earn_subtitle", lang)}
+      </p>
     </div>
   );
 };
@@ -141,16 +151,16 @@ const InfoRow = ({
   action?: React.ReactNode;
 }) => (
   <div className="flex items-start gap-3 py-3">
-    <span className="shrink-0 w-8 h-8 rounded-lg bg-km0-blue-50 text-km0-blue-700 flex items-center justify-center">
+    <span className="shrink-0 w-9 h-9 rounded-full bg-km0-beige-200 text-km0-blue-800 flex items-center justify-center">
       {icon}
     </span>
     <div className="min-w-0 flex-1">
-      <p className="font-ui text-[11px] uppercase tracking-wide text-km0-blue-700/60 font-bold">
-        {label}
-      </p>
-      <div className="font-ui text-sm text-km0-blue-900 leading-snug break-words">
+      <div className="font-ui text-sm font-bold text-km0-blue-900 leading-snug break-words">
         {value}
       </div>
+      <p className="font-ui text-xs text-km0-blue-700/70 mt-0.5">
+        {label}
+      </p>
     </div>
     {action && <div className="shrink-0 self-center">{action}</div>}
   </div>
@@ -159,8 +169,9 @@ const InfoRow = ({
 /* ─── Promo card ────────────────────────────────────────────── */
 const PromoRow = ({ p, lang }: { p: PromocioInfo; lang: Lang }) => {
   const k = langKey(lang);
+  const pill = p.condicio?.[k] ?? "Info";
   return (
-    <li className="flex items-start gap-3 py-3">
+    <li className="flex items-center gap-3 py-3">
       <span className="shrink-0 min-w-[46px] h-10 px-2 rounded-lg bg-km0-yellow-400 text-km0-blue-900 flex items-center justify-center font-brand font-black text-xs">
         {p.etiqueta}
       </span>
@@ -171,12 +182,10 @@ const PromoRow = ({ p, lang }: { p: PromocioInfo; lang: Lang }) => {
         <p className="font-ui text-xs text-km0-blue-700/80 mt-0.5">
           {p.detall[k]}
         </p>
-        {p.condicio && (
-          <p className="font-ui text-[11px] text-km0-blue-700/60 mt-0.5">
-            · {p.condicio[k]}
-          </p>
-        )}
       </div>
+      <span className="shrink-0 px-2.5 py-1 rounded-full bg-km0-coral-100 text-km0-coral-500 font-ui text-[11px] font-bold">
+        {pill}
+      </span>
     </li>
   );
 };
@@ -377,7 +386,7 @@ const ComercDetallPage = () => {
                     <h2 className="font-brand text-sm text-km0-blue-900 mb-1">
                       {t("merchant.info.title", lang)}
                     </h2>
-                    <div className="bg-white border border-km0-blue-100 rounded-2xl px-3 divide-y divide-km0-blue-100/60">
+                    <div className="px-1 divide-y divide-km0-blue-100/60">
                       <InfoRow
                         icon={<MapPin size={16} />}
                         label={t("merchant.info.address", lang)}
@@ -518,7 +527,7 @@ const ComercDetallPage = () => {
                     <h2 className="font-brand text-sm text-km0-blue-900 mb-1">
                       {t("merchant.description.title", lang)}
                     </h2>
-                    <p className="font-ui text-sm text-km0-blue-800/90 leading-relaxed bg-white border border-km0-blue-100 rounded-2xl p-4">
+                    <p className="font-ui text-sm text-km0-blue-800/90 leading-relaxed">
                       {comerc.descripcio[k]}
                     </p>
                   </section>
@@ -543,7 +552,7 @@ const ComercDetallPage = () => {
                 <button
                   type="button"
                   onClick={openScanner}
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-km0-coral-500 text-white font-ui text-sm font-bold shadow-lg shadow-km0-coral-500/30 active:scale-[0.99] transition-transform"
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-km0-blue-800 text-white font-ui text-sm font-bold shadow-lg shadow-km0-blue-800/30 active:scale-[0.99] transition-transform"
                 >
                   <ScanLine size={18} strokeWidth={2.4} />
                   {interpolate(t("merchant.cta.scan_earn", lang), {
