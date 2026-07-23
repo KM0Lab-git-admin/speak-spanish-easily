@@ -11,6 +11,7 @@ import Agenda from "./pages/Agenda";
 import Evento from "./pages/Evento";
 import Noticias from "./pages/Noticias";
 import Comercos from "./pages/Comercos";
+import ComercDetall from "./pages/ComercDetall";
 import Login from "./pages/Login";
 import CheckEmail from "./pages/CheckEmail";
 import Profile from "./pages/Profile";
