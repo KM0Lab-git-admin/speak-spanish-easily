@@ -528,7 +528,7 @@ const ComercDetallPage = () => {
                     <h2 className="font-brand text-sm text-km0-blue-900 mb-1">
                       {t("merchant.description.title", lang)}
                     </h2>
-                    <p className="font-ui text-sm text-km0-blue-800/90 leading-relaxed bg-white border border-km0-blue-100 rounded-2xl p-4">
+                    <p className="font-ui text-sm text-km0-blue-800/90 leading-relaxed">
                       {comerc.descripcio[k]}
                     </p>
                   </section>
