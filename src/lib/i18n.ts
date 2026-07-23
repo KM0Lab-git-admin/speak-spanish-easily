@@ -21,6 +21,8 @@ const D = {
   "common.continue": { ca: "CONTINUAR", es: "CONTINUAR", en: "CONTINUE" } as Dict,
   "common.loading": { ca: "Carregant…", es: "Cargando…", en: "Loading…" } as Dict,
   "common.points": { ca: "punts", es: "puntos", en: "points" } as Dict,
+  "common.previous": { ca: "Anterior", es: "Anterior", en: "Previous" } as Dict,
+  "common.next": { ca: "Següent", es: "Siguiente", en: "Next" } as Dict,
 
   // ── Language screen ──────────────────────────────────────
   "language.title": { ca: "Tria el teu idioma", es: "Escoge tu idioma", en: "Choose your language" } as Dict,
@@ -356,6 +358,21 @@ const D = {
     en: "Signed out",
   } as Dict,
   "profile.language": { ca: "Idioma", es: "Idioma", en: "Language" } as Dict,
+  "profile.error_max": {
+    ca: "Màxim 100 caràcters",
+    es: "Máximo 100 caracteres",
+    en: "Maximum 100 characters",
+  } as Dict,
+  "profile.error_postal": {
+    ca: "Codi postal de 5 dígits",
+    es: "Código postal de 5 dígitos",
+    en: "5-digit postal code",
+  } as Dict,
+  "profile.error_invalid": {
+    ca: "Dades no vàlides",
+    es: "Datos no válidos",
+    en: "Invalid data",
+  } as Dict,
 
   // ── Noticias ─────────────────────────────────────────────
   "news.title": { ca: "Notícies", es: "Noticias", en: "News" } as Dict,
