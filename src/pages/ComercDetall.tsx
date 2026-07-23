@@ -387,7 +387,7 @@ const ComercDetallPage = () => {
                     <h2 className="font-brand text-sm text-km0-blue-900 mb-1">
                       {t("merchant.info.title", lang)}
                     </h2>
-                    <div className="bg-white border border-km0-blue-100 rounded-2xl px-3 divide-y divide-km0-blue-100/60">
+                    <div className="px-1 divide-y divide-km0-blue-100/60">
                       <InfoRow
                         icon={<MapPin size={16} />}
                         label={t("merchant.info.address", lang)}
