@@ -21,6 +21,9 @@ export default {
         ui:    ["'Inter'", "sans-serif"],
         body:  ["'DM Sans'", "'Inter'", "sans-serif"],
       },
+      boxShadow: {
+        'device-frame': '0 24px 60px -20px hsl(var(--km0-blue-700) / 0.3)',
+      },
       colors: {
         border:     "hsl(var(--border))",
         input:      "hsl(var(--input))",
