@@ -1,4 +1,8 @@
-import type { CategoriaAdherit, ComercAdherit } from "@/types/comercAdherit";
+import type {
+  CategoriaAdherit,
+  ComercAdherit,
+  ComercDetall,
+} from "@/types/comercAdherit";
 import shopBakery from "@/assets/shop-logos/shop-bakery.png";
 import shopCafe from "@/assets/shop-logos/shop-cafe.png";
 import shopFashion from "@/assets/shop-logos/shop-fashion.png";
