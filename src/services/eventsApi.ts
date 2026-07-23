@@ -26,7 +26,7 @@ import {
 
 const EVENTS_BASE: string =
   (import.meta.env.VITE_EVENTS_API_URL as string | undefined) ??
-  "https://eventquery.km0lab.com";
+  "https://eventquery.uat.km0lab.com";
 
 /** Búsqueda en lenguaje natural (experiencia chat). Rate limit 30/min. */
 export async function queryEvents(
