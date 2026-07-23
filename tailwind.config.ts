@@ -210,16 +210,25 @@ export default {
       //
       addVariant("vertical-mobile",    ["@media (orientation: portrait)  and (max-width: 767px)",  "[data-bp~='vertical-mobile'] &"]);
       addVariant("vertical-tablet",    ["@media (orientation: portrait)  and (min-width: 768px)",  "[data-bp~='vertical-tablet'] &"]);
-      addVariant("horizontal-mobile",  ["@media (orientation: landscape) and (max-width: 1279px)", "[data-bp~='horizontal-mobile'] &"]);
-      addVariant("horizontal-desktop", ["@media (orientation: landscape) and (min-width: 1280px)", "[data-bp~='horizontal-desktop'] &"]);
+      // NOTA: mientras la app prioriza SOLO portrait mobile, las variantes
+      // landscape / horizontal-* SOLO se activan vía data-bp (nunca por
+      // media query). Así el marco fijo del "teléfono" nunca cambia de
+      // layout aunque la ventana esté en landscape.
+      addVariant("horizontal-mobile",  ["[data-bp~='horizontal-mobile'] &"]);
+      addVariant("horizontal-desktop", ["[data-bp~='horizontal-desktop'] &"]);
 
       // ─────────────────────────────────────────────────────────────
       // ALIASES DEPRECADOS (mantener hasta migrar todas las pantallas)
       // No usar en código nuevo. Equivalen a los oficiales de arriba.
       // ─────────────────────────────────────────────────────────────
-      addVariant("short-landscape", ["@media (orientation: landscape) and (max-width: 1279px)", "[data-bp~='horizontal-mobile'] &"]);
-      addVariant("wide-landscape",  ["@media (orientation: landscape) and (min-width: 1280px)", "[data-bp~='horizontal-desktop'] &"]);
-      addVariant("tablet-portrait", ["@media (orientation: portrait)  and (min-width: 768px)",  "[data-bp~='vertical-tablet'] &"]);
+      addVariant("short-landscape", ["[data-bp~='horizontal-mobile'] &"]);
+      addVariant("wide-landscape",  ["[data-bp~='horizontal-desktop'] &"]);
+
+      // Overrides de las variantes nativas de Tailwind: mientras solo
+      // exista layout portrait, `landscape:` y `portrait:` se controlan
+      // por data-bp del marco, no por la orientación real del viewport.
+      addVariant("landscape", ["[data-bp~='landscape'] &"]);
+      addVariant("portrait",  ["[data-bp~='portrait'] &, [data-bp~='vertical-mobile'] &, [data-bp~='vertical-tablet'] &"]);
     },
   ],
 } satisfies Config;

@@ -75,10 +75,13 @@ const BrandedFrame = ({
         paddingRight: 'env(safe-area-inset-right)',
       }}
     >
-      {/* ── PORTRAIT (vertical-mobile + vertical-tablet) ─────── */}
+      {/* Frame único (portrait mobile). Mientras la app prioriza solo
+          portrait, todas las pantallas se ven al mismo tamaño en
+          cualquier orientación del viewport. */}
       <div
+        data-bp="vertical-mobile portrait"
         className={cn(
-          'landscape:hidden flex flex-col bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 overflow-hidden',
+          'flex flex-col bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 overflow-hidden',
           frameChromeClass,
           !showDeviceChrome && 'h-dvh w-full'
         )}
@@ -100,46 +103,11 @@ const BrandedFrame = ({
         )}
 
         <div
-          className={`flex-1 min-h-0 flex flex-col w-full px-4 pb-6 overflow-y-auto overflow-x-hidden ${hideHeader ? 'pt-5' : ''} ${portraitContentClassName}`}
+          className={`flex-1 min-h-0 flex flex-col w-full px-4 pb-6 overflow-y-auto overflow-x-hidden ${hideHeader ? 'pt-5' : ''} ${portraitContentClassName} ${landscapeContentClassName}`}
         >
           {children}
         </div>
       </div>
-
-      {/* ── LANDSCAPE (horizontal-mobile + horizontal-desktop) ─
-          Mismo frame fijo que portrait (regla: todas las pantallas
-          se ven al mismo tamaño, independientemente de la resolución).
-          Ver Comercos/Home que ya siguen este patrón vía DeviceShell. */}
-      <div
-        className={cn(
-          'hidden landscape:flex bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 overflow-hidden flex-col',
-          frameChromeClass,
-          !showDeviceChrome && 'h-dvh w-full'
-        )}
-        style={
-          showDeviceChrome
-            ? {
-                width: 'min(100vw, 420px)',
-                height:
-                  'min(calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)), 920px)',
-              }
-            : undefined
-        }
-      >
-        {!hideHeader && (
-          <header className="relative shrink-0 flex items-center justify-center pt-5 pb-4 px-16">
-            {renderBackButton('left-4 w-10 h-10', 20)}
-            <Km0Logo className="h-9 w-auto max-w-full" />
-          </header>
-        )}
-
-        <div
-          className={`flex-1 min-h-0 flex w-full px-4 pb-6 overflow-hidden ${hideHeader ? 'pt-5' : ''} ${landscapeContentClassName}`}
-        >
-          {children}
-        </div>
-      </div>
-
     </div>
   )
 }
