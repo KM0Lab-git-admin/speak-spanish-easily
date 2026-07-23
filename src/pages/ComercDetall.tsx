@@ -553,7 +553,7 @@ const ComercDetallPage = () => {
                 <button
                   type="button"
                   onClick={openScanner}
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-km0-coral-500 text-white font-ui text-sm font-bold shadow-lg shadow-km0-coral-500/30 active:scale-[0.99] transition-transform"
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-km0-blue-800 text-white font-ui text-sm font-bold shadow-lg shadow-km0-blue-800/30 active:scale-[0.99] transition-transform"
                 >
                   <ScanLine size={18} strokeWidth={2.4} />
                   {interpolate(t("merchant.cta.scan_earn", lang), {
