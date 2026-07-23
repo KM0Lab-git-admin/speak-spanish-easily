@@ -28,3 +28,37 @@ export interface CategoriaAdherit {
   count: number;
   emoji?: string;
 }
+
+/** Promoció informativa d'un comerç (sense canje ni codi). */
+export interface PromocioInfo {
+  id: string;
+  etiqueta: string; // "-5%", "2×1", "Regal"
+  titol: { ca: string; es: string };
+  detall: { ca: string; es: string };
+  condicio?: { ca: string; es: string };
+}
+
+/** Detall complet d'un comerç adherit (mock, no API). */
+export interface ComercDetall {
+  id: string;
+  nom: string;
+  categoria: { ca: string; es: string };
+  subcategoria?: { ca: string; es: string };
+  imatge?: string;
+  emoji?: string;
+  bg?: string;
+  obertAra: boolean;
+  horariAvui: string; // "07:00–20:00"
+  tancaA?: string;    // "20:00"
+  adreca: string;
+  codiPostal: string;
+  poblacio: string;
+  distanciaM: number;
+  telefon?: string;
+  web?: string;
+  coordenades?: { lat: number; lng: number };
+  descripcio: { ca: string; es: string };
+  punts: number;
+  visitat: boolean;
+  promocions: PromocioInfo[];
+}
