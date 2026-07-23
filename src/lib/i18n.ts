@@ -263,6 +263,11 @@ const D = {
     es: "Regístrate para desbloquear",
     en: "Sign up to unlock",
   } as Dict,
+  "home.earn.action.shop.reward": {
+    ca: "Guanya {n} punts per compra",
+    es: "Gana {n} puntos por compra",
+    en: "Earn {n} points per purchase",
+  } as Dict,
   "home.earn.action.event.title": {
     ca: "Apunta't a un esdeveniment",
     es: "Apúntate a un evento",
@@ -273,6 +278,12 @@ const D = {
     es: "Regístrate para desbloquear",
     en: "Sign up to unlock",
   } as Dict,
+  "home.earn.action.event.reward": {
+    ca: "Guanya {n} punts per assistència",
+    es: "Gana {n} puntos por asistencia",
+    en: "Earn {n} points per attendance",
+  } as Dict,
+
   "home.redeem.title": {
     ca: "Bescanvia amb punts",
     es: "Canjea con puntos",
