@@ -11,6 +11,7 @@ import Agenda from "./pages/Agenda";
 import Evento from "./pages/Evento";
 import Noticias from "./pages/Noticias";
 import Comercos from "./pages/Comercos";
+import ComercDetall from "./pages/ComercDetall";
 import Login from "./pages/Login";
 import CheckEmail from "./pages/CheckEmail";
 import Profile from "./pages/Profile";
@@ -45,6 +46,7 @@ const App = () => (
             <Route path="/evento" element={<Evento />} />
             <Route path="/noticias" element={<Noticias />} />
             <Route path="/comercos" element={<Comercos />} />
+            <Route path="/comercos/:id" element={<ComercDetall />} />
             {/* Perfil accesible sin auth para testing — Profile gestiona el estado sin user. */}
             <Route path="/profile" element={<Profile />} />
             <Route path="/design-system" element={<DesignSystem />} />
