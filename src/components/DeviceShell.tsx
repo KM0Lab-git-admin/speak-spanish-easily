@@ -24,6 +24,7 @@ const DeviceShell = ({ children }: DeviceShellProps) => {
   return (
     <div className="min-h-[100dvh] w-full bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 overflow-hidden flex items-center justify-center p-0">
       <div
+        data-bp="vertical-mobile portrait"
         className={cn(
           'relative flex flex-col bg-km0-beige-50 overflow-hidden',
           showDeviceChrome
