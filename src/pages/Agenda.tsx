@@ -337,6 +337,7 @@ const Agenda = () => {
       fechaDesde: toISODate(from),
       fechaHasta: toISODate(to),
       pageSize: 50,
+      lang: lang === "ca" ? "ca" : "es",
     })
       .then((res) => {
         if (!cancelled) setEventos(res.eventos ?? []);
@@ -350,7 +351,7 @@ const Agenda = () => {
     return () => {
       cancelled = true;
     };
-  }, [category, when]);
+  }, [category, when, lang]);
 
   // Categoría, fechas y población ya las filtra el servidor; aquí solo el
   // precio (Gratis / Pago), que no se envía a la API.
