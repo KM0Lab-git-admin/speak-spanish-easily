@@ -303,7 +303,46 @@ const D = {
 
   // ── BottomTabs ───────────────────────────────────────────
   "tabs.home": { ca: "Inici", es: "Inicio", en: "Home" } as Dict,
-  "tabs.info": { ca: "Informació", es: "Información", en: "Info" } as Dict,
+  "tabs.merchants": { ca: "Comerços", es: "Comercios", en: "Shops" } as Dict,
+
+  // ── Merchants (Comerços) screen ──────────────────────────
+  "merchants.title": { ca: "Comerços adherits", es: "Comercios adheridos", en: "Member shops" } as Dict,
+  "merchants.subtitle": {
+    ca: "{count} establiments participen al programa",
+    es: "{count} establecimientos participan en el programa",
+    en: "{count} shops take part in the programme",
+  } as Dict,
+  "merchants.filter_all": { ca: "Totes les categories", es: "Todas las categorías", en: "All categories" } as Dict,
+  "merchants.filter_by_category": {
+    ca: "Filtra per categoria",
+    es: "Filtra por categoría",
+    en: "Filter by category",
+  } as Dict,
+  "merchants.results_count": {
+    ca: "{count} comerços",
+    es: "{count} comercios",
+    en: "{count} shops",
+  } as Dict,
+  "merchants.card.qr": { ca: "QR", es: "QR", en: "QR" } as Dict,
+  "merchants.card.points": { ca: "+{n} pts", es: "+{n} pts", en: "+{n} pts" } as Dict,
+  "merchants.card.member": { ca: "Adherit", es: "Adherido", en: "Member" } as Dict,
+  "merchants.fab.scan": { ca: "Escaneja QR", es: "Escanea QR", en: "Scan QR" } as Dict,
+  "merchants.empty.title": {
+    ca: "Cap comerç en aquesta categoria",
+    es: "Ningún comercio en esta categoría",
+    en: "No shops in this category",
+  } as Dict,
+  "merchants.empty.clear": {
+    ca: "Veure totes les categories",
+    es: "Ver todas las categorías",
+    en: "Show all categories",
+  } as Dict,
+  "merchants.error.title": {
+    ca: "No s'han pogut carregar els comerços",
+    es: "No se han podido cargar los comercios",
+    en: "Couldn't load shops",
+  } as Dict,
+  "merchants.error.retry": { ca: "Tornar a provar", es: "Reintentar", en: "Try again" } as Dict,
   "tabs.offers": { ca: "Ofertes", es: "Ofertas", en: "Offers" } as Dict,
   "tabs.profile": { ca: "Perfil", es: "Perfil", en: "Profile" } as Dict,
 

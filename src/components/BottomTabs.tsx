@@ -1,9 +1,9 @@
-import { Home as HomeIcon, Info, Tag, User } from "lucide-react";
+import { Home as HomeIcon, Store, Tag, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 
-export type HomeTab = "home" | "info" | "ofertes" | "perfil";
+export type HomeTab = "home" | "comercos" | "ofertes" | "perfil";
 
 export interface BottomTabsProps {
   activeTab: HomeTab;
@@ -34,10 +34,10 @@ const BottomTabs = ({
         onClick={() => onTabChange("home")}
       />
       <TabItem
-        icon={<Info size={20} strokeWidth={2.2} />}
-        label={t("tabs.info", lang)}
-        active={activeTab === "info"}
-        onClick={() => onTabChange("info")}
+        icon={<Store size={20} strokeWidth={2.2} />}
+        label={t("tabs.merchants", lang)}
+        active={activeTab === "comercos"}
+        onClick={() => onTabChange("comercos")}
       />
       <TabItem
         icon={<Tag size={20} strokeWidth={2.2} />}
