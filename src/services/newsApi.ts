@@ -31,7 +31,7 @@ export interface Noticia {
   fuenteUrl: string | null;
 }
 
-const NEWS_ASSET_BASE = "https://eventquery.km0lab.com";
+const NEWS_ASSET_BASE = "https://eventquery.uat.km0lab.com";
 
 function absolutizeImageUrl(url?: string | null): string | null {
   if (!url) return null;
