@@ -102,16 +102,23 @@ const PointsCard = ({
     );
   }
   return (
-    <div className="rounded-2xl border border-km0-coral-100 bg-white p-4 shadow-sm">
-      <div className="flex items-start gap-3">
-        <span className="shrink-0 w-10 h-10 rounded-full bg-km0-coral-500 text-white flex items-center justify-center">
+    <div className="relative overflow-hidden rounded-2xl bg-km0-blue-800 p-4 shadow-md">
+      {/* Estrella decorativa */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute -right-3 -bottom-3 text-km0-blue-700/60 text-[110px] leading-none select-none"
+      >
+        ★
+      </span>
+      <div className="relative flex items-start gap-3">
+        <span className="shrink-0 w-10 h-10 rounded-xl bg-km0-blue-700 text-white flex items-center justify-center">
           <ScanLine size={20} strokeWidth={2.4} />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="font-brand text-sm text-km0-blue-900 leading-tight">
+          <p className="font-brand text-base text-white leading-tight">
             {interpolate(t("merchant.points.earn_title", lang), { n: c.punts })}
           </p>
-          <p className="font-ui text-xs text-km0-blue-700/80 mt-1">
+          <p className="font-ui text-xs text-white/80 mt-1">
             {t("merchant.points.earn_subtitle", lang)}
           </p>
         </div>
@@ -119,11 +126,14 @@ const PointsCard = ({
       <button
         type="button"
         onClick={onScan}
-        className="mt-3 w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-km0-coral-500 text-white font-ui text-sm font-bold active:scale-[0.98] transition-transform"
+        className="relative mt-3 w-full inline-flex items-center justify-center gap-2 px-3 py-3 rounded-xl bg-km0-yellow-400 text-km0-blue-900 font-ui text-sm font-bold active:scale-[0.98] transition-transform"
       >
         <ScanLine size={16} strokeWidth={2.4} />
         {t("merchant.points.scan_cta", lang)}
       </button>
+      <p className="relative mt-2 text-center font-ui text-[11px] text-white/70">
+        {t("merchant.points.earn_subtitle", lang)}
+      </p>
     </div>
   );
 };
