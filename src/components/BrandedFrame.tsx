@@ -121,7 +121,7 @@ const BrandedFrame = ({
             ? {
                 width: 'min(100vw, 420px)',
                 height:
-                  'min(100dvh, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)))',
+                  'min(calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)), 920px)',
               }
             : undefined
         }
