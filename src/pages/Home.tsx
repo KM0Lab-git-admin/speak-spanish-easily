@@ -120,7 +120,10 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     comercios: COMERCIOS,
     coupons: REDEEM_COUPONS,
     activeTab,
-    onTabChange: setActiveTab,
+    onTabChange: (tab: HomeTab) => {
+      setActiveTab(tab);
+      if (tab === "comercos") navigate("/comercos");
+    },
     showLogin,
     onLogin: goToLogin,
     showProfile,
