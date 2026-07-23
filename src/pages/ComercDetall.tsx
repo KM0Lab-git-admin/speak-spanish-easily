@@ -151,16 +151,16 @@ const InfoRow = ({
   action?: React.ReactNode;
 }) => (
   <div className="flex items-start gap-3 py-3">
-    <span className="shrink-0 w-8 h-8 rounded-lg bg-km0-blue-50 text-km0-blue-700 flex items-center justify-center">
+    <span className="shrink-0 w-9 h-9 rounded-full bg-km0-beige-200 text-km0-blue-800 flex items-center justify-center">
       {icon}
     </span>
     <div className="min-w-0 flex-1">
-      <p className="font-ui text-[11px] uppercase tracking-wide text-km0-blue-700/60 font-bold">
-        {label}
-      </p>
-      <div className="font-ui text-sm text-km0-blue-900 leading-snug break-words">
+      <div className="font-ui text-sm font-bold text-km0-blue-900 leading-snug break-words">
         {value}
       </div>
+      <p className="font-ui text-xs text-km0-blue-700/70 mt-0.5">
+        {label}
+      </p>
     </div>
     {action && <div className="shrink-0 self-center">{action}</div>}
   </div>
