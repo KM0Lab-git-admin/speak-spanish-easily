@@ -54,7 +54,7 @@ function toPromo(ev: AgendaEvent, index: number, lang: "es" | "ca" | "en"): Prom
       bg: "bg-km0-blue-700",
       text_color: "text-white",
     },
-    gradient: GRADIENTS[index % GRADIENTS.length],
+    gradient: GRADIENTS[index % GRADIENTS.length] ?? "",
     images: ev.url_imagen ? [ev.url_imagen] : [],
   };
 }
