@@ -131,10 +131,10 @@ export const componentsCatalog: ComponentSpec[] = [
     name: "BottomTabs",
     category: "navegacion",
     importPath: "@/components/BottomTabs",
-    description: "Barra de navegación inferior fija con 4 tabs (Inicio · Información · Ofertas · Perfil). El tab Perfil cambia de acción según haya sesión.",
-    usedIn: ["Home", "Agenda"],
+    description: "Barra de navegación inferior fija con 4 tabs (Inicio · Comercios · Ofertas · Perfil). El tab Perfil cambia de acción según haya sesión.",
+    usedIn: ["Home", "Agenda", "Comercos"],
     props: [
-      { name: "activeTab", type: '"home" | "info" | "ofertes" | "perfil"', required: true, description: "Tab activo (controlado por la pantalla)." },
+      { name: "activeTab", type: '"home" | "comercos" | "ofertes" | "perfil"', required: true, description: "Tab activo (controlado por la pantalla)." },
       { name: "onTabChange", type: "(t: HomeTab) => void", required: true, description: "Callback al cambiar de tab." },
       { name: "showProfile", type: "boolean", required: true, description: "Si hay sesión, el tab Perfil navega a /profile; si no, a /login." },
       { name: "onLogin", type: "() => void", required: true, description: "Acción cuando no hay sesión y se pulsa Perfil." },
